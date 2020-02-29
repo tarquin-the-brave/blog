@@ -1,6 +1,6 @@
 baseurl = "https://www.example.org/"
-title = "Kiera"
-copyright = "Copyright &copy; 2019 - Author Name"
+title = "tarquin-the-brave"
+copyright = "Copyright &copy; 2019 - Tom Steavenson"
 canonifyurls = true
 theme = "hugo-kiera"
 
@@ -12,8 +12,8 @@ pygmentsCodeFences = true
 
 # Note: to disable a social network icon delete or comment out the corresponding line
 [author]
-    name = "Example"
-    #github = "funkydan2"
+    name = "Tom Steavenson"
+    github = "tarquin-the-brave"
     #gitlab = "username"
     #linkedin = "username"
     #facebook = "username"
@@ -23,8 +23,8 @@ pygmentsCodeFences = true
     #youtube = "user/username" # or channel/channelname
 
 [params]
-    tagline = "A Hugo theme for creative and technical writing"
-    description = "Kiera: A Hugo theme for creative and technical writing."
+    tagline = "Some things I think"
+    description = ""
     #images = [""] #This is used for opengraph/twitter cards.
     customCSS = []  #Optional Customised CSS
     #favicon = ""

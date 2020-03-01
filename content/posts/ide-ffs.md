@@ -80,3 +80,8 @@ requirements.  These developer tools are useful, but we shouldn't become
 reliant on them.  Code is text.  It should only require a vanilla text editor
 to write, and only require something that can render text to read.
 
+[^1]: VSCode appears to be the senior editor for rust.  I don't have a problem
+with this.  By the looks of it, it's a fine GUI based editor and everyone
+I know who uses it loves it.  It seems its struck a great balance between
+having great functionality out of the box, while being easily tuneable and
+feel sharp. If I hadn't drank the Vim coolaid, I imagine I'd be using it.

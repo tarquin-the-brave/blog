@@ -3,6 +3,7 @@ title = "tarquin-the-brave"
 copyright = "Copyright &copy; 2019 - Tom Steavenson"
 canonifyurls = true
 theme = "hugo-kiera"
+publishDir = "docs"
 
 paginate = 3
 

@@ -1,0 +1,14 @@
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+ <channel>
+   <title>tarquin-the-brave</title>
+   <link>https://www.example.org/</link>
+   <description>Recent content on tarquin-the-brave</description>
+   <generator>Hugo -- gohugo.io</generator>
+   <copyright>Copyright &amp;copy; 2019 - Tom Steavenson</copyright>
+   
+       <atom:link href="https://www.example.org/index.xml" rel="self" type="application/rss+xml" />
+   
+   
+ </channel>
+</rss>

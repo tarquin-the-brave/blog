@@ -4,7 +4,7 @@ date = 2020-03-01T14:56:43Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 In slight contrast to my previous post where I espoused the

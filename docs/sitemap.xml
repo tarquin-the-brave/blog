@@ -3,15 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/</loc>
+    <lastmod>2020-03-01T14:56:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
+    <lastmod>2020-03-01T14:56:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/</loc>
+    <lastmod>2020-03-01T14:56:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/ide-ffs/</loc>
+    <lastmod>2020-02-29T22:30:09+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/</loc>
+    <lastmod>2020-02-25T10:07:46+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://tarquin-the-brave.github.io/blog/categories/</loc>
   </url>
   
   <url>
     <loc>https://tarquin-the-brave.github.io/blog/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>https://tarquin-the-brave.github.io/blog/</loc>
   </url>
   
 </urlset>

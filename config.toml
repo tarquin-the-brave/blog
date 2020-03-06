@@ -23,7 +23,7 @@ pygmentsCodeFences = true
     #youtube = "user/username" # or channel/channelname
 
 [params]
-    tagline = "Some things I think - The devil's in the footnotes"
+    tagline = "Some things I think"
     description = ""
     #images = [""] #This is used for opengraph/twitter cards.
     customCSS = []  #Optional Customised CSS

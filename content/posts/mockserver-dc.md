@@ -229,8 +229,9 @@ that matters.
   spec](https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x)
   using [openAPI Generator](https://github.com/OpenAPITools/openapi-generator).
 
-[mockserver]: http://www.mock-server.com/ [openapispec]:
-https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x [doco]:
-https://docs.docker.com/compose/ [pytest]: https://docs.pytest.org/en/latest/
-[mockver]: https://hub.docker.com/r/jamesdbloom/mockserver/tags [builder]:
-https://docs.docker.com/develop/develop-images/multistage-build/
+[mockserver]: http://www.mock-server.com/
+[openapispec]: https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x
+[doco]: https://docs.docker.com/compose/
+[pytest]: https://docs.pytest.org/en/latest/
+[mockver]: https://hub.docker.com/r/jamesdbloom/mockserver/tags
+[builder]: https://docs.docker.com/develop/develop-images/multistage-build/

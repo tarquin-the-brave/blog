@@ -85,7 +85,33 @@ port it exposes, defined in the [docker-compose file](#docker-compose-example).
 
 # Docker Compose Example
 
-{{< gist tarquin-the-brave 7a2d813015d049fbe40e3723b0795be4 "docker-compose.yml" >}}
+```yaml
+version: "3.7"
+services:
+
+  test:
+    build: ./fv
+    command: <command to run tests> ${TEST_ARGS}
+
+  microservice:
+    image: ${IMAGE:-x:latest}
+    environment:
+      LOG_LEVEL: debug
+    volumes:
+      - type: bind
+        source: ./fv/microservice_config.yaml
+        target: /config/config.yaml
+
+  mockdeps:
+    image: jamesdbloom/mockserver:mockserver-5.9.0
+    expose:
+      - 12345
+    # Mockserver has the server itself as ENTRYPOINT,
+    # so the "command" here needs to be only the arguments
+    # we pass to it.
+    command: ["-serverPort", "12345", "-logLevel", "INFO"]
+
+```
 
 In this example, under `services:` there's an entry for each of the containers
 in this setup.

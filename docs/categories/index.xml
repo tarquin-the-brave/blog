@@ -186,9 +186,32 @@ downstream traffic.&lt;/p&gt;
 &lt;p&gt;The URL of &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; corresponds to the service name and the
 port it exposes, defined in the &lt;a href=&#34;#docker-compose-example&#34;&gt;docker-compose file&lt;/a&gt;.&lt;/p&gt;
 &lt;h1 id=&#34;docker-compose-example&#34;&gt;Docker Compose Example&lt;/h1&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/tarquin-the-brave/7a2d813015d049fbe40e3723b0795be4.js?file=docker-compose.yml&#34;&gt;&lt;/script&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3.7&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;services&lt;/span&gt;:
 
-&lt;p&gt;In this example, under &lt;code&gt;services:&lt;/code&gt; there&amp;rsquo;s an entry for each of the containers
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;test&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;build&lt;/span&gt;: ./fv
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;command&lt;/span&gt;: &amp;lt;command to run tests&amp;gt; ${TEST_ARGS}
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;microservice&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;image&lt;/span&gt;: ${IMAGE:-x:latest}
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;environment&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;LOG_LEVEL&lt;/span&gt;: debug
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;volumes&lt;/span&gt;:
+      - &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: bind
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;source&lt;/span&gt;: ./fv/microservice_config.yaml
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;target&lt;/span&gt;: /config/config.yaml
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;mockdeps&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;image&lt;/span&gt;: jamesdbloom/mockserver:mockserver&lt;span style=&#34;color:#ae81ff&#34;&gt;-5.9&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;.0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;expose&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;12345&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# Mockserver has the server itself as ENTRYPOINT,&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# so the &amp;#34;command&amp;#34; here needs to be only the arguments&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;# we pass to it.&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;command&lt;/span&gt;: [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-serverPort&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;12345&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-logLevel&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;INFO&amp;#34;&lt;/span&gt;]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this example, under &lt;code&gt;services:&lt;/code&gt; there&amp;rsquo;s an entry for each of the containers
 in this setup.&lt;/p&gt;
 &lt;p&gt;Docker compose will route the containers together by giving them a domain name
 for the name under &lt;code&gt;services:&lt;/code&gt;, e.g. the microservice can route to the

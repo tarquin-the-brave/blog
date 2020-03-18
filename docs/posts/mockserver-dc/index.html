@@ -150,9 +150,32 @@ downstream traffic.</p>
 <p>The URL of <a href="http://www.mock-server.com/">mockserver</a> corresponds to the service name and the
 port it exposes, defined in the <a href="#docker-compose-example">docker-compose file</a>.</p>
 <h1 id="docker-compose-example">Docker Compose Example</h1>
-<script type="application/javascript" src="https://gist.github.com/tarquin-the-brave/7a2d813015d049fbe40e3723b0795be4.js?file=docker-compose.yml"></script>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
+<span style="color:#66d9ef">services</span>:
 
-<p>In this example, under <code>services:</code> there&rsquo;s an entry for each of the containers
+  <span style="color:#66d9ef">test</span>:
+    <span style="color:#66d9ef">build</span>: ./fv
+    <span style="color:#66d9ef">command</span>: &lt;command to run tests&gt; ${TEST_ARGS}
+
+  <span style="color:#66d9ef">microservice</span>:
+    <span style="color:#66d9ef">image</span>: ${IMAGE:-x:latest}
+    <span style="color:#66d9ef">environment</span>:
+      <span style="color:#66d9ef">LOG_LEVEL</span>: debug
+    <span style="color:#66d9ef">volumes</span>:
+      - <span style="color:#66d9ef">type</span>: bind
+        <span style="color:#66d9ef">source</span>: ./fv/microservice_config.yaml
+        <span style="color:#66d9ef">target</span>: /config/config.yaml
+
+  <span style="color:#66d9ef">mockdeps</span>:
+    <span style="color:#66d9ef">image</span>: jamesdbloom/mockserver:mockserver<span style="color:#ae81ff">-5.9</span><span style="color:#ae81ff">.0</span>
+    <span style="color:#66d9ef">expose</span>:
+      - <span style="color:#ae81ff">12345</span>
+    <span style="color:#75715e"># Mockserver has the server itself as ENTRYPOINT,</span>
+    <span style="color:#75715e"># so the &#34;command&#34; here needs to be only the arguments</span>
+    <span style="color:#75715e"># we pass to it.</span>
+    <span style="color:#66d9ef">command</span>: [<span style="color:#e6db74">&#34;-serverPort&#34;</span>, <span style="color:#e6db74">&#34;12345&#34;</span>, <span style="color:#e6db74">&#34;-logLevel&#34;</span>, <span style="color:#e6db74">&#34;INFO&#34;</span>]
+
+</code></pre></div><p>In this example, under <code>services:</code> there&rsquo;s an entry for each of the containers
 in this setup.</p>
 <p>Docker compose will route the containers together by giving them a domain name
 for the name under <code>services:</code>, e.g. the microservice can route to the

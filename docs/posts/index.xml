@@ -1,284 +1,259 @@
-
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
- <channel>
-   <title>Posts on tarquin-the-brave</title>
-   <link>https://tarquin-the-brave.github.io/blog/posts/</link>
-   <description>Recent content in Posts on tarquin-the-brave</description>
-   <generator>Hugo -- gohugo.io</generator>
-   <copyright>Copyright &amp;copy; 2019 - Tom Steavenson</copyright>
-   <lastBuildDate>Sun, 01 Mar 2020 14:56:43 +0000</lastBuildDate>
-   
-       <atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
-   
-   
-     <item>
-       <title>Language Servers Are Cool</title>
-       <link>https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/</link>
-       <pubDate>Sun, 01 Mar 2020 14:56:43 +0000</pubDate>
-       
-       <guid>https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/</guid>
-       <description>&lt;p&gt;In slight contrast to my previous post where I espoused the
-virtue of code being text and not  relying on developer tooling
-to interact with it: language servers are cool.&lt;/p&gt;
-&lt;p&gt;They decouple the back end of gaining semantic understanding
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/posts/</link><description>Recent content in Posts on tarquin-the-brave</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright &amp;copy; 2019 - Tom Steavenson</copyright><lastBuildDate>Sun, 01 Mar 2020 14:56:43 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Language Servers Are Cool</title><link>https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/</link><pubDate>Sun, 01 Mar 2020 14:56:43 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/</guid><description>&lt;p>In slight contrast to my previous post where I espoused the
+virtue of code being text and not relying on developer tooling
+to interact with it: language servers are cool.&lt;/p>
+&lt;p>They decouple the back end of gaining semantic understanding
 of code in a particular language from the editor implementation.
-A &lt;a href=&#34;https://langserver.org/&#34;&gt;language server for each language&lt;/a&gt; can be
-written, and the editor only needs to integrate the &lt;a href=&#34;https://microsoft.github.io/language-server-protocol/&#34;&gt;language
-server protocol&lt;/a&gt; once, to get a host of IDE style features
-for each language.&lt;/p&gt;
-&lt;p&gt;This is the sort of solution we need to get rid of editor lock
+A &lt;a href="https://langserver.org/">language server for each language&lt;/a> can be
+written, and the editor only needs to integrate the &lt;a href="https://microsoft.github.io/language-server-protocol/">language
+server protocol&lt;/a> once, to get a host of IDE style features
+for each language.&lt;/p>
+&lt;p>This is the sort of solution we need to get rid of editor lock
 in, and allow text editors to compete to be the best at editing
-text.  With language servers, adding language support for an
+text. With language servers, adding language support for an
 editor is cheap. Hopefully now developers will start choosing
 text editors on the grounds of how good they are at editing text,
-rather than the shopping list of languages they support.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve used &lt;a href=&#34;https://rls.booyaa.wtf/#neovim&#34;&gt;rls&lt;/a&gt; for rust, and &lt;a href=&#34;https://github.com/autozimu/LanguageClient-neovim/wiki/Clangd&#34;&gt;clangd&lt;/a&gt; for C++ with the
-&lt;a href=&#34;https://github.com/autozimu/LanguageClient-neovim/&#34;&gt;languageClient-neovim&lt;/a&gt; for neovim. I&amp;rsquo;ve been the envy of
+rather than the shopping list of languages they support.&lt;/p>
+&lt;p>I&amp;rsquo;ve used &lt;a href="https://rls.booyaa.wtf/#neovim">rls&lt;/a> for rust, and &lt;a href="https://github.com/autozimu/LanguageClient-neovim/wiki/Clangd">clangd&lt;/a> for C++ with the
+&lt;a href="https://github.com/autozimu/LanguageClient-neovim/">languageClient-neovim&lt;/a> for neovim. I&amp;rsquo;ve been the envy of
 colleagues who use Vim-like editors for the impressive language
 support, and the envy of colleagues who use IDEs for the superior
-text editing&amp;hellip; Not really.  They don&amp;rsquo;t see why I can&amp;rsquo;t just
+text editing&amp;hellip; Not really. They don&amp;rsquo;t see why I can&amp;rsquo;t just
 install their IDE and be done with it. Anyway,language servers
-are a great bit of technology.&lt;/p&gt;
-</description>
-     </item>
-   
-     <item>
-       <title>You Shouldn&#39;t Need an IDE to Read Code</title>
-       <link>https://tarquin-the-brave.github.io/blog/posts/ide-ffs/</link>
-       <pubDate>Sat, 29 Feb 2020 22:30:09 +0000</pubDate>
-       
-       <guid>https://tarquin-the-brave.github.io/blog/posts/ide-ffs/</guid>
-       <description>&lt;p&gt;This is important.&lt;/p&gt;
-&lt;p&gt;Code is &lt;em&gt;read&lt;/em&gt; far more often than it&amp;rsquo;s &lt;em&gt;written&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Primarily, it&amp;rsquo;s read through a web GUI.&lt;/p&gt;
-&lt;p&gt;You want to read the source code of a library you&amp;rsquo;re using.  Say it&amp;rsquo;s in
+are a great bit of technology.&lt;/p></description></item><item><title>You Shouldn't Need an IDE to Read Code</title><link>https://tarquin-the-brave.github.io/blog/posts/ide-ffs/</link><pubDate>Sat, 29 Feb 2020 22:30:09 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/ide-ffs/</guid><description>&lt;p>This is important.&lt;/p>
+&lt;p>Code is &lt;em>read&lt;/em> far more often than it&amp;rsquo;s &lt;em>written&lt;/em>.&lt;/p>
+&lt;p>Primarily, it&amp;rsquo;s read through a web GUI.&lt;/p>
+&lt;p>You want to read the source code of a library you&amp;rsquo;re using. Say it&amp;rsquo;s in
 Github, you&amp;rsquo;re going to start looking at it through the Github GUI. If you want
 to take a deeper look, you might clone the repo and open it in you&amp;rsquo;re editor,
-but the vast majority of library code you read will be through a GUI.&lt;/p&gt;
-&lt;p&gt;The default medium for reading the changes in a pull request is through a GUI.
+but the vast majority of library code you read will be through a GUI.&lt;/p>
+&lt;p>The default medium for reading the changes in a pull request is through a GUI.
 Sure, you can pull the branch and open the code up in your editor. When I&amp;rsquo;m
-reviewing big changes I do just that. But I shouldn&amp;rsquo;t be required to.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve reviewed code before where I&amp;rsquo;ve made a comment along the line of &amp;ldquo;this
+reviewing big changes I do just that. But I shouldn&amp;rsquo;t be required to.&lt;/p>
+&lt;p>I&amp;rsquo;ve reviewed code before where I&amp;rsquo;ve made a comment along the line of &amp;ldquo;this
 line of code doesn&amp;rsquo;t explain what it&amp;rsquo;s doing&amp;rdquo;, where I&amp;rsquo;ve suggested type
 hinting, or renaming things to reflect what&amp;rsquo;s happening, or refactoring the
 aggregations that data flows between each line of code so it would make more
-sense in the context of the function.  Frustratingly, my comments have received
+sense in the context of the function. Frustratingly, my comments have received
 responses that essentially say: &amp;ldquo;if you were using my editor, it makes perfect
-sense&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;My recent concrete example is reviewing code in rust. Rust lets you optionally
-type hint in various places, e.g. to specify variable &lt;code&gt;x&lt;/code&gt; as type
-&lt;code&gt;SpecificType&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; x: &lt;span style=&#34;color:#a6e22e&#34;&gt;SpecificType&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_a_value();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There are times where usually optional type declarations are necessary for
+sense&amp;rdquo;.&lt;/p>
+&lt;p>My recent concrete example is reviewing code in rust. Rust lets you optionally
+type hint in various places, e.g. to specify variable &lt;code>x&lt;/code> as type
+&lt;code>SpecificType&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-rust" data-lang="rust">&lt;span style="color:#66d9ef">let&lt;/span> x: &lt;span style="color:#a6e22e">SpecificType&lt;/span> &lt;span style="color:#f92672">=&lt;/span> get_a_value();
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>There are times where usually optional type declarations are necessary for
 compilation because the compiler can&amp;rsquo;t infer the types in your code, but for
 the most part, these type hints are optional and can be used by the writer of
 the code to check their work or by the reader of the code to understand what&amp;rsquo;s
-happening at a type level.&lt;/p&gt;
-&lt;p&gt;In rust, types matter. When you&amp;rsquo;re writing and reviewing rust code, you&amp;rsquo;re
-thinking about types.  I recently suggested adding some type hinting to some
+happening at a type level.&lt;/p>
+&lt;p>In rust, types matter. When you&amp;rsquo;re writing and reviewing rust code, you&amp;rsquo;re
+thinking about types. I recently suggested adding some type hinting to some
 rust code to make it more readable. I was told, in response, that the type
-hinting was unnecessary, and if I was only using the same editor&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; I could
-hover my mouse over the line of code and see the information I need.&lt;/p&gt;
-&lt;p&gt;I take issue with both of these statements:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Yes, the code will compile without the type hinting, but code is not there to
-satiate compilers, it&amp;rsquo;s there to communicate ideas between people. And,&lt;/li&gt;
-&lt;li&gt;What if I don&amp;rsquo;t? Am I required a specific editor with a specific setup in
+hinting was unnecessary, and if I was only using the same editor&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> I could
+hover my mouse over the line of code and see the information I need.&lt;/p>
+&lt;p>I take issue with both of these statements:&lt;/p>
+&lt;ul>
+&lt;li>Yes, the code will compile without the type hinting, but code is not there to
+satiate compilers, it&amp;rsquo;s there to communicate ideas between people. And,&lt;/li>
+&lt;li>What if I don&amp;rsquo;t? Am I required a specific editor with a specific setup in
 order to read your code? A community of developers being locked into specific
-tooling is not good.  Even if I was using the same editor setup that gives me
-all the IDE features, the web GUI I&amp;rsquo;m likely to review code through doesn&amp;rsquo;t.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Editor lock-in is a problem.  I&amp;rsquo;ve not developed in Java, but I&amp;rsquo;ve been told
-it&amp;rsquo;s very difficult to use without an IDE setup for it.&lt;/p&gt;
-&lt;p&gt;Everyone has their dev environment setup in a way that suits them. Code is
+tooling is not good. Even if I was using the same editor setup that gives me
+all the IDE features, the web GUI I&amp;rsquo;m likely to review code through doesn&amp;rsquo;t.&lt;/li>
+&lt;/ul>
+&lt;p>Editor lock-in is a problem. I&amp;rsquo;ve not developed in Java, but I&amp;rsquo;ve been told
+it&amp;rsquo;s very difficult to use without an IDE setup for it.&lt;/p>
+&lt;p>Everyone has their dev environment setup in a way that suits them. Code is
 there to communicate ideas between developers. Requiring someone installing a
-bunch of tooling to be able to read your code is mad.&lt;/p&gt;
-&lt;p&gt;Maybe I&amp;rsquo;m biased. I use Vim (neovim). I use some IDE like plugins, but mostly
+bunch of tooling to be able to read your code is mad.&lt;/p>
+&lt;p>Maybe I&amp;rsquo;m biased. I use Vim (neovim). I use some IDE like plugins, but mostly
 treat code as text, because that&amp;rsquo;s what it is. And Vim is the best text editor
 I&amp;rsquo;ve ever used. Setting up the developer features that IDEs give you out of the
-box is possible, but takes time to set up and tune.  So I tend not to have much
+box is possible, but takes time to set up and tune. So I tend not to have much
 in the way of these features, especially for languages that I don&amp;rsquo;t write in
-every day.  So maybe I&amp;rsquo;m just trying to avoid the self imposed faff of setting
-up my editor so I can read code in the same way someone else does.&lt;/p&gt;
-&lt;p&gt;But I don&amp;rsquo;t think so. We don&amp;rsquo;t predominantly read code through editors. We want
+every day. So maybe I&amp;rsquo;m just trying to avoid the self imposed faff of setting
+up my editor so I can read code in the same way someone else does.&lt;/p>
+&lt;p>But I don&amp;rsquo;t think so. We don&amp;rsquo;t predominantly read code through editors. We want
 to avoid entangling simple tasks like reading code with a load of extra
-requirements.  These developer tools are useful, but we shouldn&amp;rsquo;t become
-reliant on them.  Code is text.  It should only require a vanilla text editor
-to write, and only require something that can render text to read.&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
-&lt;hr&gt;
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
-&lt;p&gt;VSCode appears to be the senior editor for rust.  I don&amp;rsquo;t have a problem
-with this.  By the looks of it, it&amp;rsquo;s a fine GUI based editor and everyone
-I know who uses it loves it.  It seems its struck a great balance between
+requirements. These developer tools are useful, but we shouldn&amp;rsquo;t become
+reliant on them. Code is text. It should only require a vanilla text editor
+to write, and only require something that can render text to read.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>VSCode appears to be the senior editor for rust. I don&amp;rsquo;t have a problem
+with this. By the looks of it, it&amp;rsquo;s a fine GUI based editor and everyone
+I know who uses it loves it. It seems its struck a great balance between
 having great functionality out of the box, while being easily tuneable and
-feel sharp. If I hadn&amp;rsquo;t drank the Vim coolaid, I imagine I&amp;rsquo;d be using it. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/section&gt;
-</description>
-     </item>
-   
-     <item>
-       <title>Testing Microservices with Mockserver</title>
-       <link>https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/</link>
-       <pubDate>Tue, 25 Feb 2020 10:07:46 +0000</pubDate>
-       
-       <guid>https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/</guid>
-       <description>&lt;p&gt;&lt;a href=&#34;http://www.mock-server.com/&#34;&gt;Mockserver&lt;/a&gt; is a great piece of tooling that takes a huge amount
-of heavy lifting away from testing microservices.&lt;/p&gt;
-&lt;p&gt;There&amp;rsquo;s no need to mock out downstream dependencies or client APIs.  There&amp;rsquo;s no
+feel sharp. If I hadn&amp;rsquo;t drank the Vim coolaid, I imagine I&amp;rsquo;d be using it. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item><item><title>Testing Microservices with Mockserver</title><link>https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/</link><pubDate>Tue, 25 Feb 2020 10:07:46 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/</guid><description>&lt;p>&lt;a href="http://www.mock-server.com/">Mockserver&lt;/a> is a great piece of tooling that takes a huge amount
+of heavy lifting away from testing microservices.&lt;/p>
+&lt;p>There&amp;rsquo;s no need to mock out downstream dependencies or client APIs. There&amp;rsquo;s no
 need to write complex test code to synchronously handle the mechanics of
 requests going back and forward while also trying to embody some comprehensible
-declaration of the designed behaviour.  It does about as much of the mechanics
-of testing for you as it&amp;rsquo;s possible for it to do.&lt;/p&gt;
-&lt;p&gt;In all honesty, it was my favourite piece of technology I came across in 2019.&lt;/p&gt;
-&lt;p&gt;In this post I&amp;rsquo;ll walk through a patten I&amp;rsquo;ve used a few times to quickly get
-rather effective testing of a microservice that drives its API.&lt;/p&gt;
-&lt;h1 id=&#34;test-setup&#34;&gt;Test Setup&lt;/h1&gt;
-&lt;p&gt;The test deployment has three elements:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Your microservice,&lt;/li&gt;
-&lt;li&gt;A test driver containing/running your test code, and&lt;/li&gt;
-&lt;li&gt;A &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; instance.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I&amp;rsquo;ve used &lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;docker-compose&lt;/a&gt; to run the containers and manage the routing
-between them, but any container runtime&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; would do the job.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9&#34;&gt;&lt;img src=&#34;https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;mockserver&#34;&gt;Mockserver&lt;/h2&gt;
-&lt;p&gt;The key element here is &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt;. It looks after the mechanics
-of mocking out the dependencies of a service.  It&amp;rsquo;s controlled by your test
+declaration of the designed behaviour. It does about as much of the mechanics
+of testing for you as it&amp;rsquo;s possible for it to do.&lt;/p>
+&lt;p>In all honesty, it was my favourite piece of technology I came across in 2019.&lt;/p>
+&lt;p>In this post I&amp;rsquo;ll walk through a patten I&amp;rsquo;ve used a few times to quickly get
+rather effective testing of a microservice that drives its API.&lt;/p>
+&lt;h1 id="test-setup">Test Setup&lt;/h1>
+&lt;p>The test deployment has three elements:&lt;/p>
+&lt;ul>
+&lt;li>Your microservice,&lt;/li>
+&lt;li>A test driver containing/running your test code, and&lt;/li>
+&lt;li>A &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> instance.&lt;/li>
+&lt;/ul>
+&lt;p>I&amp;rsquo;ve used &lt;a href="https://docs.docker.com/compose/">docker-compose&lt;/a> to run the containers and manage the routing
+between them, but any container runtime&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> would do the job.&lt;/p>
+&lt;p>&lt;a href="https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9">&lt;img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9" alt="">&lt;/a>&lt;/p>
+&lt;h2 id="mockserver">Mockserver&lt;/h2>
+&lt;p>The key element here is &lt;a href="http://www.mock-server.com/">mockserver&lt;/a>. It looks after the mechanics
+of mocking out the dependencies of a service. It&amp;rsquo;s controlled by your test
 code over its API. You tell it what messages to expect an how to respond to
 them ahead of time. It records what messages have come and gone during the
-test.  Your tests can send a request to verify the expectations have been met
-or partially met.&lt;/p&gt;
-&lt;p&gt;The result is that each test case ends up looking like:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;A bunch of requests to &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt;, via the client you&amp;rsquo;ve
-chosen, or generated from the &lt;a href=&#34;https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x&#34;&gt;openAPI spec&lt;/a&gt;, to establish the
-requests that you expect to see and how to respond to each,&lt;/li&gt;
-&lt;li&gt;A call to an endpoint on your microservice&amp;rsquo;s API, and&lt;/li&gt;
-&lt;li&gt;A call to &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; to verify that the expected messages were
-received.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Mockserver takes away the need to define in the test code all the mechanics
+test. Your tests can send a request to verify the expectations have been met
+or partially met.&lt;/p>
+&lt;p>The result is that each test case ends up looking like:&lt;/p>
+&lt;ul>
+&lt;li>A bunch of requests to &lt;a href="http://www.mock-server.com/">mockserver&lt;/a>, via the client you&amp;rsquo;ve
+chosen, or generated from the &lt;a href="https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x">openAPI spec&lt;/a>, to establish the
+requests that you expect to see and how to respond to each,&lt;/li>
+&lt;li>A call to an endpoint on your microservice&amp;rsquo;s API, and&lt;/li>
+&lt;li>A call to &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> to verify that the expected messages were
+received.&lt;/li>
+&lt;/ul>
+&lt;p>Mockserver takes away the need to define in the test code all the mechanics
 around what messages should be where, when. You define what to expect upfront,
-&lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; records if there&amp;rsquo;s anything the matter with the
-messages, and at the end, you can ask it whether the expectations were met.&lt;/p&gt;
-&lt;h2 id=&#34;the-test-runner&#34;&gt;The Test Runner&lt;/h2&gt;
-&lt;p&gt;We run the test code in its own container to make it easy to control the
+&lt;a href="http://www.mock-server.com/">mockserver&lt;/a> records if there&amp;rsquo;s anything the matter with the
+messages, and at the end, you can ask it whether the expectations were met.&lt;/p>
+&lt;h2 id="the-test-runner">The Test Runner&lt;/h2>
+&lt;p>We run the test code in its own container to make it easy to control the
 environment and to make networking easier when we introduce
-&lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;docker-compose&lt;/a&gt; to manage the setup.&lt;/p&gt;
-&lt;p&gt;We define a &lt;code&gt;Dockerfile&lt;/code&gt; for our test runner that builds a container with the
-test code and its dependencies. &lt;code&gt;docker-compose&lt;/code&gt; can then rebuild the test
-container and run the tests in one &lt;a href=&#34;#running-the-tests&#34;&gt;command&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;A result of using &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt;, and this test setup, is that the
+&lt;a href="https://docs.docker.com/compose/">docker-compose&lt;/a> to manage the setup.&lt;/p>
+&lt;p>We define a &lt;code>Dockerfile&lt;/code> for our test runner that builds a container with the
+test code and its dependencies. &lt;code>docker-compose&lt;/code> can then rebuild the test
+container and run the tests in one &lt;a href="#running-the-tests">command&lt;/a>.&lt;/p>
+&lt;p>A result of using &lt;a href="http://www.mock-server.com/">mockserver&lt;/a>, and this test setup, is that the
 test code is fairly minimal and there&amp;rsquo;s no real &amp;ldquo;test framework&amp;rdquo; required.
-Once you have a &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; client library&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, and a client
+Once you have a &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> client library&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>, and a client
 library for your microservice (or decide that defining the requests to kick off
-a test on the fly) there&amp;rsquo;s not much more to the tests.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve written the code for this test runner in Python using &lt;a href=&#34;https://docs.pytest.org/en/latest/&#34;&gt;pytest&lt;/a&gt;.
-It worked quite well.  But, as the test code only makes a series of requests,
-it&amp;rsquo;s not important.&lt;/p&gt;
-&lt;h2 id=&#34;your-microservice&#34;&gt;Your Microservice&lt;/h2&gt;
-&lt;p&gt;Configure your microservice with &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; as the target for all
-downstream traffic.&lt;/p&gt;
-&lt;p&gt;The URL of &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; corresponds to the service name and the
-port it exposes, defined in the &lt;a href=&#34;#docker-compose-example&#34;&gt;docker-compose file&lt;/a&gt;.&lt;/p&gt;
-&lt;h1 id=&#34;docker-compose-example&#34;&gt;Docker Compose Example&lt;/h1&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/tarquin-the-brave/7a2d813015d049fbe40e3723b0795be4.js?file=docker-compose.yml&#34;&gt;&lt;/script&gt;
-
-&lt;p&gt;In this example, under &lt;code&gt;services:&lt;/code&gt; there&amp;rsquo;s an entry for each of the containers
-in this setup.&lt;/p&gt;
-&lt;p&gt;Docker compose will route the containers together by giving them a domain name
-for the name under &lt;code&gt;services:&lt;/code&gt;, e.g. the microservice can route to the
-&lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; by sending requests to the domain name &lt;code&gt;mockdeps&lt;/code&gt;. The
+a test on the fly) there&amp;rsquo;s not much more to the tests.&lt;/p>
+&lt;p>I&amp;rsquo;ve written the code for this test runner in Python using &lt;a href="https://docs.pytest.org/en/latest/">pytest&lt;/a>.
+It worked quite well. But, as the test code only makes a series of requests,
+it&amp;rsquo;s not important.&lt;/p>
+&lt;h2 id="your-microservice">Your Microservice&lt;/h2>
+&lt;p>Configure your microservice with &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> as the target for all
+downstream traffic.&lt;/p>
+&lt;p>The URL of &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> corresponds to the service name and the
+port it exposes, defined in the &lt;a href="#docker-compose-example">docker-compose file&lt;/a>.&lt;/p>
+&lt;h1 id="docker-compose-example">Docker Compose Example&lt;/h1>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="color:#66d9ef">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;3.7&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">services&lt;/span>:
+&lt;span style="color:#66d9ef">test&lt;/span>:
+&lt;span style="color:#66d9ef">build&lt;/span>: ./fv
+&lt;span style="color:#66d9ef">command&lt;/span>: &amp;lt;command to run tests&amp;gt; ${TEST_ARGS}
+&lt;span style="color:#66d9ef">microservice&lt;/span>:
+&lt;span style="color:#66d9ef">image&lt;/span>: ${IMAGE:-x:latest}
+&lt;span style="color:#66d9ef">environment&lt;/span>:
+&lt;span style="color:#66d9ef">LOG_LEVEL&lt;/span>: debug
+&lt;span style="color:#66d9ef">volumes&lt;/span>:
+- &lt;span style="color:#66d9ef">type&lt;/span>: bind
+&lt;span style="color:#66d9ef">source&lt;/span>: ./fv/microservice_config.yaml
+&lt;span style="color:#66d9ef">target&lt;/span>: /config/config.yaml
+&lt;span style="color:#66d9ef">mockdeps&lt;/span>:
+&lt;span style="color:#66d9ef">image&lt;/span>: jamesdbloom/mockserver:mockserver&lt;span style="color:#ae81ff">-5.9&lt;/span>&lt;span style="color:#ae81ff">.0&lt;/span>
+&lt;span style="color:#66d9ef">expose&lt;/span>:
+- &lt;span style="color:#ae81ff">12345&lt;/span>
+&lt;span style="color:#75715e"># Mockserver has the server itself as ENTRYPOINT,&lt;/span>
+&lt;span style="color:#75715e"># so the &amp;#34;command&amp;#34; here needs to be only the arguments&lt;/span>
+&lt;span style="color:#75715e"># we pass to it.&lt;/span>
+&lt;span style="color:#66d9ef">command&lt;/span>: [&lt;span style="color:#e6db74">&amp;#34;-serverPort&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;12345&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;-logLevel&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;INFO&amp;#34;&lt;/span>]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>In this example, under &lt;code>services:&lt;/code> there&amp;rsquo;s an entry for each of the containers
+in this setup.&lt;/p>
+&lt;p>Docker compose will route the containers together by giving them a domain name
+for the name under &lt;code>services:&lt;/code>, e.g. the microservice can route to the
+&lt;a href="http://www.mock-server.com/">mockserver&lt;/a> by sending requests to the domain name &lt;code>mockdeps&lt;/code>. The
 test runner routes to the microservice by sending requests to the domain name
-&lt;code&gt;microservice&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;the-test-runner-1&#34;&gt;The Test Runner&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;test:&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;In our example the &lt;code&gt;Dockerfile&lt;/code&gt; defining the test runner container is found
-under directory &lt;code&gt;fv/&lt;/code&gt;, along with the test code and everything else needed to
-build the test runner.&lt;/p&gt;
-&lt;p&gt;We define the command to run the tests and allow for arguments to the test
-command with &lt;code&gt;${TEST_ARGS}&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;your-microservice-1&#34;&gt;Your Microservice&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;microservice:&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;For this example:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;We allow the image to test to be configured by a variable, defaulting to
-&lt;code&gt;x:latest&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;We set the &lt;code&gt;LOG_LEVEL&lt;/code&gt; environment variable in the microservice container.&lt;/li&gt;
-&lt;li&gt;We mount in a config file with necessary config, listing the downstream
-dependencies that we&amp;rsquo;re mocking out with &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; as being at
-&lt;code&gt;mockdeps:12345&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If we wanted to automate rebuilding the microservice for testing, we could
-define a &lt;code&gt;Dockerfile&lt;/code&gt; for the microservice that can build it from source,
-perhaps using the &lt;a href=&#34;https://docs.docker.com/develop/develop-images/multistage-build/&#34;&gt;multistage builder pattern&lt;/a&gt;, and include and entry
-like the one for &lt;a href=&#34;#the-test-runner-2&#34;&gt;the test runner&lt;/a&gt; rather than specifying a
-tag for an already built image.&lt;/p&gt;
-&lt;h2 id=&#34;mockserver-1&#34;&gt;Mockserver&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;mockdeps:&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; entry exposes a port and passes that as an
-argument to &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can copy this section verbatim, updating the &lt;a href=&#34;https://hub.docker.com/r/jamesdbloom/mockserver/tags&#34;&gt;mockserver version&lt;/a&gt;.&lt;/p&gt;
-&lt;h1 id=&#34;running-the-tests&#34;&gt;Running The Tests&lt;/h1&gt;
-&lt;p&gt;With this setup, and our microservice container built (and tagged as &lt;code&gt;x:test&lt;/code&gt;),
-we can spin up the microservice and the mockserver with:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ IMAGE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;x:test&amp;#34;&lt;/span&gt; docker-compose up -d mockdeps microservice
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To run the tests:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ docker-compose up --build test
+&lt;code>microservice&lt;/code>.&lt;/p>
+&lt;h2 id="the-test-runner-1">The Test Runner&lt;/h2>
+&lt;p>&lt;code>test:&lt;/code>&lt;/p>
+&lt;p>In our example the &lt;code>Dockerfile&lt;/code> defining the test runner container is found
+under directory &lt;code>fv/&lt;/code>, along with the test code and everything else needed to
+build the test runner.&lt;/p>
+&lt;p>We define the command to run the tests and allow for arguments to the test
+command with &lt;code>${TEST_ARGS}&lt;/code>.&lt;/p>
+&lt;h2 id="your-microservice-1">Your Microservice&lt;/h2>
+&lt;p>&lt;code>microservice:&lt;/code>&lt;/p>
+&lt;p>For this example:&lt;/p>
+&lt;ul>
+&lt;li>We allow the image to test to be configured by a variable, defaulting to
+&lt;code>x:latest&lt;/code>.&lt;/li>
+&lt;li>We set the &lt;code>LOG_LEVEL&lt;/code> environment variable in the microservice container.&lt;/li>
+&lt;li>We mount in a config file with necessary config, listing the downstream
+dependencies that we&amp;rsquo;re mocking out with &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> as being at
+&lt;code>mockdeps:12345&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;p>If we wanted to automate rebuilding the microservice for testing, we could
+define a &lt;code>Dockerfile&lt;/code> for the microservice that can build it from source,
+perhaps using the &lt;a href="https://docs.docker.com/develop/develop-images/multistage-build/">multistage builder pattern&lt;/a>, and include and entry
+like the one for &lt;a href="#the-test-runner-2">the test runner&lt;/a> rather than specifying a
+tag for an already built image.&lt;/p>
+&lt;h2 id="mockserver-1">Mockserver&lt;/h2>
+&lt;p>&lt;code>mockdeps:&lt;/code>&lt;/p>
+&lt;p>The &lt;a href="http://www.mock-server.com/">mockserver&lt;/a> entry exposes a port and passes that as an
+argument to &lt;a href="http://www.mock-server.com/">mockserver&lt;/a>.&lt;/p>
+&lt;p>You can copy this section verbatim, updating the &lt;a href="https://hub.docker.com/r/jamesdbloom/mockserver/tags">mockserver version&lt;/a>.&lt;/p>
+&lt;h1 id="running-the-tests">Running The Tests&lt;/h1>
+&lt;p>With this setup, and our microservice container built (and tagged as &lt;code>x:test&lt;/code>),
+we can spin up the microservice and the mockserver with:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ IMAGE&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;x:test&amp;#34;&lt;/span> docker-compose up -d mockdeps microservice
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To run the tests:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ docker-compose up --build test
 ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;--build&lt;/code&gt; parameter ensures &lt;a href=&#34;#the-test-runner&#34;&gt;the test runner&lt;/a&gt; is rebuilt,
-so if we&amp;rsquo;ve edited our test code, the new test code will be run.&lt;/p&gt;
-&lt;p&gt;To pass arguments to our command that runs the tests, e.g. to only run a
-specific test:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ TEST_ARGS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-t specific_test_1&amp;#34;&lt;/span&gt; docker-compose up --build test
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps we&amp;rsquo;ve forgotten the CLI of the tool that runs our tests:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ TEST_ARGS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;--help&amp;#34;&lt;/span&gt; docker-compose up --build test
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To tear down the whole test setup:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ docker-compose down
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;summary&#34;&gt;Summary&lt;/h1&gt;
-&lt;p&gt;So it&amp;rsquo;s as simple as that.  Don&amp;rsquo;t write complicated request handling test code,
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>--build&lt;/code> parameter ensures &lt;a href="#the-test-runner">the test runner&lt;/a> is rebuilt,
+so if we&amp;rsquo;ve edited our test code, the new test code will be run.&lt;/p>
+&lt;p>To pass arguments to our command that runs the tests, e.g. to only run a
+specific test:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ TEST_ARGS&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;-t specific_test_1&amp;#34;&lt;/span> docker-compose up --build test
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Perhaps we&amp;rsquo;ve forgotten the CLI of the tool that runs our tests:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ TEST_ARGS&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;--help&amp;#34;&lt;/span> docker-compose up --build test
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To tear down the whole test setup:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ docker-compose down
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="summary">Summary&lt;/h1>
+&lt;p>So it&amp;rsquo;s as simple as that. Don&amp;rsquo;t write complicated request handling test code,
 and code that painstakingly mocks out all downstream dependencies, let
-&lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; do that heavy lifting for you. Using
-&lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;docker-compose&lt;/a&gt; you can rebuild your tests (and perhaps also your
-microservice) and run the tests with a couple of commands.  Iterate fast and
-test your microservice by driving its API.  At the end of the day, it&amp;rsquo;s the API
-that matters.&lt;/p&gt;
-&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
-&lt;hr&gt;
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
-&lt;p&gt;You could do this in &lt;a href=&#34;https://kubernetes.io/&#34;&gt;kubernetes&lt;/a&gt;. There are
+&lt;a href="http://www.mock-server.com/">mockserver&lt;/a> do that heavy lifting for you. Using
+&lt;a href="https://docs.docker.com/compose/">docker-compose&lt;/a> you can rebuild your tests (and perhaps also your
+microservice) and run the tests with a couple of commands. Iterate fast and
+test your microservice by driving its API. At the end of the day, it&amp;rsquo;s the API
+that matters.&lt;/p>
+&lt;section class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1" role="doc-endnote">
+&lt;p>You could do this in &lt;a href="https://kubernetes.io/">kubernetes&lt;/a>. There are
 miniature kubernetes implementations that you can install on your dev machine
-or run in CI: &lt;a href=&#34;https://github.com/kubernetes/minikube&#34;&gt;minikube&lt;/a&gt;,
-&lt;a href=&#34;https://k3s.io/&#34;&gt;k3s&lt;/a&gt;, &lt;a href=&#34;https://microk8s.io/&#34;&gt;microk8s&lt;/a&gt;. You could put the
-&lt;a href=&#34;#test-setup&#34;&gt;elements&lt;/a&gt; in
-&lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/&#34;&gt;Pods&lt;/a&gt; or
-&lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/controllers/deployment/&#34;&gt;Deployments&lt;/a&gt;
+or run in CI: &lt;a href="https://github.com/kubernetes/minikube">minikube&lt;/a>,
+&lt;a href="https://k3s.io/">k3s&lt;/a>, &lt;a href="https://microk8s.io/">microk8s&lt;/a>. You could put the
+&lt;a href="#test-setup">elements&lt;/a> in
+&lt;a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pods&lt;/a> or
+&lt;a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments&lt;/a>
 and route them to each other via
-&lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;Services&lt;/a&gt;.
+&lt;a href="https://kubernetes.io/docs/concepts/services-networking/service/">Services&lt;/a>.
 None of the test code would have to change. To me that seemed more effort
-than writing a short docker-compose file for this small setup.  Mockserver
-published &lt;a href=&#34;http://www.mock-server.com/where/kubernetes.html&#34;&gt;a helm chart&lt;/a&gt;
-which could be useful.  Mockserver could be used in a larger test setup on a
-persistent kubernetes cluster. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
-&lt;p&gt;There&amp;rsquo;s plenty of client libraries out there for mockserver.  &lt;a href=&#34;https://pypi.org/search/?q=mockserver&#34;&gt;Python has
-a few&lt;/a&gt;, I used a couple and they
-didn&amp;rsquo;t actually work, so I had to patch them.  I&amp;rsquo;d recommending generating
-you&amp;rsquo;re own from mockserver&amp;rsquo;s &lt;a href=&#34;https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x&#34;&gt;openAPI
-spec&lt;/a&gt;
-using &lt;a href=&#34;https://github.com/OpenAPITools/openapi-generator&#34;&gt;openAPI Generator&lt;/a&gt;. &lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/section&gt;
-</description>
-     </item>
-   
- </channel>
-</rss>
+than writing a short docker-compose file for this small setup. Mockserver
+published &lt;a href="http://www.mock-server.com/where/kubernetes.html">a helm chart&lt;/a>
+which could be useful. Mockserver could be used in a larger test setup on a
+persistent kubernetes cluster. &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2" role="doc-endnote">
+&lt;p>There&amp;rsquo;s plenty of client libraries out there for mockserver. &lt;a href="https://pypi.org/search/?q=mockserver">Python has
+a few&lt;/a>, I used a couple and they
+didn&amp;rsquo;t actually work, so I had to patch them. I&amp;rsquo;d recommending generating
+you&amp;rsquo;re own from mockserver&amp;rsquo;s &lt;a href="https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x">openAPI
+spec&lt;/a>
+using &lt;a href="https://github.com/OpenAPITools/openapi-generator">openAPI Generator&lt;/a>. &lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/section></description></item></channel></rss>

@@ -62,7 +62,7 @@ environment and to make networking easier when we introduce
 [docker-compose][doco] to manage the setup.
 
 We define a `Dockerfile` for our test runner that builds a container with the
-test code and its dependencies. `docker-compose` can then rebuild the test
+test code and its dependencies. docker-compose can then rebuild the test
 container and run the tests in one [command](#running-the-tests).
 
 A result of using [mockserver][mockserver], and this test setup, is that the
@@ -84,6 +84,8 @@ The URL of [mockserver][mockserver] corresponds to the service name and the
 port it exposes, defined in the [docker-compose file](#docker-compose-example).
 
 # Docker Compose Example
+
+We have a docker-compose file: `docker-compose.yml`
 
 {{< gist tarquin-the-brave 7a2d813015d049fbe40e3723b0795be4 "docker-compose.yml" >}}
 

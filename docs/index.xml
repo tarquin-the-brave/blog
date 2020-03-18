@@ -171,7 +171,7 @@ messages, and at the end, you can ask it whether the expectations were met.&lt;/
 environment and to make networking easier when we introduce
 &lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;docker-compose&lt;/a&gt; to manage the setup.&lt;/p&gt;
 &lt;p&gt;We define a &lt;code&gt;Dockerfile&lt;/code&gt; for our test runner that builds a container with the
-test code and its dependencies. &lt;code&gt;docker-compose&lt;/code&gt; can then rebuild the test
+test code and its dependencies. docker-compose can then rebuild the test
 container and run the tests in one &lt;a href=&#34;#running-the-tests&#34;&gt;command&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;A result of using &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt;, and this test setup, is that the
 test code is fairly minimal and there&amp;rsquo;s no real &amp;ldquo;test framework&amp;rdquo; required.
@@ -187,6 +187,7 @@ downstream traffic.&lt;/p&gt;
 &lt;p&gt;The URL of &lt;a href=&#34;http://www.mock-server.com/&#34;&gt;mockserver&lt;/a&gt; corresponds to the service name and the
 port it exposes, defined in the &lt;a href=&#34;#docker-compose-example&#34;&gt;docker-compose file&lt;/a&gt;.&lt;/p&gt;
 &lt;h1 id=&#34;docker-compose-example&#34;&gt;Docker Compose Example&lt;/h1&gt;
+&lt;p&gt;We have a docker-compose file: &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/tarquin-the-brave/7a2d813015d049fbe40e3723b0795be4.js?file=docker-compose.yml&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;In this example, under &lt;code&gt;services:&lt;/code&gt; there&amp;rsquo;s an entry for each of the containers

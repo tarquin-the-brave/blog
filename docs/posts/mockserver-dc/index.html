@@ -134,7 +134,7 @@ messages, and at the end, you can ask it whether the expectations were met.</p>
 environment and to make networking easier when we introduce
 <a href="https://docs.docker.com/compose/">docker-compose</a> to manage the setup.</p>
 <p>We define a <code>Dockerfile</code> for our test runner that builds a container with the
-test code and its dependencies. <code>docker-compose</code> can then rebuild the test
+test code and its dependencies. docker-compose can then rebuild the test
 container and run the tests in one <a href="#running-the-tests">command</a>.</p>
 <p>A result of using <a href="http://www.mock-server.com/">mockserver</a>, and this test setup, is that the
 test code is fairly minimal and there&rsquo;s no real &ldquo;test framework&rdquo; required.
@@ -150,6 +150,7 @@ downstream traffic.</p>
 <p>The URL of <a href="http://www.mock-server.com/">mockserver</a> corresponds to the service name and the
 port it exposes, defined in the <a href="#docker-compose-example">docker-compose file</a>.</p>
 <h1 id="docker-compose-example">Docker Compose Example</h1>
+<p>We have a docker-compose file: <code>docker-compose.yml</code></p>
 <script type="application/javascript" src="https://gist.github.com/tarquin-the-brave/7a2d813015d049fbe40e3723b0795be4.js?file=docker-compose.yml"></script>
 
 <p>In this example, under <code>services:</code> there&rsquo;s an entry for each of the containers

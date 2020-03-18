@@ -62,7 +62,7 @@ environment and to make networking easier when we introduce
 [docker-compose][doco] to manage the setup.
 
 We define a `Dockerfile` for our test runner that builds a container with the
-test code and its dependencies. `docker-compose` can then rebuild the test
+test code and its dependencies. docker-compose can then rebuild the test
 container and run the tests in one [command](#running-the-tests).
 
 A result of using [mockserver][mockserver], and this test setup, is that the
@@ -85,33 +85,9 @@ port it exposes, defined in the [docker-compose file](#docker-compose-example).
 
 # Docker Compose Example
 
-```yaml
-version: "3.7"
-services:
+We have a docker-compose file: `docker-compose.yml`
 
-  test:
-    build: ./fv
-    command: <command to run tests> ${TEST_ARGS}
-
-  microservice:
-    image: ${IMAGE:-x:latest}
-    environment:
-      LOG_LEVEL: debug
-    volumes:
-      - type: bind
-        source: ./fv/microservice_config.yaml
-        target: /config/config.yaml
-
-  mockdeps:
-    image: jamesdbloom/mockserver:mockserver-5.9.0
-    expose:
-      - 12345
-    # Mockserver has the server itself as ENTRYPOINT,
-    # so the "command" here needs to be only the arguments
-    # we pass to it.
-    command: ["-serverPort", "12345", "-logLevel", "INFO"]
-
-```
+{{< gist tarquin-the-brave 7a2d813015d049fbe40e3723b0795be4 "docker-compose.yml" >}}
 
 In this example, under `services:` there's an entry for each of the containers
 in this setup.

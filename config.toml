@@ -22,6 +22,7 @@ pygmentsCodeFences = true
     #instagram = "username"
     #stackoverflow = "username"
     #youtube = "user/username" # or channel/channelname
+    googleAnalytics = "UA-161243400-1"
 
 [params]
     tagline = "Some things I think"

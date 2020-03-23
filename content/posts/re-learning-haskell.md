@@ -28,7 +28,7 @@ week, to learn a variety of languages, and meet fortnightly to discuss
 approaches.  I saw this as a good opportunity to "pick up Haskell again".
 So I did.
 
-# Week 1 - Days 1 to 4
+# Week 1
 
 ## Build Tooling
 
@@ -73,6 +73,53 @@ the Advent of Code.
 
 ## Retracing the first steps
 
+functor -> computation applied in a context
+applicative -> computation applied in in two instances of a context to be combined into
+one instance of the context
+monad -> chaining computations that create a context, keeping results within the context.
+
+This was about as far as I got in understanding last time.
+
+## TODO: Points to make
+
+week 1 -> problems 1,3,4,6,8 -> went back to 2
+
+I didn't setup _any_ editor integration!
+
+importing
+* `import Lib` or `import Data.Sequence` will bring all that a module exports
+  flat into the current name space.
+  * makes code harder to read "as text"
+  * contrast to rust -> rust is explicit
+* This can be fixed by doing X in haskell
+* In Haskell's defence:
+  * Rust imports most methods via `impl` and Traits, so importing the Data and the trait
+    is sufficient.
+  * Haskell you'd have to import all functions explicitly... maybe unwieldy, maybe not.
+* I'll try this, if it becomes too much, I'll setup some editor integration.
+
+Small things I learned -> code examples?
+* trees
+
+Big things I learned -> ideas?
+
+General feelings about the language?
+- less explicit that Rust
+
+I'm solving all these problems with tools I already know how to use, lists, folds, etc.
+partly because "the basic tools" are so powerful.
+
+Coding problems sometimes mean spending most of the time solving the problem
+and not learning new concepts and how to express things well in a language.
+
+gonna do some reading, then come back to these.
+
+# Week 2
+
+* Reading week
+* no problems
+* Have AoC support meeting
+* setup editor integration?
 
 [opinion-guide-haskell]: https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
 [cargo]: TODO

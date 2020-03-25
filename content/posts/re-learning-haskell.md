@@ -86,7 +86,7 @@ week 1 -> problems 1,3,4,6,8 -> went back to 2
 
 I didn't setup _any_ editor integration!
 
-importing
+packaging/importing/exporting
 * `import Lib` or `import Data.Sequence` will bring all that a module exports
   flat into the current name space.
   * makes code harder to read "as text"

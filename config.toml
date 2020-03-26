@@ -1,6 +1,6 @@
 baseurl = "https://tarquin-the-brave.github.io/blog/"
 title = "tarquin-the-brave"
-copyright = "Copyright &copy; 2019 - Tom Steavenson"
+copyright = "Copyright &copy; 2020 - Tom Steavenson"
 canonifyurls = true
 theme = "hugo-kiera"
 publishDir = "docs"

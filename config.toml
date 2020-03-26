@@ -25,7 +25,7 @@ pygmentsCodeFences = true
     googleAnalytics = "UA-161243400-1"
 
 [params]
-    tagline = "Some things I think"
+    tagline = "Some things I think. Some things, I think."
     description = ""
     #images = [""] #This is used for opengraph/twitter cards.
     customCSS = []  #Optional Customised CSS

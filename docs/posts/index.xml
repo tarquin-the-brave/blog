@@ -6,10 +6,400 @@
    <description>Recent content in Posts on tarquin-the-brave</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2019 - Tom Steavenson</copyright>
-   <lastBuildDate>Sun, 01 Mar 2020 14:56:43 +0000</lastBuildDate>
+   <lastBuildDate>Thu, 26 Mar 2020 21:00:00 +0000</lastBuildDate>
    
        <atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Rust - Converting between file formats - JSON, YAML, &amp; TOML</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/rust-serde/</link>
+       <pubDate>Thu, 26 Mar 2020 21:00:00 +0000</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/rust-serde/</guid>
+       <description>&lt;p&gt;Rust&amp;rsquo;s &lt;a href=&#34;https://crates.io/crates/serde&#34;&gt;&lt;code&gt;serde&lt;/code&gt; library&lt;/a&gt; is a generic serialize-deserialize framework
+that has been implemented for &lt;a href=&#34;https://docs.serde.rs/serde/#data-formats&#34;&gt;many file formats&lt;/a&gt;.  It&amp;rsquo;s&lt;/p&gt;
+&lt;p&gt;an incredibly powerful framework and well worth giving &lt;a href=&#34;https://docs.serde.rs/serde/&#34;&gt;the
+documentation&lt;/a&gt; a read.&lt;/p&gt;
+&lt;p&gt;It can deserialize a file format into a strongly typed rust data structure, so
+that the data in code has no affiliation to the data format it was read from,
+then can be serialized into another file format.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#![&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;allow(unused_variables)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde_derive::{Deserialize, Serialize};
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Serialize, Deserialize, Debug, Clone, PartialEq)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;camelCase&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;, deny_unknown_fields)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyData&lt;/span&gt; {
+    field_one: &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;,
+    field_two: String,
+    field_three: &lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt;,
+    some_data: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::collections::HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String, &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+        fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+        fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
+        fieldThree: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
+        someData:
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+            z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+        fieldOne &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+        fieldTwo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
+        fieldThree &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
+
+        [someData]
+        x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+        z &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+        {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fieldOne&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;,
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fieldTwo&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;,
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fieldThree&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;,
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;someData&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;x&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;y&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;z&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+          }
+        }
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml);
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; toml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_toml);
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_json::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_json);
+
+    assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_yaml.is_ok());
+    assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_toml.is_ok());
+    assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_json.is_ok());
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_toml_copy &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; deserialized_toml.clone();
+
+    assert_eq&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_yaml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_toml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);
+    assert_eq&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_toml_copy&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_json&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+        fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+        fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
+        someData:
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+            z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+        fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+        fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
+        fieldThree: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
+        someData:
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+            z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+        out_of_schema_data: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_missing_field);
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_extra_field);
+
+    assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(data_missing_field.is_err());
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Because MyData is decorated with `deny_unknown_fields`, adding extra fields
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// will cause parsing to fail.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(data_extra_field.is_err());
+
+    Ok(())
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also read data into a type that can represent any data in a particular
+format, if you don&amp;rsquo;t want to or can&amp;rsquo;t strongly define the contents:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; yaml_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_yaml::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; toml_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; toml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;toml::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_toml)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; json_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_json::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_json::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_json)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Recently I&amp;rsquo;ve found that it&amp;rsquo;s even able to deserialize a type that&amp;rsquo;s supposed
+to represent one format straight into another, and conversely can serialize a
+type for a certain format into another.  For JSON, YAML, and TOML formats there
+are the types &lt;a href=&#34;https://docs.serde.rs/serde_json/enum.Value.html&#34;&gt;&lt;code&gt;serde_json::Value&lt;/code&gt;&lt;/a&gt;, &lt;a href=&#34;https://docs.rs/serde_yaml/0.8.11/serde_yaml/enum.Value.html&#34;&gt;&lt;code&gt;serde_yaml::Value&lt;/code&gt;&lt;/a&gt;, and
+&lt;a href=&#34;https://docs.rs/toml/0.5.6/toml/value/enum.Value.html&#34;&gt;&lt;code&gt;toml::Value&lt;/code&gt;&lt;/a&gt; which represent any data in their respective formats and
+can used to deserialize data when we can&amp;rsquo;t or don&amp;rsquo;t want to define the precise
+structure of the data.  It turns out you can read a file format straight into
+one of these other types.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; toml_from_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;toml::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It might be that this conversion fails and the data is not readable into the
+other format&amp;rsquo;s &lt;code&gt;Value&lt;/code&gt;, and you&amp;rsquo;ll get a &lt;code&gt;Err&lt;/code&gt;. E.g:
+&lt;a href=&#34;https://docs.rs/serde_yaml/0.8.11/src/serde_yaml/mapping.rs.html#10-12&#34;&gt;&lt;code&gt;serde_yaml::Mapping&lt;/code&gt;&lt;/a&gt; allows keys of any variant of &lt;a href=&#34;https://docs.rs/serde_yaml/0.8.11/serde_yaml/enum.Value.html&#34;&gt;&lt;code&gt;Value&lt;/code&gt;&lt;/a&gt;,
+however &lt;a href=&#34;https://docs.serde.rs/serde_json/map/struct.Map.html&#34;&gt;&lt;code&gt;serde_json:🗺:Map&lt;/code&gt;&lt;/a&gt; is only implemented with &lt;code&gt;String&lt;/code&gt; as a key
+type:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; some_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    [&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;]: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; try_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_yaml::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(some_yaml);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; try_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_json::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(some_yaml);
+
+assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(try_yaml.is_ok());
+assert&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(try_json.is_err());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This actually has real practical implication.  JSON, for example, is far less
+human friendly than either YAML or TOML.  There are libraries, packed with
+useful functionality that intend to receive data in a certain format.  Serde&amp;rsquo;s
+design decouples this.  &lt;a href=&#34;https://json-schema.org/&#34;&gt;JSON Schema&lt;/a&gt; is an example.  It&amp;rsquo;s a richly
+featured schema implementation.  But usually you have to write your schemas in
+JSON. &lt;a href=&#34;https://jsonschema.net/home&#34;&gt;JSON Schema Tool&lt;/a&gt; is an online tool that will generate a inferred
+schema from some example JSON.  Using the example given when you visit the
+page: this JSON:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;checked&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;dimensions&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;height&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+    },
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;A green door&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;price&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;12.5&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;tags&amp;#34;&lt;/span&gt;: [
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;home&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;
+    ]
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, generates this schema:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;{
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$schema&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://json-schema.org/draft-07/schema&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://example.com/root.json&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;object&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Root Schema&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The root schema is the schema that comprises the entire JSON document.&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: {},
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;required&amp;#34;&lt;/span&gt;: [
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;checked&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dimensions&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;price&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;tags&amp;#34;&lt;/span&gt;
+    ],
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;properties&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;checked&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/checked&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;boolean&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Checked Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+            ]
+        },
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;dimensions&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/dimensions&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;object&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Dimensions Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: {},
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                {
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;height&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;10.0&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;
+                }
+            ],
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;required&amp;#34;&lt;/span&gt;: [
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;height&amp;#34;&lt;/span&gt;
+            ],
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;properties&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;: {
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/dimensions/properties/width&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;integer&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Width Schema&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                        &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+                    ]
+                },
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;height&amp;#34;&lt;/span&gt;: {
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/dimensions/properties/height&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;integer&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Height Schema&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                        &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+                    ]
+                }
+            }
+        },
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/id&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;integer&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Id Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+            ]
+        },
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/name&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Name Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;A green door&amp;#34;&lt;/span&gt;
+            ]
+        },
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;price&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/price&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;number&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Price Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                &lt;span style=&#34;color:#ae81ff&#34;&gt;12.5&lt;/span&gt;
+            ]
+        },
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;tags&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/tags&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;array&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Tags Schema&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: [],
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                [
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;home&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;
+                ]
+            ],
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;items&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;$id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#/properties/tags/items&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;title&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;The Items Schema&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;description&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;An explanation about the purpose of this instance.&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;examples&amp;#34;&lt;/span&gt;: [
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;home&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;green&amp;#34;&lt;/span&gt;
+                ]
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You could imagine that you might want to expand that schema even further with
+defauts, examples and other rules constraining the values of some fields.&lt;/p&gt;
+&lt;p&gt;Rust has a library &lt;a href=&#34;https://docs.rs/schemars/0.7.0/schemars/&#34;&gt;&lt;code&gt;schemars&lt;/code&gt;&lt;/a&gt; that implements JSON Schema. While the
+documentation goes through examples of &lt;a href=&#34;https://docs.rs/schemars/0.7.0/schemars/#serde-compatibility&#34;&gt;defining schemas in code&lt;/a&gt;, and
+serializing with &lt;code&gt;serde_json&lt;/code&gt;, you can read a &lt;a href=&#34;https://docs.rs/schemars/0.7.0/schemars/schema/struct.SchemaObject.html&#34;&gt;&lt;code&gt;SchemaObject&lt;/code&gt;&lt;/a&gt; straight
+from YAML, or TOML.  So your application can leverage the functionality of the
+&lt;code&gt;SchemaObject&lt;/code&gt; and the &lt;code&gt;schemars&lt;/code&gt; library while getting users write schemas in
+a more human readable form.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; json_schema &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_json::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;schemars::schema::RootSchema&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;std::fs::read_to_string(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example.schema.json&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;,
+)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; json_schema_from_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;schemars::schema::RootSchema&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;std::fs::read_to_string(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example.schema.yaml&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;,
+)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The same JSON Schema from above is much more readable when written in YAML:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$schema&lt;/span&gt;: http://json-schema.org/draft&lt;span style=&#34;color:#ae81ff&#34;&gt;-07&lt;/span&gt;/schema
+&lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: http://example.com/root.json
+&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: object
+&lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Root Schema
+&lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: The root schema is the schema that comprises the entire JSON document.
+&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: {}
+&lt;span style=&#34;color:#66d9ef&#34;&gt;required&lt;/span&gt;:
+  - checked
+  - dimensions
+  - id
+  - name
+  - price
+  - tags
+&lt;span style=&#34;color:#66d9ef&#34;&gt;properties&lt;/span&gt;:
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;checked&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/checked&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: boolean
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Checked Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;dimensions&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/dimensions&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: object
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Dimensions Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: {}
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - &lt;span style=&#34;color:#66d9ef&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;width&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;required&lt;/span&gt;:
+      - width
+      - height
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;properties&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;width&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/dimensions/properties/width&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: integer
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Width Schema
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+          - &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;height&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/dimensions/properties/height&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: integer
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Height Schema
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+          - &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;id&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/id&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: integer
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Id Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;name&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/name&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: string
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Name Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - A green door
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;price&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/price&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: number
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Price Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - &lt;span style=&#34;color:#ae81ff&#34;&gt;12.5&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;tags&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/tags&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: array
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Tags Schema
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+      - - home
+        - green
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;items&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;$id&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#/properties/tags/items&amp;#39;&lt;/span&gt;
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;: string
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;title&lt;/span&gt;: The Items Schema
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;description&lt;/span&gt;: An explanation about the purpose of this instance.
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;examples&lt;/span&gt;:
+        - home
+        - green
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I learned that &lt;a href=&#34;https://crates.io/crates/serde&#34;&gt;serde&lt;/a&gt; could do this cross-format parsing by reading the
+source code of the &lt;a href=&#34;https://github.com/yoshihitoh/refmt&#34;&gt;refmt&lt;/a&gt; project.&lt;/p&gt;
+&lt;p&gt;Examples from this post are &lt;a href=&#34;https://github.com/tarquin-the-brave/serde-cross-format&#34;&gt;mastered in github&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Language Servers Are Cool</title>

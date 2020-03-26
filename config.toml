@@ -10,6 +10,7 @@ paginate = 3
 summaryLength = 30
 enableEmoji = true
 pygmentsCodeFences = true
+googleAnalytics = "UA-161243400-1"
 
 # Note: to disable a social network icon delete or comment out the corresponding line
 [author]
@@ -22,7 +23,6 @@ pygmentsCodeFences = true
     #instagram = "username"
     #stackoverflow = "username"
     #youtube = "user/username" # or channel/channelname
-    googleAnalytics = "UA-161243400-1"
 
 [params]
     tagline = "Some things I think. Some things, I think."

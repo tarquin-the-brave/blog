@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
-    <lastmod>2020-03-26T21:00:00+00:00</lastmod>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/iterttools/</loc>
+    <lastmod>2020-03-28T12:52:30+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://tarquin-the-brave.github.io/blog/posts/rust-serde/</loc>
-    <lastmod>2020-03-26T21:00:00+00:00</lastmod>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
+    <lastmod>2020-03-28T12:52:30+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://tarquin-the-brave.github.io/blog/</loc>
+    <lastmod>2020-03-28T12:52:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/rust-serde/</loc>
     <lastmod>2020-03-26T21:00:00+00:00</lastmod>
   </url>
   

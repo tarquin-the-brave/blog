@@ -6,10 +6,145 @@
    <description>Recent content in Posts on tarquin-the-brave</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-   <lastBuildDate>Thu, 26 Mar 2020 21:00:00 +0000</lastBuildDate>
+   <lastBuildDate>Sat, 28 Mar 2020 12:52:30 +0000</lastBuildDate>
    
        <atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Itertools - A Force for Good?</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/iterttools/</link>
+       <pubDate>Sat, 28 Mar 2020 12:52:30 +0000</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/iterttools/</guid>
+       <description>&lt;p&gt;Itertools are a way of bringing along a bunch of list manipulating goodies from
+functional languages into procedural languages.  I&amp;rsquo;ve encountered it as a
+&lt;a href=&#34;https://docs.python.org/3.8/library/itertools.html&#34;&gt;Python library&lt;/a&gt; and a &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html&#34;&gt;Rust crate&lt;/a&gt;.  A quick bit
+of google&amp;rsquo;ing shows some evidence of this existing in other languages.&lt;/p&gt;
+&lt;p&gt;I used to write Python a lot.  Now I write mostly Rust.  I used to err on the
+side of not using &lt;code&gt;itertools&lt;/code&gt; in Python.  I&amp;rsquo;m more than happy to read or write
+Rust code using &lt;code&gt;itertools&lt;/code&gt;.  The reasons why are about audience buy in, how
+effectively are you communicating an idea, and ultimately what effect does it
+have on people&amp;rsquo;s ability to reason about your code.&lt;/p&gt;
+&lt;p&gt;For a Rust developer, coming across the &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html&#34;&gt;Itertools crate&lt;/a&gt; doesn&amp;rsquo;t
+require a big leap of understanding. The &lt;code&gt;Itertools&lt;/code&gt; trait is merely an
+extension to the &lt;a href=&#34;https://doc.rust-lang.org/std/iter/trait.Iterator.html&#34;&gt;&lt;code&gt;Iterator&lt;/code&gt; trait&lt;/a&gt; from the standard library which
+has methods for the likes of &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;fold&lt;/code&gt;, &lt;code&gt;filter&lt;/code&gt;, &lt;code&gt;chain&lt;/code&gt;, etc.  These
+concepts from functional languages are already first class citizens in Rust.
+You don&amp;rsquo;t need the reader to cross that conceptual bridge of &amp;ldquo;what&amp;rsquo;s wrong with
+a for loop?&amp;quot;, they&amp;rsquo;re already across with you.  Rust is explicit about how
+values are passed to functions (by reference/by value, mutably/immutably), and
+imposes borrowing rules.  This means you can iterate with confidence.  Also,
+Rust is strongly typed and has fantastic documentation as a core tenet of the
+language.  This mean that even if there are some concepts introduced that you
+don&amp;rsquo;t quite understand, or you don&amp;rsquo;t quite follow an example of a method from
+the documentation: you can trust the type, and the compiler will tell you if
+you&amp;rsquo;ve misunderstood.  If you&amp;rsquo;re reading code, and your not all that familiar
+with the concept behind a method, you can can still reason about how data is
+being manipulated by reading the type declaration of the function.&lt;/p&gt;
+&lt;p&gt;In Python, on the other hand, using &lt;a href=&#34;https://docs.python.org/3.8/library/itertools.html&#34;&gt;&lt;code&gt;itertools&lt;/code&gt;&lt;/a&gt; and
+&lt;a href=&#34;https://docs.python.org/3/library/functools.html&#34;&gt;&lt;code&gt;functools&lt;/code&gt;&lt;/a&gt; introduces functional concepts&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, which are a
+whole new dimension to the language. The nature of the language (duck-typed,
+implicit about how values are passed, and runtime evaluated) doesn&amp;rsquo;t give the
+same safety net and leg up to those not already very familiar with the concepts
+at play and the pitfalls of their implementation in Python.  It&amp;rsquo;ll depend a
+little on what the particular community who you share a codebase with are like,
+but there&amp;rsquo;s likely to be a reasonable proportion of Python developers who don&amp;rsquo;t
+necessarily know what you&amp;rsquo;ve done.  For them: you&amp;rsquo;ve taken something that could
+have been expressed in a few lines, and tucked it away behind a word they
+haven&amp;rsquo;t seen before.  And then when they do learn what that method is doing,
+it&amp;rsquo;s not like they can abstract over that forever more.&lt;/p&gt;
+&lt;p&gt;Functional languages can have all this wonderful functionality abstracted away
+into single words (&lt;code&gt;fold&lt;/code&gt;, &lt;code&gt;intercalate&lt;/code&gt;, &amp;hellip;) because data is immutable and
+functions don&amp;rsquo;t have side effects.  Once you&amp;rsquo;ve learned how a particular
+function works, you can let it do its thing.  Maybe you pop back to glance at
+the type signature (if it has one) from time to time, but mostly you know: it
+does a thing, you can abstract over it with confidence.&lt;/p&gt;
+&lt;p&gt;Rust does quite a special thing of allowing mutation, but provide a mechanism
+where that mutation is explicit and the type system provides enough confidence
+that you can make abstractions safely.&lt;/p&gt;
+&lt;p&gt;An example that a friend sent me recently, which isn&amp;rsquo;t specifically about
+&lt;code&gt;itertools&lt;/code&gt; or &lt;code&gt;functools&lt;/code&gt; but is an example of where these lower level details
+that are hidden from the syntax really can catch you out.  Lambda
+functions create anonymous functions in-line, and are equivalent to
+defining a function elsewhere and calling it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ python3
+Python 3.6.9 (default, Nov  7 2019, 10:44:02)
+[GCC 8.3.0] on linux
+Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information.
+&amp;gt;&amp;gt;&amp;gt; x = 4
+&amp;gt;&amp;gt;&amp;gt; x
+4
+&amp;gt;&amp;gt;&amp;gt; x = lambda: 4
+&amp;gt;&amp;gt;&amp;gt; x
+&amp;lt;function &amp;lt;lambda&amp;gt; at 0x7f6b8665abf8&amp;gt;
+&amp;gt;&amp;gt;&amp;gt; x()
+4
+&amp;gt;&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Assign an anonymous function to &lt;code&gt;x&lt;/code&gt; and then call it.  Happy with that.  Last
+week, a friend of mine sent me this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;[x() &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt;: i &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Let&amp;rsquo;s see what that does:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; [x() for x in [lambda: i for i in range(0,3)]]
+[2, 2, 2]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wat?  Let&amp;rsquo;s try building up to that:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; [i for i in range(0,3)]
+[0, 1, 2]
+&amp;gt;&amp;gt;&amp;gt; [x for x in [i for i in range(0,3)]]
+[0, 1, 2]
+&amp;gt;&amp;gt;&amp;gt; [x for x in [lambda: i for i in range(0,3)]]
+[&amp;lt;function &amp;lt;listcomp&amp;gt;.&amp;lt;lambda&amp;gt; at 0x7f6b8665ad90&amp;gt;, &amp;lt;function &amp;lt;listcomp&amp;gt;.&amp;lt;lambda&amp;gt; at 0x7f6b8665ae18&amp;gt;, &amp;lt;function &amp;lt;listcomp&amp;gt;.&amp;lt;lambda&amp;gt; at 0x7f6b8665aea0&amp;gt;]
+&amp;gt;&amp;gt;&amp;gt; [x() for x in [lambda: i for i in range(0,3)]]
+[2, 2, 2]
+&amp;gt;&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Wat?&lt;/p&gt;
+&lt;p&gt;When I worked in Python a lot I would see this sort of thing happen all the
+time.  Either you couldn&amp;rsquo;t understand why your code wasn&amp;rsquo;t doing the simple
+thing you were expressing, or worse, committed code was silently doing the
+wrong thing causing an error at the opposite end of the application.  To figure
+out what&amp;rsquo;s going on you have to context switch out of the &amp;ldquo;higher level&amp;rdquo; world
+you&amp;rsquo;ve been happily reading and writing code in, remind yourself about how each
+thing works behind the scenes and attempt to reason it through.&lt;/p&gt;
+&lt;p&gt;This is why I think Python is a bit self defeating.  To be great at Python, to
+read Python and understand what it&amp;rsquo;s really doing, to write Python that works
+and is performant, you need an understanding of what&amp;rsquo;s going on behind the
+scenes. But the whole point of Python is that it&amp;rsquo;s a higher level language.
+The main beauty of it for me, is that someone who doesn&amp;rsquo;t know any programming
+languages can read it and have a decent guess at what&amp;rsquo;s going on.  It&amp;rsquo;s code in
+plain English.  But to get good you need to learn about what&amp;rsquo;s going on behind
+the scenes.  Python isn&amp;rsquo;t going to teach you those things.  You&amp;rsquo;d need to learn
+those things in another, supposedly &amp;ldquo;lower level&amp;rdquo;, language and bring those
+learnings back into your Python.&lt;/p&gt;
+&lt;p&gt;Because you have to keep these lower level details in your mind when working
+with Python, with mutability and how values are passed being implicit, you
+can&amp;rsquo;t abstract with confidence.  These functional goodies from &lt;code&gt;itertools&lt;/code&gt; and
+&lt;code&gt;functools&lt;/code&gt; lose their power and run the risk of becoming more &amp;ldquo;complexity
+hiding&amp;rdquo; than good abstractions.&lt;/p&gt;
+&lt;p&gt;Were I to go back to writing Python regularly I would probably look to make use
+of &lt;code&gt;itertools&lt;/code&gt; &amp;amp; &lt;code&gt;functools&lt;/code&gt; as I reckon I&amp;rsquo;d probably write more bugs if I were
+to write it out in loops manually.  But I&amp;rsquo;d only do it with buy in from
+everyone I was working on that Python project with, and I&amp;rsquo;d keep some notes
+around about what the methods I&amp;rsquo;m using are doing under the covers for the time
+when I inevitably trip up.&lt;/p&gt;
+&lt;p&gt;So are &amp;ldquo;Itertools&amp;rdquo; a force for good in the world.  Yes, provided the language
+can provide the guarantees that make the abstractions safe and powerful.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;A &lt;a href=&#34;https://skerritt.blog/learn-functional-python-in-10-minutes/&#34;&gt;blog post&lt;/a&gt; that gives a quick run through of using
+functional concepts in Python.  It&amp;rsquo;s much more approachable
+than the &lt;a href=&#34;https://docs.python.org/3/howto/functional.html&#34;&gt;official docs&lt;/a&gt; I like how the author presents
+it as &amp;ldquo;here are some things you &lt;em&gt;can&lt;/em&gt; do, I&amp;rsquo;m not saying you
+&lt;em&gt;should&lt;/em&gt; use any of them&amp;rdquo;.  And they cover how functional
+patterns are considered &amp;ldquo;not Pythonic&amp;rdquo; by some&amp;hellip; Not that
+someone waving a magic word like &lt;em&gt;Pythonic&lt;/em&gt; in your face should
+ever stop you from doing anything. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+     </item>
    
      <item>
        <title>Rust - Converting between file formats - JSON, YAML, &amp; TOML</title>

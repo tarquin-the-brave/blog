@@ -1,0 +1,216 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>tarquin-the-brave</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The HTML5 Herald" />
+<meta name="author" content="Tom Steavenson" /><meta property="og:title" content="You Shouldn&#39;t Need an IDE to Read Code" />
+<meta property="og:description" content="This is important.
+Code is read far more often than it&rsquo;s written.
+Primarily, it&rsquo;s read through a web GUI.
+You want to read the source code of a library you&rsquo;re using." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/ide-read-code/" />
+<meta property="article:published_time" content="2020-02-29T22:30:09+00:00" />
+<meta property="article:modified_time" content="2020-02-29T22:30:09+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="You Shouldn&#39;t Need an IDE to Read Code"/>
+<meta name="twitter:description" content="This is important.
+Code is read far more often than it&rsquo;s written.
+Primarily, it&rsquo;s read through a web GUI.
+You want to read the source code of a library you&rsquo;re using."/>
+
+<meta name="generator" content="Hugo 0.64.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://tarquin-the-brave.github.io/blog/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://tarquin-the-brave.github.io/blog/">tarquin-the-brave</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/tarquin-the-brave" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Some things I think. Some things, I think.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>You Shouldn&#39;t Need an IDE to Read Code</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-02-29T22:30:09Z">Feb 29, 2020</time>
+        </li>
+        
+
+        
+
+        <li>4 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://tarquin-the-brave.github.io/blog/posts/ide-read-code/" title="You Shouldn&#39;t Need an IDE to Read Code">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>This is important.</p>
+<p>Code is <em>read</em> far more often than it&rsquo;s <em>written</em>.</p>
+<p>Primarily, it&rsquo;s read through a web GUI.</p>
+<p>You want to read the source code of a library you&rsquo;re using.  Say it&rsquo;s in
+Github, you&rsquo;re going to start looking at it through the Github GUI. If you want
+to take a deeper look, you might clone the repo and open it in you&rsquo;re editor,
+but the vast majority of library code you read will be through a GUI.</p>
+<p>The default medium for reading the changes in a pull request is through a GUI.
+Sure, you can pull the branch and open the code up in your editor. When I&rsquo;m
+reviewing big changes I do just that. But I shouldn&rsquo;t be required to.</p>
+<p>I&rsquo;ve reviewed code before where I&rsquo;ve made a comment along the line of &ldquo;this
+line of code doesn&rsquo;t explain what it&rsquo;s doing&rdquo;, where I&rsquo;ve suggested type
+hinting, or renaming things to reflect what&rsquo;s happening, or refactoring the
+aggregations that data flows between each line of code so it would make more
+sense in the context of the function.  Frustratingly, my comments have received
+responses that essentially say: &ldquo;if you were using my editor, it makes perfect
+sense&rdquo;.</p>
+<p>My recent concrete example is reviewing code in rust. Rust lets you optionally
+type hint in various places, e.g. to specify variable <code>x</code> as type
+<code>SpecificType</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">let</span> x: <span style="color:#a6e22e">SpecificType</span> <span style="color:#f92672">=</span> get_a_value();
+</code></pre></div><p>There are times where usually optional type declarations are necessary for
+compilation because the compiler can&rsquo;t infer the types in your code, but for
+the most part, these type hints are optional and can be used by the writer of
+the code to check their work or by the reader of the code to understand what&rsquo;s
+happening at a type level.</p>
+<p>In rust, types matter. When you&rsquo;re writing and reviewing rust code, you&rsquo;re
+thinking about types.  I recently suggested adding some type hinting to some
+rust code to make it more readable. I was told, in response, that the type
+hinting was unnecessary, and if I was only using the same editor<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> I could
+hover my mouse over the line of code and see the information I need.</p>
+<p>I take issue with both of these statements:</p>
+<ul>
+<li>Yes, the code will compile without the type hinting, but code is not there to
+satiate compilers, it&rsquo;s there to communicate ideas between people. And,</li>
+<li>What if I don&rsquo;t? Am I required a specific editor with a specific setup in
+order to read your code? A community of developers being locked into specific
+tooling is not good.  Even if I was using the same editor setup that gives me
+all the IDE features, the web GUI I&rsquo;m likely to review code through doesn&rsquo;t.</li>
+</ul>
+<p>Editor lock-in is a problem.  I&rsquo;ve not developed in Java, but I&rsquo;ve been told
+it&rsquo;s very difficult to use without an IDE setup for it.</p>
+<p>Everyone has their dev environment setup in a way that suits them. Code is
+there to communicate ideas between developers. Requiring someone installing a
+bunch of tooling to be able to read your code is mad.</p>
+<p>Maybe I&rsquo;m biased. I use Vim (neovim). I use some IDE like plugins, but mostly
+treat code as text, because that&rsquo;s what it is. And Vim is the best text editor
+I&rsquo;ve ever used. Setting up the developer features that IDEs give you out of the
+box is possible, but takes time to set up and tune.  So I tend not to have much
+in the way of these features, especially for languages that I don&rsquo;t write in
+every day.  So maybe I&rsquo;m just trying to avoid the self imposed faff of setting
+up my editor so I can read code in the same way someone else does.</p>
+<p>But I don&rsquo;t think so. We don&rsquo;t predominantly read code through editors. We want
+to avoid entangling simple tasks like reading code with a load of extra
+requirements.  These developer tools are useful, but we shouldn&rsquo;t become
+reliant on them.  Code is text.  It should only require a vanilla text editor
+to write, and only require something that can render text to read.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>VSCode appears to be the senior editor for rust.  I don&rsquo;t have a problem
+with this.  By the looks of it, it&rsquo;s a fine GUI based editor and everyone
+I know who uses it loves it.  It seems its struck a great balance between
+having great functionality out of the box, while being easily tuneable and
+feel sharp. If I hadn&rsquo;t drank the Vim coolaid, I imagine I&rsquo;d be using it. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/mockserver-dc/"><i class="fa fa-chevron-circle-left"></i> Testing Microservices with Mockserver</a>
+        </li>
+        
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/">Language Servers Are Cool <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+    
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Tom Steavenson |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://tarquin-the-brave.github.io/blog/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://tarquin-the-brave.github.io/blog/js/scripts.js"></script>
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-161243400-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
+

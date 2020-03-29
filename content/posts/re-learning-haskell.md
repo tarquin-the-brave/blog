@@ -1,10 +1,10 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 1"
-date = 2020-03-29T20:00:05Z
+date = 2020-03-29T20:40:05Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 A few years ago I learned myself a Haskell for greater good from a book "Learn

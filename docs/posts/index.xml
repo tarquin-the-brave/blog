@@ -6,10 +6,436 @@
    <description>Recent content in Posts on tarquin-the-brave</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-   <lastBuildDate>Sat, 28 Mar 2020 12:52:30 +0000</lastBuildDate>
+   <lastBuildDate>Sun, 29 Mar 2020 20:40:05 +0000</lastBuildDate>
    
        <atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Re-Learning Haskell with Advent of Code - Part 1</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/</link>
+       <pubDate>Sun, 29 Mar 2020 20:40:05 +0000</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/</guid>
+       <description>&lt;p&gt;A few years ago I learned myself a Haskell for greater good from a book &amp;ldquo;Learn
+you a Haskell for greater good&amp;rdquo;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; and the first few chapters of another book
+&amp;ldquo;Haskell from first principals&amp;rdquo;&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;It was fun to learn.  I didn&amp;rsquo;t go onto use Haskell to build any real
+applications, beyond coding up some exercises and mini programs to learn
+things.&lt;/p&gt;
+&lt;p&gt;I believe I got a lot from it.  At the very least it&amp;rsquo;s joyful to solve problems
+in Haskell.  When I started writing Rust a year later I liked the strong type
+system and the features inspired by functional languages: maps, folds, etc.  It
+gave me an appreciation of the benefits of immutability and pure functions.  I
+believe that&amp;rsquo;s fed into improving how I build things in other languages.&lt;/p&gt;
+&lt;p&gt;A colleague told me about how they did Advent of Code&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; to learn Rust and a
+wider group of colleagues have decided to do a couple of exercises every week,
+to learn a variety of languages, and meet fortnightly to discuss approaches.  I
+saw this as a good opportunity to &amp;ldquo;pick up Haskell again&amp;rdquo;.  So I did.&lt;/p&gt;
+&lt;h1 id=&#34;week-1&#34;&gt;Week 1&lt;/h1&gt;
+&lt;h2 id=&#34;build-tooling&#34;&gt;Build Tooling&lt;/h2&gt;
+&lt;p&gt;First thing&amp;rsquo;s first.  Build tooling.  I didn&amp;rsquo;t really bother with this the last
+time around.  I spent most of the time playing in GHCi, the interactive Haskell
+terminal, and importing most of the Haskell modules I wrote into that, rather
+than compiling and running an executable.&lt;/p&gt;
+&lt;p&gt;Over the last few years I&amp;rsquo;ve learned: first thing to do after cloning a
+codebase: build it! And if you can&amp;rsquo;t rebuilt at the touch of a button, do the
+work immediately to make sure you can.  I&amp;rsquo;ve spent time faffing on with linking
+issues with C++ applications.  I&amp;rsquo;ve spent time faffing on with Python&amp;rsquo;s
+dependency management, or lack thereof&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;.  It&amp;rsquo;s not time well spent.  It&amp;rsquo;s
+time lost.  I&amp;rsquo;ve been writing Rust at work for about a year and a half.  Rust
+has &lt;a href=&#34;https://doc.rust-lang.org/cargo/&#34;&gt;cargo&lt;/a&gt;.  Cargo is phenomenal.  It&amp;rsquo;s a great bit of tooling.  I&amp;rsquo;ll
+not lie to you: when facing technical decisions, especially around tooling, I
+quite often find myself asking &amp;ldquo;WWCD?&amp;quot;, &amp;ldquo;What Would Cargo Do?&amp;quot;.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m picking up a language, having build tooling that&amp;rsquo;s rock solid, and
+available at the touch of a button is paramount.  So before writing a line of
+code, or even reading the first day&amp;rsquo;s challenge, I went looking for build
+tooling.&lt;/p&gt;
+&lt;p&gt;I did a bit of googling with phrases like &amp;ldquo;Haskell toolchain&amp;rdquo;, &amp;ldquo;Haskell build
+tools comparison&amp;rdquo;, and found various resources ranging from blog posts to
+official documentation.  I found &lt;a href=&#34;https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/&#34;&gt;this post&lt;/a&gt; quite
+informative.  It purports to be &amp;ldquo;An opinionated guide&amp;rdquo;.  That&amp;rsquo;s good.
+Developers having opinions is good.  Especially when you consider the
+alternative: &lt;em&gt;not having thoughts&lt;/em&gt;.  It&amp;rsquo;s a long document.  I didn&amp;rsquo;t read
+nearly half of it.  But funnily enough the first section in this &amp;ldquo;guide to
+Haskell&amp;rdquo;, was on build tooling.  It touched on three options of cabal-install,
+stack, and nix, and proceeded to do fairly good job of selling stack.  Combined
+with a friend telling me that &amp;ldquo;stack is the closest thing to cargo that Haskell
+has got&amp;rdquo;, I was sold on stack, at least for the meantime.  Nix is on my bucket
+list, just not today.&lt;/p&gt;
+&lt;p&gt;So I found and bookmarked the &lt;a href=&#34;https://docs.haskellstack.org/en/stable/README/&#34;&gt;official documentation&lt;/a&gt; and ran
+&lt;code&gt;stack new day1&lt;/code&gt; to create a project for the problems in &amp;ldquo;day 1&amp;rdquo; of the Advent
+of Code.&lt;/p&gt;
+&lt;h2 id=&#34;retracing-the-first-steps&#34;&gt;Retracing the first steps&lt;/h2&gt;
+&lt;p&gt;The problems on &lt;a href=&#34;https://adventofcode.com/2019/day/1&#34;&gt;day 1&lt;/a&gt; involved summing the result of applying a
+function to list of integers, and then do the same with a different function.
+The halves of this exercise are almost identical except for the function to
+apply to each element of the list before summing the results.  This sounds like
+an opportunity for function currying.&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;stack new&lt;/code&gt; sets up a &lt;code&gt;src/Lib.hs&lt;/code&gt; and a &lt;code&gt;app/Main.hs&lt;/code&gt;.  While not having
+read up on the conventional use of these files, my guess is that &lt;code&gt;Lib.hs&lt;/code&gt; is
+for any functionality that might become a library, keeping things as generic as
+possible, and main is for code specific to this application: where to read the
+data from, error handling, etc.  Although, especially for earlier problems,
+this separation will be somewhat artificial.  I&amp;rsquo;m not going to get too worried
+about what&amp;rsquo;s in what file, but use it to get used to exporting and importing.&lt;/p&gt;
+&lt;p&gt;I ended up with a &lt;code&gt;Lib.hs&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;module&lt;/span&gt; Lib
+    ( &lt;span style=&#34;color:#a6e22e&#34;&gt;tot_1&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;tot_2&lt;/span&gt;
+    ) &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x `div` &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot_1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot_1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tot f
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;g&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;g&lt;/span&gt; x
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; f x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; g(f x)
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot_2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot_2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tot g
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;tot&lt;/span&gt; f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sum &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; fmap f
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, and a &lt;code&gt;Main.hs&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;module&lt;/span&gt; Main &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.List
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; ()
+&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
+  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; readFile &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;inputs.txt&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; inputs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fmap read &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; lines &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; contents
+  print &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Lib&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tot_1 &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; inputs
+  print &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Lib&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tot_2 &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; inputs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, having saved the inputs Advent of Code gave me to &lt;code&gt;inputs.txt&lt;/code&gt; (each person
+gets given their own problem input).&lt;/p&gt;
+&lt;p&gt;The function &lt;code&gt;tot&lt;/code&gt; takes a function and applies it to each element of a list
+and sums the results.  To fulfil each half of the problem I then only needed to
+define the two functions to pass to &lt;code&gt;tot&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;https://adventofcode.com/2019/day/1&#34;&gt;day 1 problem&lt;/a&gt; was gave a quick revision of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;modules,&lt;/li&gt;
+&lt;li&gt;do notation,&lt;/li&gt;
+&lt;li&gt;functions composition (with &lt;code&gt;.&lt;/code&gt; &amp;amp; &lt;code&gt;$&lt;/code&gt;),&lt;/li&gt;
+&lt;li&gt;function currying, and&lt;/li&gt;
+&lt;li&gt;recursion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Recursion ends up featuring heavily in my solutions to the first few days. I&amp;rsquo;m
+not sure why, but Haskell make recursion feel like a natural way to solve
+problems.  I use recursion in other languages, but it always feels like I&amp;rsquo;ve
+done something a bit clever.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/2&#34;&gt;Day 2&lt;/a&gt; asks you to write a basic Intcode computer which is then
+extended and used in all odd day problems from day 5 onwards.  I decided to
+come back to this and went on to problems from days &lt;a href=&#34;https://adventofcode.com/2019/day/3&#34;&gt;3&lt;/a&gt;, &lt;a href=&#34;https://adventofcode.com/2019/day/4&#34;&gt;4&lt;/a&gt;,
+&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;6&lt;/a&gt;, and &lt;a href=&#34;https://adventofcode.com/2019/day/8&#34;&gt;8&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/3&#34;&gt;Day 3&lt;/a&gt; involved drawing lines on a grid and working out where they
+cross, &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;my solution&lt;/a&gt; involved reminding myself of how to make use of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Defining my own types: type constructors, sum types, record syntax,&lt;/li&gt;
+&lt;li&gt;Generating lists from infinite lists,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;filter&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;foldl&lt;/code&gt;, and&lt;/li&gt;
+&lt;li&gt;Using lists as applicative functors,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;without tool much hassle.  &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;The solution&lt;/a&gt; wasn&amp;rsquo;t very efficient, but
+it worked.&lt;/p&gt;
+&lt;h2 id=&#34;fun-with-folds&#34;&gt;Fun With Folds&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/4&#34;&gt;Day 4&lt;/a&gt; introduced a simple problem of: work out the number of integers
+between two numbers that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Have two adjacent digits that are the same, and&lt;/li&gt;
+&lt;li&gt;Who&amp;rsquo;s digits never decrease.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4&#34;&gt;my solution&lt;/a&gt; I used function currying again. A function took a
+function that applies a rule between two characters as an argument, and folded,
+using &lt;code&gt;foldl&lt;/code&gt; over the numbers read as strings to apply the rules&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ruleX&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Bool&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In two respects, &lt;code&gt;foldl&lt;/code&gt; was an awkward fit:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;I didn&amp;rsquo;t care about the initial value,&lt;/li&gt;
+&lt;li&gt;The rules can be confirmed as being broken or obeyed without having to iterate
+through every element.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;no-initial-value&#34;&gt;No Initial Value&lt;/h3&gt;
+&lt;p&gt;The first of these points is equivalent to saying that I don&amp;rsquo;t care about applying
+this fold to an empty list.  Using &lt;code&gt;foldl&lt;/code&gt;, each time I applied a rule to the
+string, I had to provide an initial character that wouldn&amp;rsquo;t cause the rule to
+fail in any case.  While I &amp;ldquo;got away with it&amp;rdquo; for this problem, I should find
+an alternative pattern to use here to avoid a reasonable crass source of error.&lt;/p&gt;
+&lt;p&gt;Funnily enough, I had this exact same problem when doing some work in Rust in
+the week, and found &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html#method.fold1&#34;&gt;&lt;code&gt;fold1&lt;/code&gt;&lt;/a&gt; from the &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/&#34;&gt;itertools
+crate&lt;/a&gt; with type:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fold1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;F&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(self, f: &lt;span style=&#34;color:#a6e22e&#34;&gt;F&lt;/span&gt;) -&amp;gt; Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Self::Item&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+    F: FnMut(Self::Item, Self::Item) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Self&lt;/span&gt;::Item,
+    Self: Sized,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If an empty list has passed in,you get a &lt;code&gt;None&lt;/code&gt;&lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt; back.&lt;/p&gt;
+&lt;p&gt;Given how much Rust has borrowed from Haskell I was confident this will exist
+in Haskell too.&lt;/p&gt;
+&lt;p&gt;I found &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#v:foldl1&#34;&gt;&lt;code&gt;foldl1&lt;/code&gt;&lt;/a&gt; in Prelude.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldl1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foldable&lt;/span&gt; t &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; t a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It does a fold without needing an initial value but doesn&amp;rsquo;t handle empty lists.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack ghci
+...
+*Main Lib&amp;gt; :m + Safe.Foldable
+*Main Lib&amp;gt; :t foldl1
+foldl1 :: Foldable t =&amp;gt; (a -&amp;gt; a -&amp;gt; a) -&amp;gt; t a -&amp;gt; a
+*Main Lib&amp;gt; foldl1 (+) [1,2,3]
+6
+*Main Lib&amp;gt; foldl1 (+) []
+*** Exception: Prelude.foldl1: empty list
+*Main Lib&amp;gt; :q
+$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I tried searching in &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt; for a type like the &lt;code&gt;fold1&lt;/code&gt; from Rust:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldable&lt;/span&gt; t &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; t a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Maybe&lt;/span&gt; a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://hackage.haskell.org/package/safe-0.3.18/docs/Safe-Foldable.html#v:foldl1May&#34;&gt;&lt;code&gt;foldl1May&lt;/code&gt;&lt;/a&gt; looks to be what I want.  I&amp;rsquo;ll keep the &lt;code&gt;safe&lt;/code&gt; package
+in mind when doing further problems.  Coming from Rust I don&amp;rsquo;t have much of a
+taste for these exceptions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack ghci
+...
+*Main Lib&amp;gt; :m + Safe.Foldable
+*Main Lib Safe.Foldable&amp;gt; :t foldl1May
+foldl1May :: Foldable t =&amp;gt; (a -&amp;gt; a -&amp;gt; a) -&amp;gt; t a -&amp;gt; Maybe a
+*Main Lib Safe.Foldable&amp;gt; foldl1May (+) []
+Nothing
+*Main Lib Safe.Foldable&amp;gt; foldl1May (+) [1,2,3]
+Just 6
+*Main Lib Safe.Foldable&amp;gt; :q
+$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It&amp;rsquo;s good to know the nomenclature of:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Safe&amp;rdquo; means: &amp;ldquo;won&amp;rsquo;t throw an exception&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;bailing-early-from-a-fold&#34;&gt;Bailing Early from a Fold&lt;/h3&gt;
+&lt;p&gt;The second of these points, where we know the rule is either met or broken
+before we&amp;rsquo;ve finished iterating over the digits of the number, basically
+means that we&amp;rsquo;d like to quit iterating once we have a solid answer.&lt;/p&gt;
+&lt;p&gt;In procedural code performing a &amp;ldquo;for loop&amp;rdquo;, a &amp;ldquo;break&amp;rdquo; statement would do
+this job.&lt;/p&gt;
+&lt;p&gt;The way I approached this was to wrap the accumulator in a &lt;code&gt;Maybe&lt;/code&gt; and have
+the fold function &amp;ldquo;pass through&amp;rdquo; when the accumulator is &lt;code&gt;Nothing&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Maybe&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Maybe&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Maybe&lt;/span&gt; a
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Nothing&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Nothing&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&lt;/span&gt; f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Just&lt;/span&gt; acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f acc x
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So as soon as &lt;code&gt;f&lt;/code&gt; produces a &lt;code&gt;Nothing&lt;/code&gt;, the fold will produce &lt;code&gt;Nothing&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I used &lt;code&gt;Maybe&lt;/code&gt; because I didn&amp;rsquo;t care about the data being accumulated, I only
+cared whether the fold got to the end of the list.  If I cared about the data
+in an &amp;ldquo;early exit&amp;rdquo; of the fold I could have used &lt;code&gt;Either&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Left&lt;/span&gt; x &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Left&lt;/span&gt; x
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Right&lt;/span&gt; acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f acc x
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was hoping the compiler would optimise out passing through &lt;code&gt;Nothing&lt;/code&gt; and
+bail as soon as the accumulator becomes &lt;code&gt;Nothing&lt;/code&gt;. This pattern could the be used
+to fold over an infinite list&amp;hellip; sadly not:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ stack ghci
+...
+*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..100&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+Nothing
+*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..40&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+Just &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
+*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+^CInterrupted.
+*Main Lib&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps this is a compiler optimization that just isn&amp;rsquo;t turned on for &lt;code&gt;ghci&lt;/code&gt;&amp;hellip;
+I&amp;rsquo;d like to find out, and if not find something else that can do this, as this
+would be an powerful pattern to have in my playbook.&lt;/p&gt;
+&lt;h2 id=&#34;trees&#34;&gt;Trees&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt; was all about tree structures.&lt;/p&gt;
+&lt;p&gt;The problem is presented as: &amp;ldquo;you&amp;rsquo;re given a bunch of data on which planetary bodies
+orbit which&amp;rdquo;, with an implication of there being an orbiter and orbitee.  In Physics
+this would be the model for when one body is much more massive than the other.
+We think of the Moon orbiting the Earth, when really they&amp;rsquo;re a binary pair orbiting
+a common centre of mass.  You&amp;rsquo;re then asked to count the total number of direct and
+indirect orbits (orbiting something via orbiting something that&amp;rsquo;s orbiting it).
+This problem was going to be about finding the data
+structure that best describes the overall system and using it.&lt;/p&gt;
+&lt;p&gt;My first thought was &amp;ldquo;Tree or DAG&lt;sup id=&#34;fnref:6&#34;&gt;&lt;a href=&#34;#fn:6&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;?&amp;quot;.  A generic Graph could be ruled out as:
+C orbiting B, orbiting A, orbiting C, is nonsense. Try and draw it on a piece of
+paper.  To decide &amp;ldquo;Tree or DAG&amp;rdquo; I though about if a &amp;ldquo;diamond shape&amp;rdquo; made sense.
+I.e. D orbiting C &amp;amp; B, which are both orbiting A.  Trying to draw this on a piece
+of paper showed that a &amp;ldquo;diamond shape&amp;rdquo; wouldn&amp;rsquo;t work in general, as in the model,
+a body can&amp;rsquo;t orbit two other bodies. Tree it is!&lt;/p&gt;
+&lt;p&gt;Any number of bodies can be orbiting a body, so we want a tree where a node can
+point to any number of subtrees.  &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html&#34;&gt;&lt;code&gt;Data.Tree&lt;/code&gt;&lt;/a&gt; fits the bill.&lt;/p&gt;
+&lt;p&gt;The input data was a file listing all the orbits.  So for B &amp;amp; C orbiting A, and D
+orbiting C the input data would look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;A)B
+A)C
+C)D
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;)&lt;/code&gt; means &amp;ldquo;is orbited by&amp;rdquo; so:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A is orbited by B.  A is orbited by C. C is orbited by D.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In the nomenclature of this problem, D is &amp;ldquo;indirectly orbiting&amp;rdquo; A.  A could be the Sun,
+B could be Venus, C could be the Earth, D would then be the Moon.&lt;/p&gt;
+&lt;p&gt;From the giant input I was given, I didn&amp;rsquo;t know whether there was going to be more
+than one &amp;ldquo;root&amp;rdquo;/&amp;ldquo;orbital centre&amp;rdquo;, so I&amp;rsquo;d need to use a [forest][forest], which in
+&lt;code&gt;Data.Tree&lt;/code&gt; is just a type alias for a list of trees.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6&#34;&gt;my solution&lt;/a&gt; I was able to put the input data into a forest with
+[&lt;code&gt;unfoldForest&lt;/code&gt;][unfold-forest].&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldForest&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a, [b])) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;b&lt;/code&gt; is the type of the &amp;ldquo;seed values&amp;rdquo;.  A &amp;ldquo;seed value&amp;rdquo; is a value from which a node
+can be generated.  To build the Forest, &lt;code&gt;unfoldForest&lt;/code&gt; (and similarly &lt;code&gt;unfoldTree&lt;/code&gt;),
+take a function that takes a seed value and produces the node data and a list of
+seed values for all subtrees from the node. &lt;code&gt;unfoldForest&lt;/code&gt; then takes a list of seed
+values for the roots of the trees in the forest, whereas &lt;code&gt;unfoldTree&lt;/code&gt; take a single
+seed value.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d split the input data into a list of tuples of &lt;code&gt;String&lt;/code&gt;s where the first element
+of the tuple was the orbitee and the second was the orbiter.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;parseOrbit&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this case, both types &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt; will find the concrete type of &lt;code&gt;String&lt;/code&gt;.  Both
+the seed value and the node data will just be the name of the body given in the data.&lt;/p&gt;
+&lt;p&gt;First I needed to find what the initial seed values, the roots, were in the data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-- Which bodies do not orbit anything?&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [(a,a)] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a]
+&lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt; orbits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [x &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; (x, y) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; orbits, notElem x &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; fmap snd &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; orbits]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, given the orbit data, I was able to describe the &amp;ldquo;unfold function&amp;rdquo;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-- Given the orbit data, what orbits a given body?&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;forestBuilder&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [(a,a)] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a,[a])
+&lt;span style=&#34;color:#a6e22e&#34;&gt;forestBuilder&lt;/span&gt; orbits body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (body, [snd orbit &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; orbit &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; orbits, body &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; fst orbit])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;forestBuilder orbits&lt;/code&gt; would give our &amp;ldquo;unfold function&amp;rdquo;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orbits&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; [(&lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;)]
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldFunction&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;, [&lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;])
+&lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldFunction&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; forestBuilder orbits
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Stringing that together, we can load the input data into a forest:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
+  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; fmap lines &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; readFile &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;input.txt&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; orbits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fmap parseOrbit contents
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; myForest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; unfoldForest (forestBuilder orbits) (roots orbits)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the data is loaded into a &lt;code&gt;Forest&lt;/code&gt;, I want to walk through the forest and
+count how many steps from the root each node is.  Summing all those will give
+us the number of direct and indirect orbits.&lt;/p&gt;
+&lt;p&gt;I was hoping to, quite symmetrically, use &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3&#34;&gt;&lt;code&gt;foldTree&lt;/code&gt;&lt;/a&gt; to get the answer.&lt;/p&gt;
+&lt;p&gt;I couldn&amp;rsquo;t see how to do it with &lt;code&gt;foldTree&lt;/code&gt;.  I had &lt;code&gt;Tree String&lt;/code&gt; where the
+string data was wholly uninteresting when counting the number of orbits
+as I wanted to sum the depths of each node. The type signature of
+&lt;code&gt;foldTree&lt;/code&gt; appears to want a function that uses the node values:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldTree&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I ended up splitting the &lt;code&gt;Tree&lt;/code&gt; into its &amp;ldquo;levels&amp;rdquo; with &lt;code&gt;levels&lt;/code&gt; and
+then folding over that.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;levels&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [[a]]
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;sumDepthsTree&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b
+&lt;span style=&#34;color:#a6e22e&#34;&gt;sumDepthsTree&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; snd &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; foldl foldFunc (&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; levels
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; (a,a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a,a)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunc&lt;/span&gt; (depth, acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (depth &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, acc &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; depth &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; genericLength x)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I used a tuple accumulator to record the depth (i.e. the index within &lt;code&gt;levels mytree&lt;/code&gt; and the accumulating sum of the depths.&lt;/p&gt;
+&lt;p&gt;That was enough to give me the answer to the first part of &lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt;.  In
+writing this I&amp;rsquo;ve just realised there&amp;rsquo;s a second half to the problem that I
+missed before which looks like it&amp;rsquo;s asking you to calculate how many steps it
+takes to get from one tree node to another.  I&amp;rsquo;ll come back to this at some
+point and add to &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6&#34;&gt;my solution&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;no-editor-integration-yet&#34;&gt;No Editor Integration Yet&lt;/h2&gt;
+&lt;p&gt;Interestingly, I didn&amp;rsquo;t setup any editor integration for Haskell in this first
+week.&lt;/p&gt;
+&lt;p&gt;While my applications are just being split between &lt;code&gt;src/Lib.hs&lt;/code&gt; &amp;amp;
+&lt;code&gt;app/Main.hs&lt;/code&gt;, and I can search on &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt;, I&amp;rsquo;ve not felt like I need
+it.&lt;/p&gt;
+&lt;p&gt;The syntax is fairly minimal, so I haven&amp;rsquo;t needed an editor to write code for
+me, and it is readable as text.  NeoVim gives me Haskell syntax highlighting
+out of the box and I&amp;rsquo;m yet to need any of the IDE level functionality.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve blogged before about how &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/ide-read-code/&#34;&gt;you shouldn&amp;rsquo;t need an IDE to read
+code&lt;/a&gt; as code should be &amp;ldquo;readable as text&amp;rdquo;, and I&amp;rsquo;m pleased that
+Haskell is living up to that.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ll keep rolling with syntax highlighting and nothing else for now.  If I need
+to get some better integration I&amp;rsquo;ll look at installing a Haskell language
+server&lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt; and hooking the &lt;a href=&#34;https://github.com/autozimu/LanguageClient-neovim&#34;&gt;language server client&lt;/a&gt; to
+it.&lt;/p&gt;
+&lt;h2 id=&#34;packaging-and-modules&#34;&gt;Packaging and Modules&lt;/h2&gt;
+&lt;p&gt;The simplest way to import functions from a module is to do:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.Sequence
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This pulls in the functions exported by those modules into the current
+namespace.&lt;/p&gt;
+&lt;p&gt;Importing like this makes code harder to &amp;ldquo;read as text&amp;rdquo; as when you see a
+function, where it&amp;rsquo;s come from is not explicit in code.  You&amp;rsquo;d have to look
+through what each module you import exports to find the function you&amp;rsquo;re using.&lt;/p&gt;
+&lt;p&gt;This can be fixed by importing only specific functions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib (&lt;span style=&#34;color:#a6e22e&#34;&gt;someFunc&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now only the &lt;code&gt;someFunc&lt;/code&gt; function will be imported from &lt;code&gt;Lib&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Collisions between functions imported from different libraries and Prelude can
+be resolved with qualified imports:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; L
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then every function from &lt;code&gt;Lib&lt;/code&gt; is callable as &lt;code&gt;L.someFunc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;These can be combined to do qualified imports and be explicit about the
+functions imported:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; L (someFunc)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, again resulting in &lt;code&gt;someFunc&lt;/code&gt; being callable as &lt;code&gt;L.someFunc&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In order to keep my code as explicit as possible, and thus as &amp;ldquo;readable as
+code&amp;rdquo; as possible, I&amp;rsquo;m going to use this as a convention from now on.  I&amp;rsquo;ll
+also try to read some open source Haskell to see if the wider community has a
+convention on this.&lt;/p&gt;
+&lt;p&gt;This may end up being laborious.  In Rust, importing is &lt;em&gt;explicit&lt;/em&gt; in this way,
+but a large amount of functionality is held in methods implemented on
+structures and in traits.  You only have to import the &lt;code&gt;struct&lt;/code&gt; or &lt;code&gt;trait&lt;/code&gt; to
+get the methods. In Haskell, as everything is a function, I&amp;rsquo;ll need to import
+each function explicitly.&lt;/p&gt;
+&lt;p&gt;If I end up giving up on this as a convention I&amp;rsquo;ll look into integrating a
+Haskell language server&lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt; into my editor to give me the &amp;ldquo;go to definition&amp;rdquo;
+and all those goodies.&lt;/p&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Doing some of the first few Advent of Code problems was good for revising and
+refining some of the basics.  I reckon I could churn through all of the
+problems using the basic tools I know how to use: list manipulation, recursion,
+functors, applicative functors, etc.  But, I want to go away and do some wider
+reading before continuing so I can really level up my Haskell.&lt;/p&gt;
+&lt;p&gt;My general feelings about Haskell thus far, learning it for the second time:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I&amp;rsquo;m enjoying the purity and clean syntax.&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;m enjoying using the word &amp;ldquo;function&amp;rdquo; without feeling a little guilty.&lt;/li&gt;
+&lt;li&gt;Compared to Rust, Haskell is more implicit.  It appears there&amp;rsquo;s ways of being
+of being totally explicit about things and I&amp;rsquo;ll look to do that.  Maybe with
+a bit more experience I&amp;rsquo;ll relax a little bit.&lt;/li&gt;
+&lt;li&gt;I haven&amp;rsquo;t fully learned how the packaging works yet, I&amp;rsquo;ll feel more
+comfortable when I have.  One thing I don&amp;rsquo;t know is how you find out what
+&amp;ldquo;package&amp;rdquo; a module is found in.&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;d like to get better at searching for things.  I&amp;rsquo;ve found Google and Stack
+Overflow not that helpful.  I&amp;rsquo;ve searched for type definitions on
+&lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt; for functions that I want.  I&amp;rsquo;d like to have a reliable way
+of finding something when &amp;ldquo;I need a thing that does this&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;There seems to be a lot of different ways to do the same thing, and I&amp;rsquo;m not
+sure yet where to find advice on what good approaches are.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I&amp;rsquo;ll go do some reading, then come back to these problems.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Learn you a Haskell for greater good. &lt;a href=&#34;http://learnyouahaskell.com/chapters&#34;&gt;http://learnyouahaskell.com/chapters&lt;/a&gt; &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Haskell from first principals. LINK &lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Advent of code provided a coding challenge on each day of December. &lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://python-poetry.org/&#34;&gt;Poetry&lt;/a&gt; does quite a good job of Python dependency management.
+It&amp;rsquo;s not totally watertight, but it&amp;rsquo;s a huge improvement on &lt;a href=&#34;https://pypi.org/project/pip/&#34;&gt;pip&lt;/a&gt; &amp;amp; &lt;a href=&#34;https://pipenv-fork.readthedocs.io/en/latest/&#34;&gt;Pipenv&lt;/a&gt;
+to which my derision is directed.  And Poetry has a very pretty website. &lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Rust&amp;rsquo;s &lt;code&gt;Option&amp;lt;T&amp;gt;&lt;/code&gt; (with variants &lt;code&gt;Some&amp;lt;T&amp;gt;&lt;/code&gt; &amp;amp; &lt;code&gt;None&lt;/code&gt;) enum is equivalent to Haskell&amp;rsquo;s &lt;code&gt;Maybe T&lt;/code&gt;
+with &lt;code&gt;Just T&lt;/code&gt; and &lt;code&gt;Nothing&lt;/code&gt;. &lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;DAG: Direct Acyclic Graph: &lt;a href=&#34;https://en.wikipedia.org/wiki/Directed_acyclic_graph&#34;&gt;https://en.wikipedia.org/wiki/Directed_acyclic_graph&lt;/a&gt; &lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:7&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;I&amp;rsquo;ve found &lt;a href=&#34;https://github.com/haskell/haskell-language-server&#34;&gt;Haskell language server&lt;/a&gt;, but as the README says, it&amp;rsquo;s in &amp;ldquo;early stages&amp;rdquo;. &lt;a href=&#34;#fnref:7&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+     </item>
    
      <item>
        <title>Itertools - A Force for Good?</title>

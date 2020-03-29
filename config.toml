@@ -25,7 +25,7 @@ googleAnalytics = "UA-161243400-1"
     #youtube = "user/username" # or channel/channelname
 
 [params]
-    tagline = "Some things I think. Some things, I think."
+    tagline = "Some things I think."
     description = ""
     utterancesRepo = "https://github.com/tarquin-the-brave/blog"
     utterancesIssueTerm = "pathname"

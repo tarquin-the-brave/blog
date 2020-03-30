@@ -72,7 +72,7 @@
 
         
 
-        <li>20 minutes read</li>
+        <li>19 minutes read</li>
     </ul>
 </aside>
 
@@ -342,14 +342,9 @@ Nothing
 *Main Lib Control.Monad&gt;
 </code></pre><p>Looking at our <code>foldFunction</code> above, it&rsquo;s actually a reimplementation of <code>&gt;&gt;=</code> from
 the <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854">implementation of the Monad typeclass for Maybe</a>.</p>
-<p>It&rsquo;s interesting that the compiler was able to do this &ldquo;early exit&rdquo; for <code>foldM</code> and
-not for my fold.  In my case, with <code>foldFunction</code> from above, the compiler would have
-to infer from the code that an &ldquo;early exit&rdquo; is possible, whereas if the accumulator
-is always a monad, it can know to put that &ldquo;early exit&rdquo; in every time.  And if there
-is a way to get this early exit every time, with <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM"><code>foldM</code></a>, why spend the time
-making the compiler optimizations to get foldl to do it for the times that the
-accumulator either is, or acts like, a monad.  That&rsquo;s my theory anyway.  I&rsquo;m interested
-to hear in comments if there&rsquo;s any more to this story.</p>
+<p>It&rsquo;s interesting that <code>foldM</code> was able to do this &ldquo;early exit&rdquo; for <code>foldM</code> and
+<code>foldl</code> wasn&rsquo;t.  I&rsquo;ll have to look at the source code and see if I can work out
+why.</p>
 <p>Having a fold that can bail is a powerful pattern when combined with infinite lists.
 I&rsquo;ll remember this one.</p>
 <h2 id="trees">Trees</h2>

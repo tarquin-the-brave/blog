@@ -72,7 +72,7 @@
 
         
 
-        <li>18 minutes read</li>
+        <li>20 minutes read</li>
     </ul>
 </aside>
 
@@ -102,6 +102,12 @@ believe that&rsquo;s fed into improving how I build things in other languages.</
 wider group of colleagues have decided to do a couple of exercises every week,
 to learn a variety of languages, and meet fortnightly to discuss approaches.  I
 saw this as a good opportunity to &ldquo;pick up Haskell again&rdquo;.  So I did.</p>
+<p><em>This post, along with following parts, will be my log of my experiences and
+the things I&rsquo;m learning while going through this exercise. It&rsquo;ll be littered
+with wild theories, opinions, inefficient uses of code, hopefully some good
+learnings, and sometimes things that are just plain wrong.  I&rsquo;m keen to hear
+any thoughts people have or anything they can add or ask in comments.  So don&rsquo;t
+be afraid to drop a comment or three!</em></p>
 <h1 id="week-1">Week 1</h1>
 <h2 id="build-tooling">Build Tooling</h2>
 <p>First thing&rsquo;s first.  Build tooling.  I didn&rsquo;t really bother with this the last
@@ -300,20 +306,52 @@ in an &ldquo;early exit&rdquo; of the fold I could have used <code>Either</code>
 <span style="color:#a6e22e">foldFunction&#39;</span> f (<span style="color:#66d9ef">Right</span> acc) x <span style="color:#f92672">=</span> f acc x
 </code></pre></div><p>I was hoping the compiler would optimise out passing through <code>Nothing</code> and bail
 as soon as the accumulator becomes <code>Nothing</code>. Then this pattern could be used
-to fold over an infinite list&hellip; sadly not:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ stack ghci
-...
-*Main Lib&gt; foldl <span style="color:#f92672">(</span>generalFoldFunction <span style="color:#f92672">(</span><span style="color:#ae81ff">\x</span> y-&gt; x*y &gt; 2500<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Just 0<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>1..100<span style="color:#f92672">]</span>
+to fold over an infinite list&hellip; sadly not.  Say we want to quit with <code>Nothing</code>
+as soon as an element is found greater than <code>10</code>:</p>
+<pre><code>*Main Lib&gt; :t foldFunction
+foldFunction :: (a -&gt; b -&gt; Maybe a) -&gt; Maybe a -&gt; b -&gt; Maybe a
+*Main Lib&gt; foldl (foldFunction (\_ x-&gt; if x &gt; 10 then Nothing else Just x)) (Just 0) [0..10]
+Just 10
+*Main Lib&gt; foldl (foldFunction (\_ x-&gt; if x &gt; 10 then Nothing else Just x)) (Just 0) [0..11]
 Nothing
-*Main Lib&gt; foldl <span style="color:#f92672">(</span>generalFoldFunction <span style="color:#f92672">(</span><span style="color:#ae81ff">\x</span> y-&gt; x*y &gt; 2500<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Just 0<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>1..40<span style="color:#f92672">]</span>
-Just <span style="color:#ae81ff">40</span>
-*Main Lib&gt; foldl <span style="color:#f92672">(</span>generalFoldFunction <span style="color:#f92672">(</span><span style="color:#ae81ff">\x</span> y-&gt; x*y &gt; 2500<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Just 0<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>1..<span style="color:#f92672">]</span>
+*Main Lib&gt; foldl (foldFunction (\_ x-&gt; if x &gt; 10 then Nothing else Just x)) (Just 0) [0..]
 ^CInterrupted.
 *Main Lib&gt;
-</code></pre></div><p>Perhaps this is a compiler optimization that just isn&rsquo;t turned on for <code>ghci</code>&hellip;
-I&rsquo;d like to find out, and if not find something else that can do this. Folding
-over an infinite list and bailing when I&rsquo;ve got what I want would be a powerful
-pattern to have in my playbook.</p>
+</code></pre><p>UPDATE: I&rsquo;ve been pointed at <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM"><code>foldM</code></a> from <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html"><code>Control.Monad</code></a>.
+The above can be written as:</p>
+<pre><code>*Main Lib&gt; :m + Control.Monad
+*Main Lib Control.Monad&gt; :t foldM
+foldM :: (Foldable t, Monad m) =&gt; (b -&gt; a -&gt; m b) -&gt; b -&gt; t a -&gt; m b
+*Main Lib Control.Monad&gt; foldM (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..10]
+Just 10
+*Main Lib Control.Monad&gt; foldM (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad&gt; foldM (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad&gt;
+</code></pre><p>Interestingly <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM"><code>foldM</code></a> has this &ldquo;early exit&rdquo;, as you can see it returned
+<code>Nothing</code> when ran on the infinite list <code>[0..]</code>.</p>
+<p>In my case, I wasn&rsquo;t actually bothered about the accumulator value whether the
+fold bailed early or not.  In that case I could have used <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM_"><code>foldM_</code></a>.</p>
+<pre><code>*Main Lib Control.Monad&gt; foldM_ (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..10]
+Just ()
+*Main Lib Control.Monad&gt; foldM_ (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad&gt; foldM_ (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad&gt;
+</code></pre><p>Looking at our <code>foldFunction</code> above, it&rsquo;s actually a reimplementation of <code>&gt;&gt;=</code> from
+the <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854">implementation of the Monad typeclass for Maybe</a>.</p>
+<p>It&rsquo;s interesting that the compiler was able to do this &ldquo;early exit&rdquo; for <code>foldM</code> and
+not for my fold.  In my case, with <code>foldFunction</code> from above, the compiler would have
+to infer from the code that an &ldquo;early exit&rdquo; is possible, whereas if the accumulator
+is always a monad, it can know to put that &ldquo;early exit&rdquo; in every time.  And if there
+is a way to get this early exit every time, with <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM"><code>foldM</code></a>, why spend the time
+making the compiler optimizations to get foldl to do it for the times that the
+accumulator either is, or acts like, a monad.  That&rsquo;s my theory anyway.  I&rsquo;m interested
+to hear in comments if there&rsquo;s any more to this story.</p>
+<p>Having a fold that can bail is a powerful pattern when combined with infinite lists.
+I&rsquo;ll remember this one.</p>
 <h2 id="trees">Trees</h2>
 <p><a href="https://adventofcode.com/2019/day/6">Day 6</a> was all about tree structures.</p>
 <p>The problem is presented as: &ldquo;you&rsquo;re given a bunch of data on which planetary bodies

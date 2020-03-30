@@ -26,6 +26,13 @@ wider group of colleagues have decided to do a couple of exercises every week,
 to learn a variety of languages, and meet fortnightly to discuss approaches.  I
 saw this as a good opportunity to "pick up Haskell again".  So I did.
 
+_This post, along with following parts, will be my log of my experiences and
+the things I'm learning while going through this exercise. It'll be littered
+with wild theories, opinions, inefficient uses of code, hopefully some good
+learnings, and sometimes things that are just plain wrong.  I'm keen to hear
+any thoughts people have or anything they can add or ask in comments.  So don't
+be afraid to drop a comment or three!_
+
 # Week 1
 
 ## Build Tooling
@@ -285,24 +292,67 @@ foldFunction' f (Right acc) x = f acc x
 
 I was hoping the compiler would optimise out passing through `Nothing` and bail
 as soon as the accumulator becomes `Nothing`. Then this pattern could be used
-to fold over an infinite list... sadly not:
+to fold over an infinite list... sadly not.  Say we want to quit with `Nothing`
+as soon as an element is found greater than `10`:
 
-```bash
-$ stack ghci
-...
-*Main Lib> foldl (generalFoldFunction (\x y-> x*y > 2500)) (Just 0) [1..100]
+```
+*Main Lib> :t foldFunction
+foldFunction :: (a -> b -> Maybe a) -> Maybe a -> b -> Maybe a
+*Main Lib> foldl (foldFunction (\_ x-> if x > 10 then Nothing else Just x)) (Just 0) [0..10]
+Just 10
+*Main Lib> foldl (foldFunction (\_ x-> if x > 10 then Nothing else Just x)) (Just 0) [0..11]
 Nothing
-*Main Lib> foldl (generalFoldFunction (\x y-> x*y > 2500)) (Just 0) [1..40]
-Just 40
-*Main Lib> foldl (generalFoldFunction (\x y-> x*y > 2500)) (Just 0) [1..]
+*Main Lib> foldl (foldFunction (\_ x-> if x > 10 then Nothing else Just x)) (Just 0) [0..]
 ^CInterrupted.
 *Main Lib>
 ```
 
-Perhaps this is a compiler optimization that just isn't turned on for `ghci`...
-I'd like to find out, and if not find something else that can do this. Folding
-over an infinite list and bailing when I've got what I want would be a powerful
-pattern to have in my playbook.
+UPDATE: I've been pointed at [`foldM`][foldm] from [`Control.Monad`][control-monad].
+The above can be written as:
+
+```
+*Main Lib> :m + Control.Monad
+*Main Lib Control.Monad> :t foldM
+foldM :: (Foldable t, Monad m) => (b -> a -> m b) -> b -> t a -> m b
+*Main Lib Control.Monad> foldM (\_ x -> if x > 10 then Nothing else Just x) 0 [0..10]
+Just 10
+*Main Lib Control.Monad> foldM (\_ x -> if x > 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad> foldM (\_ x -> if x > 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad>
+```
+
+Interestingly [`foldM`][foldm] has this "early exit", as you can see it returned
+`Nothing` when ran on the infinite list `[0..]`.
+
+In my case, I wasn't actually bothered about the accumulator value whether the
+fold bailed early or not.  In that case I could have used [`foldM_`][foldm-underscore].
+
+```
+*Main Lib Control.Monad> foldM_ (\_ x -> if x > 10 then Nothing else Just x) 0 [0..10]
+Just ()
+*Main Lib Control.Monad> foldM_ (\_ x -> if x > 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad> foldM_ (\_ x -> if x > 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad>
+```
+
+Looking at our `foldFunction` above, it's actually a reimplementation of `>>=` from
+the [implementation of the Monad typeclass for Maybe][maybe-monad].
+
+It's interesting that the compiler was able to do this "early exit" for `foldM` and
+not for my fold.  In my case, with `foldFunction` from above, the compiler would have
+to infer from the code that an "early exit" is possible, whereas if the accumulator
+is always a monad, it can know to put that "early exit" in every time.  And if there
+is a way to get this early exit every time, with [`foldM`][foldm], why spend the time
+making the compiler optimizations to get foldl to do it for the times that the
+accumulator either is, or acts like, a monad.  That's my theory anyway.  I'm interested
+to hear in comments if there's any more to this story.
+
+Having a fold that can bail is a powerful pattern when combined with infinite lists.
+I'll remember this one.
 
 ## Trees
 
@@ -581,6 +631,10 @@ I'll go do some reading, then come back to these problems.
 [no-ide-read]: https://tarquin-the-brave.github.io/blog/posts/ide-read-code/
 [language-server-neovim]: https://github.com/autozimu/LanguageClient-neovim
 [hls]: https://github.com/haskell/haskell-language-server
+[maybe-monad]: http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854
+[foldm]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM
+[foldm-underscore]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM_
+[control-monad]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html
 
 [^1]: Learn you a Haskell for greater good. http://learnyouahaskell.com/chapters
 [^2]: Haskell from first principals. LINK

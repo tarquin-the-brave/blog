@@ -32,6 +32,12 @@ believe that&amp;rsquo;s fed into improving how I build things in other language
 wider group of colleagues have decided to do a couple of exercises every week,
 to learn a variety of languages, and meet fortnightly to discuss approaches.  I
 saw this as a good opportunity to &amp;ldquo;pick up Haskell again&amp;rdquo;.  So I did.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This post, along with following parts, will be my log of my experiences and
+the things I&amp;rsquo;m learning while going through this exercise. It&amp;rsquo;ll be littered
+with wild theories, opinions, inefficient uses of code, hopefully some good
+learnings, and sometimes things that are just plain wrong.  I&amp;rsquo;m keen to hear
+any thoughts people have or anything they can add or ask in comments.  So don&amp;rsquo;t
+be afraid to drop a comment or three!&lt;/em&gt;&lt;/p&gt;
 &lt;h1 id=&#34;week-1&#34;&gt;Week 1&lt;/h1&gt;
 &lt;h2 id=&#34;build-tooling&#34;&gt;Build Tooling&lt;/h2&gt;
 &lt;p&gt;First thing&amp;rsquo;s first.  Build tooling.  I didn&amp;rsquo;t really bother with this the last
@@ -230,20 +236,52 @@ in an &amp;ldquo;early exit&amp;rdquo; of the fold I could have used &lt;code&gt
 &lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Right&lt;/span&gt; acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f acc x
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was hoping the compiler would optimise out passing through &lt;code&gt;Nothing&lt;/code&gt; and bail
 as soon as the accumulator becomes &lt;code&gt;Nothing&lt;/code&gt;. Then this pattern could be used
-to fold over an infinite list&amp;hellip; sadly not:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ stack ghci
-...
-*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..100&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+to fold over an infinite list&amp;hellip; sadly not.  Say we want to quit with &lt;code&gt;Nothing&lt;/code&gt;
+as soon as an element is found greater than &lt;code&gt;10&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;*Main Lib&amp;gt; :t foldFunction
+foldFunction :: (a -&amp;gt; b -&amp;gt; Maybe a) -&amp;gt; Maybe a -&amp;gt; b -&amp;gt; Maybe a
+*Main Lib&amp;gt; foldl (foldFunction (\_ x-&amp;gt; if x &amp;gt; 10 then Nothing else Just x)) (Just 0) [0..10]
+Just 10
+*Main Lib&amp;gt; foldl (foldFunction (\_ x-&amp;gt; if x &amp;gt; 10 then Nothing else Just x)) (Just 0) [0..11]
 Nothing
-*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..40&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-Just &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
-*Main Lib&amp;gt; foldl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;generalFoldFunction &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\x&lt;/span&gt; y-&amp;gt; x*y &amp;gt; 2500&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Just 0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1..&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+*Main Lib&amp;gt; foldl (foldFunction (\_ x-&amp;gt; if x &amp;gt; 10 then Nothing else Just x)) (Just 0) [0..]
 ^CInterrupted.
 *Main Lib&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps this is a compiler optimization that just isn&amp;rsquo;t turned on for &lt;code&gt;ghci&lt;/code&gt;&amp;hellip;
-I&amp;rsquo;d like to find out, and if not find something else that can do this. Folding
-over an infinite list and bailing when I&amp;rsquo;ve got what I want would be a powerful
-pattern to have in my playbook.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;UPDATE: I&amp;rsquo;ve been pointed at &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM&#34;&gt;&lt;code&gt;foldM&lt;/code&gt;&lt;/a&gt; from &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html&#34;&gt;&lt;code&gt;Control.Monad&lt;/code&gt;&lt;/a&gt;.
+The above can be written as:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;*Main Lib&amp;gt; :m + Control.Monad
+*Main Lib Control.Monad&amp;gt; :t foldM
+foldM :: (Foldable t, Monad m) =&amp;gt; (b -&amp;gt; a -&amp;gt; m b) -&amp;gt; b -&amp;gt; t a -&amp;gt; m b
+*Main Lib Control.Monad&amp;gt; foldM (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..10]
+Just 10
+*Main Lib Control.Monad&amp;gt; foldM (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad&amp;gt; foldM (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Interestingly &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM&#34;&gt;&lt;code&gt;foldM&lt;/code&gt;&lt;/a&gt; has this &amp;ldquo;early exit&amp;rdquo;, as you can see it returned
+&lt;code&gt;Nothing&lt;/code&gt; when ran on the infinite list &lt;code&gt;[0..]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In my case, I wasn&amp;rsquo;t actually bothered about the accumulator value whether the
+fold bailed early or not.  In that case I could have used &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM_&#34;&gt;&lt;code&gt;foldM_&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;*Main Lib Control.Monad&amp;gt; foldM_ (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..10]
+Just ()
+*Main Lib Control.Monad&amp;gt; foldM_ (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..11]
+Nothing
+*Main Lib Control.Monad&amp;gt; foldM_ (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..]
+Nothing
+*Main Lib Control.Monad&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Looking at our &lt;code&gt;foldFunction&lt;/code&gt; above, it&amp;rsquo;s actually a reimplementation of &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt; from
+the &lt;a href=&#34;http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854&#34;&gt;implementation of the Monad typeclass for Maybe&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s interesting that the compiler was able to do this &amp;ldquo;early exit&amp;rdquo; for &lt;code&gt;foldM&lt;/code&gt; and
+not for my fold.  In my case, with &lt;code&gt;foldFunction&lt;/code&gt; from above, the compiler would have
+to infer from the code that an &amp;ldquo;early exit&amp;rdquo; is possible, whereas if the accumulator
+is always a monad, it can know to put that &amp;ldquo;early exit&amp;rdquo; in every time.  And if there
+is a way to get this early exit every time, with &lt;a href=&#34;https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM&#34;&gt;&lt;code&gt;foldM&lt;/code&gt;&lt;/a&gt;, why spend the time
+making the compiler optimizations to get foldl to do it for the times that the
+accumulator either is, or acts like, a monad.  That&amp;rsquo;s my theory anyway.  I&amp;rsquo;m interested
+to hear in comments if there&amp;rsquo;s any more to this story.&lt;/p&gt;
+&lt;p&gt;Having a fold that can bail is a powerful pattern when combined with infinite lists.
+I&amp;rsquo;ll remember this one.&lt;/p&gt;
 &lt;h2 id=&#34;trees&#34;&gt;Trees&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt; was all about tree structures.&lt;/p&gt;
 &lt;p&gt;The problem is presented as: &amp;ldquo;you&amp;rsquo;re given a bunch of data on which planetary bodies

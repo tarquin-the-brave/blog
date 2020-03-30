@@ -182,22 +182,23 @@ feel sharp. If I hadn&rsquo;t drank the Vim coolaid, I imagine I&rsquo;d be usin
     </ul>
 </section>
     
-        <div id="utterances"></div>
+        <section id="utterances"></section>
+
 <script>
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         let s = document.createElement("script");
         s.setAttribute("repo", "tarquin-the-brave\/blog");
         s.src = "https://utteranc.es/client.js";
-        s.setAttribute("issue-term", "pathname");
-        s.setAttribute("theme", "")
+        
+        
         document.getElementById("utterances").innerHTML = "";
         document.getElementById("utterances").appendChild(s);
     } else {
         let s = document.createElement("script");
         s.setAttribute("repo", "tarquin-the-brave\/blog");
         s.src = "https://utteranc.es/client.js";
-        s.setAttribute("issue-term", "pathname");
-        s.setAttribute("theme", "")
+        
+        
         document.getElementById("utterances").innerHTML = "";
         document.getElementById("utterances").appendChild(s);
     }

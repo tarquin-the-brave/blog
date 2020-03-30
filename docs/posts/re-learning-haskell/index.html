@@ -145,8 +145,8 @@ an opportunity for function currying.</p>
 <p>Using <code>stack new</code> sets up a <code>src/Lib.hs</code> and a <code>app/Main.hs</code>.  While not having
 read up on the conventional use of these files, my guess is that <code>Lib.hs</code> is
 for any functionality that might become a library, keeping things as generic as
-possible, and main is for code specific to this application: where to read the
-data from, error handling, etc.  Although, especially for earlier problems,
+possible, and <code>Main.hs</code> is for code specific to this application: where to read
+the data from, error handling, etc.  Although, especially for earlier problems,
 this separation will be somewhat artificial.  I&rsquo;m not going to get too worried
 about what&rsquo;s in what file, but use it to get used to exporting and importing.</p>
 <p>I ended up with a <code>Lib.hs</code>:</p>
@@ -188,7 +188,7 @@ gets given their own problem input).</p>
 <p>The function <code>tot</code> takes a function and applies it to each element of a list
 and sums the results.  To fulfil each half of the problem I then only needed to
 define the two functions to pass to <code>tot</code>.</p>
-<p>This <a href="https://adventofcode.com/2019/day/1">day 1 problem</a> was gave a quick revision of:</p>
+<p>This <a href="https://adventofcode.com/2019/day/1">day 1 problem</a> gave a quick revision of:</p>
 <ul>
 <li>modules,</li>
 <li>do notation,</li>
@@ -213,7 +213,7 @@ cross, <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/
 <li><code>foldl</code>, and</li>
 <li>Using lists as applicative functors,</li>
 </ul>
-<p>without tool much hassle.  <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3">The solution</a> wasn&rsquo;t very efficient, but
+<p>without too much hassle.  <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3">The solution</a> wasn&rsquo;t very efficient, but
 it worked.</p>
 <h2 id="fun-with-folds">Fun With Folds</h2>
 <p><a href="https://adventofcode.com/2019/day/4">Day 4</a> introduced a simple problem of: work out the number of integers
@@ -223,8 +223,8 @@ between two numbers that:</p>
 <li>Who&rsquo;s digits never decrease.</li>
 </ul>
 <p>In <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4">my solution</a> I used function currying again. A function took a
-function that applies a rule between two characters as an argument, and folded,
-using <code>foldl</code> over the numbers read as strings to apply the rules</p>
+function that applies a rule between two characters as an argument, and folded
+over the digits in the numbers with <code>foldl</code> to apply the rules.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">ruleX</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Char</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Char</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
 </code></pre></div><p>In two respects, <code>foldl</code> was an awkward fit:</p>
 <ol>
@@ -237,7 +237,7 @@ through every element.</li>
 this fold to an empty list.  Using <code>foldl</code>, each time I applied a rule to the
 string, I had to provide an initial character that wouldn&rsquo;t cause the rule to
 fail in any case.  While I &ldquo;got away with it&rdquo; for this problem, I should find
-an alternative pattern to use here to avoid a reasonable crass source of error.</p>
+an alternative pattern to use here to avoid a reasonably crass source of error.</p>
 <p>Funnily enough, I had this exact same problem when doing some work in Rust in
 the week, and found <a href="https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html#method.fold1"><code>fold1</code></a> from the <a href="https://docs.rs/itertools/0.9.0/itertools/">itertools
 crate</a> with type:</p>
@@ -252,7 +252,6 @@ in Haskell too.</p>
 </code></pre></div><p>It does a fold without needing an initial value but doesn&rsquo;t handle empty lists.</p>
 <pre><code>$ stack ghci
 ...
-*Main Lib&gt; :m + Safe.Foldable
 *Main Lib&gt; :t foldl1
 foldl1 :: Foldable t =&gt; (a -&gt; a -&gt; a) -&gt; t a -&gt; a
 *Main Lib&gt; foldl1 (+) [1,2,3]
@@ -299,8 +298,8 @@ in an &ldquo;early exit&rdquo; of the fold I could have used <code>Either</code>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">foldFunction&#39;</span> <span style="color:#f92672">::</span> (a <span style="color:#f92672">-&gt;</span> c <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Either</span> a b) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Either</span> a b <span style="color:#f92672">-&gt;</span> c <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Either</span> a b
 <span style="color:#a6e22e">foldFunction&#39;</span> <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">Left</span> x <span style="color:#66d9ef">_</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Left</span> x
 <span style="color:#a6e22e">foldFunction&#39;</span> f (<span style="color:#66d9ef">Right</span> acc) x <span style="color:#f92672">=</span> f acc x
-</code></pre></div><p>I was hoping the compiler would optimise out passing through <code>Nothing</code> and
-bail as soon as the accumulator becomes <code>Nothing</code>. This pattern could the be used
+</code></pre></div><p>I was hoping the compiler would optimise out passing through <code>Nothing</code> and bail
+as soon as the accumulator becomes <code>Nothing</code>. Then this pattern could be used
 to fold over an infinite list&hellip; sadly not:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ stack ghci
 ...
@@ -312,8 +311,9 @@ Just <span style="color:#ae81ff">40</span>
 ^CInterrupted.
 *Main Lib&gt;
 </code></pre></div><p>Perhaps this is a compiler optimization that just isn&rsquo;t turned on for <code>ghci</code>&hellip;
-I&rsquo;d like to find out, and if not find something else that can do this, as this
-would be an powerful pattern to have in my playbook.</p>
+I&rsquo;d like to find out, and if not find something else that can do this. Folding
+over an infinite list and bailing when I&rsquo;ve got what I want would be a powerful
+pattern to have in my playbook.</p>
 <h2 id="trees">Trees</h2>
 <p><a href="https://adventofcode.com/2019/day/6">Day 6</a> was all about tree structures.</p>
 <p>The problem is presented as: &ldquo;you&rsquo;re given a bunch of data on which planetary bodies
@@ -344,14 +344,14 @@ C)D
 <p>In the nomenclature of this problem, D is &ldquo;indirectly orbiting&rdquo; A.  A could be the Sun,
 B could be Venus, C could be the Earth, D would then be the Moon.</p>
 <p>From the giant input I was given, I didn&rsquo;t know whether there was going to be more
-than one &ldquo;root&rdquo;/&ldquo;orbital centre&rdquo;, so I&rsquo;d need to use a [forest][forest], which in
+than one &ldquo;root&rdquo;/&ldquo;orbital centre&rdquo;, so I&rsquo;d need to use a <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#t:Forest">forest</a>, which in
 <code>Data.Tree</code> is just a type alias for a list of trees.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Forest</span> a <span style="color:#f92672">=</span> [<span style="color:#66d9ef">Tree</span> a]
 </code></pre></div><p>In <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6">my solution</a> I was able to put the input data into a forest with
-[<code>unfoldForest</code>][unfold-forest].</p>
+<a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:unfoldForest"><code>unfoldForest</code></a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">unfoldForest</span> <span style="color:#f92672">::</span> (b <span style="color:#f92672">-&gt;</span> (a, [b])) <span style="color:#f92672">-&gt;</span> [b] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Forest</span> a
 </code></pre></div><p><code>b</code> is the type of the &ldquo;seed values&rdquo;.  A &ldquo;seed value&rdquo; is a value from which a node
-can be generated.  To build the Forest, <code>unfoldForest</code> (and similarly <code>unfoldTree</code>),
+can be generated.  To build the <code>Forest</code>: <code>unfoldForest</code> (and similarly <code>unfoldTree</code>),
 take a function that takes a seed value and produces the node data and a list of
 seed values for all subtrees from the node. <code>unfoldForest</code> then takes a list of seed
 values for the roots of the trees in the forest, whereas <code>unfoldTree</code> take a single
@@ -359,8 +359,9 @@ seed value.</p>
 <p>I&rsquo;d split the input data into a list of tuples of <code>String</code>s where the first element
 of the tuple was the orbitee and the second was the orbiter.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">parseOrbit</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">-&gt;</span> (<span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">String</span>)
-</code></pre></div><p>In this case, both types <code>a</code> and <code>b</code> will find the concrete type of <code>String</code>.  Both
-the seed value and the node data will just be the name of the body given in the data.</p>
+</code></pre></div><p>In this case, both types <code>a</code> and <code>b</code> in <code>unfoldForest</code> will find the concrete
+type of <code>String</code>.  Both the seed value and the node data will just be the name
+of the body given in the data.</p>
 <p>First I needed to find what the initial seed values, the roots, were in the data.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">-- Which bodies do not orbit anything?</span>
 <span style="color:#a6e22e">roots</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Eq</span> a <span style="color:#f92672">=&gt;</span> [(a,a)] <span style="color:#f92672">-&gt;</span> [a]
@@ -382,14 +383,14 @@ the seed value and the node data will just be the name of the body given in the 
 </code></pre></div><p>Now the data is loaded into a <code>Forest</code>, I want to walk through the forest and
 count how many steps from the root each node is.  Summing all those will give
 us the number of direct and indirect orbits.</p>
-<p>I was hoping to, quite symmetrically, use <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3"><code>foldTree</code></a> to get the answer.</p>
+<p>I was hoping to, symmetrically, use <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3"><code>foldTree</code></a> to get the answer.</p>
 <p>I couldn&rsquo;t see how to do it with <code>foldTree</code>.  I had <code>Tree String</code> where the
 string data was wholly uninteresting when counting the number of orbits
 as I wanted to sum the depths of each node. The type signature of
 <code>foldTree</code> appears to want a function that uses the node values:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">foldTree</span> <span style="color:#f92672">::</span> (a <span style="color:#f92672">-&gt;</span> [b] <span style="color:#f92672">-&gt;</span> b) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Tree</span> a <span style="color:#f92672">-&gt;</span> b
-</code></pre></div><p>I ended up splitting the <code>Tree</code> into its &ldquo;levels&rdquo; with <code>levels</code> and
-then folding over that.</p>
+</code></pre></div><p>I ended up splitting the <code>Tree</code> into its &ldquo;levels&rdquo; with <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:levels"><code>levels</code></a>
+and then folding over that.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">levels</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Tree</span> a <span style="color:#f92672">-&gt;</span> [[a]]
 
 <span style="color:#a6e22e">sumDepthsTree</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> b <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Tree</span> a <span style="color:#f92672">-&gt;</span> b
@@ -397,7 +398,7 @@ then folding over that.</p>
 
 <span style="color:#a6e22e">foldFunc</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> (a,a) <span style="color:#f92672">-&gt;</span> [b] <span style="color:#f92672">-&gt;</span> (a,a)
 <span style="color:#a6e22e">foldFunc</span> (depth, acc) x <span style="color:#f92672">=</span> (depth <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, acc <span style="color:#f92672">+</span> depth <span style="color:#f92672">*</span> genericLength x)
-</code></pre></div><p>I used a tuple accumulator to record the depth (i.e. the index within <code>levels mytree</code> and the accumulating sum of the depths.</p>
+</code></pre></div><p>I used a tuple accumulator to record the depth (i.e. the index within <code>levels mytree</code> and the accumulating sum of the depths).</p>
 <p>That was enough to give me the answer to the first part of <a href="https://adventofcode.com/2019/day/6">Day 6</a>.  In
 writing this I&rsquo;ve just realised there&rsquo;s a second half to the problem that I
 missed before which looks like it&rsquo;s asking you to calculate how many steps it
@@ -406,7 +407,7 @@ point and add to <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tr
 <h2 id="no-editor-integration-yet">No Editor Integration Yet</h2>
 <p>Interestingly, I didn&rsquo;t setup any editor integration for Haskell in this first
 week.</p>
-<p>While my applications are just being split between <code>src/Lib.hs</code> &amp;
+<p>While my applications are only being split between <code>src/Lib.hs</code> &amp;
 <code>app/Main.hs</code>, and I can search on <a href="https://hoogle.haskell.org/">Hoogle</a>, I&rsquo;ve not felt like I need
 it.</p>
 <p>The syntax is fairly minimal, so I haven&rsquo;t needed an editor to write code for
@@ -417,8 +418,8 @@ code</a> as code should be &ldquo;readable as text&rdquo;, and I&rsquo;m pleased
 Haskell is living up to that.</p>
 <p>I&rsquo;ll keep rolling with syntax highlighting and nothing else for now.  If I need
 to get some better integration I&rsquo;ll look at installing a Haskell language
-server<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup> and hooking the <a href="https://github.com/autozimu/LanguageClient-neovim">language server client</a> to
-it.</p>
+server<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup> and hooking NeoVim&rsquo;s <a href="https://github.com/autozimu/LanguageClient-neovim">language server
+client</a> to it.</p>
 <h2 id="packaging-and-modules">Packaging and Modules</h2>
 <p>The simplest way to import functions from a module is to do:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> Lib
@@ -433,11 +434,11 @@ through what each module you import exports to find the function you&rsquo;re us
 </code></pre></div><p>Now only the <code>someFunc</code> function will be imported from <code>Lib</code>.</p>
 <p>Collisions between functions imported from different libraries and Prelude can
 be resolved with qualified imports:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> Lib <span style="color:#66d9ef">as</span> L
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> quailfied <span style="color:#66d9ef">Lib</span> as <span style="color:#66d9ef">L</span>
 </code></pre></div><p>Then every function from <code>Lib</code> is callable as <code>L.someFunc</code>.</p>
 <p>These can be combined to do qualified imports and be explicit about the
 functions imported:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> Lib <span style="color:#66d9ef">as</span> L (someFunc)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Lib <span style="color:#66d9ef">as</span> L (someFunc)
 </code></pre></div><p>, again resulting in <code>someFunc</code> being callable as <code>L.someFunc</code>.</p>
 <p>In order to keep my code as explicit as possible, and thus as &ldquo;readable as
 code&rdquo; as possible, I&rsquo;m going to use this as a convention from now on.  I&rsquo;ll
@@ -452,11 +453,11 @@ each function explicitly.</p>
 Haskell language server<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup> into my editor to give me the &ldquo;go to definition&rdquo;
 and all those goodies.</p>
 <h2 id="summary">Summary</h2>
-<p>Doing some of the first few Advent of Code problems was good for revising and
-refining some of the basics.  I reckon I could churn through all of the
-problems using the basic tools I know how to use: list manipulation, recursion,
-functors, applicative functors, etc.  But, I want to go away and do some wider
-reading before continuing so I can really level up my Haskell.</p>
+<p>Doing some of the first few <a href="https://adventofcode.com/">Advent of Code</a> problems was good for
+revising and refining some of the basics.  I reckon I could churn through all
+of the problems using the basic tools I know how to use: list manipulation,
+recursion, functors, applicative functors, etc.  But, I want to go away and do
+some wider reading before continuing so I can really level up my Haskell.</p>
 <p>My general feelings about Haskell thus far, learning it for the second time:</p>
 <ul>
 <li>I&rsquo;m enjoying the purity and clean syntax.</li>
@@ -467,10 +468,9 @@ a bit more experience I&rsquo;ll relax a little bit.</li>
 <li>I haven&rsquo;t fully learned how the packaging works yet, I&rsquo;ll feel more
 comfortable when I have.  One thing I don&rsquo;t know is how you find out what
 &ldquo;package&rdquo; a module is found in.</li>
-<li>I&rsquo;d like to get better at searching for things.  I&rsquo;ve found Google and Stack
-Overflow not that helpful.  I&rsquo;ve searched for type definitions on
-<a href="https://hoogle.haskell.org/">Hoogle</a> for functions that I want.  I&rsquo;d like to have a reliable way
-of finding something when &ldquo;I need a thing that does this&rdquo;.</li>
+<li>It seems to be the way to search for &ldquo;I need a thing that does this&rdquo; is to
+know what type signature you&rsquo;re looking for is, and type that into the search
+bar on <a href="https://hoogle.haskell.org/">Hoogle</a>.</li>
 <li>There seems to be a lot of different ways to do the same thing, and I&rsquo;m not
 sure yet where to find advice on what good approaches are.</li>
 </ul>

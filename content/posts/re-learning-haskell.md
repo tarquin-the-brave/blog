@@ -78,8 +78,8 @@ an opportunity for function currying.
 Using `stack new` sets up a `src/Lib.hs` and a `app/Main.hs`.  While not having
 read up on the conventional use of these files, my guess is that `Lib.hs` is
 for any functionality that might become a library, keeping things as generic as
-possible, and main is for code specific to this application: where to read the
-data from, error handling, etc.  Although, especially for earlier problems,
+possible, and `Main.hs` is for code specific to this application: where to read
+the data from, error handling, etc.  Although, especially for earlier problems,
 this separation will be somewhat artificial.  I'm not going to get too worried
 about what's in what file, but use it to get used to exporting and importing.
 
@@ -132,7 +132,7 @@ The function `tot` takes a function and applies it to each element of a list
 and sums the results.  To fulfil each half of the problem I then only needed to
 define the two functions to pass to `tot`.
 
-This [day 1 problem][day-1] was gave a quick revision of:
+This [day 1 problem][day-1] gave a quick revision of:
 - modules,
 - do notation,
 - functions composition (with `.` & `$`),
@@ -158,7 +158,7 @@ cross, [my solution][my-day-3] involved reminding myself of how to make use of:
 - `foldl`, and
 - Using lists as applicative functors,
 
-without tool much hassle.  [The solution][my-day-3] wasn't very efficient, but
+without too much hassle.  [The solution][my-day-3] wasn't very efficient, but
 it worked.
 
 ## Fun With Folds
@@ -169,8 +169,8 @@ between two numbers that:
 * Who's digits never decrease.
 
 In [my solution][my-day-4] I used function currying again. A function took a
-function that applies a rule between two characters as an argument, and folded,
-using `foldl` over the numbers read as strings to apply the rules
+function that applies a rule between two characters as an argument, and folded
+over the digits in the numbers with `foldl` to apply the rules.
 
 ```haskell
 ruleX :: Char -> Char -> Bool
@@ -187,7 +187,7 @@ The first of these points is equivalent to saying that I don't care about applyi
 this fold to an empty list.  Using `foldl`, each time I applied a rule to the
 string, I had to provide an initial character that wouldn't cause the rule to
 fail in any case.  While I "got away with it" for this problem, I should find
-an alternative pattern to use here to avoid a reasonable crass source of error.
+an alternative pattern to use here to avoid a reasonably crass source of error.
 
 Funnily enough, I had this exact same problem when doing some work in Rust in
 the week, and found [`fold1`][fold1-rs] from the [itertools
@@ -215,7 +215,6 @@ It does a fold without needing an initial value but doesn't handle empty lists.
 ```
 $ stack ghci
 ...
-*Main Lib> :m + Safe.Foldable
 *Main Lib> :t foldl1
 foldl1 :: Foldable t => (a -> a -> a) -> t a -> a
 *Main Lib> foldl1 (+) [1,2,3]
@@ -284,8 +283,8 @@ foldFunction' _ Left x _ = Left x
 foldFunction' f (Right acc) x = f acc x
 ```
 
-I was hoping the compiler would optimise out passing through `Nothing` and
-bail as soon as the accumulator becomes `Nothing`. This pattern could the be used
+I was hoping the compiler would optimise out passing through `Nothing` and bail
+as soon as the accumulator becomes `Nothing`. Then this pattern could be used
 to fold over an infinite list... sadly not:
 
 ```bash
@@ -301,8 +300,9 @@ Just 40
 ```
 
 Perhaps this is a compiler optimization that just isn't turned on for `ghci`...
-I'd like to find out, and if not find something else that can do this, as this
-would be an powerful pattern to have in my playbook.
+I'd like to find out, and if not find something else that can do this. Folding
+over an infinite list and bailing when I've got what I want would be a powerful
+pattern to have in my playbook.
 
 ## Trees
 
@@ -359,7 +359,7 @@ unfoldForest :: (b -> (a, [b])) -> [b] -> Forest a
 ```
 
 `b` is the type of the "seed values".  A "seed value" is a value from which a node
-can be generated.  To build the Forest, `unfoldForest` (and similarly `unfoldTree`),
+can be generated.  To build the `Forest`: `unfoldForest` (and similarly `unfoldTree`),
 take a function that takes a seed value and produces the node data and a list of
 seed values for all subtrees from the node. `unfoldForest` then takes a list of seed
 values for the roots of the trees in the forest, whereas `unfoldTree` take a single
@@ -372,8 +372,9 @@ of the tuple was the orbitee and the second was the orbiter.
 parseOrbit :: String -> (String, String)
 ```
 
-In this case, both types `a` and `b` will find the concrete type of `String`.  Both
-the seed value and the node data will just be the name of the body given in the data.
+In this case, both types `a` and `b` in `unfoldForest` will find the concrete
+type of `String`.  Both the seed value and the node data will just be the name
+of the body given in the data.
 
 First I needed to find what the initial seed values, the roots, were in the data.
 
@@ -413,7 +414,7 @@ Now the data is loaded into a `Forest`, I want to walk through the forest and
 count how many steps from the root each node is.  Summing all those will give
 us the number of direct and indirect orbits.
 
-I was hoping to, quite symmetrically, use [`foldTree`][fold-tree] to get the answer.
+I was hoping to, symmetrically, use [`foldTree`][fold-tree] to get the answer.
 
 I couldn't see how to do it with `foldTree`.  I had `Tree String` where the
 string data was wholly uninteresting when counting the number of orbits
@@ -424,8 +425,8 @@ as I wanted to sum the depths of each node. The type signature of
 foldTree :: (a -> [b] -> b) -> Tree a -> b
 ```
 
-I ended up splitting the `Tree` into its "levels" with `levels` and
-then folding over that.
+I ended up splitting the `Tree` into its "levels" with [`levels`][tree-levels]
+and then folding over that.
 
 ```haskell
 levels :: Tree a -> [[a]]
@@ -438,7 +439,7 @@ foldFunc (depth, acc) x = (depth + 1, acc + depth * genericLength x)
 ```
 
 I used a tuple accumulator to record the depth (i.e. the index within `levels
-mytree` and the accumulating sum of the depths.
+mytree` and the accumulating sum of the depths).
 
 That was enough to give me the answer to the first part of [Day 6][day-6].  In
 writing this I've just realised there's a second half to the problem that I
@@ -451,7 +452,7 @@ point and add to [my solution][my-day-6].
 Interestingly, I didn't setup any editor integration for Haskell in this first
 week.
 
-While my applications are just being split between `src/Lib.hs` &
+While my applications are only being split between `src/Lib.hs` &
 `app/Main.hs`, and I can search on [Hoogle][hoogle], I've not felt like I need
 it.
 
@@ -465,8 +466,8 @@ Haskell is living up to that.
 
 I'll keep rolling with syntax highlighting and nothing else for now.  If I need
 to get some better integration I'll look at installing a Haskell language
-server[^7] and hooking the [language server client][language-server-neovim] to
-it.
+server[^7] and hooking NeoVim's [language server
+client][language-server-neovim] to it.
 
 ## Packaging and Modules
 
@@ -496,7 +497,7 @@ Collisions between functions imported from different libraries and Prelude can
 be resolved with qualified imports:
 
 ```haskell
-import Lib as L
+import quailfied Lib as L
 ```
 
 Then every function from `Lib` is callable as `L.someFunc`.
@@ -505,7 +506,7 @@ These can be combined to do qualified imports and be explicit about the
 functions imported:
 
 ```haskell
-import Lib as L (someFunc)
+import qualified Lib as L (someFunc)
 ```
 
 , again resulting in `someFunc` being callable as `L.someFunc`.
@@ -527,11 +528,11 @@ and all those goodies.
 
 ## Summary
 
-Doing some of the first few Advent of Code problems was good for revising and
-refining some of the basics.  I reckon I could churn through all of the
-problems using the basic tools I know how to use: list manipulation, recursion,
-functors, applicative functors, etc.  But, I want to go away and do some wider
-reading before continuing so I can really level up my Haskell.
+Doing some of the first few [Advent of Code][aoc] problems was good for
+revising and refining some of the basics.  I reckon I could churn through all
+of the problems using the basic tools I know how to use: list manipulation,
+recursion, functors, applicative functors, etc.  But, I want to go away and do
+some wider reading before continuing so I can really level up my Haskell.
 
 My general feelings about Haskell thus far, learning it for the second time:
 * I'm enjoying the purity and clean syntax.
@@ -542,10 +543,9 @@ My general feelings about Haskell thus far, learning it for the second time:
 * I haven't fully learned how the packaging works yet, I'll feel more
   comfortable when I have.  One thing I don't know is how you find out what
   "package" a module is found in.
-* I'd like to get better at searching for things.  I've found Google and Stack
-  Overflow not that helpful.  I've searched for type definitions on
-  [Hoogle][hoogle] for functions that I want.  I'd like to have a reliable way
-  of finding something when "I need a thing that does this".
+* It seems to be the way to search for "I need a thing that does this" is to
+  know what type signature you're looking for is, and type that into the search
+  bar on [Hoogle][hoogle].
 * There seems to be a lot of different ways to do the same thing, and I'm not
   sure yet where to find advice on what good approaches are.
 
@@ -574,7 +574,10 @@ I'll go do some reading, then come back to these problems.
 [foldl1-prelude]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Prelude.html#v:foldl1
 [foldl1may]: https://hackage.haskell.org/package/safe-0.3.18/docs/Safe-Foldable.html#v:foldl1May
 [data-tree]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html
+[forest]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#t:Forest
+[unfold-forest]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:unfoldForest
 [fold-tree]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3
+[tree-levels]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:levels
 [no-ide-read]: https://tarquin-the-brave.github.io/blog/posts/ide-read-code/
 [language-server-neovim]: https://github.com/autozimu/LanguageClient-neovim
 [hls]: https://github.com/haskell/haskell-language-server

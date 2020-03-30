@@ -75,8 +75,8 @@ an opportunity for function currying.&lt;/p&gt;
 &lt;p&gt;Using &lt;code&gt;stack new&lt;/code&gt; sets up a &lt;code&gt;src/Lib.hs&lt;/code&gt; and a &lt;code&gt;app/Main.hs&lt;/code&gt;.  While not having
 read up on the conventional use of these files, my guess is that &lt;code&gt;Lib.hs&lt;/code&gt; is
 for any functionality that might become a library, keeping things as generic as
-possible, and main is for code specific to this application: where to read the
-data from, error handling, etc.  Although, especially for earlier problems,
+possible, and &lt;code&gt;Main.hs&lt;/code&gt; is for code specific to this application: where to read
+the data from, error handling, etc.  Although, especially for earlier problems,
 this separation will be somewhat artificial.  I&amp;rsquo;m not going to get too worried
 about what&amp;rsquo;s in what file, but use it to get used to exporting and importing.&lt;/p&gt;
 &lt;p&gt;I ended up with a &lt;code&gt;Lib.hs&lt;/code&gt;:&lt;/p&gt;
@@ -118,7 +118,7 @@ gets given their own problem input).&lt;/p&gt;
 &lt;p&gt;The function &lt;code&gt;tot&lt;/code&gt; takes a function and applies it to each element of a list
 and sums the results.  To fulfil each half of the problem I then only needed to
 define the two functions to pass to &lt;code&gt;tot&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;This &lt;a href=&#34;https://adventofcode.com/2019/day/1&#34;&gt;day 1 problem&lt;/a&gt; was gave a quick revision of:&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;https://adventofcode.com/2019/day/1&#34;&gt;day 1 problem&lt;/a&gt; gave a quick revision of:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;modules,&lt;/li&gt;
 &lt;li&gt;do notation,&lt;/li&gt;
@@ -143,7 +143,7 @@ cross, &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/
 &lt;li&gt;&lt;code&gt;foldl&lt;/code&gt;, and&lt;/li&gt;
 &lt;li&gt;Using lists as applicative functors,&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;without tool much hassle.  &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;The solution&lt;/a&gt; wasn&amp;rsquo;t very efficient, but
+&lt;p&gt;without too much hassle.  &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;The solution&lt;/a&gt; wasn&amp;rsquo;t very efficient, but
 it worked.&lt;/p&gt;
 &lt;h2 id=&#34;fun-with-folds&#34;&gt;Fun With Folds&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/4&#34;&gt;Day 4&lt;/a&gt; introduced a simple problem of: work out the number of integers
@@ -153,8 +153,8 @@ between two numbers that:&lt;/p&gt;
 &lt;li&gt;Who&amp;rsquo;s digits never decrease.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4&#34;&gt;my solution&lt;/a&gt; I used function currying again. A function took a
-function that applies a rule between two characters as an argument, and folded,
-using &lt;code&gt;foldl&lt;/code&gt; over the numbers read as strings to apply the rules&lt;/p&gt;
+function that applies a rule between two characters as an argument, and folded
+over the digits in the numbers with &lt;code&gt;foldl&lt;/code&gt; to apply the rules.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ruleX&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Bool&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In two respects, &lt;code&gt;foldl&lt;/code&gt; was an awkward fit:&lt;/p&gt;
 &lt;ol&gt;
@@ -167,7 +167,7 @@ through every element.&lt;/li&gt;
 this fold to an empty list.  Using &lt;code&gt;foldl&lt;/code&gt;, each time I applied a rule to the
 string, I had to provide an initial character that wouldn&amp;rsquo;t cause the rule to
 fail in any case.  While I &amp;ldquo;got away with it&amp;rdquo; for this problem, I should find
-an alternative pattern to use here to avoid a reasonable crass source of error.&lt;/p&gt;
+an alternative pattern to use here to avoid a reasonably crass source of error.&lt;/p&gt;
 &lt;p&gt;Funnily enough, I had this exact same problem when doing some work in Rust in
 the week, and found &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html#method.fold1&#34;&gt;&lt;code&gt;fold1&lt;/code&gt;&lt;/a&gt; from the &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/&#34;&gt;itertools
 crate&lt;/a&gt; with type:&lt;/p&gt;
@@ -182,7 +182,6 @@ in Haskell too.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It does a fold without needing an initial value but doesn&amp;rsquo;t handle empty lists.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$ stack ghci
 ...
-*Main Lib&amp;gt; :m + Safe.Foldable
 *Main Lib&amp;gt; :t foldl1
 foldl1 :: Foldable t =&amp;gt; (a -&amp;gt; a -&amp;gt; a) -&amp;gt; t a -&amp;gt; a
 *Main Lib&amp;gt; foldl1 (+) [1,2,3]
@@ -229,8 +228,8 @@ in an &amp;ldquo;early exit&amp;rdquo; of the fold I could have used &lt;code&gt
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Either&lt;/span&gt; a b
 &lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Left&lt;/span&gt; x &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Left&lt;/span&gt; x
 &lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunction&amp;#39;&lt;/span&gt; f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Right&lt;/span&gt; acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f acc x
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was hoping the compiler would optimise out passing through &lt;code&gt;Nothing&lt;/code&gt; and
-bail as soon as the accumulator becomes &lt;code&gt;Nothing&lt;/code&gt;. This pattern could the be used
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was hoping the compiler would optimise out passing through &lt;code&gt;Nothing&lt;/code&gt; and bail
+as soon as the accumulator becomes &lt;code&gt;Nothing&lt;/code&gt;. Then this pattern could be used
 to fold over an infinite list&amp;hellip; sadly not:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ stack ghci
 ...
@@ -242,8 +241,9 @@ Just &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
 ^CInterrupted.
 *Main Lib&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Perhaps this is a compiler optimization that just isn&amp;rsquo;t turned on for &lt;code&gt;ghci&lt;/code&gt;&amp;hellip;
-I&amp;rsquo;d like to find out, and if not find something else that can do this, as this
-would be an powerful pattern to have in my playbook.&lt;/p&gt;
+I&amp;rsquo;d like to find out, and if not find something else that can do this. Folding
+over an infinite list and bailing when I&amp;rsquo;ve got what I want would be a powerful
+pattern to have in my playbook.&lt;/p&gt;
 &lt;h2 id=&#34;trees&#34;&gt;Trees&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt; was all about tree structures.&lt;/p&gt;
 &lt;p&gt;The problem is presented as: &amp;ldquo;you&amp;rsquo;re given a bunch of data on which planetary bodies
@@ -274,14 +274,14 @@ C)D
 &lt;p&gt;In the nomenclature of this problem, D is &amp;ldquo;indirectly orbiting&amp;rdquo; A.  A could be the Sun,
 B could be Venus, C could be the Earth, D would then be the Moon.&lt;/p&gt;
 &lt;p&gt;From the giant input I was given, I didn&amp;rsquo;t know whether there was going to be more
-than one &amp;ldquo;root&amp;rdquo;/&amp;ldquo;orbital centre&amp;rdquo;, so I&amp;rsquo;d need to use a [forest][forest], which in
+than one &amp;ldquo;root&amp;rdquo;/&amp;ldquo;orbital centre&amp;rdquo;, so I&amp;rsquo;d need to use a &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#t:Forest&#34;&gt;forest&lt;/a&gt;, which in
 &lt;code&gt;Data.Tree&lt;/code&gt; is just a type alias for a list of trees.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6&#34;&gt;my solution&lt;/a&gt; I was able to put the input data into a forest with
-[&lt;code&gt;unfoldForest&lt;/code&gt;][unfold-forest].&lt;/p&gt;
+&lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:unfoldForest&#34;&gt;&lt;code&gt;unfoldForest&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldForest&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a, [b])) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;b&lt;/code&gt; is the type of the &amp;ldquo;seed values&amp;rdquo;.  A &amp;ldquo;seed value&amp;rdquo; is a value from which a node
-can be generated.  To build the Forest, &lt;code&gt;unfoldForest&lt;/code&gt; (and similarly &lt;code&gt;unfoldTree&lt;/code&gt;),
+can be generated.  To build the &lt;code&gt;Forest&lt;/code&gt;: &lt;code&gt;unfoldForest&lt;/code&gt; (and similarly &lt;code&gt;unfoldTree&lt;/code&gt;),
 take a function that takes a seed value and produces the node data and a list of
 seed values for all subtrees from the node. &lt;code&gt;unfoldForest&lt;/code&gt; then takes a list of seed
 values for the roots of the trees in the forest, whereas &lt;code&gt;unfoldTree&lt;/code&gt; take a single
@@ -289,8 +289,9 @@ seed value.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;d split the input data into a list of tuples of &lt;code&gt;String&lt;/code&gt;s where the first element
 of the tuple was the orbitee and the second was the orbiter.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;parseOrbit&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this case, both types &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt; will find the concrete type of &lt;code&gt;String&lt;/code&gt;.  Both
-the seed value and the node data will just be the name of the body given in the data.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this case, both types &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt; in &lt;code&gt;unfoldForest&lt;/code&gt; will find the concrete
+type of &lt;code&gt;String&lt;/code&gt;.  Both the seed value and the node data will just be the name
+of the body given in the data.&lt;/p&gt;
 &lt;p&gt;First I needed to find what the initial seed values, the roots, were in the data.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-- Which bodies do not orbit anything?&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;roots&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [(a,a)] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a]
@@ -312,14 +313,14 @@ the seed value and the node data will just be the name of the body given in the 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the data is loaded into a &lt;code&gt;Forest&lt;/code&gt;, I want to walk through the forest and
 count how many steps from the root each node is.  Summing all those will give
 us the number of direct and indirect orbits.&lt;/p&gt;
-&lt;p&gt;I was hoping to, quite symmetrically, use &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3&#34;&gt;&lt;code&gt;foldTree&lt;/code&gt;&lt;/a&gt; to get the answer.&lt;/p&gt;
+&lt;p&gt;I was hoping to, symmetrically, use &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#g:3&#34;&gt;&lt;code&gt;foldTree&lt;/code&gt;&lt;/a&gt; to get the answer.&lt;/p&gt;
 &lt;p&gt;I couldn&amp;rsquo;t see how to do it with &lt;code&gt;foldTree&lt;/code&gt;.  I had &lt;code&gt;Tree String&lt;/code&gt; where the
 string data was wholly uninteresting when counting the number of orbits
 as I wanted to sum the depths of each node. The type signature of
 &lt;code&gt;foldTree&lt;/code&gt; appears to want a function that uses the node values:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foldTree&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I ended up splitting the &lt;code&gt;Tree&lt;/code&gt; into its &amp;ldquo;levels&amp;rdquo; with &lt;code&gt;levels&lt;/code&gt; and
-then folding over that.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I ended up splitting the &lt;code&gt;Tree&lt;/code&gt; into its &amp;ldquo;levels&amp;rdquo; with &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:levels&#34;&gt;&lt;code&gt;levels&lt;/code&gt;&lt;/a&gt;
+and then folding over that.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;levels&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [[a]]
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;sumDepthsTree&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; b
@@ -327,7 +328,7 @@ then folding over that.&lt;/p&gt;
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; (a,a) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a,a)
 &lt;span style=&#34;color:#a6e22e&#34;&gt;foldFunc&lt;/span&gt; (depth, acc) x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (depth &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, acc &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; depth &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; genericLength x)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I used a tuple accumulator to record the depth (i.e. the index within &lt;code&gt;levels mytree&lt;/code&gt; and the accumulating sum of the depths.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I used a tuple accumulator to record the depth (i.e. the index within &lt;code&gt;levels mytree&lt;/code&gt; and the accumulating sum of the depths).&lt;/p&gt;
 &lt;p&gt;That was enough to give me the answer to the first part of &lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt;.  In
 writing this I&amp;rsquo;ve just realised there&amp;rsquo;s a second half to the problem that I
 missed before which looks like it&amp;rsquo;s asking you to calculate how many steps it
@@ -336,7 +337,7 @@ point and add to &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-has
 &lt;h2 id=&#34;no-editor-integration-yet&#34;&gt;No Editor Integration Yet&lt;/h2&gt;
 &lt;p&gt;Interestingly, I didn&amp;rsquo;t setup any editor integration for Haskell in this first
 week.&lt;/p&gt;
-&lt;p&gt;While my applications are just being split between &lt;code&gt;src/Lib.hs&lt;/code&gt; &amp;amp;
+&lt;p&gt;While my applications are only being split between &lt;code&gt;src/Lib.hs&lt;/code&gt; &amp;amp;
 &lt;code&gt;app/Main.hs&lt;/code&gt;, and I can search on &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt;, I&amp;rsquo;ve not felt like I need
 it.&lt;/p&gt;
 &lt;p&gt;The syntax is fairly minimal, so I haven&amp;rsquo;t needed an editor to write code for
@@ -347,8 +348,8 @@ code&lt;/a&gt; as code should be &amp;ldquo;readable as text&amp;rdquo;, and I&a
 Haskell is living up to that.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;ll keep rolling with syntax highlighting and nothing else for now.  If I need
 to get some better integration I&amp;rsquo;ll look at installing a Haskell language
-server&lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt; and hooking the &lt;a href=&#34;https://github.com/autozimu/LanguageClient-neovim&#34;&gt;language server client&lt;/a&gt; to
-it.&lt;/p&gt;
+server&lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt; and hooking NeoVim&amp;rsquo;s &lt;a href=&#34;https://github.com/autozimu/LanguageClient-neovim&#34;&gt;language server
+client&lt;/a&gt; to it.&lt;/p&gt;
 &lt;h2 id=&#34;packaging-and-modules&#34;&gt;Packaging and Modules&lt;/h2&gt;
 &lt;p&gt;The simplest way to import functions from a module is to do:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib
@@ -363,11 +364,11 @@ through what each module you import exports to find the function you&amp;rsquo;r
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now only the &lt;code&gt;someFunc&lt;/code&gt; function will be imported from &lt;code&gt;Lib&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Collisions between functions imported from different libraries and Prelude can
 be resolved with qualified imports:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; L
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; quailfied &lt;span style=&#34;color:#66d9ef&#34;&gt;Lib&lt;/span&gt; as &lt;span style=&#34;color:#66d9ef&#34;&gt;L&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then every function from &lt;code&gt;Lib&lt;/code&gt; is callable as &lt;code&gt;L.someFunc&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;These can be combined to do qualified imports and be explicit about the
 functions imported:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lib &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; L (someFunc)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Lib &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; L (someFunc)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, again resulting in &lt;code&gt;someFunc&lt;/code&gt; being callable as &lt;code&gt;L.someFunc&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;In order to keep my code as explicit as possible, and thus as &amp;ldquo;readable as
 code&amp;rdquo; as possible, I&amp;rsquo;m going to use this as a convention from now on.  I&amp;rsquo;ll
@@ -382,11 +383,11 @@ each function explicitly.&lt;/p&gt;
 Haskell language server&lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt; into my editor to give me the &amp;ldquo;go to definition&amp;rdquo;
 and all those goodies.&lt;/p&gt;
 &lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
-&lt;p&gt;Doing some of the first few Advent of Code problems was good for revising and
-refining some of the basics.  I reckon I could churn through all of the
-problems using the basic tools I know how to use: list manipulation, recursion,
-functors, applicative functors, etc.  But, I want to go away and do some wider
-reading before continuing so I can really level up my Haskell.&lt;/p&gt;
+&lt;p&gt;Doing some of the first few &lt;a href=&#34;https://adventofcode.com/&#34;&gt;Advent of Code&lt;/a&gt; problems was good for
+revising and refining some of the basics.  I reckon I could churn through all
+of the problems using the basic tools I know how to use: list manipulation,
+recursion, functors, applicative functors, etc.  But, I want to go away and do
+some wider reading before continuing so I can really level up my Haskell.&lt;/p&gt;
 &lt;p&gt;My general feelings about Haskell thus far, learning it for the second time:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;I&amp;rsquo;m enjoying the purity and clean syntax.&lt;/li&gt;
@@ -397,10 +398,9 @@ a bit more experience I&amp;rsquo;ll relax a little bit.&lt;/li&gt;
 &lt;li&gt;I haven&amp;rsquo;t fully learned how the packaging works yet, I&amp;rsquo;ll feel more
 comfortable when I have.  One thing I don&amp;rsquo;t know is how you find out what
 &amp;ldquo;package&amp;rdquo; a module is found in.&lt;/li&gt;
-&lt;li&gt;I&amp;rsquo;d like to get better at searching for things.  I&amp;rsquo;ve found Google and Stack
-Overflow not that helpful.  I&amp;rsquo;ve searched for type definitions on
-&lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt; for functions that I want.  I&amp;rsquo;d like to have a reliable way
-of finding something when &amp;ldquo;I need a thing that does this&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;It seems to be the way to search for &amp;ldquo;I need a thing that does this&amp;rdquo; is to
+know what type signature you&amp;rsquo;re looking for is, and type that into the search
+bar on &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;There seems to be a lot of different ways to do the same thing, and I&amp;rsquo;m not
 sure yet where to find advice on what good approaches are.&lt;/li&gt;
 &lt;/ul&gt;

@@ -342,14 +342,9 @@ Nothing
 Looking at our `foldFunction` above, it's actually a reimplementation of `>>=` from
 the [implementation of the Monad typeclass for Maybe][maybe-monad].
 
-It's interesting that the compiler was able to do this "early exit" for `foldM` and
-not for my fold.  In my case, with `foldFunction` from above, the compiler would have
-to infer from the code that an "early exit" is possible, whereas if the accumulator
-is always a monad, it can know to put that "early exit" in every time.  And if there
-is a way to get this early exit every time, with [`foldM`][foldm], why spend the time
-making the compiler optimizations to get foldl to do it for the times that the
-accumulator either is, or acts like, a monad.  That's my theory anyway.  I'm interested
-to hear in comments if there's any more to this story.
+It's interesting that `foldM` was able to do this "early exit" for `foldM` and
+`foldl` wasn't.  I'll have to look at the source code and see if I can work out
+why.
 
 Having a fold that can bail is a powerful pattern when combined with infinite lists.
 I'll remember this one.

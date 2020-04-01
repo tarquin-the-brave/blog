@@ -9,6 +9,8 @@ draft = true
 
 # Redux
 
+Go read "the haskell book"
+
 following this guy's guide https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
 Apply:
 - warning flags

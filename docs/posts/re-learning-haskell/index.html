@@ -340,13 +340,12 @@ Nothing
 *Main Lib Control.Monad&gt; foldM_ (\_ x -&gt; if x &gt; 10 then Nothing else Just x) 0 [0..]
 Nothing
 *Main Lib Control.Monad&gt;
-</code></pre><p>Looking at our <code>foldFunction</code> above, it&rsquo;s actually a reimplementation of <code>&gt;&gt;=</code> from
-the <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854">implementation of the Monad typeclass for Maybe</a>.</p>
-<p>It&rsquo;s interesting that <code>foldM</code> was able to do this &ldquo;early exit&rdquo; for <code>foldM</code> and
-<code>foldl</code> wasn&rsquo;t.  I&rsquo;ll have to look at the source code and see if I can work out
-why.</p>
-<p>Having a fold that can bail is a powerful pattern when combined with infinite lists.
-I&rsquo;ll remember this one.</p>
+</code></pre><p>Looking at our <code>foldFunction</code> above, it&rsquo;s actually a reimplementation of <code>&gt;&gt;=</code>
+from the <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854">implementation of the Monad typeclass for Maybe</a>.</p>
+<p>It&rsquo;s interesting that <code>foldM</code> was able to do this &ldquo;early exit&rdquo; but <code>foldl</code>
+wasn&rsquo;t.  I&rsquo;ll have to look at the source code and see if I can work out why.</p>
+<p>Having a fold that can bail is a powerful pattern when combined with infinite
+lists.  I&rsquo;ll remember this one.</p>
 <h2 id="trees">Trees</h2>
 <p><a href="https://adventofcode.com/2019/day/6">Day 6</a> was all about tree structures.</p>
 <p>The problem is presented as: &ldquo;you&rsquo;re given a bunch of data on which planetary bodies

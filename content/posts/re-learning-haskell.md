@@ -339,15 +339,14 @@ Nothing
 *Main Lib Control.Monad>
 ```
 
-Looking at our `foldFunction` above, it's actually a reimplementation of `>>=` from
-the [implementation of the Monad typeclass for Maybe][maybe-monad].
+Looking at our `foldFunction` above, it's actually a reimplementation of `>>=`
+from the [implementation of the Monad typeclass for Maybe][maybe-monad].
 
-It's interesting that `foldM` was able to do this "early exit" for `foldM` and
-`foldl` wasn't.  I'll have to look at the source code and see if I can work out
-why.
+It's interesting that `foldM` was able to do this "early exit" but `foldl`
+wasn't.  I'll have to look at the source code and see if I can work out why.
 
-Having a fold that can bail is a powerful pattern when combined with infinite lists.
-I'll remember this one.
+Having a fold that can bail is a powerful pattern when combined with infinite
+lists.  I'll remember this one.
 
 ## Trees
 

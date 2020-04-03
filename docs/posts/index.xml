@@ -270,13 +270,12 @@ Nothing
 *Main Lib Control.Monad&amp;gt; foldM_ (\_ x -&amp;gt; if x &amp;gt; 10 then Nothing else Just x) 0 [0..]
 Nothing
 *Main Lib Control.Monad&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Looking at our &lt;code&gt;foldFunction&lt;/code&gt; above, it&amp;rsquo;s actually a reimplementation of &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt; from
-the &lt;a href=&#34;http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854&#34;&gt;implementation of the Monad typeclass for Maybe&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;It&amp;rsquo;s interesting that &lt;code&gt;foldM&lt;/code&gt; was able to do this &amp;ldquo;early exit&amp;rdquo; for &lt;code&gt;foldM&lt;/code&gt; and
-&lt;code&gt;foldl&lt;/code&gt; wasn&amp;rsquo;t.  I&amp;rsquo;ll have to look at the source code and see if I can work out
-why.&lt;/p&gt;
-&lt;p&gt;Having a fold that can bail is a powerful pattern when combined with infinite lists.
-I&amp;rsquo;ll remember this one.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Looking at our &lt;code&gt;foldFunction&lt;/code&gt; above, it&amp;rsquo;s actually a reimplementation of &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt;
+from the &lt;a href=&#34;http://hackage.haskell.org/package/base-4.12.0.0/docs/src/GHC.Base.html#line-854&#34;&gt;implementation of the Monad typeclass for Maybe&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s interesting that &lt;code&gt;foldM&lt;/code&gt; was able to do this &amp;ldquo;early exit&amp;rdquo; but &lt;code&gt;foldl&lt;/code&gt;
+wasn&amp;rsquo;t.  I&amp;rsquo;ll have to look at the source code and see if I can work out why.&lt;/p&gt;
+&lt;p&gt;Having a fold that can bail is a powerful pattern when combined with infinite
+lists.  I&amp;rsquo;ll remember this one.&lt;/p&gt;
 &lt;h2 id=&#34;trees&#34;&gt;Trees&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt; was all about tree structures.&lt;/p&gt;
 &lt;p&gt;The problem is presented as: &amp;ldquo;you&amp;rsquo;re given a bunch of data on which planetary bodies

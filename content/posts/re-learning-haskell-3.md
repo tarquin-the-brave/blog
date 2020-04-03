@@ -8,3 +8,7 @@ draft = true
 +++
 
 # Finishing AoC
+
+- I find myself doubling down on bad abstractions by taking a complex
+  task and chopping it up into lots of functions that don't really mean
+  anything on their own.

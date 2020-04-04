@@ -425,8 +425,8 @@ some wider reading before continuing so I can really level up my Haskell.&lt;/p&
 &lt;li&gt;I&amp;rsquo;m enjoying the purity and clean syntax.&lt;/li&gt;
 &lt;li&gt;I&amp;rsquo;m enjoying using the word &amp;ldquo;function&amp;rdquo; without feeling a little guilty.&lt;/li&gt;
 &lt;li&gt;Compared to Rust, Haskell is more implicit.  It appears there&amp;rsquo;s ways of being
-of being totally explicit about things and I&amp;rsquo;ll look to do that.  Maybe with
-a bit more experience I&amp;rsquo;ll relax a little bit.&lt;/li&gt;
+totally explicit about things and I&amp;rsquo;ll look to do that.  Maybe with a bit
+more experience I&amp;rsquo;ll relax a little bit.&lt;/li&gt;
 &lt;li&gt;I haven&amp;rsquo;t fully learned how the packaging works yet, I&amp;rsquo;ll feel more
 comfortable when I have.  One thing I don&amp;rsquo;t know is how you find out what
 &amp;ldquo;package&amp;rdquo; a module is found in.&lt;/li&gt;

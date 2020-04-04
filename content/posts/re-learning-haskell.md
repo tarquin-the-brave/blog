@@ -582,8 +582,8 @@ My general feelings about Haskell thus far, learning it for the second time:
 * I'm enjoying the purity and clean syntax.
 * I'm enjoying using the word "function" without feeling a little guilty.
 * Compared to Rust, Haskell is more implicit.  It appears there's ways of being
-  of being totally explicit about things and I'll look to do that.  Maybe with
-  a bit more experience I'll relax a little bit.
+  totally explicit about things and I'll look to do that.  Maybe with a bit
+  more experience I'll relax a little bit.
 * I haven't fully learned how the packaging works yet, I'll feel more
   comfortable when I have.  One thing I don't know is how you find out what
   "package" a module is found in.

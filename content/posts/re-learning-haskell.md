@@ -631,7 +631,7 @@ I'll go do some reading, then come back to these problems.
 [control-monad]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html
 
 [^1]: Learn you a Haskell for greater good. http://learnyouahaskell.com/chapters
-[^2]: Haskell from first principals. LINK
+[^2]: Haskell from first principals. https://haskellbook.com/
 [^3]: Advent of code provided a coding challenge on each day of December.
 [^4]: [Poetry][poetry] does quite a good job of Python dependency management.
       It's not totally watertight, but it's a huge improvement on [pip][pip] & [Pipenv][pipenv]

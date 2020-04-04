@@ -19,4 +19,6 @@ Apply:
 - remove all `String`s
 - use lens
 
+Apply docs - docs are so important
+http://yannesposito.com/Scratch/en/blog/Haskell-Tutorials--a-tutorial/
 

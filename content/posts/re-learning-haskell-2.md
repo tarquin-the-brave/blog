@@ -26,6 +26,14 @@ By the same reasoning a fold is less complex than a for loop.
 
 link "simple made easy" by Hickley
 
+## Aside on compiler warnings
+
+turned on extra compiler warnings after day7
+* didn't want to be depdendent on them
+* but that's actually a shit argument
+  + after a short while you start writing things well be default.
+  + or, in rust do I just write any old balls and let the compiler work it out for me?
+
 # the problems
 
 state monad for when we care about the evolution of state.
@@ -72,4 +80,10 @@ Safety:
     - a down side of learning via these problems is there's not the drive to make code maintainable,
       you don't necessarily get the lessons about maintenance.
     - you do have to extend code though, so I suppose extensibility comes into it.
+
+generality
+* generality is good right?
+* but means breaking changes to library - e.g. `replaceNth` went from:
+  + `Int -> a -> [a] -> [a]`, to:
+  + `Num a => Int -> a -> [a] -> [a]`
 

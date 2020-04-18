@@ -108,13 +108,61 @@ I'll see if there's a nice way to turn the warnings off for ghci.
 
 ## Failing Functions being Generic over MonadFail
 
-TODO
+There was a few time in some of the problems where I had a type
+that could represent failure, and if an operation fails we want
+to return that type representing failure.
 
-- Interesting pattern
-- `MonadFail` seems pretty limited to `List` `Maybe` & `IO`.
--
+As an example, say we want to return a list where an empty list
+represents failure.  In this simple example a negative input
+results in failure.
 
-# Breaking Functions Into Lots of Pieces
+```haskell
+maybePos :: Int -> Maybe Int
+maybePos x
+  | x < 0 = Nothing
+  | otherwise = Just x
+
+thing :: Int -> [Int]
+thing x = case maybePos x of
+  Nothing -> []
+  Just posX -> [posX]
+```
+
+`thing` has to match on the `Maybe Int` given by `maybePos` and
+return either the `Int` in a list or an empty list.
+
+I found myself repeating this patten:
+* Model the operation that can fail with a function that returns `Maybe`,
+* Match on the `Nothing` and return my failure type.
+
+I was doing a lot of manually converting one type's failure representation
+to another type's failure representation.  This seemed to me like there was
+something I could use to do this automatically, as I was expressing the same
+thing over and over again.
+
+In the example above, both `Maybe` and `List` are monads.  I'm converting
+from one monad's failure representation to another.  After a bit of looking
+around I found the [`MonadFail` typeclass][monadfail].  As `Maybe` and `List`
+both are instances of `MonadFail` we can redefine `maybePos` to be generic
+over `MonadFail` and cut out the conversion between failure representations.
+
+```
+maybePosM ::  MonadFail m => Int -> m Int
+maybePosM x
+  | x < 0 = fail "woops"
+  | otherwise = return x
+
+thing' :: Int -> [Int]
+thing' = maybePosM
+
+posIntoMaybe :: Int -> Maybe Int
+posIntoMaybe = maybePosM
+
+posIntoIO :: Int -> IO Int
+posIntoIO = maybePosM
+```
+
+## Breaking Functions Into Lots of Pieces
 
 I sometimes fall into the trap of:
 * thinking procedurally
@@ -135,13 +183,11 @@ from "where did that function come from?" syndrome.
 
 The first of these was me just being dumb as it turns out the
 package containing a module is written in the top left hand corner
-of the module documentation's webpage.  Spot `mtl-` in [the
+of the module documentation's web page.  Spot `mtl-` in [the
 docs][statemonaddocs] for `Control.Monad.State.Lazy`.
 
-[statemonaddocs]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
-
 On the second of these: I've got reasonably comfortable with either
-doing a qualified import to preseve namespacing, or being explicit
+doing a qualified import to preserve namespacing, or being explicit
 about which functions I'm importing if I'm importing them into the
 module's namespace.
 
@@ -154,7 +200,7 @@ import Baz
   )
 ```
 
-I've found using a combination of these: qwualified import and
+I've found using a combination of these: qualified import and
 explicitly listing the functions is a bit over the top.
 
 I also practiced a pattern of having a module which renames
@@ -163,7 +209,7 @@ types didn't make as much sense in the context I was using them,
 or were just down right silly names in the first place.
 
 ```haskell
-module sensible
+module Sensible
   ( foo
   , bar
   , Baz (..)
@@ -172,43 +218,36 @@ module sensible
 
 import Very.Silly.Named.Module as Silly
 
+foo = Silly.longFooName
+bar = Silly.otherBarName
 
-
+type Baz = Silly.BazBaz
 ```
 
-because there's no objects, namespacing is a bit funky.
-e.g. non-empty list has most of the list methods but needs
-a `qualified` import.
-* I suppose without objects you need some way of namespacing.
-  That's all "objects" are really.
-  + Procedures in the same namespace as data.
-  + I'm always disappointed to find out how "not a thing" a thing is.
+Using a combination of qualified imports and explicitly naming
+functions I'm importing into the module's namespace, I've found
+I can completely prevent the "where did that function come from"
+syndrome.
 
-# general observations
-
-Safety:
-* I want to write "safe" code
-* in Rust you have to be explicit both:
-  + when you want to do something not "memory safe" - haskell is GC, not a problem
-  + when you want to do something that "may crash/panic" - akin to haskell notion of safety"
-    - e.g. you got to stick `unwrap()` or `expect()` around the place.
-* I'm finding in Haskell
-  + safe code comes with faff
-  + so if you know your usage won't touch an unsafe case, should you still make the effort?
-    - for the code itself, it's probably pointless,
-    - but what about extensibility/maintainability?
-    - should we just write safe code all the time and accept the cost of doing so as:
-      * a) part and parcel of writing decent code,
-      * b) worth it in the medium/short term?
-    - a down side of learning via these problems is there's not the drive to make code maintainable,
-      you don't necessarily get the lessons about maintenance.
-    - you do have to extend code though, so I suppose extensibility comes into it.
-
-generality
-* generality is good right?
-* but means breaking changes to library - e.g. `replaceNth` went from:
-  + `Int -> a -> [a] -> [a]`, to:
-  + `Num a => Int -> a -> [a] -> [a]`
+In [my last post][part1] I made a lot of comparisons between how Rust
+does things and how I was finding things are done in Haskell.
+I made a general point that Rust is more explicit.  This is an example
+of where Haskell can be more explicit.  In Rust, a lot of functionality
+is provided via traits.  If a type implements a trait, you can call
+the methods from that trait on that type by importing the trait.  The
+methods themselves don't need to be explicitly imported.  The result is
+that you can read some code that deals with a type you know (or at least
+know where to find the docs for), that then calls a method on that type
+that doesn't appear in the type's documentation.  You're left wondering
+"where did that method come from?".  This is the part where I'd use
+a "go to definition".  Without that you'd need to search through the
+traits that are imported in scope as any one of them might have been
+implemented for the type and try to find the method.  I try to avoid
+this problem in Rust by keeping imports of traits as tightly scoped
+with the code that uses them as I can so it's as obvious as possible
+where the method came from.  This is probably one of the rare examples
+where Rust is not [readable as text][idepost], where for the most part
+it is pretty good at being.
 
 # TODO
 
@@ -222,6 +261,8 @@ generality
 [simplemadeeasy]: https://www.youtube.com/watch?v=oytL881p-nQ
 [opinionatedguide]: https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
 [part1]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/
+[idepost]: https://tarquin-the-brave.github.io/blog/posts/ide-read-code/
+[statemonaddocs]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.

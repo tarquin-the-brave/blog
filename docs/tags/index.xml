@@ -11,6 +11,72 @@
    
    
      <item>
+       <title>DRY Shouldn&#39;t be a Goal in Itself</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/</link>
+       <pubDate>Sat, 18 Apr 2020 10:40:01 +0100</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/</guid>
+       <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&#34;&gt;DRY&lt;/a&gt;, &amp;ldquo;Don&amp;rsquo;t Repeat Yourself&amp;rdquo;, is often described as a &amp;ldquo;principle&amp;rdquo; of
+software engineering.  I looked up what &amp;ldquo;principle&amp;rdquo; is defined to mean and
+Google says:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;a fundamental truth or proposition that serves as the foundation
+for a system of belief or behaviour or for a chain of reasoning.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Maybe in this case that&amp;rsquo;s a bit strong.  I&amp;rsquo;d think in the case of a software
+principle we&amp;rsquo;re talking more about an idea of how things should be, or a
+guide&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to decision making.&lt;/p&gt;
+&lt;p&gt;But anyway.  I find quite often, when seeing discussion about software, DRY
+ends up being front and centre, the main focus of what someone wants to
+achieve.  People argue for DRY &amp;ldquo;at any cost&amp;rdquo;.  Is it really worth eliminating
+every ounce of repetition if the result is completely unreadable and
+unmaintainable code?  An answer to that could take us down the route of &amp;ldquo;DRY
+done right&amp;rdquo;, &amp;ldquo;DRY done wrong&amp;rdquo;, and I&amp;rsquo;m sure there will be endless articles out
+there that are titled as such.  But I find that whenever you see discussion
+around &amp;ldquo;principle X done right&amp;rdquo;, &amp;ldquo;principle X done wrong&amp;rdquo;, that serves as an
+indicator that there&amp;rsquo;s something quite leaky about the principle. ⛲&lt;/p&gt;
+&lt;p&gt;I think it&amp;rsquo;s better to think of DRY as an indicator that abstractions are good,
+rather than something to shoot for in of itself.&lt;/p&gt;
+&lt;p&gt;Like in Economics, &amp;ldquo;full employment&amp;rdquo; can be a sign that an economy is generally
+healthy, but can&amp;rsquo;t be a goal above all else.  We could employ everyone in the
+postal service: we&amp;rsquo;d have full employment, but no food.  I only did Economics
+up to GCSE, so maybe there&amp;rsquo;s more to the story than that, but you get the
+picture.&lt;/p&gt;
+&lt;p&gt;As stupid as this comparison might be, I see this happening in software.  DRY
+seems to be an obsession for some developers, and then once achieved: &amp;ldquo;the
+answer&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;I wonder why this is.  Perhaps because it&amp;rsquo;s easy, visible, and safe.  No-one
+disagrees in general that less repetition is better, so unless they know the
+specifics of what you&amp;rsquo;re talking about they&amp;rsquo;re not going to disagree with you.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve seen the pursuit of DRY in absolute leave a trail of destruction in its
+wake.  I prefer to think of it as an indicator, or early warning signal for my
+abstractions.  If I see a fair amount of repetition in my code, I question if
+my abstractions are quite right.  If I seem to be able to express quite a lot
+with very little code, and not a huge number of functions and modules, I see it
+as good sign that the abstractions are about right.&lt;/p&gt;
+&lt;p&gt;I could take verbose and repetitive code, and chop it up into loads of
+functions and squirrel them away in modules &amp;ldquo;utils_1&amp;rdquo;, &amp;ldquo;utils_2&amp;rdquo;, &amp;amp;
+&amp;ldquo;utils_3&amp;rdquo;, and I would have &amp;ldquo;achieved DRY&amp;rdquo;.  But the code would be more all
+over the place than when I started and I wouldn&amp;rsquo;t have addressed the underlying
+cause of the problem that the abstractions we just wrong.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Dry can be a sign of good abstractions, but not a goal in itself.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So work on your abstractions, and the repetition will fall away as you get them
+right.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;As Captain Barbossa says: &amp;ldquo;The code is more what you&amp;rsquo;d
+call guidelines than actual rules&amp;rdquo;. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+     </item>
+   
+     <item>
        <title>Re-Learning Haskell with Advent of Code - Part 1</title>
        <link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/</link>
        <pubDate>Sun, 29 Mar 2020 20:40:05 +0000</pubDate>

@@ -28,6 +28,62 @@ or exits of needs more input.
 intcode module describes states and transformation between them, but doesn't
 need to "track state".
 
+## Failing Functions being Generic over MonadFail
+
+There was a few time in some of the problems where I had a type
+that could represent failure, and if an operation fails we want
+to return that type representing failure.
+
+As an example, say we want to return a list where an empty list
+represents failure.  In this simple example a negative input
+results in failure.
+
+```haskell
+maybePos :: Int -> Maybe Int
+maybePos x
+  | x < 0 = Nothing
+  | otherwise = Just x
+
+thing :: Int -> [Int]
+thing x = case maybePos x of
+  Nothing -> []
+  Just posX -> [posX]
+```
+
+`thing` has to match on the `Maybe Int` given by `maybePos` and
+return either the `Int` in a list or an empty list.
+
+I found myself repeating this patten:
+* Model the operation that can fail with a function that returns `Maybe`,
+* Match on the `Nothing` and return my failure type.
+
+I was doing a lot of manually converting one type's failure representation
+to another type's failure representation.  This seemed to me like there was
+something I could use to do this automatically, as I was expressing the same
+thing over and over again.
+
+In the example above, both `Maybe` and `List` are monads.  I'm converting
+from one monad's failure representation to another.  After a bit of looking
+around I found the [`MonadFail` typeclass][monadfail].  As `Maybe` and `List`
+both are instances of `MonadFail` we can redefine `maybePos` to be generic
+over `MonadFail` and cut out the conversion between failure representations.
+
+```
+maybePosM ::  MonadFail m => Int -> m Int
+maybePosM x
+  | x < 0 = fail "woops"
+  | otherwise = return x
+
+thing' :: Int -> [Int]
+thing' = maybePosM
+
+posIntoMaybe :: Int -> Maybe Int
+posIntoMaybe = maybePosM
+
+posIntoIO :: Int -> IO Int
+posIntoIO = maybePosM
+```
+
 # Other Things That Came Up
 
 ## Recursion
@@ -106,63 +162,14 @@ correct code first time in all languages.
 So I turned the compiler warnings on.  It did make ghci a bit spammy.
 I'll see if there's a nice way to turn the warnings off for ghci.
 
-## Failing Functions being Generic over MonadFail
-
-There was a few time in some of the problems where I had a type
-that could represent failure, and if an operation fails we want
-to return that type representing failure.
-
-As an example, say we want to return a list where an empty list
-represents failure.  In this simple example a negative input
-results in failure.
-
-```haskell
-maybePos :: Int -> Maybe Int
-maybePos x
-  | x < 0 = Nothing
-  | otherwise = Just x
-
-thing :: Int -> [Int]
-thing x = case maybePos x of
-  Nothing -> []
-  Just posX -> [posX]
-```
-
-`thing` has to match on the `Maybe Int` given by `maybePos` and
-return either the `Int` in a list or an empty list.
-
-I found myself repeating this patten:
-* Model the operation that can fail with a function that returns `Maybe`,
-* Match on the `Nothing` and return my failure type.
-
-I was doing a lot of manually converting one type's failure representation
-to another type's failure representation.  This seemed to me like there was
-something I could use to do this automatically, as I was expressing the same
-thing over and over again.
-
-In the example above, both `Maybe` and `List` are monads.  I'm converting
-from one monad's failure representation to another.  After a bit of looking
-around I found the [`MonadFail` typeclass][monadfail].  As `Maybe` and `List`
-both are instances of `MonadFail` we can redefine `maybePos` to be generic
-over `MonadFail` and cut out the conversion between failure representations.
-
-```
-maybePosM ::  MonadFail m => Int -> m Int
-maybePosM x
-  | x < 0 = fail "woops"
-  | otherwise = return x
-
-thing' :: Int -> [Int]
-thing' = maybePosM
-
-posIntoMaybe :: Int -> Maybe Int
-posIntoMaybe = maybePosM
-
-posIntoIO :: Int -> IO Int
-posIntoIO = maybePosM
-```
-
 ## Breaking Functions Into Lots of Pieces
+
+In a few of the Advent of Code problems, especially when I was eager to
+get the problem done and move on, I found myself falling into a pattern
+of:
+
+* Knowing the data I want, and thinking about all the steps between that
+  and the data I have.
 
 I sometimes fall into the trap of:
 * thinking procedurally
@@ -170,7 +177,6 @@ I sometimes fall into the trap of:
 * splitting that up into lots of "functions"
 * non of which make any real sense on their own.
 * code is an unreadable mess.
-* happens when I'm rushing/world outside my head put demands on me (girlfriend)
 `where` keyword is actually fixing this as it breaks the calculation down
 without exposing all the sub functions to the rest of the program.
 

@@ -17,21 +17,225 @@ them in a row._
 
 # Intcode computer - Stateful Computation
 
-# the problems
+## An Intcode Program
 
-state monad for when we care about the evolution of state.
+[Day 2][day2] introduces an intcode program that's essentially a
+series of integers where you start at the beginning and perform some
+operation depending on the integer (instruction) you find which may read or write
+another element in the list, take an input, or produce an output, and
+you then move along the sequence to the next instruction, which is
+a number of elements along depending on the instruction you just ran.
+Eventually you reach an instruction to terminate the intcode program,
+or program crashes from some operation failing, finding an unrecognised
+instruction, or reaching the end without terminating.
+The explanation in [the problem description][day2] goes into more
+detail with examples.
 
-intcode program didn't end up wanting a state monad because it didn't care
-about it's evolution really.  It churn some numbers then stops when it fails
-or exits of needs more input.
+It looks like the general problem here is we've got some state that mutates
+during computation (a run of the program) and we may need to keep the current
+state around while we do some other calculation.
 
-intcode module describes states and transformation between them, but doesn't
-need to "track state".
+With mutation not really being a feature in functional languages I looked around
+for how this can be modelled in Haskell.  From the looks of it, it sounded like
+the [State Monad][wikistate] would be needed at some point.
 
-## Failing Functions being Generic over MonadFail
+### Initial Implementation
 
-There was a few time in some of the problems where I had a type
-that could represent failure, and if an operation fails we want
+The [day 2 problem][day2] asks you to build something that will run a simple
+intcode program with instructions `1` & `2` that each take the next three
+integers as parameters and mutate an element of the intcode, and `99` that
+terminates the program.  The problem asks you to run the intcode it gives
+'til it terminated and give the first value in the intcode.
+
+For this simple case, we're not concerned about inputs or outputs of the
+intcode program and we can run in once and throw it away.
+
+Roughly following the approach I used in the problems tacked in [Part 1][part1]
+I started by thinking about what data matters.
+
+```haskell
+data Program = Program {
+  intCode::[Int],
+  status::Status,
+  -- Instruction Pointer: ip
+  ip::Int
+} deriving(Show)
+
+data Status = Running | Terminated | Crashed deriving(Show)
+```
+
+So we've got: the index that the current instruction is at, `ip`; the
+status of the program, whether it's `Running`, `Terminated` (by a `99`),
+or `Crashed` for some reason; and the `intCode` itself.
+
+I could have done less than this on a first pass, only modelling
+the `intCode` and `ip`, and letting the code crash if an operation
+failed, but I was keen write safe code by using safe operations,
+such as those from [`Data.List.Safe`][safelist] handling errors, hence the
+`Crashed` variant of `Status`.
+
+I've modelled the intcode as a list, `[Int]`. lists aren't efficient
+for looking up values by index, which is done a lot in the solution,
+but for now, I'm not hugely worried about performance at this stage.
+If it becomes an issue in later problems, I can look into alternative
+representations.  If not I'll cycle back through at some point and
+try to optimise performance as an exercise.
+
+From here I was able to write a function that takes the above state
+and evolves it by one instruction, and running an entire intcode
+program by recursing until the status is no longer `Running`.
+
+```haskell
+runProgram :: Program -> Program
+runProgram prog = case status prog of
+   Running -> runProgram . runStep $ prog
+   _ -> prog
+
+runStep :: Program -> Program
+runStep prog = ...
+```
+
+`runStep` matches the instruction found at the instruction pointer
+index in the intcode and runs the appropriate operation to produce
+a new `Program` with a mutated intcode and the instruction pointer
+moved along.
+
+### Introducing the State Monad
+
+The above recursive function proved to be enough to get the answers
+to both parts of [day 2][day2].  As I didn't need to keep track of
+the program state, the State Monad wasn't needed.
+
+Anticipating I'd need it later, I tried wrapping the
+computation in the State Monad to see how it works.
+
+From reading the [State Monad docs][docsstate], and with some help
+for the [chapter in Learn You a Haskell][lyahstate], I've understood
+it as: you have your state, `s`; the output of a computation on that
+state, `a`; and a function that takes the state and returns the output
+and the state evolved, `s -> (a, s)`.  You then use `state` to put
+the function into the State Monad, denoted `State s a`.  Then it can
+be manipulated with functions from [the docs][docsstate] and inside
+`do` notation.
+
+In this case the state type, `s`, is `Program`, and the output type,
+`a`, is `()` as we're not concerned about the output.
+
+```haskell
+runProgram :: State Program ()
+runProgram = do
+  prog <- get
+  case programState prog of
+    Running -> do
+      runStep'
+      runProgram
+    _ -> return ()
+
+runStep' :: State Program ()
+runStep' = state runStep
+
+runStep :: Program -> ((), Program)
+runStep prog
+```
+
+I was then able to create a `Program` with the intcode provided, pass
+it to `runProgram` and use [`execState`][docsstate] to get the
+final `Program` state.
+
+The fact that I've used `()` for the output type is a sign that
+the State Monad was not required here,  but it was good to do as an
+exercise.
+
+### Expanding the Intcode Computer
+
+Over days [5][day5], [7][day7], & [9][day9] you're asked to build up the
+intcode computer with a host of new instructions and the ability to take inputs
+and give outputs.
+
+Now there was a potential opportunity to use the State Monad in the intcode
+computer, changing the output type and having the functions that return the
+State Monad take a parameter.  E.g. if our input and output were both `Int`
+we might have:
+
+```haskell
+runProgram :: Int -> State Program Int
+```
+
+In the case of these problems we need:
+
+- A list of inputs, `[Int]`,
+- A list of outputs, `[Int]`,
+- Inputs are called one by one, not necessarily by the first instruction in the program,
+- Outputs build up over the course of the program running.
+
+As the program runs each instruction, we want to keep track of the
+remaining inputs and the outputs thus far.  So I decided to include
+input and output in the `Program` type, and not use my State Monad
+implementation.
+
+Including these in the type that tracks the state, along with a "Relative
+Base" which the Instruction Pointer is taken as being relative to, we get:
+
+```haskell
+data Program = Program {
+  input::[Int],
+  intCode::[Int],
+  status::Status,
+  -- ip: Instruction Pointer
+  ip::Int,
+  -- rb: Relative Base
+  rb::Int,
+  output::[Int]
+} deriving(Show, Eq)
+
+data Status = Running | AwaitInput | Terminated | Crashed deriving(Show, Eq)
+```
+
+`runProgram` mostly stayed the same, with the case statement adding a match
+for the `AwaitInput` variant of `Status`.
+
+```haskell
+runProgram :: Program -> Program
+runProgram prog = case status prog of
+   Running -> runProg . runStep $ prog
+   AwaitInput -> if (length . input $ prog) > 0
+     then runProg . runStep $ prog
+     else prog
+   _ -> prog
+
+runStep :: Program -> Program
+runStep = ...
+```
+
+### Adding Tests
+
+As every odd day from 5 onwards uses this intcode computer, I defined
+it in it's own module in a different directory and write some tests for
+it.
+
+TODO
+
+### Using the Intcode Computer
+
+I used this intcode computer implementation for the problems up to [day 15][day15].
+
+TODO
+
+## Making a Monad
+
+In my intcode computer, there was lots of opportunity for various
+operations to fail if the intcode was bugged or an input was bad.
+I was modelling these with [`Maybe`][maybe], matching on `Nothing`, and
+setting the program status to the `Crashed` variant of `Status`.
+
+I was doing this _a lot_, essentially writing the same 3 lines of code
+over and over.  This indicated to me that there was an abstraction
+to be made[^dry].
+
+### Failing Functions being Generic over MonadFail
+
+The general case of this is where we have a type
+that can represent failure, and if an operation fails we want
 to return that type representing failure.
 
 As an example, say we want to return a list where an empty list
@@ -83,6 +287,14 @@ posIntoMaybe = maybePosM
 posIntoIO :: Int -> IO Int
 posIntoIO = maybePosM
 ```
+
+### Refactoring the Intcode Computer
+
+TODO
+
+### Testing Monad Laws
+
+TODO
 
 # Other Things That Came Up
 
@@ -180,7 +392,7 @@ I sometimes fall into the trap of:
 `where` keyword is actually fixing this as it breaks the calculation down
 without exposing all the sub functions to the rest of the program.
 
-## Packages, Modules & Namespacing
+## Modules & Namespacing
 
 In [my last post][part1] I talked about: not knowing how to find out
 what package to install to get a certain library; and not being totally
@@ -255,13 +467,17 @@ where the method came from.  This is probably one of the rare examples
 where Rust is not [readable as text][idepost], where for the most part
 it is pretty good at being.
 
-# TODO
+# What Next?
+
+TODO
 
 - read more about Monad Transformers
 - As I said last time - "I could probably use the tools I've got and grind away to solve all
   the problems" - Learning more Haskell, along with data structures, mathematics, and patterns
   that can help in all languages is the goal.
-- Loop back through on
+- Loop back through
+  - perf
+  - more generic
 
 [valueofvalues]: https://www.youtube.com/watch?v=-6BsiVyC1kM
 [simplemadeeasy]: https://www.youtube.com/watch?v=oytL881p-nQ
@@ -269,6 +485,16 @@ it is pretty good at being.
 [part1]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/
 [idepost]: https://tarquin-the-brave.github.io/blog/posts/ide-read-code/
 [statemonaddocs]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
+[day2]: https://adventofcode.com/2019/day/2
+[day5]: https://adventofcode.com/2019/day/5
+[day7]: https://adventofcode.com/2019/day/7
+[day9]: https://adventofcode.com/2019/day/9
+[docsstate]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
+[wikistate]: https://wiki.haskell.org/State_Monad
+[lyahstate]: http://learnyouahaskell.com/for-a-few-monads-more#state
+[safelist]: http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html
+[maybe]: http://hackage.haskell.org/package/base-4.12.0.0/docs/Data-Maybe.html
+[dryblog]: https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.
@@ -282,3 +508,7 @@ it is pretty good at being.
 [^simple]: [Another great talk by Rich Hickey][simplemadeeasy] "Simple Made Easy"
            talks about what simplicity is and how we can think objectively about it
            rather than it being a stand in for what people are most familiar with.
+
+[^dry]: I wrote [a blog post recently][dryblog] about how removing repetition in code
+        isn't the be all and end all, but is a good indicator that some abstractions
+        are needed.

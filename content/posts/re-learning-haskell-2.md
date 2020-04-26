@@ -1,51 +1,49 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 2"
-date = 2020-04-01T16:36:28+01:00
+date = 2020-04-26T16:36:28+01:00
 images = []
 tags = []
 categories = []
 draft = true
 +++
 
-_In [Part 1][part1], I skipped the day 2, 5, & 7 problems that get you
-to build and use a Intcode computer.  Each problem provides an Intcode
-program to run: A series of integers that can each either represent an
-instruction or data, and can mutate itself.  Looking forward, every
-odd number day from day 5 onwards uses the Intcode program.  So I
-decided to come back to them, and make a concerted effort at a few of
-them in a row._
+_In [Part 1][part1], I skipped the day 2, 5, & 7 problems that get you to build
+and use a Intcode computer.  Each problem provides an Intcode program to run: A
+series of integers that can each either represent an instruction or data, and
+can mutate itself.  Looking forward, every odd number day from day 5 onwards
+uses the Intcode program.  So I decided to come back to them, and make a
+concerted effort at a few of them in a row._
 
 # Intcode computer - Stateful Computation
 
 ## An Intcode Program
 
-[Day 2][day2] introduces an intcode program that's essentially a
-series of integers where you start at the beginning and perform some
-operation depending on the integer (instruction) you find which may read or write
-another element in the list, take an input, or produce an output, and
-you then move along the sequence to the next instruction, which is
-a number of elements along depending on the instruction you just ran.
-Eventually you reach an instruction to terminate the intcode program,
-or program crashes from some operation failing, finding an unrecognised
-instruction, or reaching the end without terminating.
-The explanation in [the problem description][day2] goes into more
-detail with examples.
+[Day 2][day2] introduces an intcode program that's essentially a series of
+integers where you start at the beginning and perform some operation depending
+on the integer (instruction) you find which may read or write another element
+in the list, take an input, or produce an output, and you then move along the
+sequence to the next instruction, which is a number of elements along depending
+on the instruction you just ran.  Eventually you reach an instruction to
+terminate the intcode program, or program crashes from some operation failing,
+finding an unrecognised instruction, or reaching the end without terminating.
+The explanation in [the problem description][day2] goes into more detail with
+examples.
 
 It looks like the general problem here is we've got some state that mutates
 during computation (a run of the program) and we may need to keep the current
 state around while we do some other calculation.
 
-With mutation not really being a feature in functional languages I looked around
-for how this can be modelled in Haskell.  From the looks of it, it sounded like
-the [State Monad][wikistate] would be needed at some point.
+With mutation not really being a feature in functional languages I looked
+around for how this can be modelled in Haskell.  From the looks of it, it
+sounded like the [State Monad][wikistate] would be needed at some point.
 
 ### Initial Implementation
 
 The [day 2 problem][day2] asks you to build something that will run a simple
 intcode program with instructions `1` & `2` that each take the next three
 integers as parameters and mutate an element of the intcode, and `99` that
-terminates the program.  The problem asks you to run the intcode it gives
-'til it terminated and give the first value in the intcode.
+terminates the program.  The problem asks you to run the intcode it gives 'til
+it terminated and give the first value in the intcode.
 
 For this simple case, we're not concerned about inputs or outputs of the
 intcode program and we can run in once and throw it away.
@@ -64,26 +62,26 @@ data Program = Program {
 data Status = Running | Terminated | Crashed deriving(Show)
 ```
 
-So we've got: the index that the current instruction is at, `ip`; the
-status of the program, whether it's `Running`, `Terminated` (by a `99`),
-or `Crashed` for some reason; and the `intCode` itself.
+So we've got: the index that the current instruction is at, `ip`; the status of
+the program, whether it's `Running`, `Terminated` (by a `99`), or `Crashed` for
+some reason; and the `intCode` itself.
 
-I could have done less than this on a first pass, only modelling
-the `intCode` and `ip`, and letting the code crash if an operation
-failed, but I was keen write safe code by using safe operations,
-such as those from [`Data.List.Safe`][safelist] handling errors, hence the
-`Crashed` variant of `Status`.
+I could have done less than this on a first pass, only modelling the `intCode`
+and `ip`, and letting the code crash if an operation failed, but I was keen
+write safe code by using safe operations, such as those from
+[`Data.List.Safe`][safelist] handling errors, hence the `Crashed` variant of
+`Status`.
 
-I've modelled the intcode as a list, `[Int]`. lists aren't efficient
-for looking up values by index, which is done a lot in the solution,
-but for now, I'm not hugely worried about performance at this stage.
-If it becomes an issue in later problems, I can look into alternative
-representations.  If not I'll cycle back through at some point and
-try to optimise performance as an exercise.
+I've modelled the intcode as a list, `[Int]`. lists aren't efficient for
+looking up values by index, which is done a lot in the solution, but for now,
+I'm not hugely worried about performance at this stage.  If it becomes an issue
+in later problems, I can look into alternative representations.  If not I'll
+cycle back through at some point and try to optimise performance as an
+exercise.
 
-From here I was able to write a function that takes the above state
-and evolves it by one instruction, and running an entire intcode
-program by recursing until the status is no longer `Running`.
+From here I was able to write a function that takes the above state and evolves
+it by one instruction, and running an entire intcode program by recursing until
+the status is no longer `Running`.
 
 ```haskell
 runProgram :: Program -> Program
@@ -95,31 +93,29 @@ runStep :: Program -> Program
 runStep prog = ...
 ```
 
-`runStep` matches the instruction found at the instruction pointer
-index in the intcode and runs the appropriate operation to produce
-a new `Program` with a mutated intcode and the instruction pointer
-moved along.
+`runStep` matches the instruction found at the instruction pointer index in the
+intcode and runs the appropriate operation to produce a new `Program` with a
+mutated intcode and the instruction pointer moved along.
 
 ### Introducing the State Monad
 
-The above recursive function proved to be enough to get the answers
-to both parts of [day 2][day2].  As I didn't need to keep track of
-the program state, the State Monad wasn't needed.
+The above recursive function proved to be enough to get the answers to both
+parts of [day 2][day2].  As I didn't need to keep track of the program state,
+the State Monad wasn't needed.
 
-Anticipating I'd need it later, I tried wrapping the
-computation in the State Monad to see how it works.
+Anticipating I'd need it later, I tried wrapping the computation in the State
+Monad to see how it works.
 
-From reading the [State Monad docs][docsstate], and with some help
-for the [chapter in Learn You a Haskell][lyahstate], I've understood
-it as: you have your state, `s`; the output of a computation on that
-state, `a`; and a function that takes the state and returns the output
-and the state evolved, `s -> (a, s)`.  You then use `state` to put
-the function into the State Monad, denoted `State s a`.  Then it can
-be manipulated with functions from [the docs][docsstate] and inside
-`do` notation.
+From reading the [State Monad docs][docsstate], and with some help for the
+[chapter in Learn You a Haskell][lyahstate], I've understood it as: you have
+your state, `s`; the output of a computation on that state, `a`; and a function
+that takes the state and returns the output and the state evolved, `s -> (a,
+s)`.  You then use `state` to put the function into the State Monad, denoted
+`State s a`.  Then it can be manipulated with functions from [the
+docs][docsstate] and inside `do` notation.
 
-In this case the state type, `s`, is `Program`, and the output type,
-`a`, is `()` as we're not concerned about the output.
+In this case the state type, `s`, is `Program`, and the output type, `a`, is
+`()` as we're not concerned about the output.
 
 ```haskell
 runProgram :: State Program ()
@@ -138,13 +134,11 @@ runStep :: Program -> ((), Program)
 runStep prog
 ```
 
-I was then able to create a `Program` with the intcode provided, pass
-it to `runProgram` and use [`execState`][docsstate] to get the
-final `Program` state.
+I was then able to create a `Program` with the intcode provided, pass it to
+`runProgram` and use [`execState`][docsstate] to get the final `Program` state.
 
-The fact that I've used `()` for the output type is a sign that
-the State Monad was not required here,  but it was good to do as an
-exercise.
+The fact that I've used `()` for the output type is a sign that the State Monad
+was not required here,  but it was good to do as an exercise.
 
 ### Expanding the Intcode Computer
 
@@ -154,8 +148,8 @@ and give outputs.
 
 Now there was a potential opportunity to use the State Monad in the intcode
 computer, changing the output type and having the functions that return the
-State Monad take a parameter.  E.g. if our input and output were both `Int`
-we might have:
+State Monad take a parameter.  E.g. if our input and output were both `Int` we
+might have:
 
 ```haskell
 runProgram :: Int -> State Program Int
@@ -165,16 +159,16 @@ In the case of these problems we need:
 
 - A list of inputs, `[Int]`,
 - A list of outputs, `[Int]`,
-- Inputs are called one by one, not necessarily by the first instruction in the program,
+- Inputs are called one by one, not necessarily by the first instruction in the
+  program,
 - Outputs build up over the course of the program running.
 
-As the program runs each instruction, we want to keep track of the
-remaining inputs and the outputs thus far.  So I decided to include
-input and output in the `Program` type, and not use my State Monad
-implementation.
+As the program runs each instruction, we want to keep track of the remaining
+inputs and the outputs thus far.  So I decided to include input and output in
+the `Program` type, and not use my State Monad implementation.
 
-Including these in the type that tracks the state, along with a "Relative
-Base" which the Instruction Pointer is taken as being relative to, we get:
+Including these in the type that tracks the state, along with a "Relative Base"
+which the Instruction Pointer is taken as being relative to, we get:
 
 ```haskell
 data Program = Program {
@@ -209,17 +203,287 @@ runStep = ...
 
 ### Adding Tests
 
-As every odd day from 5 onwards uses this intcode computer, I defined
-it in it's own module in a different directory and write some tests for
-it.
+As every odd day from 5 onwards uses this intcode computer, I defined it in
+it's own module in a different directory and wrote some tests for it.
 
-TODO
+Looking around I found all sorts of testing libraries with different goals:
+[hUnit][hunit] for unit testing, [SmallCheck][smallcheck] &
+[QuickCheck][quickcheck] for property based testing, to name a few.  The
+[tasty][tasty] library attempts to pull them all together so I went with that.
 
-### Using the Intcode Computer
+Property based testing looks quite interesting and I plan to look into it.  For
+my intcode I added a bunch of `assert F(X) == Y` style tests to ensure the
+operations perform as expected in the mainline cases.
 
-I used this intcode computer implementation for the problems up to [day 15][day15].
+With [tasty][tasty] you create a "test tree".  I added all the examples from
+explanations of the intcode features from each of the days that introduces
+them.  The output looks quite good in the terminal.
 
-TODO
+```
+$ stack test
+...
+intcode> test (suite: intcode-test)
+
+Tests
+  Unit tests
+    Test progressing the program by one instruction
+      tests for op codes 1 & 2
+        Day 2 example 1 step 1:                              OK
+        Day 2 example 1 step 2:                              OK
+        Day 2 example 1 step 3 - finish:                     OK
+        Day 2 example 1 - try step finished prog:            OK
+      Some testing of Opcodes 5 & 6
+        op code 6 - test 1:                                  OK
+      test 203 op code
+        simple case:                                         OK
+    Test runnning the program til it stops
+      Test examples from day 2 of AOC
+        Day 2 example 2 - (1 + 1 = 2):                       OK
+        Day 2 example 3 (3 * 2 = 6):                         OK
+        Day 2 example 4 (99 * 99 = 9801):                    OK
+        Day 2 example 5:                                     OK
+      Test examples from day 5 of AOC
+        Day 5 example 1 - echo:                              OK
+        Day 5 example 2 - immediate mode:                    OK
+        Day 5 example 3 - input equal to 8? yes:             OK
+        Day 5 example 3 - input equal to 8? no:              OK
+        ... (etc)
+      Test examples from day 9 of AOC
+        Day 9 example 1 - copy of self:                      OK
+        Day 9 example 2 - output 16 digit number:            OK
+        ... (etc)
+
+All 33 tests passed (0.01s)
+
+intcode> Test suite intcode-test passed
+Completed 2 action(s).
+```
+
+## Using the Intcode Computer
+
+[Day 7][day7] asks you to create a series of intcode computers, each running an
+"amplifier program" provided, where the output of one becomes the input of the
+next.
+
+The first part of the problem requires you to run these in series to get an
+output at the end.  _Taking the ascii diagrams from the [day 7][day7] problem
+description._
+
+```
+    O-------O  O-------O  O-------O  O-------O  O-------O
+0 ->| Amp A |->| Amp B |->| Amp C |->| Amp D |->| Amp E |-> (to thrusters)
+    O-------O  O-------O  O-------O  O-------O  O-------O
+```
+
+A simple fold over a list of intcodes sufficed here.  I was happy for each
+intcode state to be thrown away as the calculation moved to the next.  No need
+for the State Monad yet.
+
+The second half of the problem then asks you to run the intcode computers, the
+"amplifiers", in a loop, until they exit.
+
+```
+      O-------O  O-------O  O-------O  O-------O  O-------O
+0 -+->| Amp A |->| Amp B |->| Amp C |->| Amp D |->| Amp E |-.
+   |  O-------O  O-------O  O-------O  O-------O  O-------O |
+   |                                                        |
+   '--------------------------------------------------------+
+                                                            |
+                                                            v
+                                                     (to thrusters)
+```
+
+Now we care about keeping the intcode state around, and we have an output we
+want to take from the stateful computation, we have a good reason to use the
+State Monad.
+
+```haskell
+import Intcode (
+  Status,
+  Program
+)
+
+data Amps = Amps {
+  ampsOf::[Program],
+  activeAmp::Int
+} deriving(Show)
+
+runAmpsLoop :: State Amps (Maybe Int)
+runAmpsLoop = do
+  out <- runActiveAmpOutput'
+  amps <- get
+  case (atFinalAmp amps, activeAmpStatus amps) of
+    (_, Crashed) -> return Nothing
+    (_, Running) -> return Nothing
+    (True, Terminated) -> return (Just out)
+    (False, Terminated) -> do
+      modify nextAmp
+      modify (activeAmpAppendInput out)
+      runAmpsLoop
+    (_, AwaitInput) -> do
+      modify nextAmp
+      modify (activeAmpAppendInput out)
+      runAmpsLoop
+
+--
+-- The types of the functions called above,
+-- in order of appearence.
+--
+runActiveAmpOutput' :: State Amps Int
+runActiveAmpOutput :: Amps -> (Int, Amps)
+
+atFinalAmp :: Amps -> Bool
+activeAmpStatus :: Amps -> ProgState
+
+nextAmp :: Amps -> Amps
+activeAmpAppendInput :: Int -> Amps -> Amps
+```
+
+Following the same pattern applied when I tried wrapping the intcode in a State
+Monad [above][intcodestate]: `runActiveAmpOutput` evolves the state and
+provides an output, our `s -> (a, s)`; `runActiveAmpOutput'` wraps that in the
+State Monad with `state`; and `runAmpsLoop` runs the current amplifier (intcode
+program), gets the new overall state with `get`, and only if we've just run the
+final amplifier in the loop, and it has `Terminated`, return the output.
+Otherwise, if we haven't crashed, use `modify` to edit the overall state by
+moving to the next amplifier in the loop, `nextAmp`, and passing the output
+from the last amplifier to new one, `activeAmpAppendInput`.
+
+I also defined a function `newAmps` which given an intcode program and a list
+of "phases" (tuning parameters for the amplifiers), produces the initial `Amps`
+state.
+
+```haskell
+newAmps :: [Int] -> [Int] -> Amps
+```
+
+I could then find the output of running the amplifiers in a loop with the
+expression:
+
+```haskell
+evalState runAmpsLoop $ newAmps intCode phases
+```
+
+The problem itself asks you to find the combination of phases that gives the
+greatest output once the amplifier loop has ran its course.  This could be
+found by selecting the permutation of phases that the above expression evaluates
+to the greatest value.
+
+## Introducing Monad Transformers
+
+[Day 13][day13] has a fun problem.  You're given an intcode program that outputs
+the data (triplets of: x coordinate, y coordinate, and a "tile id" that determines
+which character exists at that position) for the display of a game where you
+destroy all the bricks with a ball that you keep in play with a paddle you move
+side to side.
+
+You're asked to write a program that will finish the game by destroying all the
+bricks.
+
+I had a solution that would start with a state like this:
+
+```
+"Z|||||||||||||||||||||||||||||||||||||||||||"
+" | # # ## #### ##  #  #### #####    #####  |"
+" | ####    #   #   # #    ## # #   ##   #  |"
+" | # ## ## # ## ## ###  ######  # ##### #  |"
+" | #  # ## ####    ##### # ######  ######  |"
+" | ##  ##### # # #  ## # # ### ## ### ## # |"
+" |  #### ##  #  # ## #  #   ## # ###### #  |"
+" |  ## #######  #### # ## # #   ## #  #### |"
+" | # # ## #### ##  #  #### #####    #####  |"
+" | # ##### #   ##    ### ####    # ####  # |"
+" |  ## #  #   #    #   # #  ## # # #  ###  |"
+" | ## ## # # # ##  #    ## ###    ##  #### |"
+" | ###     ######   ## ##  ## ### ##       |"
+" |    # ## ##   ##  ## ### #         ## ## |"
+" | ## ##  #  # ### # ## #   ##    ### # ## |"
+" |                                         |"
+" |                                         |"
+" |                         o               |"
+" |                                         |"
+" |                          =              |"
+" |                                         |"
+```
+
+and would whirr for a short while until it was finished
+and my `main` could print the game state:
+
+```
+"Z|||||||||||||||||||||||||||||||||||||||||||"
+" |                                         |"
+" |                                         |"
+" |                                   o     |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                   =     |"
+" |                                         |"
+"your score: 13581"
+```
+
+This was all well and good, and I could complete the problem by
+giving my end score, but I wanted to watch my program as it took
+out all the bricks.
+
+TODO explain this bit.
+
+```haskell
+import qualified Intcode as IC
+import qualified Data.HashMap.Strict as HM
+
+data Game = Game {
+  gameProg :: IC.Program,
+  gameDisplay :: Displ
+} deriving(Show)
+
+type Displ = HM.HashMap Tile Tid
+type Tile = (Int, Int)
+
+data Tid = Empty | Wall | Block | Paddle | Ball | BadTid | Score{theScore::Int} deriving(Show, Eq)
+```
+
+```haskell
+data LiveData = LiveData {
+  xb::Int,
+  xp::Int,
+  sc::Int
+} deriving(Show)
+
+type GameIOT = StateT Game IO
+
+playGame' :: [Int] -> GameIOT Int
+playGame' inp = do
+  liveData <- stepGame inp
+  game <- get
+  let grid = gridDisplay $ gameDisplay game
+  _ <- liftIO $ mapM print grid
+  liftIO . print $ ("Your score: " ++ show (sc liveData))
+  liftIO . cursorUp $ (length grid) + 1
+  case IC.progState (gameProg game) of
+    IC.AwaitInput -> playGame' [joystick (xb liveData) (xp liveData)]
+    _ -> return $ sc liveData
+
+stepGame :: [Int] -> GameIOT LiveData
+```
+
+```haskell
+import Control.Monad.State.Lazy
+import Control.Monad.IO.Class
+import System.Console.ANSI
+```
 
 ## Making a Monad
 
@@ -472,12 +736,15 @@ it is pretty good at being.
 TODO
 
 - read more about Monad Transformers
+- learn more about "property based testing"
 - As I said last time - "I could probably use the tools I've got and grind away to solve all
   the problems" - Learning more Haskell, along with data structures, mathematics, and patterns
   that can help in all languages is the goal.
 - Loop back through
   - perf
-  - more generic
+  - more generic types
+  - types being more specific to what they're representing
+  - Not using `String`
 
 [valueofvalues]: https://www.youtube.com/watch?v=-6BsiVyC1kM
 [simplemadeeasy]: https://www.youtube.com/watch?v=oytL881p-nQ
@@ -489,12 +756,18 @@ TODO
 [day5]: https://adventofcode.com/2019/day/5
 [day7]: https://adventofcode.com/2019/day/7
 [day9]: https://adventofcode.com/2019/day/9
+[day13]: https://adventofcode.com/2019/day/13
 [docsstate]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
 [wikistate]: https://wiki.haskell.org/State_Monad
 [lyahstate]: http://learnyouahaskell.com/for-a-few-monads-more#state
 [safelist]: http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html
 [maybe]: http://hackage.haskell.org/package/base-4.12.0.0/docs/Data-Maybe.html
 [dryblog]: https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/
+[smallcheck]: https://hackage.haskell.org/package/smallcheck
+[quickcheck]: http://hackage.haskell.org/package/QuickCheck
+[hunit]: https://hackage.haskell.org/package/HUnit
+[tasty]: https://hackage.haskell.org/package/tasty
+[intcodestate]: #introducing-the-state-monad
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.

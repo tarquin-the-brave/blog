@@ -434,11 +434,13 @@ and my `main` could print the game state:
 "your score: 13581"
 ```
 
-This was all well and good, and I could complete the problem by
-giving my end score, but I wanted to watch my program as it took
-out all the bricks.
+To achieve this I followed the same pattern as I did [in the day 7
+solution][usingintcode] we saw in the last section:
 
-TODO explain this bit.
+* Define the state,
+* Wrap that in the State Monad, and
+* Define a recursive function to keep running the intcode
+  computer and evolving the state until done.
 
 ```haskell
 import qualified Intcode as IC
@@ -455,17 +457,69 @@ type Tile = (Int, Int)
 data Tid = Empty | Wall | Block | Paddle | Ball | BadTid | Score{theScore::Int} deriving(Show, Eq)
 ```
 
+This time `Game` is the state, containing an intcode program and a
+[HashMap][hashmap] to record the "tiles" in the display, keyed by their
+coordinates.
+
 ```haskell
 data LiveData = LiveData {
+  -- x-coordinate of the ball - xb
   xb::Int,
+  -- x-coordinate of the paddle - xp
   xp::Int,
+  -- Game score - sc
   sc::Int
 } deriving(Show)
 
-type GameIOT = StateT Game IO
+stepGame' :: [Int] -> Game -> (LiveData, Game)
 
-playGame' :: [Int] -> GameIOT Int
-playGame' inp = do
+stepGame :: [Int] -> State Game LiveData
+stepGame = state . stepGame'
+
+playGame :: [Int] -> GameIOT Int
+playGame inp = do
+  liveData <- stepGame inp
+  game <- get
+  case IC.progState (gameProg game) of
+    IC.AwaitInput -> playGame [joystick (xb liveData) (xp liveData)]
+    _ -> return $ sc liveData
+
+joystick :: Int -> Int -> Int
+```
+
+`LiveData` is the data we pass on from step to step: the x coordinates of the
+ball and paddle and the running score.  The intcode program given can take `1`,
+`-1`, or `0` as an input to move the paddle right, left, or nowhere. `joystick`
+returns `1`, `-1`, or `0` depending on whether the ball is ahead, behind, or in
+line with the paddle.
+
+This was all well and good, and I could complete the problem by giving my end
+score, but I wanted to watch my program as it took out all the bricks.
+
+Basically I wanted to be able to call `print` inside the `playGame` function.
+I had a function that would turn the HashMap display into a 2D grid of Chars:
+
+```haskell
+gridDisplay :: Displ -> [[Char]]
+```
+
+, and could print a game's display to screen with an expressions like:
+
+```haskell
+mapM print $ gridDisplay displ
+```
+
+TODO talk more here
+
+[statet]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html#t:StateT
+
+```haskell
+import Control.Monad.State.Lazy (state, StateT)
+import Control.Monad.IO.Class (liftIO)
+import System.Console.ANSI (cursorUp)
+
+playGame :: [Int] -> StateT Game IO Int
+playGame inp = do
   liveData <- stepGame inp
   game <- get
   let grid = gridDisplay $ gameDisplay game
@@ -473,16 +527,11 @@ playGame' inp = do
   liftIO . print $ ("Your score: " ++ show (sc liveData))
   liftIO . cursorUp $ (length grid) + 1
   case IC.progState (gameProg game) of
-    IC.AwaitInput -> playGame' [joystick (xb liveData) (xp liveData)]
+    IC.AwaitInput -> playGame [joystick (xb liveData) (xp liveData)]
     _ -> return $ sc liveData
 
-stepGame :: [Int] -> GameIOT LiveData
-```
-
-```haskell
-import Control.Monad.State.Lazy
-import Control.Monad.IO.Class
-import System.Console.ANSI
+stepGame :: [Int] -> StateT Game IO LiveData
+stepGame = state . stepGame'
 ```
 
 ## Making a Monad
@@ -552,9 +601,39 @@ posIntoIO :: Int -> IO Int
 posIntoIO = maybePosM
 ```
 
+This pattern showed a lot of promise, and I wanted to see if I could employ
+it in my intcode computer code.
+
 ### Refactoring the Intcode Computer
 
+Recall the `Program` type I've been using to model an intcode computer
+thus far:
+
+```haskell
+data Program = Program {
+  input::[Int],
+  intCode::[Int],
+  status::Status,
+  -- ip: Instruction Pointer
+  ip::Int,
+  -- rb: Relative Base
+  rb::Int,
+  output::[Int]
+} deriving(Show, Eq)
+
+data Status = Running | AwaitInput | Terminated | Crashed deriving(Show, Eq)
+```
+
+We think about where failure is represented in this type: in the `Crashed`
+variant of the sum type `Status` under the status field.  You could say that
+"sense of failure" is buried deep within this type.  If we want to handle
+failure with Monads, we want to encode failure in a "container" type.
+
+
 TODO
+
+- go through implementation
+- discuss alternatives, how applicative doesn't make sense so much.
 
 ### Testing Monad Laws
 
@@ -746,6 +825,9 @@ TODO
   - types being more specific to what they're representing
   - Not using `String`
 
+_As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc]._
+
+[tarquinaoc]: https://github.com/tarquin-the-brave/aoc-19-haskell
 [valueofvalues]: https://www.youtube.com/watch?v=-6BsiVyC1kM
 [simplemadeeasy]: https://www.youtube.com/watch?v=oytL881p-nQ
 [opinionatedguide]: https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
@@ -768,6 +850,8 @@ TODO
 [hunit]: https://hackage.haskell.org/package/HUnit
 [tasty]: https://hackage.haskell.org/package/tasty
 [intcodestate]: #introducing-the-state-monad
+[hashmap]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashMap-Strict.html
+[usingintcode]: #using-the-intcode-computer
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.

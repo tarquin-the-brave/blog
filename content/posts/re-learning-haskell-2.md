@@ -1,10 +1,10 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 2"
-date = 2020-04-26T16:36:28+01:00
+date = 2020-04-29T20:36:28+01:00
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 _In [Part 1][part1], I skipped the day 2, 5, & 7 problems that get you to build
@@ -808,13 +808,36 @@ xs !!! i
   | otherwise = return $ xs !! i
 ```
 
-I was then able to strip out
-[monadtypeclass]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#t:Monad
-TODO
+I was then able to strip out all of the `case` statements that were matching
+`Maybe` and returning a "crashed" program for `Nothing` and use `do` notation.
 
-- go through implementation
-- the key abstraction here is...
-- discuss alternatives, how applicative doesn't make sense so much.
+The implementation of the old `runStep` function that move the program on by
+running a single instruction called down through layers of functions to select
+the right operation, try to perform it, matching on the `Maybe` returned and
+evolving the intcode state if the operation was successful.  Now this logic
+is condensed with the tedious boilerplate removed.  The start of the equivalent
+function in the refactored implementation:
+
+```haskell
+runInstruction :: Intcode -> Prog Intcode
+runInstruction ic = do
+   opcodes <- currentOpCode ic
+   case opcodes of
+      (One, m1, m2, m3) -> do
+        newIc <- op1 m1 m2 m3 (ip ic) (code ic)
+        return $ moveIp 4 . updateCode newIc $ ic
+   ...
+```
+
+`currentOpCode` & `op1` both return a type generic over `MonadFail`, so in the
+case of failure will cause this function to bail with the `Crashed` variant of
+`Prog`.
+
+I'm not sure how "idiomatic" using `MonadFail` in this way is, it's just
+something I spotted that I could do. I see that the [`Data.List.Safe`][safelist]
+uses `MonadThrow` to represent failure, and looking around there seems
+other ways of representing and dealing with errors, the [`ExceptT`][exceptt]
+monad transformer among them.
 
 # Other Things That Came Up
 
@@ -922,7 +945,7 @@ from "where did that function come from?" syndrome.
 The first of these was me just being dumb as it turns out the
 package containing a module is written in the top left hand corner
 of the module documentation's web page.  Spot `mtl-` in [the
-docs][statemonaddocs] for `Control.Monad.State.Lazy`.
+docs][docsstate] for `Control.Monad.State.Lazy`.
 
 On the second of these: I've got reasonably comfortable with either
 doing a qualified import to preserve namespacing, or being explicit
@@ -989,18 +1012,18 @@ it is pretty good at being.
 
 # What Next?
 
-TODO
+As I said last time, I reckon I could press on and do the rest of the problems
+with the tools I know.  But I'm keen to level up my Haskell and not just grind
+out solutions.
 
-- read more about Monad Transformers
-- learn more about "property based testing"
-- As I said last time - "I could probably use the tools I've got and grind away to solve all
-  the problems" - Learning more Haskell, along with data structures, mathematics, and patterns
-  that can help in all languages is the goal.
-- Loop back through
-  - perf
-  - more generic types
-  - types being more specific to what they're representing
-  - Not using `String`
+I'm keen to read more into monad transformers and property based testing.
+
+I then want to loop back around and improve the performance of my solutions:
+looking into strictness and more efficient data structure.  I also want to
+make types fit the data better: where they could be more generic making them
+more generic and where they're too generic, and possible values of the type
+don't represent possible values of data the type represents, choose or make
+another type that's better suited.
 
 _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc]._
 
@@ -1010,7 +1033,6 @@ _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc].
 [opinionatedguide]: https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
 [part1]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/
 [idepost]: https://tarquin-the-brave.github.io/blog/posts/ide-read-code/
-[statemonaddocs]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
 [day2]: https://adventofcode.com/2019/day/2
 [day5]: https://adventofcode.com/2019/day/5
 [day7]: https://adventofcode.com/2019/day/7
@@ -1032,6 +1054,8 @@ _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc].
 [monadtrans]: https://wiki.haskell.org/Monad_Transformers
 [statet]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html#t:StateT
 [idm]: https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity
+[monadtypeclass]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#t:Monad
+[exceptt]: http://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-Except.html#t:ExceptT
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.

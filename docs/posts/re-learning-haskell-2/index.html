@@ -1,0 +1,985 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>tarquin-the-brave</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The HTML5 Herald" />
+<meta name="author" content="Tom Steavenson" /><meta property="og:title" content="Re-Learning Haskell with Advent of Code - Part 2" />
+<meta property="og:description" content="In Part 1, I skipped the day 2, 5, &amp; 7 problems that get you to build and use a Intcode computer. Each problem provides an Intcode program to run: A series of integers that can each either represent an instruction or data, and can mutate itself." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/" />
+<meta property="article:published_time" content="2020-04-29T20:36:28+01:00" />
+<meta property="article:modified_time" content="2020-04-29T20:36:28+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Re-Learning Haskell with Advent of Code - Part 2"/>
+<meta name="twitter:description" content="In Part 1, I skipped the day 2, 5, &amp; 7 problems that get you to build and use a Intcode computer. Each problem provides an Intcode program to run: A series of integers that can each either represent an instruction or data, and can mutate itself."/>
+
+<meta name="generator" content="Hugo 0.64.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://tarquin-the-brave.github.io/blog/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://tarquin-the-brave.github.io/blog/">tarquin-the-brave</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/tarquin-the-brave" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Some things I think.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Re-Learning Haskell with Advent of Code - Part 2</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-04-29T20:36:28&#43;01:00">Apr 29, 2020</time>
+        </li>
+        
+
+        
+
+        <li>29 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/" title="Re-Learning Haskell with Advent of Code - Part 2">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p><em>In <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">Part 1</a>, I skipped the day 2, 5, &amp; 7 problems that get you to build
+and use a Intcode computer.  Each problem provides an Intcode program to run: A
+series of integers that can each either represent an instruction or data, and
+can mutate itself.  Looking forward, every odd number day from day 5 onwards
+uses the Intcode program.  So I decided to come back to them, and make a
+concerted effort at a few of them in a row.</em></p>
+<h1 id="intcode-computer---stateful-computation">Intcode computer - Stateful Computation</h1>
+<h2 id="an-intcode-program">An Intcode Program</h2>
+<p><a href="https://adventofcode.com/2019/day/2">Day 2</a> introduces an intcode program that&rsquo;s essentially a series of
+integers where you start at the beginning and perform some operation depending
+on the integer (instruction) you find which may read or write another element
+in the list, take an input, or produce an output, and you then move along the
+sequence to the next instruction, which is a number of elements along depending
+on the instruction you just ran.  Eventually you reach an instruction to
+terminate the intcode program, or program crashes from some operation failing,
+finding an unrecognised instruction, or reaching the end without terminating.
+The explanation in <a href="https://adventofcode.com/2019/day/2">the problem description</a> goes into more detail with
+examples.</p>
+<p>It looks like the general problem here is we&rsquo;ve got some state that mutates
+during computation (a run of the program) and we may need to keep the current
+state around while we do some other calculation.</p>
+<p>With mutation not really being a feature in functional languages I looked
+around for how this can be modelled in Haskell.  From the looks of it, it
+sounded like the <a href="https://wiki.haskell.org/State_Monad">State Monad</a> would be needed at some point.</p>
+<h3 id="initial-implementation">Initial Implementation</h3>
+<p>The <a href="https://adventofcode.com/2019/day/2">day 2 problem</a> asks you to build something that will run a simple
+intcode program with instructions <code>1</code> &amp; <code>2</code> that each take the next three
+integers as parameters and mutate an element of the intcode, and <code>99</code> that
+terminates the program.  The problem asks you to run the intcode it gives &lsquo;til
+it terminated and give the first value in the intcode.</p>
+<p>For this simple case, we&rsquo;re not concerned about inputs or outputs of the
+intcode program and we can run in once and throw it away.</p>
+<p>Roughly following the approach I used in the problems tacked in <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">Part 1</a>
+I started by thinking about what data matters.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Program</span> {
+  intCode<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  status<span style="color:#f92672">::</span><span style="color:#66d9ef">Status</span>,
+  <span style="color:#75715e">-- Instruction Pointer: ip</span>
+  ip<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Status</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Terminated</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Crashed</span> <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>)
+</code></pre></div><p>So we&rsquo;ve got: the index that the current instruction is at, <code>ip</code>; the status of
+the program, whether it&rsquo;s <code>Running</code>, <code>Terminated</code> (by a <code>99</code>), or <code>Crashed</code> for
+some reason; and the <code>intCode</code> itself.</p>
+<p>I could have done less than this on a first pass, only modelling the <code>intCode</code>
+and <code>ip</code>, and letting the code crash if an operation failed, but I was keen
+write safe code by using safe operations, such as those from
+<a href="http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html"><code>Data.List.Safe</code></a> handling errors, hence the <code>Crashed</code> variant of
+<code>Status</code>.</p>
+<p>I&rsquo;ve modelled the intcode as a list, <code>[Int]</code>. lists aren&rsquo;t efficient for
+looking up values by index, which is done a lot in the solution, but for now,
+I&rsquo;m not hugely worried about performance at this stage.  If it becomes an issue
+in later problems, I can look into alternative representations.  If not I&rsquo;ll
+cycle back through at some point and try to optimise performance as an
+exercise.</p>
+<p>From here I was able to write a function that takes the above state and evolves
+it by one instruction, and running an entire intcode program by recursing until
+the status is no longer <code>Running</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Program</span>
+<span style="color:#a6e22e">runProgram</span> prog <span style="color:#f92672">=</span> <span style="color:#66d9ef">case</span> status prog <span style="color:#66d9ef">of</span>
+   <span style="color:#66d9ef">Running</span> <span style="color:#f92672">-&gt;</span> runProgram <span style="color:#f92672">.</span> runStep <span style="color:#f92672">$</span> prog
+   <span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> prog
+
+<span style="color:#a6e22e">runStep</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Program</span>
+<span style="color:#a6e22e">runStep</span> prog <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</code></pre></div><p><code>runStep</code> matches the instruction found at the instruction pointer index in the
+intcode and runs the appropriate operation to produce a new <code>Program</code> with a
+mutated intcode and the instruction pointer moved along.</p>
+<h3 id="introducing-the-state-monad">Introducing the State Monad</h3>
+<p>The above recursive function proved to be enough to get the answers to both
+parts of <a href="https://adventofcode.com/2019/day/2">day 2</a>.  As I didn&rsquo;t need to keep track of the program state,
+the State Monad wasn&rsquo;t needed.</p>
+<p>Anticipating I&rsquo;d need it later, I tried wrapping the computation in the State
+Monad to see how it works.</p>
+<p>From reading the <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">State Monad docs</a>, and with some help for the
+<a href="http://learnyouahaskell.com/for-a-few-monads-more#state">chapter in Learn You a Haskell</a>, I&rsquo;ve understood it as: you have
+your state, <code>s</code>; the output of a computation on that state, <code>a</code>; and a function
+that takes the state and returns the output and the state evolved, <code>s -&gt; (a, s)</code>.  You then use <code>state</code> to put the function into the State Monad, denoted
+<code>State s a</code>.  Then it can be manipulated with functions from <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">the
+docs</a> and inside <code>do</code> notation.</p>
+<p>In this case the state type, <code>s</code>, is <code>Program</code>, and the output type, <code>a</code>, is
+<code>()</code> as we&rsquo;re not concerned about the output.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Program</span> ()
+<span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+  prog <span style="color:#f92672">&lt;-</span> get
+  <span style="color:#66d9ef">case</span> programState prog <span style="color:#66d9ef">of</span>
+    <span style="color:#66d9ef">Running</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">do</span>
+      runStep&#39;
+      runProgram
+    <span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> return ()
+
+<span style="color:#a6e22e">runStep&#39;</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Program</span> ()
+<span style="color:#a6e22e">runStep&#39;</span> <span style="color:#f92672">=</span> state runStep
+
+<span style="color:#a6e22e">runStep</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> ((), <span style="color:#66d9ef">Program</span>)
+<span style="color:#a6e22e">runStep</span> prog
+</code></pre></div><p>I was then able to create a <code>Program</code> with the intcode provided, pass it to
+<code>runProgram</code> and use <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html"><code>execState</code></a> to get the final <code>Program</code> state.</p>
+<p>The fact that I&rsquo;ve used <code>()</code> for the output type is a sign that the State Monad
+was not required here,  but it was good to do as an exercise.</p>
+<h3 id="expanding-the-intcode-computer">Expanding the Intcode Computer</h3>
+<p>Over days <a href="https://adventofcode.com/2019/day/5">5</a>, <a href="https://adventofcode.com/2019/day/7">7</a>, &amp; <a href="https://adventofcode.com/2019/day/9">9</a> you&rsquo;re asked to build up the
+intcode computer with a host of new instructions and the ability to take inputs
+and give outputs.</p>
+<p>Now there was a potential opportunity to use the State Monad in the intcode
+computer, changing the output type and having the functions that return the
+State Monad take a parameter.  E.g. if our input and output were both <code>Int</code> we
+might have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Program</span> <span style="color:#66d9ef">Int</span>
+</code></pre></div><p>In the case of these problems we need:</p>
+<ul>
+<li>A list of inputs, <code>[Int]</code>,</li>
+<li>A list of outputs, <code>[Int]</code>,</li>
+<li>Inputs are called one by one, not necessarily by the first instruction in the
+program,</li>
+<li>Outputs build up over the course of the program running.</li>
+</ul>
+<p>As the program runs each instruction, we want to keep track of the remaining
+inputs and the outputs thus far.  So I decided to include input and output in
+the <code>Program</code> type, and not use my State Monad implementation.</p>
+<p>Including these in the type that tracks the state, along with a &ldquo;Relative Base&rdquo;
+which the Instruction Pointer is taken as being relative to, we get:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Program</span> {
+  input<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  intCode<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  status<span style="color:#f92672">::</span><span style="color:#66d9ef">Status</span>,
+  <span style="color:#75715e">-- ip: Instruction Pointer</span>
+  ip<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  <span style="color:#75715e">-- rb: Relative Base</span>
+  rb<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  output<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>]
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Status</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">AwaitInput</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Terminated</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Crashed</span> <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+</code></pre></div><p><code>runProgram</code> mostly stayed the same, with the case statement adding a match
+for the <code>AwaitInput</code> variant of <code>Status</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Program</span>
+<span style="color:#a6e22e">runProgram</span> prog <span style="color:#f92672">=</span> <span style="color:#66d9ef">case</span> status prog <span style="color:#66d9ef">of</span>
+   <span style="color:#66d9ef">Running</span> <span style="color:#f92672">-&gt;</span> runProg <span style="color:#f92672">.</span> runStep <span style="color:#f92672">$</span> prog
+   <span style="color:#66d9ef">AwaitInput</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">if</span> (length <span style="color:#f92672">.</span> input <span style="color:#f92672">$</span> prog) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>
+     <span style="color:#66d9ef">then</span> runProg <span style="color:#f92672">.</span> runStep <span style="color:#f92672">$</span> prog
+     <span style="color:#66d9ef">else</span> prog
+   <span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> prog
+
+<span style="color:#a6e22e">runStep</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Program</span>
+<span style="color:#a6e22e">runStep</span> <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</code></pre></div><h3 id="adding-tests">Adding Tests</h3>
+<p>As every odd day from 5 onwards uses this intcode computer, I defined it in
+it&rsquo;s own module in a different directory and wrote some tests for it.</p>
+<p>Looking around I found all sorts of testing libraries with different goals:
+<a href="https://hackage.haskell.org/package/HUnit">hUnit</a> for unit testing, <a href="https://hackage.haskell.org/package/smallcheck">SmallCheck</a> &amp;
+<a href="http://hackage.haskell.org/package/QuickCheck">QuickCheck</a> for property based testing, to name a few.  The
+<a href="https://hackage.haskell.org/package/tasty">tasty</a> library attempts to pull them all together so I went with that.</p>
+<p>Property based testing looks quite interesting and I plan to look into it.  For
+my intcode I added a bunch of <code>assert F(X) == Y</code> style tests to ensure the
+operations perform as expected in the mainline cases.</p>
+<p>With <a href="https://hackage.haskell.org/package/tasty">tasty</a> you create a &ldquo;test tree&rdquo;.  I added all the examples from
+explanations of the intcode features from each of the days that introduces
+them.  The output looks quite good in the terminal.</p>
+<pre><code>$ stack test
+...
+intcode&gt; test (suite: intcode-test)
+
+Tests
+  Unit tests
+    Test progressing the program by one instruction
+      tests for op codes 1 &amp; 2
+        Day 2 example 1 step 1:                              OK
+        Day 2 example 1 step 2:                              OK
+        Day 2 example 1 step 3 - finish:                     OK
+        Day 2 example 1 - try step finished prog:            OK
+      Some testing of Opcodes 5 &amp; 6
+        op code 6 - test 1:                                  OK
+      test 203 op code
+        simple case:                                         OK
+    Test runnning the program til it stops
+      Test examples from day 2 of AOC
+        Day 2 example 2 - (1 + 1 = 2):                       OK
+        Day 2 example 3 (3 * 2 = 6):                         OK
+        Day 2 example 4 (99 * 99 = 9801):                    OK
+        Day 2 example 5:                                     OK
+      Test examples from day 5 of AOC
+        Day 5 example 1 - echo:                              OK
+        Day 5 example 2 - immediate mode:                    OK
+        Day 5 example 3 - input equal to 8? yes:             OK
+        Day 5 example 3 - input equal to 8? no:              OK
+        ... (etc)
+      Test examples from day 9 of AOC
+        Day 9 example 1 - copy of self:                      OK
+        Day 9 example 2 - output 16 digit number:            OK
+        ... (etc)
+
+All 33 tests passed (0.01s)
+
+intcode&gt; Test suite intcode-test passed
+Completed 2 action(s).
+</code></pre><h2 id="using-the-intcode-computer">Using the Intcode Computer</h2>
+<p><a href="https://adventofcode.com/2019/day/7">Day 7</a> asks you to create a series of intcode computers, each running an
+&ldquo;amplifier program&rdquo; provided, where the output of one becomes the input of the
+next.</p>
+<p>The first part of the problem requires you to run these in series to get an
+output at the end.  <em>Taking the ascii diagrams from the <a href="https://adventofcode.com/2019/day/7">day 7</a> problem
+description.</em></p>
+<pre><code>    O-------O  O-------O  O-------O  O-------O  O-------O
+0 -&gt;| Amp A |-&gt;| Amp B |-&gt;| Amp C |-&gt;| Amp D |-&gt;| Amp E |-&gt; (to thrusters)
+    O-------O  O-------O  O-------O  O-------O  O-------O
+</code></pre><p>A simple fold over a list of intcodes sufficed here.  I was happy for each
+intcode state to be thrown away as the calculation moved to the next.  No need
+for the State Monad yet.</p>
+<p>The second half of the problem then asks you to run the intcode computers, the
+&ldquo;amplifiers&rdquo;, in a loop, until they exit.</p>
+<pre><code>      O-------O  O-------O  O-------O  O-------O  O-------O
+0 -+-&gt;| Amp A |-&gt;| Amp B |-&gt;| Amp C |-&gt;| Amp D |-&gt;| Amp E |-.
+   |  O-------O  O-------O  O-------O  O-------O  O-------O |
+   |                                                        |
+   '--------------------------------------------------------+
+                                                            |
+                                                            v
+                                                     (to thrusters)
+</code></pre><p>Now we care about keeping the intcode state around, and we have an output we
+want to take from the stateful computation, we have a good reason to use the
+State Monad.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> Intcode (
+  <span style="color:#66d9ef">Status</span>,
+  <span style="color:#66d9ef">Program</span>
+)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Amps</span> {
+  ampsOf<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Program</span>],
+  activeAmp<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>)
+
+<span style="color:#a6e22e">runAmpsLoop</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Amps</span> (<span style="color:#66d9ef">Maybe</span> <span style="color:#66d9ef">Int</span>)
+<span style="color:#a6e22e">runAmpsLoop</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+  out <span style="color:#f92672">&lt;-</span> runActiveAmpOutput&#39;
+  amps <span style="color:#f92672">&lt;-</span> get
+  <span style="color:#66d9ef">case</span> (atFinalAmp amps, activeAmpStatus amps) <span style="color:#66d9ef">of</span>
+    (<span style="color:#66d9ef">_</span>, <span style="color:#66d9ef">Crashed</span>) <span style="color:#f92672">-&gt;</span> return <span style="color:#66d9ef">Nothing</span>
+    (<span style="color:#66d9ef">_</span>, <span style="color:#66d9ef">Running</span>) <span style="color:#f92672">-&gt;</span> return <span style="color:#66d9ef">Nothing</span>
+    (<span style="color:#66d9ef">True</span>, <span style="color:#66d9ef">Terminated</span>) <span style="color:#f92672">-&gt;</span> return (<span style="color:#66d9ef">Just</span> out)
+    (<span style="color:#66d9ef">False</span>, <span style="color:#66d9ef">Terminated</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">do</span>
+      modify nextAmp
+      modify (activeAmpAppendInput out)
+      runAmpsLoop
+    (<span style="color:#66d9ef">_</span>, <span style="color:#66d9ef">AwaitInput</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">do</span>
+      modify nextAmp
+      modify (activeAmpAppendInput out)
+      runAmpsLoop
+
+<span style="color:#75715e">--</span>
+<span style="color:#75715e">-- The types of the functions called above,</span>
+<span style="color:#75715e">-- in order of appearence.</span>
+<span style="color:#75715e">--</span>
+<span style="color:#a6e22e">runActiveAmpOutput&#39;</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Amps</span> <span style="color:#66d9ef">Int</span>
+<span style="color:#a6e22e">runActiveAmpOutput</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> (<span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Amps</span>)
+
+<span style="color:#a6e22e">atFinalAmp</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
+<span style="color:#a6e22e">activeAmpStatus</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">ProgState</span>
+
+<span style="color:#a6e22e">nextAmp</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
+<span style="color:#a6e22e">activeAmpAppendInput</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
+</code></pre></div><p>Following the same pattern applied when I tried wrapping the intcode in a State
+Monad <a href="#introducing-the-state-monad">above</a>: <code>runActiveAmpOutput</code> evolves the state and
+provides an output, our <code>s -&gt; (a, s)</code>; <code>runActiveAmpOutput'</code> wraps that in the
+State Monad with <code>state</code>; and <code>runAmpsLoop</code> runs the current amplifier (intcode
+program), gets the new overall state with <code>get</code>, and only if we&rsquo;ve just run the
+final amplifier in the loop, and it has <code>Terminated</code>, return the output.
+Otherwise, if we haven&rsquo;t crashed, use <code>modify</code> to edit the overall state by
+moving to the next amplifier in the loop, <code>nextAmp</code>, and passing the output
+from the last amplifier to new one, <code>activeAmpAppendInput</code>.</p>
+<p>I also defined a function <code>newAmps</code> which given an intcode program and a list
+of &ldquo;phases&rdquo; (tuning parameters for the amplifiers), produces the initial <code>Amps</code>
+state.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">newAmps</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
+</code></pre></div><p>I could then find the output of running the amplifiers in a loop with the
+expression:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">evalState</span> runAmpsLoop <span style="color:#f92672">$</span> newAmps intCode phases
+</code></pre></div><p>The problem itself asks you to find the combination of phases that gives the
+greatest output once the amplifier loop has ran its course.  This could be
+found by selecting the permutation of phases that the above expression evaluates
+to the greatest value.</p>
+<h2 id="introducing-monad-transformers">Introducing Monad Transformers</h2>
+<p><a href="https://adventofcode.com/2019/day/13">Day 13</a> has a fun problem.  You&rsquo;re given an intcode program that outputs
+the data (triplets of: x coordinate, y coordinate, and a &ldquo;tile id&rdquo; that determines
+which character exists at that position) for the display of a game where you
+destroy all the bricks with a ball that you keep in play with a paddle you move
+side to side.</p>
+<p>You&rsquo;re asked to write a program that will finish the game by destroying all the
+bricks.</p>
+<p>I had a solution that would start with a state like this:</p>
+<pre><code>&quot;Z|||||||||||||||||||||||||||||||||||||||||||&quot;
+&quot; | # # ## #### ##  #  #### #####    #####  |&quot;
+&quot; | ####    #   #   # #    ## # #   ##   #  |&quot;
+&quot; | # ## ## # ## ## ###  ######  # ##### #  |&quot;
+&quot; | #  # ## ####    ##### # ######  ######  |&quot;
+&quot; | ##  ##### # # #  ## # # ### ## ### ## # |&quot;
+&quot; |  #### ##  #  # ## #  #   ## # ###### #  |&quot;
+&quot; |  ## #######  #### # ## # #   ## #  #### |&quot;
+&quot; | # # ## #### ##  #  #### #####    #####  |&quot;
+&quot; | # ##### #   ##    ### ####    # ####  # |&quot;
+&quot; |  ## #  #   #    #   # #  ## # # #  ###  |&quot;
+&quot; | ## ## # # # ##  #    ## ###    ##  #### |&quot;
+&quot; | ###     ######   ## ##  ## ### ##       |&quot;
+&quot; |    # ## ##   ##  ## ### #         ## ## |&quot;
+&quot; | ## ##  #  # ### # ## #   ##    ### # ## |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                         o               |&quot;
+&quot; |                                         |&quot;
+&quot; |                          =              |&quot;
+&quot; |                                         |&quot;
+</code></pre><p>and would whirr for a short while until it was finished
+and my <code>main</code> could print the game state:</p>
+<pre><code>&quot;Z|||||||||||||||||||||||||||||||||||||||||||&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                   o     |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                   =     |&quot;
+&quot; |                                         |&quot;
+&quot;your score: 13581&quot;
+</code></pre><p>To achieve this I followed the same pattern as I did <a href="#using-the-intcode-computer">in the day 7
+solution</a> we saw in the last section:</p>
+<ul>
+<li>Define the state,</li>
+<li>Wrap that in the State Monad, and</li>
+<li>Define a recursive function to keep running the intcode
+computer and evolving the state until done.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Intcode <span style="color:#66d9ef">as</span> IC
+<span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Data.HashMap.Strict <span style="color:#66d9ef">as</span> HM
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Game</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Game</span> {
+  gameProg <span style="color:#f92672">::</span> <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Program</span>,
+  gameDisplay <span style="color:#f92672">::</span> <span style="color:#66d9ef">Displ</span>
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>)
+
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Displ</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">HM</span><span style="color:#f92672">.</span><span style="color:#66d9ef">HashMap</span> <span style="color:#66d9ef">Tile</span> <span style="color:#66d9ef">Tid</span>
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Tile</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">Int</span>, <span style="color:#66d9ef">Int</span>)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Tid</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Empty</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Wall</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Block</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Paddle</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Ball</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">BadTid</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Score</span>{theScore<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+</code></pre></div><p>This time <code>Game</code> is the state, containing an intcode program and a
+<a href="https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashMap-Strict.html">HashMap</a> to record the &ldquo;tiles&rdquo; in the display, keyed by their
+coordinates.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">LiveData</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">LiveData</span> {
+  <span style="color:#75715e">-- x-coordinate of the ball - xb</span>
+  xb<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  <span style="color:#75715e">-- x-coordinate of the paddle - xp</span>
+  xp<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  <span style="color:#75715e">-- Game score - sc</span>
+  sc<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>)
+
+<span style="color:#a6e22e">stepGame&#39;</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Game</span> <span style="color:#f92672">-&gt;</span> (<span style="color:#66d9ef">LiveData</span>, <span style="color:#66d9ef">Game</span>)
+
+<span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">LiveData</span>
+<span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">=</span> state <span style="color:#f92672">.</span> stepGame&#39;
+
+<span style="color:#a6e22e">playGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">Int</span>
+<span style="color:#a6e22e">playGame</span> inp <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+  liveData <span style="color:#f92672">&lt;-</span> stepGame inp
+  game <span style="color:#f92672">&lt;-</span> get
+  <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span>progState (gameProg game) <span style="color:#66d9ef">of</span>
+    <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span><span style="color:#66d9ef">AwaitInput</span> <span style="color:#f92672">-&gt;</span> playGame [joystick (xb liveData) (xp liveData)]
+    <span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> return <span style="color:#f92672">$</span> sc liveData
+
+<span style="color:#a6e22e">joystick</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Int</span>
+</code></pre></div><p><code>LiveData</code> is the data we pass on from step to step: the x coordinates of the
+ball and paddle and the running score.  The intcode program given can take <code>1</code>,
+<code>-1</code>, or <code>0</code> as an input to move the paddle right, left, or nowhere. <code>joystick</code>
+returns <code>1</code>, <code>-1</code>, or <code>0</code> depending on whether the ball is ahead, behind, or in
+line with the paddle.</p>
+<p>This was all well and good, and I could complete the problem by giving my end
+score, but I wanted to watch my program as it took out all the bricks.</p>
+<p>Basically I wanted to be able to call <code>print</code> inside the <code>playGame</code> function.
+I had a function that would turn the HashMap display into a 2D grid of Chars:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">gridDisplay</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Displ</span> <span style="color:#f92672">-&gt;</span> [[<span style="color:#66d9ef">Char</span>]]
+</code></pre></div><p>, and could print a game&rsquo;s display to screen with an expressions like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">mapM</span> print <span style="color:#f92672">$</span> gridDisplay displ
+</code></pre></div><p>that maps <code>print</code> across a <code>[[Char]]</code> (i.e. <code>[String]</code>) to display the
+grid in <code>stdout</code>.</p>
+<p>To be able to perform an IO action within <code>playGame</code> we need to be able
+to include a line of code that returns the IO Monad inside our State Monad.</p>
+<p>To achieve &ldquo;Monads inside Monads&rdquo; we use <a href="https://wiki.haskell.org/Monad_Transformers">monad transformers</a>,
+and for the State Monad we can use the <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html#t:StateT"><code>StateT</code></a> monad transformer.</p>
+<p>Editing the <code>playGame</code> function in my solution:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> Control.Monad.State.Lazy (<span style="color:#a6e22e">state</span>, <span style="color:#66d9ef">StateT</span>)
+<span style="color:#66d9ef">import</span> Control.Monad.IO.Class (<span style="color:#a6e22e">liftIO</span>)
+<span style="color:#66d9ef">import</span> System.Console.ANSI (<span style="color:#a6e22e">cursorUp</span>)
+
+<span style="color:#a6e22e">playGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">IO</span> <span style="color:#66d9ef">Int</span>
+<span style="color:#a6e22e">playGame</span> inp <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+  liveData <span style="color:#f92672">&lt;-</span> stepGame inp
+  game <span style="color:#f92672">&lt;-</span> get
+
+  <span style="color:#75715e">--</span>
+  <span style="color:#75715e">-- Display the game state in a grid to stdout</span>
+  <span style="color:#75715e">--</span>
+  <span style="color:#66d9ef">let</span> grid <span style="color:#f92672">=</span> gridDisplay <span style="color:#f92672">$</span> gameDisplay game
+  <span style="color:#66d9ef">_</span> <span style="color:#f92672">&lt;-</span> liftIO <span style="color:#f92672">$</span> mapM print grid
+  liftIO <span style="color:#f92672">.</span> print <span style="color:#f92672">$</span> (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Your score: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> show (sc liveData))
+  liftIO <span style="color:#f92672">.</span> cursorUp <span style="color:#f92672">$</span> (length grid) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+
+  <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span>progState (gameProg game) <span style="color:#66d9ef">of</span>
+    <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span><span style="color:#66d9ef">AwaitInput</span> <span style="color:#f92672">-&gt;</span> playGame [joystick (xb liveData) (xp liveData)]
+    <span style="color:#66d9ef">_</span> <span style="color:#f92672">-&gt;</span> return <span style="color:#f92672">$</span> sc liveData
+
+<span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">IO</span> <span style="color:#66d9ef">LiveData</span>
+<span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">=</span> state <span style="color:#f92672">.</span> stepGame&#39;
+</code></pre></div><p>As <code>State</code> is only a type alias for the <a href="https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity">Identity Monad</a>, I&rsquo;ve really
+changed the type of <code>playGame</code> from:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">playGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">Identity</span> <span style="color:#66d9ef">Int</span>
+</code></pre></div><p>to:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">playGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">IO</span> <span style="color:#66d9ef">Int</span>
+</code></pre></div><p>to provide a non-trivial &ldquo;inner monad&rdquo;.</p>
+<p>The other key ingredients here are: <code>liftIO</code>, which allows us to perform
+actions within the inner IO Monad; and <code>cursorUp</code>, to move the stdout cursor up
+so we refresh the screen rather than printing a new grid below.</p>
+<p>While I got a monad transformer to work for me in this instance, I need to go
+and spend a bit more time to understand how they work in general, hence the
+reasonable brief explanation here.</p>
+<p>The result of this is that I could sit and watch my program destroy all the
+bricks! 🎉</p>
+<pre><code>&quot;Z|||||||||||||||||||||||||||||||||||||||||||&quot;
+&quot; |                                         |&quot;
+&quot; | ####    #   #   # #    #  # #   ##   #  |&quot;
+&quot; | # ## ## # ## ## ###  ##   #  # ##### #  |&quot;
+&quot; | #  # ## ###     ##### #    ###  ######  |&quot;
+&quot; | ##  ##### #   #  ## # # #   #  ### ## # |&quot;
+&quot; |  #### ##  #    ## #  #         ##### #  |&quot;
+&quot; |  ## #######     # # ##          #  #### |&quot;
+&quot; | # # ## ####        ###   #       #####  |&quot;
+&quot; | # ##### #         ### # #         ##    |&quot;
+&quot; |  ## #  #   #        # #  #         ###  |&quot;
+&quot; | ## ## # # # #        ## ###         #   |&quot;
+&quot; | ###     ######       #  ## #            |&quot;
+&quot; |    # #  ##            #                 |&quot;
+&quot; | ## ##     # #      #     ##             |&quot;
+&quot; |                                         |&quot;
+&quot; |                                      o  |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                     =   |&quot;
+&quot; |                                         |&quot;
+&quot;Your score: 3939&quot;
+</code></pre><pre><code>&quot;Z|||||||||||||||||||||||||||||||||||||||||||&quot;
+&quot; |                                         |&quot;
+&quot; | ##                               #   #  |&quot;
+&quot; | # #       ##                    #### #  |&quot;
+&quot; | #  # #    #                # #  ######  |&quot;
+&quot; | ##  ##    #                 #  ### ## # |&quot;
+&quot; |  #### ##       #                 ### #  |&quot;
+&quot; |  ## #             # #              #### |&quot;
+&quot; | # #      #         ###             ###  |&quot;
+&quot; | # #               ### #         o ##    |&quot;
+&quot; |  #                  # #            # #  |&quot;
+&quot; | #                    ## ###             |&quot;
+&quot; | ##                   #  ##              |&quot;
+&quot; |                       #                 |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                         |&quot;
+&quot; |                                  =      |&quot;
+&quot; |                                         |&quot;
+&quot;Your score: 9021&quot;
+</code></pre><p>It does get a bit boring watch it spend ages trying to get
+the last few blocks.</p>
+<h2 id="making-a-monad">Making a Monad</h2>
+<p>In my intcode computer, there was lots of opportunity for various
+operations to fail if the intcode was bugged or an input was bad.
+I was modelling these with <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/Data-Maybe.html"><code>Maybe</code></a>, matching on <code>Nothing</code>, and
+setting the program status to the <code>Crashed</code> variant of <code>Status</code>.</p>
+<p>I was doing this <em>a lot</em>, essentially writing the same 3 lines of code
+over and over.  This indicated to me that there was an abstraction
+to be made<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<h3 id="failing-functions-being-generic-over-monadfail">Failing Functions being Generic over MonadFail</h3>
+<p>The general case of this is where we have a type
+that can represent failure, and if an operation fails we want
+to return that type representing failure.</p>
+<p>As an example, say we want to return a list where an empty list
+represents failure.  In this simple example a negative input
+results in failure.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">maybePos</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Maybe</span> <span style="color:#66d9ef">Int</span>
+<span style="color:#a6e22e">maybePos</span> x
+  <span style="color:#f92672">|</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Nothing</span>
+  <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> <span style="color:#66d9ef">Just</span> x
+
+<span style="color:#a6e22e">thing</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> [<span style="color:#66d9ef">Int</span>]
+<span style="color:#a6e22e">thing</span> x <span style="color:#f92672">=</span> <span style="color:#66d9ef">case</span> maybePos x <span style="color:#66d9ef">of</span>
+  <span style="color:#66d9ef">Nothing</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">[]</span>
+  <span style="color:#66d9ef">Just</span> posX <span style="color:#f92672">-&gt;</span> [posX]
+</code></pre></div><p><code>thing</code> has to match on the <code>Maybe Int</code> given by <code>maybePos</code> and
+return either the <code>Int</code> in a list or an empty list.</p>
+<p>I found myself repeating this patten:</p>
+<ul>
+<li>Model the operation that can fail with a function that returns <code>Maybe</code>,</li>
+<li>Match on the <code>Nothing</code> and return my failure type.</li>
+</ul>
+<p>I was doing a lot of manually converting one type&rsquo;s failure representation
+to another type&rsquo;s failure representation.  This seemed to me like there was
+something I could use to do this automatically, as I was expressing the same
+thing over and over again.</p>
+<p>In the example above, both <code>Maybe</code> and <code>List</code> are monads.  I&rsquo;m converting
+from one monad&rsquo;s failure representation to another.  After a bit of looking
+around I found the [<code>MonadFail</code> typeclass][monadfail].  As <code>Maybe</code> and <code>List</code>
+both are instances of <code>MonadFail</code> we can redefine <code>maybePos</code> to be generic
+over <code>MonadFail</code> and cut out the conversion between failure representations.</p>
+<pre><code>maybePosM ::  MonadFail m =&gt; Int -&gt; m Int
+maybePosM x
+  | x &lt; 0 = fail &quot;woops&quot;
+  | otherwise = return x
+
+thing' :: Int -&gt; [Int]
+thing' = maybePosM
+
+posIntoMaybe :: Int -&gt; Maybe Int
+posIntoMaybe = maybePosM
+
+posIntoIO :: Int -&gt; IO Int
+posIntoIO = maybePosM
+</code></pre><p>This pattern showed a lot of promise, and I wanted to see if I could employ
+it in my intcode computer code.</p>
+<h3 id="refactoring-the-intcode-computer">Refactoring the Intcode Computer</h3>
+<p>Recall the <code>Program</code> type I&rsquo;ve been using to model an intcode computer
+thus far:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Program</span> {
+  input<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  intCode<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  status<span style="color:#f92672">::</span><span style="color:#66d9ef">Status</span>,
+  <span style="color:#75715e">-- ip: Instruction Pointer</span>
+  ip<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  <span style="color:#75715e">-- rb: Relative Base</span>
+  rb<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  output<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>]
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Status</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">AwaitInput</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Terminated</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Crashed</span> <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+</code></pre></div><p>We think about where failure is represented in this type: in the <code>Crashed</code>
+variant of the sum type <code>Status</code> under the status field.  You could say that
+&ldquo;sense of failure&rdquo; is buried deep within this type.  If we want to handle
+failure with Monads, we want to encode failure in a &ldquo;container&rdquo; type.</p>
+<p>I chose to refactor this by making what was <code>Status</code> into a type that
+had variants that could contain an intcode computer. The data from the <code>Program</code>
+type above, then got split into:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Prog</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">AwaitInput</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">End</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">Crashed</span> <span style="color:#66d9ef">String</span> <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+
+<span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Intcode</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Intcode</span> {
+  input<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  code<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
+  <span style="color:#75715e">-- ip: Instruction Pointer</span>
+  ip<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  <span style="color:#75715e">-- rb: Relative Base</span>
+  rb<span style="color:#f92672">::</span><span style="color:#66d9ef">Int</span>,
+  output<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>]
+} <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>)
+</code></pre></div><p>With <code>Prog</code> being given implementations of <code>Monad</code> and <code>MonadFail</code> typeclasses:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Monad</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">where</span>
+  return <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span>
+  (<span style="color:#66d9ef">Crashed</span> e) <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#66d9ef">_</span> <span style="color:#f92672">=</span> (<span style="color:#66d9ef">Crashed</span> e)
+  (<span style="color:#66d9ef">End</span> prog) <span style="color:#f92672">&gt;&gt;=</span> k <span style="color:#f92672">=</span> k prog
+  (<span style="color:#66d9ef">Running</span> prog) <span style="color:#f92672">&gt;&gt;=</span> k <span style="color:#f92672">=</span> k prog
+  (<span style="color:#66d9ef">AwaitInput</span> prog) <span style="color:#f92672">&gt;&gt;=</span> k <span style="color:#f92672">=</span> k prog
+
+<span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">MonadFail</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">where</span>
+  fail <span style="color:#f92672">=</span> <span style="color:#66d9ef">Crashed</span>
+</code></pre></div><p>As the definition of the <a href="https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#t:Monad">monad typeclass</a> has the typeclass constraint:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">class</span> <span style="color:#66d9ef">Applicative</span> m <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Monad</span> m <span style="color:#66d9ef">where</span>
+<span style="color:#f92672">...</span>
+</code></pre></div><p>and <code>Applicative</code> in turn has a similar constraint for <code>Functor</code>, I needed to also
+make <code>Prog</code> an instance of both the <code>Applicative</code> and <code>Functor</code> typeclasses:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Functor</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">where</span>
+  fmap <span style="color:#66d9ef">_</span> (<span style="color:#66d9ef">Crashed</span> e) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Crashed</span> e
+  fmap f (<span style="color:#66d9ef">End</span> a) <span style="color:#f92672">=</span>  <span style="color:#66d9ef">End</span> (f a)
+  fmap f (<span style="color:#66d9ef">Running</span> a) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> (f a)
+  fmap f (<span style="color:#66d9ef">AwaitInput</span> a) <span style="color:#f92672">=</span> <span style="color:#66d9ef">AwaitInput</span> (f a)
+
+<span style="color:#66d9ef">instance</span> <span style="color:#66d9ef">Applicative</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">where</span>
+  pure <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span>
+  <span style="color:#66d9ef">_</span> <span style="color:#f92672">&lt;*&gt;</span> (<span style="color:#66d9ef">Crashed</span> e) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Crashed</span> e
+  (<span style="color:#66d9ef">End</span> f) <span style="color:#f92672">&lt;*&gt;</span> prog <span style="color:#f92672">=</span> fmap f prog
+  (<span style="color:#66d9ef">Running</span> f) <span style="color:#f92672">&lt;*&gt;</span> prog <span style="color:#f92672">=</span> fmap f prog
+  (<span style="color:#66d9ef">AwaitInput</span> f) <span style="color:#f92672">&lt;*&gt;</span> prog <span style="color:#f92672">=</span> fmap f prog
+</code></pre></div><p>So what was previously represented by <code>Program</code>, is now represented by <code>Prog Intcode</code>,
+where <code>Prog</code> is a monad that can represent a program being in a number of states, or
+crashed and <code>Intcode</code> is the data relevant to an intcode program specifically.  The
+abstraction here is to separate the raw number crunching of the intcode computer from
+our interpretation of the overall &ldquo;status&rdquo; of the program.</p>
+<p>Having made this monad, I refactored all the operations on the intcode which could fail
+to return a type generic across <code>MonadFail</code>, rather than returning <code>Maybe</code>.  E.g. my
+function to safely lookup an index in a list and return <code>0</code> if the index is beyond
+the end of the list, <code>(!!!)</code> went from:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell">(<span style="color:#f92672">!!!</span>) <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> [a] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Maybe</span> a
+<span style="color:#66d9ef">infixl</span> <span style="color:#ae81ff">9</span> <span style="color:#f92672">!!!</span>
+<span style="color:#a6e22e">xs</span> <span style="color:#f92672">!!!</span> i
+  <span style="color:#f92672">|</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Nothing</span>
+  <span style="color:#f92672">|</span> i <span style="color:#f92672">&gt;=</span> length xs <span style="color:#f92672">=</span> <span style="color:#66d9ef">Just</span> <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> <span style="color:#66d9ef">Just</span> <span style="color:#f92672">$</span> xs <span style="color:#f92672">!!</span> i
+</code></pre></div><p>to:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell">(<span style="color:#f92672">!!!</span>) <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> [a] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> m a
+<span style="color:#66d9ef">infixl</span> <span style="color:#ae81ff">9</span> <span style="color:#f92672">!!!</span>
+<span style="color:#a6e22e">xs</span> <span style="color:#f92672">!!!</span> i
+  <span style="color:#f92672">|</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">index </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> show i <span style="color:#f92672">++</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> less that zero</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">|</span> i <span style="color:#f92672">&gt;=</span> length xs <span style="color:#f92672">=</span> return <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#f92672">!!</span> i
+</code></pre></div><p>I was then able to strip out all of the <code>case</code> statements that were matching
+<code>Maybe</code> and returning a &ldquo;crashed&rdquo; program for <code>Nothing</code> and use <code>do</code> notation.</p>
+<p>The implementation of the old <code>runStep</code> function that move the program on by
+running a single instruction called down through layers of functions to select
+the right operation, try to perform it, matching on the <code>Maybe</code> returned and
+evolving the intcode state if the operation was successful.  Now this logic
+is condensed with the tedious boilerplate removed.  The start of the equivalent
+function in the refactored implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runInstruction</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Intcode</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">Intcode</span>
+<span style="color:#a6e22e">runInstruction</span> ic <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
+   opcodes <span style="color:#f92672">&lt;-</span> currentOpCode ic
+   <span style="color:#66d9ef">case</span> opcodes <span style="color:#66d9ef">of</span>
+      (<span style="color:#66d9ef">One</span>, m1, m2, m3) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">do</span>
+        newIc <span style="color:#f92672">&lt;-</span> op1 m1 m2 m3 (ip ic) (code ic)
+        return <span style="color:#f92672">$</span> moveIp <span style="color:#ae81ff">4</span> <span style="color:#f92672">.</span> updateCode newIc <span style="color:#f92672">$</span> ic
+   <span style="color:#f92672">...</span>
+</code></pre></div><p><code>currentOpCode</code> &amp; <code>op1</code> both return a type generic over <code>MonadFail</code>, so in the
+case of failure will cause this function to bail with the <code>Crashed</code> variant of
+<code>Prog</code>.</p>
+<p>I&rsquo;m not sure how &ldquo;idiomatic&rdquo; using <code>MonadFail</code> in this way is, it&rsquo;s just
+something I spotted that I could do. I see that the <a href="http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html"><code>Data.List.Safe</code></a>
+uses <code>MonadThrow</code> to represent failure, and looking around there seems
+other ways of representing and dealing with errors, the <a href="http://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-Except.html#t:ExceptT"><code>ExceptT</code></a>
+monad transformer among them.</p>
+<h1 id="other-things-that-came-up">Other Things That Came Up</h1>
+<h2 id="recursion">Recursion</h2>
+<p>In <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">my last post</a> I said:</p>
+<blockquote>
+<p>I’m not sure why, but Haskell make recursion feel like a natural way to
+solve problems. I use recursion in other languages, but it always feels
+like I’ve done something a bit clever.</p>
+</blockquote>
+<p>I think I know why now:</p>
+<blockquote>
+<p>Functional purity allows you to recurse with confidence.</p>
+</blockquote>
+<p>It comes down to: how much information you have to hold in your head while
+following the code.</p>
+<p>In procedural languages, where methods have side effects, or at least are
+not guaranteed not to, you need to keep in mind all the state that
+can be affect when following a method.  When a method recurses,
+you then have to consider all the state that the method can affect on
+that recursion. You can&rsquo;t treat each recursion symmetrically, because each
+recursion adds to the number of things you need to consider.</p>
+<p>With functions<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, you only need to consider their inputs.
+And importantly you only need to consider their inputs as data, not as
+&ldquo;either representing data or a place to put data&rdquo;<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.  When a function
+recurses, you can leave all context that wasn&rsquo;t passed directly to the
+function behind when reasoning through the recursion. You can
+descend into the recursion carrying with you only what you
+carried into the last one.</p>
+<p>Also as functions return the same output given the same input, you
+generally only need to reason through the recursion once.</p>
+<p>By this same reasoning, I&rsquo;d argue that a fold is simpler<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> than
+a for loop that iterates over a collection (for languages that support
+both and you have the choice).</p>
+<p>When reasoning through a fold you only need to consider two values:
+the accumulator; and the item taken from the collection.  It&rsquo;s almost
+like being in a bubble, where only these two values matter.</p>
+<p>In a for loop however, you&rsquo;re exposed to the context outside the loop.
+You can&rsquo;t forget about any variables in scope, as you might change them
+while looping.  You also have control flow to consider.  You might hit
+a <code>break</code> or <code>continue</code> on a particular loop which means you then have
+to skip over the code blow it that you would have otherwise reasoned
+through (a <code>goto</code> in sheep&rsquo;s clothing).  Like with recursion in procedural
+languages the number of things you need to consider grows as you iterate.
+With functional purity that number of things to consider stays steady.</p>
+<h2 id="compiler-warnings">Compiler Warnings</h2>
+<p>I turned on a bunch of compiler warnings, as per the advise of <a href="https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/">this
+article</a>, by adding this to my `~/.stack/config.yaml&rsquo;:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">ghc-options</span>:
+  <span style="color:#66d9ef">&#34;$locals&#34;: </span>-Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+</code></pre></div><p>I had initially thought that I wanted to use Haskell as &ldquo;out of the box&rdquo;
+as possible, and not &ldquo;depend on&rdquo; extra lints to tell me what to do, but
+then remembered that&rsquo;s a terrible argument.</p>
+<p>In reality, when people employ extra linting and static analysis they
+don&rsquo;t become dependent on it, they learn from it and get better at
+writing better code first time, and continue to write better code when
+the linting is turned off.</p>
+<p>When you work in a language with a strong type system and have a compiler
+that kicks your ass when you get it wrong, you become better at writing
+correct code first time in all languages.</p>
+<p>So I turned the compiler warnings on.  It did make ghci a bit spammy.
+I&rsquo;ll see if there&rsquo;s a nice way to turn the warnings off for ghci.</p>
+<h2 id="breaking-functions-into-lots-of-pieces">Breaking Functions Into Lots of Pieces</h2>
+<p>In a few of the Advent of Code problems, especially when I was eager to
+get the problem done and move on, I found myself falling into a pattern
+of:</p>
+<ul>
+<li>Knowing the data I want, and thinking about all the steps between that
+and the data I have.</li>
+</ul>
+<p>I sometimes fall into the trap of:</p>
+<ul>
+<li>thinking procedurally</li>
+<li>having a complex thing to &ldquo;do&rdquo;</li>
+<li>splitting that up into lots of &ldquo;functions&rdquo;</li>
+<li>non of which make any real sense on their own.</li>
+<li>code is an unreadable mess.
+<code>where</code> keyword is actually fixing this as it breaks the calculation down
+without exposing all the sub functions to the rest of the program.</li>
+</ul>
+<h2 id="modules--namespacing">Modules &amp; Namespacing</h2>
+<p>In <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">my last post</a> I talked about: not knowing how to find out
+what package to install to get a certain library; and not being totally
+comfortable with the namespacing when modules are imported and sufferring
+from &ldquo;where did that function come from?&rdquo; syndrome.</p>
+<p>The first of these was me just being dumb as it turns out the
+package containing a module is written in the top left hand corner
+of the module documentation&rsquo;s web page.  Spot <code>mtl-</code> in <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">the
+docs</a> for <code>Control.Monad.State.Lazy</code>.</p>
+<p>On the second of these: I&rsquo;ve got reasonably comfortable with either
+doing a qualified import to preserve namespacing, or being explicit
+about which functions I&rsquo;m importing if I&rsquo;m importing them into the
+module&rsquo;s namespace.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Foo.Bar <span style="color:#66d9ef">as</span> FB
+<span style="color:#66d9ef">import</span> Baz
+  ( <span style="color:#a6e22e">foo</span>
+  , <span style="color:#a6e22e">fooBar</span>
+  , <span style="color:#a6e22e">fooBarBaz</span>
+  )
+</code></pre></div><p>I&rsquo;ve found using a combination of these: qualified import and
+explicitly listing the functions is a bit over the top.</p>
+<p>I also practiced a pattern of having a module which renames
+functions from another module when the names of functions and
+types didn&rsquo;t make as much sense in the context I was using them,
+or were just down right silly names in the first place.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">module</span> Sensible
+  ( <span style="color:#a6e22e">foo</span>
+  , <span style="color:#a6e22e">bar</span>
+  , <span style="color:#66d9ef">Baz</span> (<span style="color:#f92672">..</span>)
+  , <span style="color:#66d9ef">Silly</span><span style="color:#f92672">.</span><span style="color:#a6e22e">okName</span>
+  )
+
+<span style="color:#66d9ef">import</span> Very.Silly.Named.Module <span style="color:#66d9ef">as</span> Silly
+
+<span style="color:#a6e22e">foo</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Silly</span><span style="color:#f92672">.</span>longFooName
+<span style="color:#a6e22e">bar</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Silly</span><span style="color:#f92672">.</span>otherBarName
+
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Baz</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Silly</span><span style="color:#f92672">.</span><span style="color:#66d9ef">BazBaz</span>
+</code></pre></div><p>Using a combination of qualified imports and explicitly naming
+functions I&rsquo;m importing into the module&rsquo;s namespace, I&rsquo;ve found
+I can completely prevent the &ldquo;where did that function come from&rdquo;
+syndrome.</p>
+<p>In <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">my last post</a> I made a lot of comparisons between how Rust
+does things and how I was finding things are done in Haskell.
+I made a general point that Rust is more explicit.  This is an example
+of where Haskell can be more explicit.  In Rust, a lot of functionality
+is provided via traits.  If a type implements a trait, you can call
+the methods from that trait on that type by importing the trait.  The
+methods themselves don&rsquo;t need to be explicitly imported.  The result is
+that you can read some code that deals with a type you know (or at least
+know where to find the docs for), that then calls a method on that type
+that doesn&rsquo;t appear in the type&rsquo;s documentation.  You&rsquo;re left wondering
+&ldquo;where did that method come from?&quot;.  This is the part where I&rsquo;d use
+a &ldquo;go to definition&rdquo;.  Without that you&rsquo;d need to search through the
+traits that are imported in scope as any one of them might have been
+implemented for the type and try to find the method.  I try to avoid
+this problem in Rust by keeping imports of traits as tightly scoped
+with the code that uses them as I can so it&rsquo;s as obvious as possible
+where the method came from.  This is probably one of the rare examples
+where Rust is not <a href="https://tarquin-the-brave.github.io/blog/posts/ide-read-code/">readable as text</a>, where for the most part
+it is pretty good at being.</p>
+<h1 id="what-next">What Next?</h1>
+<p>As I said last time, I reckon I could press on and do the rest of the problems
+with the tools I know.  But I&rsquo;m keen to level up my Haskell and not just grind
+out solutions.</p>
+<p>I&rsquo;m keen to read more into monad transformers and property based testing.</p>
+<p>I then want to loop back around and improve the performance of my solutions:
+looking into strictness and more efficient data structure.  I also want to
+make types fit the data better: where they could be more generic making them
+more generic and where they&rsquo;re too generic, and possible values of the type
+don&rsquo;t represent possible values of data the type represents, choose or make
+another type that&rsquo;s better suited.</p>
+<p><em>As with <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">Part 1</a>, all my solutions are <a href="https://github.com/tarquin-the-brave/aoc-19-haskell">mastered on Github</a>.</em></p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>I wrote <a href="https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/">a blog post recently</a> about how removing repetition in code
+isn&rsquo;t the be all and end all, but is a good indicator that some abstractions
+are needed. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>I&rsquo;m careful to not call something a function if it isn&rsquo;t a pure function.
+The ship sailed a bit on that one as many languages call their inpure methods
+&ldquo;functions&rdquo;, but I find the distinction useful, not least to help context
+switch when moving between procedural and functional frames of mind. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://www.youtube.com/watch?v=-6BsiVyC1kM">A great talk by Rich Hickey</a> &ldquo;The Value of Values&rdquo; talks
+about PLOP &ldquo;Place Oriented Programming&rdquo;. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p><a href="https://www.youtube.com/watch?v=oytL881p-nQ">Another great talk by Rich Hickey</a> &ldquo;Simple Made Easy&rdquo;
+talks about what simplicity is and how we can think objectively about it
+rather than it being a stand in for what people are most familiar with. <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/"><i class="fa fa-chevron-circle-left"></i> DRY Shouldn&#39;t be a Goal in Itself</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+        <section id="utterances"></section>
+
+<script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    } else {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    }
+</script>
+
+    
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Tom Steavenson |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://tarquin-the-brave.github.io/blog/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://tarquin-the-brave.github.io/blog/js/scripts.js"></script>
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-161243400-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
+

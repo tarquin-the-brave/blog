@@ -476,7 +476,7 @@ stepGame' :: [Int] -> Game -> (LiveData, Game)
 stepGame :: [Int] -> State Game LiveData
 stepGame = state . stepGame'
 
-playGame :: [Int] -> GameIOT Int
+playGame :: [Int] -> State Game Int
 playGame inp = do
   liveData <- stepGame inp
   game <- get
@@ -509,9 +509,16 @@ gridDisplay :: Displ -> [[Char]]
 mapM print $ gridDisplay displ
 ```
 
-TODO talk more here
+that maps `print` across a `[[Char]]` (i.e. `[String]`) to display the
+grid in `stdout`.
 
-[statet]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html#t:StateT
+To be able to perform an IO action within `playGame` we need to be able
+to include a line of code that returns the IO Monad inside our State Monad.
+
+To achieve "Monads inside Monads" we use [monad transformers][monadtrans],
+and for the State Monad we can use the [`StateT`][statet] monad transformer.
+
+Editing the `playGame` function in my solution:
 
 ```haskell
 import Control.Monad.State.Lazy (state, StateT)
@@ -522,10 +529,15 @@ playGame :: [Int] -> StateT Game IO Int
 playGame inp = do
   liveData <- stepGame inp
   game <- get
+
+  --
+  -- Display the game state in a grid to stdout
+  --
   let grid = gridDisplay $ gameDisplay game
   _ <- liftIO $ mapM print grid
   liftIO . print $ ("Your score: " ++ show (sc liveData))
   liftIO . cursorUp $ (length grid) + 1
+
   case IC.progState (gameProg game) of
     IC.AwaitInput -> playGame [joystick (xb liveData) (xp liveData)]
     _ -> return $ sc liveData
@@ -533,6 +545,85 @@ playGame inp = do
 stepGame :: [Int] -> StateT Game IO LiveData
 stepGame = state . stepGame'
 ```
+
+As `State` is only a type alias for the [Identity Monad][idm], I've really
+changed the type of `playGame` from:
+
+```haskell
+playGame :: [Int] -> StateT Game Identity Int
+```
+
+to:
+
+```haskell
+playGame :: [Int] -> StateT Game IO Int
+```
+
+to provide a non-trivial "inner monad".
+
+The other key ingredients here are: `liftIO`, which allows us to perform
+actions within the inner IO Monad; and `cursorUp`, to move the stdout cursor up
+so we refresh the screen rather than printing a new grid below.
+
+While I got a monad transformer to work for me in this instance, I need to go
+and spend a bit more time to understand how they work in general, hence the
+reasonable brief explanation here.
+
+The result of this is that I could sit and watch my program destroy all the
+bricks! :tada:
+
+```
+"Z|||||||||||||||||||||||||||||||||||||||||||"
+" |                                         |"
+" | ####    #   #   # #    #  # #   ##   #  |"
+" | # ## ## # ## ## ###  ##   #  # ##### #  |"
+" | #  # ## ###     ##### #    ###  ######  |"
+" | ##  ##### #   #  ## # # #   #  ### ## # |"
+" |  #### ##  #    ## #  #         ##### #  |"
+" |  ## #######     # # ##          #  #### |"
+" | # # ## ####        ###   #       #####  |"
+" | # ##### #         ### # #         ##    |"
+" |  ## #  #   #        # #  #         ###  |"
+" | ## ## # # # #        ## ###         #   |"
+" | ###     ######       #  ## #            |"
+" |    # #  ##            #                 |"
+" | ## ##     # #      #     ##             |"
+" |                                         |"
+" |                                      o  |"
+" |                                         |"
+" |                                         |"
+" |                                     =   |"
+" |                                         |"
+"Your score: 3939"
+```
+
+```
+"Z|||||||||||||||||||||||||||||||||||||||||||"
+" |                                         |"
+" | ##                               #   #  |"
+" | # #       ##                    #### #  |"
+" | #  # #    #                # #  ######  |"
+" | ##  ##    #                 #  ### ## # |"
+" |  #### ##       #                 ### #  |"
+" |  ## #             # #              #### |"
+" | # #      #         ###             ###  |"
+" | # #               ### #         o ##    |"
+" |  #                  # #            # #  |"
+" | #                    ## ###             |"
+" | ##                   #  ##              |"
+" |                       #                 |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                         |"
+" |                                  =      |"
+" |                                         |"
+"Your score: 9021"
+```
+
+It does get a bit boring watch it spend ages trying to get
+the last few blocks.
 
 ## Making a Monad
 
@@ -629,15 +720,101 @@ variant of the sum type `Status` under the status field.  You could say that
 "sense of failure" is buried deep within this type.  If we want to handle
 failure with Monads, we want to encode failure in a "container" type.
 
+I chose to refactor this by making what was `Status` into a type that
+had variants that could contain an intcode computer. The data from the `Program`
+type above, then got split into:
 
+```haskell
+data Prog a = Running a | AwaitInput a | End a | Crashed String deriving(Show, Eq)
+
+data Intcode = Intcode {
+  input::[Int],
+  code::[Int],
+  -- ip: Instruction Pointer
+  ip::Int,
+  -- rb: Relative Base
+  rb::Int,
+  output::[Int]
+} deriving(Show, Eq)
+```
+
+With `Prog` being given implementations of `Monad` and `MonadFail` typeclasses:
+
+```haskell
+instance Monad Prog where
+  return = Running
+  (Crashed e) >>= _ = (Crashed e)
+  (End prog) >>= k = k prog
+  (Running prog) >>= k = k prog
+  (AwaitInput prog) >>= k = k prog
+
+instance MonadFail Prog where
+  fail = Crashed
+```
+
+As the definition of the [monad typeclass][monadtypeclass] has the typeclass constraint:
+
+```haskell
+class Applicative m => Monad m where
+...
+```
+
+and `Applicative` in turn has a similar constraint for `Functor`, I needed to also
+make `Prog` an instance of both the `Applicative` and `Functor` typeclasses:
+
+```haskell
+instance Functor Prog where
+  fmap _ (Crashed e) = Crashed e
+  fmap f (End a) =  End (f a)
+  fmap f (Running a) = Running (f a)
+  fmap f (AwaitInput a) = AwaitInput (f a)
+
+instance Applicative Prog where
+  pure = Running
+  _ <*> (Crashed e) = Crashed e
+  (End f) <*> prog = fmap f prog
+  (Running f) <*> prog = fmap f prog
+  (AwaitInput f) <*> prog = fmap f prog
+```
+
+So what was previously represented by `Program`, is now represented by `Prog Intcode`,
+where `Prog` is a monad that can represent a program being in a number of states, or
+crashed and `Intcode` is the data relevant to an intcode program specifically.  The
+abstraction here is to separate the raw number crunching of the intcode computer from
+our interpretation of the overall "status" of the program.
+
+Having made this monad, I refactored all the operations on the intcode which could fail
+to return a type generic across `MonadFail`, rather than returning `Maybe`.  E.g. my
+function to safely lookup an index in a list and return `0` if the index is beyond
+the end of the list, `(!!!)` went from:
+
+```haskell
+(!!!) :: Integral a => [a] -> Int -> Maybe a
+infixl 9 !!!
+xs !!! i
+  | i < 0 = Nothing
+  | i >= length xs = Just 0
+  | otherwise = Just $ xs !! i
+```
+
+to:
+
+```haskell
+(!!!) :: Integral a => MonadFail m => [a] -> Int -> m a
+infixl 9 !!!
+xs !!! i
+  | i < 0 = fail $ "index " ++ show i ++ " less that zero"
+  | i >= length xs = return 0
+  | otherwise = return $ xs !! i
+```
+
+I was then able to strip out
+[monadtypeclass]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#t:Monad
 TODO
 
 - go through implementation
+- the key abstraction here is...
 - discuss alternatives, how applicative doesn't make sense so much.
-
-### Testing Monad Laws
-
-TODO
 
 # Other Things That Came Up
 
@@ -852,6 +1029,9 @@ _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc].
 [intcodestate]: #introducing-the-state-monad
 [hashmap]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashMap-Strict.html
 [usingintcode]: #using-the-intcode-computer
+[monadtrans]: https://wiki.haskell.org/Monad_Transformers
+[statet]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html#t:StateT
+[idm]: https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity
 
 
 [^functions]: I'm careful to not call something a function if it isn't a pure function.

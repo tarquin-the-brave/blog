@@ -72,7 +72,7 @@
 
         
 
-        <li>29 minutes read</li>
+        <li>30 minutes read</li>
     </ul>
 </aside>
 
@@ -101,13 +101,14 @@ on the integer (instruction) you find which may read or write another element
 in the list, take an input, or produce an output, and you then move along the
 sequence to the next instruction, which is a number of elements along depending
 on the instruction you just ran.  Eventually you reach an instruction to
-terminate the intcode program, or program crashes from some operation failing,
+terminate the intcode program, or the program crashes from some operation failing,
 finding an unrecognised instruction, or reaching the end without terminating.
 The explanation in <a href="https://adventofcode.com/2019/day/2">the problem description</a> goes into more detail with
 examples.</p>
 <p>It looks like the general problem here is we&rsquo;ve got some state that mutates
 during computation (a run of the program) and we may need to keep the current
-state around while we do some other calculation.</p>
+state around while we do some other calculation (calculating the next input
+of the program).</p>
 <p>With mutation not really being a feature in functional languages I looked
 around for how this can be modelled in Haskell.  From the looks of it, it
 sounded like the <a href="https://wiki.haskell.org/State_Monad">State Monad</a> would be needed at some point.</p>
@@ -116,10 +117,10 @@ sounded like the <a href="https://wiki.haskell.org/State_Monad">State Monad</a> 
 intcode program with instructions <code>1</code> &amp; <code>2</code> that each take the next three
 integers as parameters and mutate an element of the intcode, and <code>99</code> that
 terminates the program.  The problem asks you to run the intcode it gives &lsquo;til
-it terminated and give the first value in the intcode.</p>
+it terminates and give the first value in the intcode.</p>
 <p>For this simple case, we&rsquo;re not concerned about inputs or outputs of the
 intcode program and we can run in once and throw it away.</p>
-<p>Roughly following the approach I used in the problems tacked in <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">Part 1</a>
+<p>Roughly following the approach I used in the problems tackled in <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">Part 1</a>,
 I started by thinking about what data matters.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">Program</span> {
   intCode<span style="color:#f92672">::</span>[<span style="color:#66d9ef">Int</span>],
@@ -140,7 +141,7 @@ write safe code by using safe operations, such as those from
 <p>I&rsquo;ve modelled the intcode as a list, <code>[Int]</code>. lists aren&rsquo;t efficient for
 looking up values by index, which is done a lot in the solution, but for now,
 I&rsquo;m not hugely worried about performance at this stage.  If it becomes an issue
-in later problems, I can look into alternative representations.  If not I&rsquo;ll
+in later problems, I can look into alternative representations.  If not, I&rsquo;ll
 cycle back through at some point and try to optimise performance as an
 exercise.</p>
 <p>From here I was able to write a function that takes the above state and evolves
@@ -154,7 +155,7 @@ the status is no longer <code>Running</code>.</p>
 <span style="color:#a6e22e">runStep</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Program</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Program</span>
 <span style="color:#a6e22e">runStep</span> prog <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
 </code></pre></div><p><code>runStep</code> matches the instruction found at the instruction pointer index in the
-intcode and runs the appropriate operation to produce a new <code>Program</code> with a
+intcode and runs the appropriate operation to produce a new <code>Program</code>, with a
 mutated intcode and the instruction pointer moved along.</p>
 <h3 id="introducing-the-state-monad">Introducing the State Monad</h3>
 <p>The above recursive function proved to be enough to get the answers to both
@@ -166,10 +167,10 @@ Monad to see how it works.</p>
 <a href="http://learnyouahaskell.com/for-a-few-monads-more#state">chapter in Learn You a Haskell</a>, I&rsquo;ve understood it as: you have
 your state, <code>s</code>; the output of a computation on that state, <code>a</code>; and a function
 that takes the state and returns the output and the state evolved, <code>s -&gt; (a, s)</code>.  You then use <code>state</code> to put the function into the State Monad, denoted
-<code>State s a</code>.  Then it can be manipulated with functions from <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">the
-docs</a> and inside <code>do</code> notation.</p>
+<code>State s a</code>.  Then it can be manipulated with functions <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">that act upon the State
+Monad</a>, and inside <code>do</code> notation.</p>
 <p>In this case the state type, <code>s</code>, is <code>Program</code>, and the output type, <code>a</code>, is
-<code>()</code> as we&rsquo;re not concerned about the output.</p>
+<code>()</code>, as we&rsquo;re not concerned about the output.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">State</span> <span style="color:#66d9ef">Program</span> ()
 <span style="color:#a6e22e">runProgram</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
   prog <span style="color:#f92672">&lt;-</span> get
@@ -187,7 +188,8 @@ docs</a> and inside <code>do</code> notation.</p>
 </code></pre></div><p>I was then able to create a <code>Program</code> with the intcode provided, pass it to
 <code>runProgram</code> and use <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html"><code>execState</code></a> to get the final <code>Program</code> state.</p>
 <p>The fact that I&rsquo;ve used <code>()</code> for the output type is a sign that the State Monad
-was not required here,  but it was good to do as an exercise.</p>
+was not required here, a function of <code>s -&gt; s</code> would suffice,  but it was good
+to do as an exercise.</p>
 <h3 id="expanding-the-intcode-computer">Expanding the Intcode Computer</h3>
 <p>Over days <a href="https://adventofcode.com/2019/day/5">5</a>, <a href="https://adventofcode.com/2019/day/7">7</a>, &amp; <a href="https://adventofcode.com/2019/day/9">9</a> you&rsquo;re asked to build up the
 intcode computer with a host of new instructions and the ability to take inputs
@@ -290,13 +292,13 @@ Completed 2 action(s).
 next.</p>
 <p>The first part of the problem requires you to run these in series to get an
 output at the end.  <em>Taking the ascii diagrams from the <a href="https://adventofcode.com/2019/day/7">day 7</a> problem
-description.</em></p>
+description:</em></p>
 <pre><code>    O-------O  O-------O  O-------O  O-------O  O-------O
 0 -&gt;| Amp A |-&gt;| Amp B |-&gt;| Amp C |-&gt;| Amp D |-&gt;| Amp E |-&gt; (to thrusters)
     O-------O  O-------O  O-------O  O-------O  O-------O
 </code></pre><p>A simple fold over a list of intcodes sufficed here.  I was happy for each
 intcode state to be thrown away as the calculation moved to the next.  No need
-for the State Monad yet.</p>
+for the State Monad yet!</p>
 <p>The second half of the problem then asks you to run the intcode computers, the
 &ldquo;amplifiers&rdquo;, in a loop, until they exit.</p>
 <pre><code>      O-------O  O-------O  O-------O  O-------O  O-------O
@@ -350,15 +352,23 @@ State Monad.</p>
 <span style="color:#a6e22e">nextAmp</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
 <span style="color:#a6e22e">activeAmpAppendInput</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
 </code></pre></div><p>Following the same pattern applied when I tried wrapping the intcode in a State
-Monad <a href="#introducing-the-state-monad">above</a>: <code>runActiveAmpOutput</code> evolves the state and
-provides an output, our <code>s -&gt; (a, s)</code>; <code>runActiveAmpOutput'</code> wraps that in the
-State Monad with <code>state</code>; and <code>runAmpsLoop</code> runs the current amplifier (intcode
-program), gets the new overall state with <code>get</code>, and only if we&rsquo;ve just run the
-final amplifier in the loop, and it has <code>Terminated</code>, return the output.
-Otherwise, if we haven&rsquo;t crashed, use <code>modify</code> to edit the overall state by
+Monad <a href="#introducing-the-state-monad">above</a>:</p>
+<ul>
+<li><code>runActiveAmpOutput</code> evolves the state and provides an output, our <code>s -&gt; (a, s)</code>;</li>
+<li><code>runActiveAmpOutput'</code> wraps that in the State Monad with <code>state</code>; and</li>
+<li><code>runAmpsLoop</code>:
+<ul>
+<li>runs the current amplifier (intcode program),</li>
+<li>gets the new overall state with <code>get</code>, and</li>
+<li>only if we&rsquo;ve just run the final amplifier in the loop, and it has <code>Terminated</code>,
+return the output.</li>
+<li>Otherwise, if we haven&rsquo;t crashed, use <code>modify</code> to edit the overall state by
 moving to the next amplifier in the loop, <code>nextAmp</code>, and passing the output
-from the last amplifier to new one, <code>activeAmpAppendInput</code>.</p>
-<p>I also defined a function <code>newAmps</code> which given an intcode program and a list
+from the last amplifier to new one, <code>activeAmpAppendInput</code>.</li>
+</ul>
+</li>
+</ul>
+<p>I also defined a function <code>newAmps</code> which, given an intcode program and a list
 of &ldquo;phases&rdquo; (tuning parameters for the amplifiers), produces the initial <code>Amps</code>
 state.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">newAmps</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Amps</span>
@@ -399,8 +409,8 @@ bricks.</p>
 &quot; |                                         |&quot;
 &quot; |                          =              |&quot;
 &quot; |                                         |&quot;
-</code></pre><p>and would whirr for a short while until it was finished
-and my <code>main</code> could print the game state:</p>
+</code></pre><p>and would whirr away for a short while until it was finished and my <code>main</code>
+could print the game state:</p>
 <pre><code>&quot;Z|||||||||||||||||||||||||||||||||||||||||||&quot;
 &quot; |                                         |&quot;
 &quot; |                                         |&quot;
@@ -477,7 +487,7 @@ line with the paddle.</p>
 <p>This was all well and good, and I could complete the problem by giving my end
 score, but I wanted to watch my program as it took out all the bricks.</p>
 <p>Basically I wanted to be able to call <code>print</code> inside the <code>playGame</code> function.
-I had a function that would turn the HashMap display into a 2D grid of Chars:</p>
+I had a function that would turn the HashMap display into a 2D grid of characters:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">gridDisplay</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Displ</span> <span style="color:#f92672">-&gt;</span> [[<span style="color:#66d9ef">Char</span>]]
 </code></pre></div><p>, and could print a game&rsquo;s display to screen with an expressions like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">mapM</span> print <span style="color:#f92672">$</span> gridDisplay displ
@@ -511,7 +521,7 @@ and for the State Monad we can use the <a href="https://hackage.haskell.org/pack
 
 <span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">IO</span> <span style="color:#66d9ef">LiveData</span>
 <span style="color:#a6e22e">stepGame</span> <span style="color:#f92672">=</span> state <span style="color:#f92672">.</span> stepGame&#39;
-</code></pre></div><p>As <code>State</code> is only a type alias for the <a href="https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity">Identity Monad</a>, I&rsquo;ve really
+</code></pre></div><p>As <code>State</code> is only a type alias for <code>StateT</code> applied to the <a href="https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity">Identity Monad</a>, I&rsquo;ve really
 changed the type of <code>playGame</code> from:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">playGame</span> <span style="color:#f92672">::</span> [<span style="color:#66d9ef">Int</span>] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">StateT</span> <span style="color:#66d9ef">Game</span> <span style="color:#66d9ef">Identity</span> <span style="color:#66d9ef">Int</span>
 </code></pre></div><p>to:</p>
@@ -570,7 +580,7 @@ bricks! 🎉</p>
 &quot; |                                         |&quot;
 &quot;Your score: 9021&quot;
 </code></pre><p>It does get a bit boring watch it spend ages trying to get
-the last few blocks.</p>
+the last few bricks.</p>
 <h2 id="making-a-monad">Making a Monad</h2>
 <p>In my intcode computer, there was lots of opportunity for various
 operations to fail if the intcode was bugged or an input was bad.
@@ -608,7 +618,7 @@ something I could use to do this automatically, as I was expressing the same
 thing over and over again.</p>
 <p>In the example above, both <code>Maybe</code> and <code>List</code> are monads.  I&rsquo;m converting
 from one monad&rsquo;s failure representation to another.  After a bit of looking
-around I found the [<code>MonadFail</code> typeclass][monadfail].  As <code>Maybe</code> and <code>List</code>
+around I found the <a href="http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html"><code>MonadFail</code> typeclass</a>.  As <code>Maybe</code> and <code>List</code>
 both are instances of <code>MonadFail</code> we can redefine <code>maybePos</code> to be generic
 over <code>MonadFail</code> and cut out the conversion between failure representations.</p>
 <pre><code>maybePosM ::  MonadFail m =&gt; Int -&gt; m Int
@@ -710,12 +720,12 @@ the end of the list, <code>(!!!)</code> went from:</p>
   <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#f92672">!!</span> i
 </code></pre></div><p>I was then able to strip out all of the <code>case</code> statements that were matching
 <code>Maybe</code> and returning a &ldquo;crashed&rdquo; program for <code>Nothing</code> and use <code>do</code> notation.</p>
-<p>The implementation of the old <code>runStep</code> function that move the program on by
-running a single instruction called down through layers of functions to select
+<p>The implementation of the old <code>runStep</code> function, that moved the program on by
+running a single instruction, called down through layers of functions to select
 the right operation, try to perform it, matching on the <code>Maybe</code> returned and
 evolving the intcode state if the operation was successful.  Now this logic
 is condensed with the tedious boilerplate removed.  The start of the equivalent
-function in the refactored implementation:</p>
+function in the refactored implementation looks like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">runInstruction</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Intcode</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Prog</span> <span style="color:#66d9ef">Intcode</span>
 <span style="color:#a6e22e">runInstruction</span> ic <span style="color:#f92672">=</span> <span style="color:#66d9ef">do</span>
    opcodes <span style="color:#f92672">&lt;-</span> currentOpCode ic
@@ -726,7 +736,8 @@ function in the refactored implementation:</p>
    <span style="color:#f92672">...</span>
 </code></pre></div><p><code>currentOpCode</code> &amp; <code>op1</code> both return a type generic over <code>MonadFail</code>, so in the
 case of failure will cause this function to bail with the <code>Crashed</code> variant of
-<code>Prog</code>.</p>
+<code>Prog</code>.  There is one of these 3 line blocks for each of the different instructions
+the intcode can have, and that&rsquo;s it.</p>
 <p>I&rsquo;m not sure how &ldquo;idiomatic&rdquo; using <code>MonadFail</code> in this way is, it&rsquo;s just
 something I spotted that I could do. I see that the <a href="http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html"><code>Data.List.Safe</code></a>
 uses <code>MonadThrow</code> to represent failure, and looking around there seems
@@ -777,7 +788,7 @@ languages the number of things you need to consider grows as you iterate.
 With functional purity that number of things to consider stays steady.</p>
 <h2 id="compiler-warnings">Compiler Warnings</h2>
 <p>I turned on a bunch of compiler warnings, as per the advise of <a href="https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/">this
-article</a>, by adding this to my `~/.stack/config.yaml&rsquo;:</p>
+article</a>, by adding this to my <code>~/.stack/config.yaml</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">ghc-options</span>:
   <span style="color:#66d9ef">&#34;$locals&#34;: </span>-Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
 </code></pre></div><p>I had initially thought that I wanted to use Haskell as &ldquo;out of the box&rdquo;
@@ -795,30 +806,40 @@ I&rsquo;ll see if there&rsquo;s a nice way to turn the warnings off for ghci.</p
 <h2 id="breaking-functions-into-lots-of-pieces">Breaking Functions Into Lots of Pieces</h2>
 <p>In a few of the Advent of Code problems, especially when I was eager to
 get the problem done and move on, I found myself falling into a pattern
-of:</p>
-<ul>
-<li>Knowing the data I want, and thinking about all the steps between that
-and the data I have.</li>
-</ul>
-<p>I sometimes fall into the trap of:</p>
-<ul>
-<li>thinking procedurally</li>
-<li>having a complex thing to &ldquo;do&rdquo;</li>
-<li>splitting that up into lots of &ldquo;functions&rdquo;</li>
-<li>non of which make any real sense on their own.</li>
-<li>code is an unreadable mess.
-<code>where</code> keyword is actually fixing this as it breaks the calculation down
-without exposing all the sub functions to the rest of the program.</li>
-</ul>
+of: knowing the data I want; thinking procedurally about all the steps
+between that and the data I have; writing a function for each of these
+steps; and stringing them together to get the answer.</p>
+<p>This gets me to the answer, but the result is a load of free floating
+functions non of which make any real sense on their own.  The code ends
+up being a bit of a mess, especially when those constituent steps are
+not used anywhere else.</p>
+<p>Part of this can come down to whether either of the data I have or the
+data I want are actually good representations of the problem.  When data
+is a good natural fit to a problem you tend not to need to do so many
+complex transformations of that data.  But I think it&rsquo;s fair to expect
+times when you need to describe the transformation of some data that&rsquo;s
+more complex than could be described in a one line function.</p>
+<p>I started using the <code>where</code> keyword more often, and that appears to
+have dealt with this problem I was having.  With <code>where</code> you can break
+down a calculation into parts without exposing those parts as free
+floating functions.</p>
+<p>E.g:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">foo</span> <span style="color:#f92672">=</span> map <span style="color:#f92672">.</span> bar baz
+  <span style="color:#66d9ef">where</span>
+    bar <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+    baz <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</code></pre></div><p>This keeps the readers attention in the block of text where the function
+is defined, rather than having to jump around a file, or even into different
+files.</p>
 <h2 id="modules--namespacing">Modules &amp; Namespacing</h2>
 <p>In <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/">my last post</a> I talked about: not knowing how to find out
 what package to install to get a certain library; and not being totally
-comfortable with the namespacing when modules are imported and sufferring
+comfortable with the namespacing when modules are imported and suffering
 from &ldquo;where did that function come from?&rdquo; syndrome.</p>
 <p>The first of these was me just being dumb as it turns out the
 package containing a module is written in the top left hand corner
 of the module documentation&rsquo;s web page.  Spot <code>mtl-</code> in <a href="https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html">the
-docs</a> for <code>Control.Monad.State.Lazy</code>.</p>
+docs for <code>Control.Monad.State.Lazy</code></a>.</p>
 <p>On the second of these: I&rsquo;ve got reasonably comfortable with either
 doing a qualified import to preserve namespacing, or being explicit
 about which functions I&rsquo;m importing if I&rsquo;m importing them into the

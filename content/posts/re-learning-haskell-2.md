@@ -24,14 +24,15 @@ on the integer (instruction) you find which may read or write another element
 in the list, take an input, or produce an output, and you then move along the
 sequence to the next instruction, which is a number of elements along depending
 on the instruction you just ran.  Eventually you reach an instruction to
-terminate the intcode program, or program crashes from some operation failing,
+terminate the intcode program, or the program crashes from some operation failing,
 finding an unrecognised instruction, or reaching the end without terminating.
 The explanation in [the problem description][day2] goes into more detail with
 examples.
 
 It looks like the general problem here is we've got some state that mutates
 during computation (a run of the program) and we may need to keep the current
-state around while we do some other calculation.
+state around while we do some other calculation (calculating the next input
+of the program).
 
 With mutation not really being a feature in functional languages I looked
 around for how this can be modelled in Haskell.  From the looks of it, it
@@ -43,12 +44,12 @@ The [day 2 problem][day2] asks you to build something that will run a simple
 intcode program with instructions `1` & `2` that each take the next three
 integers as parameters and mutate an element of the intcode, and `99` that
 terminates the program.  The problem asks you to run the intcode it gives 'til
-it terminated and give the first value in the intcode.
+it terminates and give the first value in the intcode.
 
 For this simple case, we're not concerned about inputs or outputs of the
 intcode program and we can run in once and throw it away.
 
-Roughly following the approach I used in the problems tacked in [Part 1][part1]
+Roughly following the approach I used in the problems tackled in [Part 1][part1],
 I started by thinking about what data matters.
 
 ```haskell
@@ -75,7 +76,7 @@ write safe code by using safe operations, such as those from
 I've modelled the intcode as a list, `[Int]`. lists aren't efficient for
 looking up values by index, which is done a lot in the solution, but for now,
 I'm not hugely worried about performance at this stage.  If it becomes an issue
-in later problems, I can look into alternative representations.  If not I'll
+in later problems, I can look into alternative representations.  If not, I'll
 cycle back through at some point and try to optimise performance as an
 exercise.
 
@@ -94,7 +95,7 @@ runStep prog = ...
 ```
 
 `runStep` matches the instruction found at the instruction pointer index in the
-intcode and runs the appropriate operation to produce a new `Program` with a
+intcode and runs the appropriate operation to produce a new `Program`, with a
 mutated intcode and the instruction pointer moved along.
 
 ### Introducing the State Monad
@@ -111,11 +112,11 @@ From reading the [State Monad docs][docsstate], and with some help for the
 your state, `s`; the output of a computation on that state, `a`; and a function
 that takes the state and returns the output and the state evolved, `s -> (a,
 s)`.  You then use `state` to put the function into the State Monad, denoted
-`State s a`.  Then it can be manipulated with functions from [the
-docs][docsstate] and inside `do` notation.
+`State s a`.  Then it can be manipulated with functions [that act upon the State
+Monad][docsstate], and inside `do` notation.
 
 In this case the state type, `s`, is `Program`, and the output type, `a`, is
-`()` as we're not concerned about the output.
+`()`, as we're not concerned about the output.
 
 ```haskell
 runProgram :: State Program ()
@@ -138,7 +139,8 @@ I was then able to create a `Program` with the intcode provided, pass it to
 `runProgram` and use [`execState`][docsstate] to get the final `Program` state.
 
 The fact that I've used `()` for the output type is a sign that the State Monad
-was not required here,  but it was good to do as an exercise.
+was not required here, a function of `s -> s` would suffice,  but it was good
+to do as an exercise.
 
 ### Expanding the Intcode Computer
 
@@ -267,7 +269,7 @@ next.
 
 The first part of the problem requires you to run these in series to get an
 output at the end.  _Taking the ascii diagrams from the [day 7][day7] problem
-description._
+description:_
 
 ```
     O-------O  O-------O  O-------O  O-------O  O-------O
@@ -277,7 +279,7 @@ description._
 
 A simple fold over a list of intcodes sufficed here.  I was happy for each
 intcode state to be thrown away as the calculation moved to the next.  No need
-for the State Monad yet.
+for the State Monad yet!
 
 The second half of the problem then asks you to run the intcode computers, the
 "amplifiers", in a loop, until they exit.
@@ -340,16 +342,19 @@ activeAmpAppendInput :: Int -> Amps -> Amps
 ```
 
 Following the same pattern applied when I tried wrapping the intcode in a State
-Monad [above][intcodestate]: `runActiveAmpOutput` evolves the state and
-provides an output, our `s -> (a, s)`; `runActiveAmpOutput'` wraps that in the
-State Monad with `state`; and `runAmpsLoop` runs the current amplifier (intcode
-program), gets the new overall state with `get`, and only if we've just run the
-final amplifier in the loop, and it has `Terminated`, return the output.
-Otherwise, if we haven't crashed, use `modify` to edit the overall state by
-moving to the next amplifier in the loop, `nextAmp`, and passing the output
-from the last amplifier to new one, `activeAmpAppendInput`.
+Monad [above][intcodestate]:
+- `runActiveAmpOutput` evolves the state and provides an output, our `s -> (a, s)`;
+- `runActiveAmpOutput'` wraps that in the State Monad with `state`; and
+- `runAmpsLoop`:
+  + runs the current amplifier (intcode program),
+  + gets the new overall state with `get`, and
+  + only if we've just run the final amplifier in the loop, and it has `Terminated`,
+    return the output.
+  + Otherwise, if we haven't crashed, use `modify` to edit the overall state by
+    moving to the next amplifier in the loop, `nextAmp`, and passing the output
+    from the last amplifier to new one, `activeAmpAppendInput`.
 
-I also defined a function `newAmps` which given an intcode program and a list
+I also defined a function `newAmps` which, given an intcode program and a list
 of "phases" (tuning parameters for the amplifiers), produces the initial `Amps`
 state.
 
@@ -406,8 +411,8 @@ I had a solution that would start with a state like this:
 " |                                         |"
 ```
 
-and would whirr for a short while until it was finished
-and my `main` could print the game state:
+and would whirr away for a short while until it was finished and my `main`
+could print the game state:
 
 ```
 "Z|||||||||||||||||||||||||||||||||||||||||||"
@@ -497,7 +502,7 @@ This was all well and good, and I could complete the problem by giving my end
 score, but I wanted to watch my program as it took out all the bricks.
 
 Basically I wanted to be able to call `print` inside the `playGame` function.
-I had a function that would turn the HashMap display into a 2D grid of Chars:
+I had a function that would turn the HashMap display into a 2D grid of characters:
 
 ```haskell
 gridDisplay :: Displ -> [[Char]]
@@ -546,7 +551,7 @@ stepGame :: [Int] -> StateT Game IO LiveData
 stepGame = state . stepGame'
 ```
 
-As `State` is only a type alias for the [Identity Monad][idm], I've really
+As `State` is only a type alias for `StateT` applied to the [Identity Monad][idm], I've really
 changed the type of `playGame` from:
 
 ```haskell
@@ -623,7 +628,7 @@ bricks! :tada:
 ```
 
 It does get a bit boring watch it spend ages trying to get
-the last few blocks.
+the last few bricks.
 
 ## Making a Monad
 
@@ -811,12 +816,12 @@ xs !!! i
 I was then able to strip out all of the `case` statements that were matching
 `Maybe` and returning a "crashed" program for `Nothing` and use `do` notation.
 
-The implementation of the old `runStep` function that move the program on by
-running a single instruction called down through layers of functions to select
+The implementation of the old `runStep` function, that moved the program on by
+running a single instruction, called down through layers of functions to select
 the right operation, try to perform it, matching on the `Maybe` returned and
 evolving the intcode state if the operation was successful.  Now this logic
 is condensed with the tedious boilerplate removed.  The start of the equivalent
-function in the refactored implementation:
+function in the refactored implementation looks like:
 
 ```haskell
 runInstruction :: Intcode -> Prog Intcode
@@ -831,7 +836,8 @@ runInstruction ic = do
 
 `currentOpCode` & `op1` both return a type generic over `MonadFail`, so in the
 case of failure will cause this function to bail with the `Crashed` variant of
-`Prog`.
+`Prog`.  There is one of these 3 line blocks for each of the different instructions
+the intcode can have, and that's it.
 
 I'm not sure how "idiomatic" using `MonadFail` in this way is, it's just
 something I spotted that I could do. I see that the [`Data.List.Safe`][safelist]
@@ -894,7 +900,7 @@ With functional purity that number of things to consider stays steady.
 ## Compiler Warnings
 
 I turned on a bunch of compiler warnings, as per the advise of [this
-article][opinionatedguide], by adding this to my `~/.stack/config.yaml':
+article][opinionatedguide], by adding this to my `~/.stack/config.yaml`:
 
 ```yaml
 ghc-options:
@@ -921,31 +927,51 @@ I'll see if there's a nice way to turn the warnings off for ghci.
 
 In a few of the Advent of Code problems, especially when I was eager to
 get the problem done and move on, I found myself falling into a pattern
-of:
+of: knowing the data I want; thinking procedurally about all the steps
+between that and the data I have; writing a function for each of these
+steps; and stringing them together to get the answer.
 
-* Knowing the data I want, and thinking about all the steps between that
-  and the data I have.
+This gets me to the answer, but the result is a load of free floating
+functions non of which make any real sense on their own.  The code ends
+up being a bit of a mess, especially when those constituent steps are
+not used anywhere else.
 
-I sometimes fall into the trap of:
-* thinking procedurally
-* having a complex thing to "do"
-* splitting that up into lots of "functions"
-* non of which make any real sense on their own.
-* code is an unreadable mess.
-`where` keyword is actually fixing this as it breaks the calculation down
-without exposing all the sub functions to the rest of the program.
+Part of this can come down to whether either of the data I have or the
+data I want are actually good representations of the problem.  When data
+is a good natural fit to a problem you tend not to need to do so many
+complex transformations of that data.  But I think it's fair to expect
+times when you need to describe the transformation of some data that's
+more complex than could be described in a one line function.
+
+I started using the `where` keyword more often, and that appears to
+have dealt with this problem I was having.  With `where` you can break
+down a calculation into parts without exposing those parts as free
+floating functions.
+
+E.g:
+
+```haskell
+foo = map . bar baz
+  where
+    bar = ...
+    baz = ...
+```
+
+This keeps the readers attention in the block of text where the function
+is defined, rather than having to jump around a file, or even into different
+files.
 
 ## Modules & Namespacing
 
 In [my last post][part1] I talked about: not knowing how to find out
 what package to install to get a certain library; and not being totally
-comfortable with the namespacing when modules are imported and sufferring
+comfortable with the namespacing when modules are imported and suffering
 from "where did that function come from?" syndrome.
 
 The first of these was me just being dumb as it turns out the
 package containing a module is written in the top left hand corner
 of the module documentation's web page.  Spot `mtl-` in [the
-docs][docsstate] for `Control.Monad.State.Lazy`.
+docs for `Control.Monad.State.Lazy`][docsstate].
 
 On the second of these: I've got reasonably comfortable with either
 doing a qualified import to preserve namespacing, or being explicit
@@ -1027,6 +1053,7 @@ another type that's better suited.
 
 _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc]._
 
+[monadfail]: http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html
 [tarquinaoc]: https://github.com/tarquin-the-brave/aoc-19-haskell
 [valueofvalues]: https://www.youtube.com/watch?v=-6BsiVyC1kM
 [simplemadeeasy]: https://www.youtube.com/watch?v=oytL881p-nQ

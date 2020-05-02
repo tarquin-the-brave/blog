@@ -595,6 +595,8 @@ My general feelings about Haskell thus far, learning it for the second time:
 
 I'll go do some reading, then come back to these problems.
 
+[**Re-learning Haskell with Advent Of Code - Part 2**][part2]
+
 [opinion-guide-haskell]: https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/
 [cargo]: https://doc.rust-lang.org/cargo/
 [stack-docs]: https://docs.haskellstack.org/en/stable/README/
@@ -629,6 +631,7 @@ I'll go do some reading, then come back to these problems.
 [foldm]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM
 [foldm-underscore]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html#v:foldM_
 [control-monad]: https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad.html
+[part2]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/
 
 [^1]: Learn you a Haskell for greater good. http://learnyouahaskell.com/chapters
 [^2]: Haskell from first principals. https://haskellbook.com/

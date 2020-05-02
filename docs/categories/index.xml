@@ -30,13 +30,14 @@ on the integer (instruction) you find which may read or write another element
 in the list, take an input, or produce an output, and you then move along the
 sequence to the next instruction, which is a number of elements along depending
 on the instruction you just ran.  Eventually you reach an instruction to
-terminate the intcode program, or program crashes from some operation failing,
+terminate the intcode program, or the program crashes from some operation failing,
 finding an unrecognised instruction, or reaching the end without terminating.
 The explanation in &lt;a href=&#34;https://adventofcode.com/2019/day/2&#34;&gt;the problem description&lt;/a&gt; goes into more detail with
 examples.&lt;/p&gt;
 &lt;p&gt;It looks like the general problem here is we&amp;rsquo;ve got some state that mutates
 during computation (a run of the program) and we may need to keep the current
-state around while we do some other calculation.&lt;/p&gt;
+state around while we do some other calculation (calculating the next input
+of the program).&lt;/p&gt;
 &lt;p&gt;With mutation not really being a feature in functional languages I looked
 around for how this can be modelled in Haskell.  From the looks of it, it
 sounded like the &lt;a href=&#34;https://wiki.haskell.org/State_Monad&#34;&gt;State Monad&lt;/a&gt; would be needed at some point.&lt;/p&gt;
@@ -45,10 +46,10 @@ sounded like the &lt;a href=&#34;https://wiki.haskell.org/State_Monad&#34;&gt;St
 intcode program with instructions &lt;code&gt;1&lt;/code&gt; &amp;amp; &lt;code&gt;2&lt;/code&gt; that each take the next three
 integers as parameters and mutate an element of the intcode, and &lt;code&gt;99&lt;/code&gt; that
 terminates the program.  The problem asks you to run the intcode it gives &amp;lsquo;til
-it terminated and give the first value in the intcode.&lt;/p&gt;
+it terminates and give the first value in the intcode.&lt;/p&gt;
 &lt;p&gt;For this simple case, we&amp;rsquo;re not concerned about inputs or outputs of the
 intcode program and we can run in once and throw it away.&lt;/p&gt;
-&lt;p&gt;Roughly following the approach I used in the problems tacked in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;
+&lt;p&gt;Roughly following the approach I used in the problems tackled in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;,
 I started by thinking about what data matters.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Program&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Program&lt;/span&gt; {
   intCode&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;],
@@ -69,7 +70,7 @@ write safe code by using safe operations, such as those from
 &lt;p&gt;I&amp;rsquo;ve modelled the intcode as a list, &lt;code&gt;[Int]&lt;/code&gt;. lists aren&amp;rsquo;t efficient for
 looking up values by index, which is done a lot in the solution, but for now,
 I&amp;rsquo;m not hugely worried about performance at this stage.  If it becomes an issue
-in later problems, I can look into alternative representations.  If not I&amp;rsquo;ll
+in later problems, I can look into alternative representations.  If not, I&amp;rsquo;ll
 cycle back through at some point and try to optimise performance as an
 exercise.&lt;/p&gt;
 &lt;p&gt;From here I was able to write a function that takes the above state and evolves
@@ -83,7 +84,7 @@ the status is no longer &lt;code&gt;Running&lt;/code&gt;.&lt;/p&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;runStep&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Program&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Program&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;runStep&lt;/span&gt; prog &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;runStep&lt;/code&gt; matches the instruction found at the instruction pointer index in the
-intcode and runs the appropriate operation to produce a new &lt;code&gt;Program&lt;/code&gt; with a
+intcode and runs the appropriate operation to produce a new &lt;code&gt;Program&lt;/code&gt;, with a
 mutated intcode and the instruction pointer moved along.&lt;/p&gt;
 &lt;h3 id=&#34;introducing-the-state-monad&#34;&gt;Introducing the State Monad&lt;/h3&gt;
 &lt;p&gt;The above recursive function proved to be enough to get the answers to both
@@ -95,10 +96,10 @@ Monad to see how it works.&lt;/p&gt;
 &lt;a href=&#34;http://learnyouahaskell.com/for-a-few-monads-more#state&#34;&gt;chapter in Learn You a Haskell&lt;/a&gt;, I&amp;rsquo;ve understood it as: you have
 your state, &lt;code&gt;s&lt;/code&gt;; the output of a computation on that state, &lt;code&gt;a&lt;/code&gt;; and a function
 that takes the state and returns the output and the state evolved, &lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt;.  You then use &lt;code&gt;state&lt;/code&gt; to put the function into the State Monad, denoted
-&lt;code&gt;State s a&lt;/code&gt;.  Then it can be manipulated with functions from &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;the
-docs&lt;/a&gt; and inside &lt;code&gt;do&lt;/code&gt; notation.&lt;/p&gt;
+&lt;code&gt;State s a&lt;/code&gt;.  Then it can be manipulated with functions &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;that act upon the State
+Monad&lt;/a&gt;, and inside &lt;code&gt;do&lt;/code&gt; notation.&lt;/p&gt;
 &lt;p&gt;In this case the state type, &lt;code&gt;s&lt;/code&gt;, is &lt;code&gt;Program&lt;/code&gt;, and the output type, &lt;code&gt;a&lt;/code&gt;, is
-&lt;code&gt;()&lt;/code&gt; as we&amp;rsquo;re not concerned about the output.&lt;/p&gt;
+&lt;code&gt;()&lt;/code&gt;, as we&amp;rsquo;re not concerned about the output.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;runProgram&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;State&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Program&lt;/span&gt; ()
 &lt;span style=&#34;color:#a6e22e&#34;&gt;runProgram&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
   prog &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; get
@@ -116,7 +117,8 @@ docs&lt;/a&gt; and inside &lt;code&gt;do&lt;/code&gt; notation.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was then able to create a &lt;code&gt;Program&lt;/code&gt; with the intcode provided, pass it to
 &lt;code&gt;runProgram&lt;/code&gt; and use &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;&lt;code&gt;execState&lt;/code&gt;&lt;/a&gt; to get the final &lt;code&gt;Program&lt;/code&gt; state.&lt;/p&gt;
 &lt;p&gt;The fact that I&amp;rsquo;ve used &lt;code&gt;()&lt;/code&gt; for the output type is a sign that the State Monad
-was not required here,  but it was good to do as an exercise.&lt;/p&gt;
+was not required here, a function of &lt;code&gt;s -&amp;gt; s&lt;/code&gt; would suffice,  but it was good
+to do as an exercise.&lt;/p&gt;
 &lt;h3 id=&#34;expanding-the-intcode-computer&#34;&gt;Expanding the Intcode Computer&lt;/h3&gt;
 &lt;p&gt;Over days &lt;a href=&#34;https://adventofcode.com/2019/day/5&#34;&gt;5&lt;/a&gt;, &lt;a href=&#34;https://adventofcode.com/2019/day/7&#34;&gt;7&lt;/a&gt;, &amp;amp; &lt;a href=&#34;https://adventofcode.com/2019/day/9&#34;&gt;9&lt;/a&gt; you&amp;rsquo;re asked to build up the
 intcode computer with a host of new instructions and the ability to take inputs
@@ -219,13 +221,13 @@ Completed 2 action(s).
 next.&lt;/p&gt;
 &lt;p&gt;The first part of the problem requires you to run these in series to get an
 output at the end.  &lt;em&gt;Taking the ascii diagrams from the &lt;a href=&#34;https://adventofcode.com/2019/day/7&#34;&gt;day 7&lt;/a&gt; problem
-description.&lt;/em&gt;&lt;/p&gt;
+description:&lt;/em&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    O-------O  O-------O  O-------O  O-------O  O-------O
 0 -&amp;gt;| Amp A |-&amp;gt;| Amp B |-&amp;gt;| Amp C |-&amp;gt;| Amp D |-&amp;gt;| Amp E |-&amp;gt; (to thrusters)
     O-------O  O-------O  O-------O  O-------O  O-------O
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A simple fold over a list of intcodes sufficed here.  I was happy for each
 intcode state to be thrown away as the calculation moved to the next.  No need
-for the State Monad yet.&lt;/p&gt;
+for the State Monad yet!&lt;/p&gt;
 &lt;p&gt;The second half of the problem then asks you to run the intcode computers, the
 &amp;ldquo;amplifiers&amp;rdquo;, in a loop, until they exit.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;      O-------O  O-------O  O-------O  O-------O  O-------O
@@ -279,15 +281,23 @@ State Monad.&lt;/p&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;nextAmp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Amps&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Amps&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;activeAmpAppendInput&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Amps&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Amps&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Following the same pattern applied when I tried wrapping the intcode in a State
-Monad &lt;a href=&#34;#introducing-the-state-monad&#34;&gt;above&lt;/a&gt;: &lt;code&gt;runActiveAmpOutput&lt;/code&gt; evolves the state and
-provides an output, our &lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt;; &lt;code&gt;runActiveAmpOutput&#39;&lt;/code&gt; wraps that in the
-State Monad with &lt;code&gt;state&lt;/code&gt;; and &lt;code&gt;runAmpsLoop&lt;/code&gt; runs the current amplifier (intcode
-program), gets the new overall state with &lt;code&gt;get&lt;/code&gt;, and only if we&amp;rsquo;ve just run the
-final amplifier in the loop, and it has &lt;code&gt;Terminated&lt;/code&gt;, return the output.
-Otherwise, if we haven&amp;rsquo;t crashed, use &lt;code&gt;modify&lt;/code&gt; to edit the overall state by
+Monad &lt;a href=&#34;#introducing-the-state-monad&#34;&gt;above&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;runActiveAmpOutput&lt;/code&gt; evolves the state and provides an output, our &lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;runActiveAmpOutput&#39;&lt;/code&gt; wraps that in the State Monad with &lt;code&gt;state&lt;/code&gt;; and&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;runAmpsLoop&lt;/code&gt;:
+&lt;ul&gt;
+&lt;li&gt;runs the current amplifier (intcode program),&lt;/li&gt;
+&lt;li&gt;gets the new overall state with &lt;code&gt;get&lt;/code&gt;, and&lt;/li&gt;
+&lt;li&gt;only if we&amp;rsquo;ve just run the final amplifier in the loop, and it has &lt;code&gt;Terminated&lt;/code&gt;,
+return the output.&lt;/li&gt;
+&lt;li&gt;Otherwise, if we haven&amp;rsquo;t crashed, use &lt;code&gt;modify&lt;/code&gt; to edit the overall state by
 moving to the next amplifier in the loop, &lt;code&gt;nextAmp&lt;/code&gt;, and passing the output
-from the last amplifier to new one, &lt;code&gt;activeAmpAppendInput&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;I also defined a function &lt;code&gt;newAmps&lt;/code&gt; which given an intcode program and a list
+from the last amplifier to new one, &lt;code&gt;activeAmpAppendInput&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I also defined a function &lt;code&gt;newAmps&lt;/code&gt; which, given an intcode program and a list
 of &amp;ldquo;phases&amp;rdquo; (tuning parameters for the amplifiers), produces the initial &lt;code&gt;Amps&lt;/code&gt;
 state.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;newAmps&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Amps&lt;/span&gt;
@@ -328,8 +338,8 @@ bricks.&lt;/p&gt;
 &amp;quot; |                                         |&amp;quot;
 &amp;quot; |                          =              |&amp;quot;
 &amp;quot; |                                         |&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and would whirr for a short while until it was finished
-and my &lt;code&gt;main&lt;/code&gt; could print the game state:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and would whirr away for a short while until it was finished and my &lt;code&gt;main&lt;/code&gt;
+could print the game state:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;quot;Z|||||||||||||||||||||||||||||||||||||||||||&amp;quot;
 &amp;quot; |                                         |&amp;quot;
 &amp;quot; |                                         |&amp;quot;
@@ -406,7 +416,7 @@ line with the paddle.&lt;/p&gt;
 &lt;p&gt;This was all well and good, and I could complete the problem by giving my end
 score, but I wanted to watch my program as it took out all the bricks.&lt;/p&gt;
 &lt;p&gt;Basically I wanted to be able to call &lt;code&gt;print&lt;/code&gt; inside the &lt;code&gt;playGame&lt;/code&gt; function.
-I had a function that would turn the HashMap display into a 2D grid of Chars:&lt;/p&gt;
+I had a function that would turn the HashMap display into a 2D grid of characters:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;gridDisplay&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Displ&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [[&lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt;]]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, and could print a game&amp;rsquo;s display to screen with an expressions like:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;mapM&lt;/span&gt; print &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; gridDisplay displ
@@ -440,7 +450,7 @@ and for the State Monad we can use the &lt;a href=&#34;https://hackage.haskell.o
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;stepGame&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;StateT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Game&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;LiveData&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;stepGame&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; state &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; stepGame&amp;#39;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As &lt;code&gt;State&lt;/code&gt; is only a type alias for the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity&#34;&gt;Identity Monad&lt;/a&gt;, I&amp;rsquo;ve really
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As &lt;code&gt;State&lt;/code&gt; is only a type alias for &lt;code&gt;StateT&lt;/code&gt; applied to the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.11.0.0/docs/Data-Functor-Identity.html#t:Identity&#34;&gt;Identity Monad&lt;/a&gt;, I&amp;rsquo;ve really
 changed the type of &lt;code&gt;playGame&lt;/code&gt; from:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;playGame&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;StateT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Game&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Identity&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;to:&lt;/p&gt;
@@ -499,7 +509,7 @@ bricks! 🎉&lt;/p&gt;
 &amp;quot; |                                         |&amp;quot;
 &amp;quot;Your score: 9021&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It does get a bit boring watch it spend ages trying to get
-the last few blocks.&lt;/p&gt;
+the last few bricks.&lt;/p&gt;
 &lt;h2 id=&#34;making-a-monad&#34;&gt;Making a Monad&lt;/h2&gt;
 &lt;p&gt;In my intcode computer, there was lots of opportunity for various
 operations to fail if the intcode was bugged or an input was bad.
@@ -537,7 +547,7 @@ something I could use to do this automatically, as I was expressing the same
 thing over and over again.&lt;/p&gt;
 &lt;p&gt;In the example above, both &lt;code&gt;Maybe&lt;/code&gt; and &lt;code&gt;List&lt;/code&gt; are monads.  I&amp;rsquo;m converting
 from one monad&amp;rsquo;s failure representation to another.  After a bit of looking
-around I found the [&lt;code&gt;MonadFail&lt;/code&gt; typeclass][monadfail].  As &lt;code&gt;Maybe&lt;/code&gt; and &lt;code&gt;List&lt;/code&gt;
+around I found the &lt;a href=&#34;http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt; typeclass&lt;/a&gt;.  As &lt;code&gt;Maybe&lt;/code&gt; and &lt;code&gt;List&lt;/code&gt;
 both are instances of &lt;code&gt;MonadFail&lt;/code&gt; we can redefine &lt;code&gt;maybePos&lt;/code&gt; to be generic
 over &lt;code&gt;MonadFail&lt;/code&gt; and cut out the conversion between failure representations.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;maybePosM ::  MonadFail m =&amp;gt; Int -&amp;gt; m Int
@@ -639,12 +649,12 @@ the end of the list, &lt;code&gt;(!!!)&lt;/code&gt; went from:&lt;/p&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt; i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was then able to strip out all of the &lt;code&gt;case&lt;/code&gt; statements that were matching
 &lt;code&gt;Maybe&lt;/code&gt; and returning a &amp;ldquo;crashed&amp;rdquo; program for &lt;code&gt;Nothing&lt;/code&gt; and use &lt;code&gt;do&lt;/code&gt; notation.&lt;/p&gt;
-&lt;p&gt;The implementation of the old &lt;code&gt;runStep&lt;/code&gt; function that move the program on by
-running a single instruction called down through layers of functions to select
+&lt;p&gt;The implementation of the old &lt;code&gt;runStep&lt;/code&gt; function, that moved the program on by
+running a single instruction, called down through layers of functions to select
 the right operation, try to perform it, matching on the &lt;code&gt;Maybe&lt;/code&gt; returned and
 evolving the intcode state if the operation was successful.  Now this logic
 is condensed with the tedious boilerplate removed.  The start of the equivalent
-function in the refactored implementation:&lt;/p&gt;
+function in the refactored implementation looks like:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;runInstruction&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Prog&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;runInstruction&lt;/span&gt; ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
    opcodes &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; currentOpCode ic
@@ -655,7 +665,8 @@ function in the refactored implementation:&lt;/p&gt;
    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;currentOpCode&lt;/code&gt; &amp;amp; &lt;code&gt;op1&lt;/code&gt; both return a type generic over &lt;code&gt;MonadFail&lt;/code&gt;, so in the
 case of failure will cause this function to bail with the &lt;code&gt;Crashed&lt;/code&gt; variant of
-&lt;code&gt;Prog&lt;/code&gt;.&lt;/p&gt;
+&lt;code&gt;Prog&lt;/code&gt;.  There is one of these 3 line blocks for each of the different instructions
+the intcode can have, and that&amp;rsquo;s it.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;m not sure how &amp;ldquo;idiomatic&amp;rdquo; using &lt;code&gt;MonadFail&lt;/code&gt; in this way is, it&amp;rsquo;s just
 something I spotted that I could do. I see that the &lt;a href=&#34;http://hackage.haskell.org/package/listsafe-0.1.0.1/docs/Data-List-Safe.html&#34;&gt;&lt;code&gt;Data.List.Safe&lt;/code&gt;&lt;/a&gt;
 uses &lt;code&gt;MonadThrow&lt;/code&gt; to represent failure, and looking around there seems
@@ -706,7 +717,7 @@ languages the number of things you need to consider grows as you iterate.
 With functional purity that number of things to consider stays steady.&lt;/p&gt;
 &lt;h2 id=&#34;compiler-warnings&#34;&gt;Compiler Warnings&lt;/h2&gt;
 &lt;p&gt;I turned on a bunch of compiler warnings, as per the advise of &lt;a href=&#34;https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018/&#34;&gt;this
-article&lt;/a&gt;, by adding this to my `~/.stack/config.yaml&amp;rsquo;:&lt;/p&gt;
+article&lt;/a&gt;, by adding this to my &lt;code&gt;~/.stack/config.yaml&lt;/code&gt;:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;ghc-options&lt;/span&gt;:
   &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;#34;$locals&amp;#34;: &lt;/span&gt;-Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I had initially thought that I wanted to use Haskell as &amp;ldquo;out of the box&amp;rdquo;
@@ -724,30 +735,40 @@ I&amp;rsquo;ll see if there&amp;rsquo;s a nice way to turn the warnings off for 
 &lt;h2 id=&#34;breaking-functions-into-lots-of-pieces&#34;&gt;Breaking Functions Into Lots of Pieces&lt;/h2&gt;
 &lt;p&gt;In a few of the Advent of Code problems, especially when I was eager to
 get the problem done and move on, I found myself falling into a pattern
-of:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Knowing the data I want, and thinking about all the steps between that
-and the data I have.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I sometimes fall into the trap of:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;thinking procedurally&lt;/li&gt;
-&lt;li&gt;having a complex thing to &amp;ldquo;do&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;splitting that up into lots of &amp;ldquo;functions&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;non of which make any real sense on their own.&lt;/li&gt;
-&lt;li&gt;code is an unreadable mess.
-&lt;code&gt;where&lt;/code&gt; keyword is actually fixing this as it breaks the calculation down
-without exposing all the sub functions to the rest of the program.&lt;/li&gt;
-&lt;/ul&gt;
+of: knowing the data I want; thinking procedurally about all the steps
+between that and the data I have; writing a function for each of these
+steps; and stringing them together to get the answer.&lt;/p&gt;
+&lt;p&gt;This gets me to the answer, but the result is a load of free floating
+functions non of which make any real sense on their own.  The code ends
+up being a bit of a mess, especially when those constituent steps are
+not used anywhere else.&lt;/p&gt;
+&lt;p&gt;Part of this can come down to whether either of the data I have or the
+data I want are actually good representations of the problem.  When data
+is a good natural fit to a problem you tend not to need to do so many
+complex transformations of that data.  But I think it&amp;rsquo;s fair to expect
+times when you need to describe the transformation of some data that&amp;rsquo;s
+more complex than could be described in a one line function.&lt;/p&gt;
+&lt;p&gt;I started using the &lt;code&gt;where&lt;/code&gt; keyword more often, and that appears to
+have dealt with this problem I was having.  With &lt;code&gt;where&lt;/code&gt; you can break
+down a calculation into parts without exposing those parts as free
+floating functions.&lt;/p&gt;
+&lt;p&gt;E.g:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;foo&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; map &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; bar baz
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+    bar &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+    baz &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This keeps the readers attention in the block of text where the function
+is defined, rather than having to jump around a file, or even into different
+files.&lt;/p&gt;
 &lt;h2 id=&#34;modules--namespacing&#34;&gt;Modules &amp;amp; Namespacing&lt;/h2&gt;
 &lt;p&gt;In &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;my last post&lt;/a&gt; I talked about: not knowing how to find out
 what package to install to get a certain library; and not being totally
-comfortable with the namespacing when modules are imported and sufferring
+comfortable with the namespacing when modules are imported and suffering
 from &amp;ldquo;where did that function come from?&amp;rdquo; syndrome.&lt;/p&gt;
 &lt;p&gt;The first of these was me just being dumb as it turns out the
 package containing a module is written in the top left hand corner
 of the module documentation&amp;rsquo;s web page.  Spot &lt;code&gt;mtl-&lt;/code&gt; in &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;the
-docs&lt;/a&gt; for &lt;code&gt;Control.Monad.State.Lazy&lt;/code&gt;.&lt;/p&gt;
+docs for &lt;code&gt;Control.Monad.State.Lazy&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;On the second of these: I&amp;rsquo;ve got reasonably comfortable with either
 doing a qualified import to preserve namespacing, or being explicit
 about which functions I&amp;rsquo;m importing if I&amp;rsquo;m importing them into the
@@ -1332,6 +1353,7 @@ bar on &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt;.&lt;
 sure yet where to find advice on what good approaches are.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;I&amp;rsquo;ll go do some reading, then come back to these problems.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Re-learning Haskell with Advent Of Code - Part 2&lt;/a&gt;&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;

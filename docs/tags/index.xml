@@ -11,6 +11,89 @@
    
    
      <item>
+       <title>We All Write Monads, Whether We Know It or Not</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/we-all-write-monads/</link>
+       <pubDate>Mon, 04 May 2020 04:46:31 +0100</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/we-all-write-monads/</guid>
+       <description>&lt;p&gt;Recently I&amp;rsquo;ve been rebooting my Haskell by working through &lt;a href=&#34;https://adventofcode.com/2019/&#34;&gt;Advent of
+Code&lt;/a&gt;, and bogging about it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Re-learning Haskell with Advent of Code - Part 1&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Re-learning Haskell with Advent of Code - Part 2&lt;/a&gt;,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;and it&amp;rsquo;s got me thinking.  I was quickly re-introduced to the concepts of:
+Functors, Applicative Functors, Monoids, Monads, a strong type system, higher
+kinded types, and functional purity, and straight away, started spotting these
+patterns in the code I write every day at work (predominantly Rust with some
+Bash, Python, and C++ thrown in for good measure).&lt;/p&gt;
+&lt;p&gt;I find myself thinking about code I&amp;rsquo;m working with, and saying to myself, or
+anyone who will listen, things like:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Ah well, this works because string concatenation behaves monoidally&amp;hellip;&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;or:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;What we&amp;rsquo;ve got here is a computational context for our data that we want to
+map over&amp;hellip;&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;What this has made me realise is there&amp;rsquo;s nothing special about Haskell that
+means these concepts exist where they don&amp;rsquo;t exist in other languages.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Haskell formalises data manipulation patterns that exist wherever there is
+data to manipulate.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Have you ever had a &amp;ldquo;container type&amp;rdquo; for your data that you&amp;rsquo;ve iterated over?
+You&amp;rsquo;ve used a functor.&lt;/p&gt;
+&lt;p&gt;Have you ever encoded error handling in the data you&amp;rsquo;re using?  You&amp;rsquo;ve used
+something resembling a monad.&lt;/p&gt;
+&lt;p&gt;Rust&amp;rsquo;s ownership model is a formalisation of a set of memory management
+patterns that C developer might employ to attempt to write memory safe and
+thread safe code.&lt;/p&gt;
+&lt;p&gt;Regardless of the language we&amp;rsquo;re writing in, these data manipulation patterns
+are there. The language may formalise them, it may not. By formalising data
+manipulation patterns in a language, there&amp;rsquo;s the opportunity for the compiler
+to tell you if you&amp;rsquo;re using them right, otherwise you&amp;rsquo;re performing these
+patterns by hand.&lt;/p&gt;
+&lt;p&gt;What it comes down to is:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIERbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXVxuICBFW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9&#34;&gt;&lt;img src=&#34;https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIERbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXVxuICBFW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;When I first learned some Haskell a few years ago, the idea was sold to me as
+&amp;ldquo;it&amp;rsquo;ll make you better at every other language&amp;rdquo;.  That was enough to sell it to
+me at the time, and I believe it had that effect.  It&amp;rsquo;s true of every language
+to some extent.  Every language formalises some number of data manipulation
+patterns, the question is to what extent, and are they good patterns to be
+using to get correct and maintainable code.&lt;/p&gt;
+&lt;p&gt;I hear so much from developers who would answer &amp;ldquo;No&amp;rdquo; to both of the above, that
+learning the concepts that formalise patterns of data manipulation is overly
+esoteric and not pragmatic.  To try to understand these things makes you a
+&amp;ldquo;purist&amp;rdquo;, and gets in the way of &amp;ldquo;getting things done&amp;rdquo;.  I think the reality is
+that the software industry, as a whole, is not under enough commercial pressure
+to write software that works with enough efficiency.  Developers can get away
+with not needing to really understand what they&amp;rsquo;re doing, unknowingly
+handwriting attempts at the data manipulation patterns, and producing code
+that&amp;rsquo;s inefficient to write, expensive to maintain, and inevitably bugged.&lt;/p&gt;
+&lt;p&gt;As software becomes more prevalent in all industries, every professional is
+writing code, and every child learns coding in school (which they already are):
+this situation is going to change.  Software developers will no longer be able
+to deliver broken things and convince everyone else that that&amp;rsquo;s OK. In the
+meantime let us hope that the bugs that we inevitably write due to this willful
+negligence won&amp;rsquo;t cost someone their life.&lt;/p&gt;
+&lt;p&gt;This isn&amp;rsquo;t to say that there won&amp;rsquo;t always be bugs in software.  No matter how
+solid the tools you use are, you could have just missed the mark on
+requirements and built the wrong thing.  But there are whole classes of bugs
+and errors that can be eliminated by formalising these patterns and encoding
+them into the fundamental tools with which we build things.&lt;/p&gt;
+&lt;p&gt;I work with Rust most working days.  While it&amp;rsquo;s missing higher kinded types,
+it&amp;rsquo;s got a lot going for it with its strong type system, its state ownership
+model, and generally how it makes you be explicit about what you&amp;rsquo;re doing.
+People say with Rust that &amp;ldquo;if it compiles it works&amp;rdquo;, and provided you&amp;rsquo;ve
+written code that leverages the type system, there&amp;rsquo;s some truth to that. It
+makes me hopeful for the future, and I believe that Rust will stand as one of
+the cornerstones of a new generation of software that works.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>Re-Learning Haskell with Advent of Code - Part 2</title>
        <link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/</link>
        <pubDate>Wed, 29 Apr 2020 20:36:28 +0100</pubDate>
@@ -1353,7 +1436,7 @@ bar on &lt;a href=&#34;https://hoogle.haskell.org/&#34;&gt;Hoogle&lt;/a&gt;.&lt;
 sure yet where to find advice on what good approaches are.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;I&amp;rsquo;ll go do some reading, then come back to these problems.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Re-learning Haskell with Advent Of Code - Part 2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;&lt;strong&gt;Re-learning Haskell with Advent Of Code - Part 2&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;

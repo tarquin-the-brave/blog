@@ -11,6 +11,174 @@
    
    
      <item>
+       <title>Collecting All the Errors - Rust</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/</link>
+       <pubDate>Fri, 08 May 2020 13:55:36 +0100</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/</guid>
+       <description>&lt;p&gt;A common way to handle iterating over results, &lt;code&gt;Result&amp;lt;T, E&amp;gt;&lt;/code&gt;, in Rust is to
+use &lt;code&gt;collect()&lt;/code&gt; to collect an iterator of results into a result.  To borrow the
+&lt;a href=&#34;https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect&#34;&gt;example from Rust by Example&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; strings &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; vec&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;];
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; numbers: Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string
+    .into_iter()
+    .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; s.parse::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;i32&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;())
+    .collect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You only need either the type hint on &lt;code&gt;numbers&lt;/code&gt; or the turbofish on &lt;code&gt;collect&lt;/code&gt;
+to coerce the iterator of results into a result.  I prefer the turbofish on
+&lt;code&gt;collect&lt;/code&gt; as I feel it makes the code flow better when reading, and is what you
+would do when chaining further computations.  In fact, if you&amp;rsquo;re going to use
+&lt;code&gt;?&lt;/code&gt; on the collected result, you wouldn&amp;rsquo;t &lt;em&gt;need&lt;/em&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; either.&lt;/p&gt;
+&lt;p&gt;I use this pattern a lot, and it&amp;rsquo;s great. It makes mapping over collections
+with operations that can fail as ergonomic as applying that operation to a
+single value.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You can use the &lt;code&gt;?&lt;/code&gt; operator to make the error handling almost automatic.&lt;/li&gt;
+&lt;li&gt;You can use any of the other result combinators like &lt;a href=&#34;https://doc.rust-lang.org/std/result/enum.Result.html#method.and_then&#34;&gt;&lt;code&gt;and_then&lt;/code&gt;&lt;/a&gt;,
+and &lt;a href=&#34;https://doc.rust-lang.org/std/result/enum.Result.html#method.map&#34;&gt;&lt;code&gt;map&lt;/code&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;You can chain further computations on the end of the expression.  In the
+above example we could have done:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;    .collect()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    .into_iter()
+    .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    .collect()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This pattern basically says:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Go try these things, if one of them fails we&amp;rsquo;ll fail ourselves,
+reporting the first error that we encounter.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Which, most of the time, is all you need.&lt;/p&gt;
+&lt;p&gt;But what about when it&amp;rsquo;s not? What about when you want to collect all of the
+errors when there are some?&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/rust-lang/rust-by-example/blob/master/src/error/iter_result.md#collect-all-valid-values-and-failures-with-partition&#34;&gt;very next section of Rust by Example&lt;/a&gt; shows how you can use
+&lt;code&gt;partition(Result::is_ok)&lt;/code&gt; to separate the &lt;code&gt;Ok&lt;/code&gt; &amp;amp; &lt;code&gt;Err&lt;/code&gt; variants in your
+iterator of results.  You could then go onto write some logic so your function
+tests that the collection of errors is empty, and if not returns a result with
+a collection of errors in its &lt;code&gt;Err&lt;/code&gt; variant: &lt;code&gt;Result&amp;lt;Vec&amp;lt;T&amp;gt;, Vec&amp;lt;E&amp;gt;&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;But then your entire function stack up to the point where you terminate the
+need for expressing a collection of errors has to deal with returning a
+collection of errors.  If you&amp;rsquo;re writing a CLI tool, that termination point
+would be the point where you write all the error messages to stderr and exit,
+so your whole program is likely to need this error handling. This ruins a lot
+of the ergonomics of &lt;code&gt;?&lt;/code&gt; for dealing with calls to foreign methods that return
+a normal &lt;code&gt;Result&amp;lt;T, E&amp;gt;&lt;/code&gt; (&lt;code&gt;where E: std::err::Error&lt;/code&gt;). Ok, you could replace all
+&lt;code&gt;?&lt;/code&gt; with &lt;code&gt;.map_err(|e| vec![e])?&lt;/code&gt;, but that&amp;rsquo;s still clunky to deal with.&lt;/p&gt;
+&lt;p&gt;An alternative could be to use an error type such as
+&lt;a href=&#34;https://docs.rs/valid/0.3.0/valid/struct.ValidationError.html&#34;&gt;&lt;code&gt;valid::ValidationError&lt;/code&gt;&lt;/a&gt; that can model a collection of errors,
+or build your own.  This is probably a better approach, but is still going to
+be a bit of work to define your own error type, or integrate another crates&amp;rsquo;
+error type into your application.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re building a library, this alternative is probably the right way to go
+as your library will be able to return a well-typed expression of &amp;ldquo;many
+errors&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;With both of these, you&amp;rsquo;re still going to be missing the ergonomics of
+&lt;code&gt;collect()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In much the same way as when building a library you might use
+&lt;a href=&#34;https://docs.rs/thiserror/1.0.16/thiserror/&#34;&gt;&lt;code&gt;thiserror&lt;/code&gt;&lt;/a&gt; to define your own error types, whereas in an
+application you&amp;rsquo;d be happy raising add-hoc errors with
+&lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/macro.anyhow.html&#34;&gt;&lt;code&gt;anyhow::anyhow&lt;/code&gt;&lt;/a&gt;: if you&amp;rsquo;re writing an application you might find
+defining your own error type(s) to handle &amp;ldquo;many errors&amp;rdquo; a bit heavy weight.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve recently found myself in this exact situation while writing a CLI tool.
+The tool needs to tell the user all the errors they&amp;rsquo;ve made in the file they&amp;rsquo;ve
+provided, rather than just one at a time&amp;hellip; as that would be super annoying.
+It doesn&amp;rsquo;t need to do any real processing of the collected errors, it only
+needs to print them all to the terminal in a way that&amp;rsquo;s reasonably readable to
+the user, ideally with writing as little special code as possible.&lt;/p&gt;
+&lt;p&gt;To keep things as simple as possible: I wanted the ergonomics of &lt;code&gt;collect()&lt;/code&gt;;
+and for my representation of &amp;ldquo;many errors&amp;rdquo; to be &amp;ldquo;nothing special&amp;rdquo;, so I can
+use all the existing error handling goodies out of the box.&lt;/p&gt;
+&lt;p&gt;Enter &lt;a href=&#34;https://docs.rs/beau_collector/0.2.1/beau_collector/index.html&#34;&gt;&lt;code&gt;BeauCollector&lt;/code&gt;&lt;/a&gt;.  Trait &lt;code&gt;BeauCollecter&lt;/code&gt; provides method
+&lt;code&gt;bcollect&lt;/code&gt; which will collect an iterator of errors into an
+&lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html&#34;&gt;&lt;code&gt;anyhow::Result&lt;/code&gt;&lt;/a&gt; with an &lt;code&gt;Err&lt;/code&gt; variant containing an ad-hoc
+&lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html&#34;&gt;&lt;code&gt;anyhow::Error&lt;/code&gt;&lt;/a&gt; with the messages from each error in the
+collection of results on a new line in the error message.&lt;/p&gt;
+&lt;p&gt;Looking at out example above:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; beau_collector::BeauCollector &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; strings &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; vec&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;];
+&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; numbers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string
+    .into_iter()
+    .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; s.parse::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;i32&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;())
+    .bcollect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Errors with chains of causes, have their causal chains retained by being
+formatted with the &lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations&#34;&gt;inline representation&lt;/a&gt; where causes are separated
+by &lt;code&gt;:&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;One of the results you&amp;rsquo;re iterating over might have been the result of running
+&lt;code&gt;bcollect&lt;/code&gt;.  As string concatenation is basically what we&amp;rsquo;re doing here,
+&lt;code&gt;bcollect&lt;/code&gt; will represent them alongside any new errors from this layer in the
+error message.  You can collect errors with &lt;code&gt;bcollect&lt;/code&gt; at various layers within
+you application and they&amp;rsquo;ll all be represented in one large error at the top
+level.&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;bcollect&lt;/code&gt; at multiple levels and having a &lt;code&gt;main&lt;/code&gt; that returns a result:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; anyhow::Context &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+
+    input_file &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ...;
+
+    some_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; process_input(input_file)
+        .with_context(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Errors found while processing {}&amp;#34;&lt;/span&gt;, input_file))&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+
+    run_application(som_data)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Can have an error output that looks like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ./my-cli-tool input_file.yaml
+Errors found while processing input_file.yaml
+
+Caused by:
+  &amp;quot;foo_bar&amp;quot; is not a valid name for X: underscores are not permitted
+
+  field &amp;quot;baz&amp;quot; is missing from input data
+
+  errors processing scale data
+  :
+  54 is too high for field_y
+  values must be positive: value -3 given for field_z is negative.
+
+  some other error because of: another error because of: specific problem.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The error in the &lt;code&gt;Err&lt;/code&gt; variant of the result returned by &lt;code&gt;main&lt;/code&gt; is an
+&lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html&#34;&gt;&lt;code&gt;anyhow::Error&lt;/code&gt;&lt;/a&gt; with a message being the block seen below &amp;ldquo;Caused
+by:&amp;rdquo; and a context of &amp;ldquo;Errors found while&amp;hellip;&amp;quot;.&lt;/p&gt;
+&lt;p&gt;Using &lt;a href=&#34;https://docs.rs/beau_collector/0.2.1/beau_collector/index.html&#34;&gt;&lt;code&gt;BeauCollector&lt;/code&gt;&lt;/a&gt; in this way has the advantages that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Functions can return a &lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html&#34;&gt;normal &lt;code&gt;Result&lt;/code&gt;&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;?&lt;/code&gt; can be used normally on all other &lt;code&gt;Results&lt;/code&gt; in functions,&lt;/li&gt;
+&lt;li&gt;If &lt;code&gt;main&lt;/code&gt; returns &lt;code&gt;Result&lt;/code&gt;, no special error handling is needed and the full
+collection of results will appear in stderr.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are some limitations too:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Beyond placing each collected error on a newline, &lt;code&gt;bcollect&lt;/code&gt; doesn&amp;rsquo;t do any
+further formatting, or reformatting when different layers&amp;rsquo; errors are
+combined.  It&amp;rsquo;s left up to the error messages raised to add in some
+whitespace to appear more readable than a solid block of text.&lt;/li&gt;
+&lt;li&gt;While the messages from the causal chain of an error are retained you loose
+some other error handling like getting the backtrace or downcasting to get
+the original error back.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These are currently the price you pay for the ergonomics of &lt;code&gt;bcollect&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For writing applications, you&amp;rsquo;re likely to be happy with this trade off and
+find the limitations of &lt;code&gt;bcollect&lt;/code&gt; a small price to pay.&lt;/p&gt;
+&lt;p&gt;For a library you might want the caller to have more options on what to do with
+the many errors than building up an error message, maybe not.  Perhaps
+&lt;code&gt;bcollect&lt;/code&gt; could be enhanced to return an error type that can represent a tree
+of errors that can be added to as errors propagate back up the stack.  By all
+means &lt;a href=&#34;https://github.com/tarquin-the-brave/beau-collector/&#34;&gt;send in a pull request or raise an issue&lt;/a&gt;.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;When I say you don&amp;rsquo;t &lt;em&gt;need&lt;/em&gt; the type hints, that is to say that the
+compiler won&amp;rsquo;t need them to infer the type.  HUman readers of the code
+might prefer it is there so they can more easily infer the type.  Type
+hinting is also helpful when refactoring as it can catch errors. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+     </item>
+   
+     <item>
        <title>We All Write Monads, Whether We Know It or Not</title>
        <link>https://tarquin-the-brave.github.io/blog/posts/we-all-write-monads/</link>
        <pubDate>Mon, 04 May 2020 04:46:31 +0100</pubDate>

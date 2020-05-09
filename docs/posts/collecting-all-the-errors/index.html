@@ -1,0 +1,323 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>tarquin-the-brave</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The HTML5 Herald" />
+<meta name="author" content="Tom Steavenson" /><meta property="og:title" content="Collecting All the Errors - Rust" />
+<meta property="og:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/" />
+<meta property="article:published_time" content="2020-05-08T13:55:36+01:00" />
+<meta property="article:modified_time" content="2020-05-08T13:55:36+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Collecting All the Errors - Rust"/>
+<meta name="twitter:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:"/>
+
+<meta name="generator" content="Hugo 0.64.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="https://tarquin-the-brave.github.io/blog/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://tarquin-the-brave.github.io/blog/">tarquin-the-brave</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/tarquin-the-brave" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Some things I think.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Collecting All the Errors - Rust</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-05-08T13:55:36&#43;01:00">May 8, 2020</time>
+        </li>
+        
+
+        
+
+        <li>6 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/" title="Collecting All the Errors - Rust">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>A common way to handle iterating over results, <code>Result&lt;T, E&gt;</code>, in Rust is to
+use <code>collect()</code> to collect an iterator of results into a result.  To borrow the
+<a href="https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect">example from Rust by Example</a>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">let</span> strings <span style="color:#f92672">=</span> vec<span style="color:#f92672">!</span>[<span style="color:#e6db74">&#34;7&#34;</span>, <span style="color:#e6db74">&#34;42&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span>];
+<span style="color:#66d9ef">let</span> numbers: Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> string
+    .into_iter()
+    .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
+    .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>();
+</code></pre></div><p>You only need either the type hint on <code>numbers</code> or the turbofish on <code>collect</code>
+to coerce the iterator of results into a result.  I prefer the turbofish on
+<code>collect</code> as I feel it makes the code flow better when reading, and is what you
+would do when chaining further computations.  In fact, if you&rsquo;re going to use
+<code>?</code> on the collected result, you wouldn&rsquo;t <em>need</em><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> either.</p>
+<p>I use this pattern a lot, and it&rsquo;s great. It makes mapping over collections
+with operations that can fail as ergonomic as applying that operation to a
+single value.</p>
+<ul>
+<li>You can use the <code>?</code> operator to make the error handling almost automatic.</li>
+<li>You can use any of the other result combinators like <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.and_then"><code>and_then</code></a>,
+and <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map"><code>map</code></a>.</li>
+<li>You can chain further computations on the end of the expression.  In the
+above example we could have done:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">    .collect()<span style="color:#f92672">?</span>
+    .into_iter()
+    .map(<span style="color:#f92672">|</span>n<span style="color:#f92672">|</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+    .collect()
+</code></pre></div><p>This pattern basically says:</p>
+<blockquote>
+<p>Go try these things, if one of them fails we&rsquo;ll fail ourselves,
+reporting the first error that we encounter.</p>
+</blockquote>
+<p>Which, most of the time, is all you need.</p>
+<p>But what about when it&rsquo;s not? What about when you want to collect all of the
+errors when there are some?</p>
+<p>The <a href="https://github.com/rust-lang/rust-by-example/blob/master/src/error/iter_result.md#collect-all-valid-values-and-failures-with-partition">very next section of Rust by Example</a> shows how you can use
+<code>partition(Result::is_ok)</code> to separate the <code>Ok</code> &amp; <code>Err</code> variants in your
+iterator of results.  You could then go onto write some logic so your function
+tests that the collection of errors is empty, and if not returns a result with
+a collection of errors in its <code>Err</code> variant: <code>Result&lt;Vec&lt;T&gt;, Vec&lt;E&gt;&gt;</code>.</p>
+<p>But then your entire function stack up to the point where you terminate the
+need for expressing a collection of errors has to deal with returning a
+collection of errors.  If you&rsquo;re writing a CLI tool, that termination point
+would be the point where you write all the error messages to stderr and exit,
+so your whole program is likely to need this error handling. This ruins a lot
+of the ergonomics of <code>?</code> for dealing with calls to foreign methods that return
+a normal <code>Result&lt;T, E&gt;</code> (<code>where E: std::err::Error</code>). Ok, you could replace all
+<code>?</code> with <code>.map_err(|e| vec![e])?</code>, but that&rsquo;s still clunky to deal with.</p>
+<p>An alternative could be to use an error type such as
+<a href="https://docs.rs/valid/0.3.0/valid/struct.ValidationError.html"><code>valid::ValidationError</code></a> that can model a collection of errors,
+or build your own.  This is probably a better approach, but is still going to
+be a bit of work to define your own error type, or integrate another crates&rsquo;
+error type into your application.</p>
+<p>If you&rsquo;re building a library, this alternative is probably the right way to go
+as your library will be able to return a well-typed expression of &ldquo;many
+errors&rdquo;.</p>
+<p>With both of these, you&rsquo;re still going to be missing the ergonomics of
+<code>collect()</code>.</p>
+<p>In much the same way as when building a library you might use
+<a href="https://docs.rs/thiserror/1.0.16/thiserror/"><code>thiserror</code></a> to define your own error types, whereas in an
+application you&rsquo;d be happy raising add-hoc errors with
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/macro.anyhow.html"><code>anyhow::anyhow</code></a>: if you&rsquo;re writing an application you might find
+defining your own error type(s) to handle &ldquo;many errors&rdquo; a bit heavy weight.</p>
+<p>I&rsquo;ve recently found myself in this exact situation while writing a CLI tool.
+The tool needs to tell the user all the errors they&rsquo;ve made in the file they&rsquo;ve
+provided, rather than just one at a time&hellip; as that would be super annoying.
+It doesn&rsquo;t need to do any real processing of the collected errors, it only
+needs to print them all to the terminal in a way that&rsquo;s reasonably readable to
+the user, ideally with writing as little special code as possible.</p>
+<p>To keep things as simple as possible: I wanted the ergonomics of <code>collect()</code>;
+and for my representation of &ldquo;many errors&rdquo; to be &ldquo;nothing special&rdquo;, so I can
+use all the existing error handling goodies out of the box.</p>
+<p>Enter <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"><code>BeauCollector</code></a>.  Trait <code>BeauCollecter</code> provides method
+<code>bcollect</code> which will collect an iterator of errors into an
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html"><code>anyhow::Result</code></a> with an <code>Err</code> variant containing an ad-hoc
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"><code>anyhow::Error</code></a> with the messages from each error in the
+collection of results on a new line in the error message.</p>
+<p>Looking at out example above:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> beau_collector::BeauCollector <span style="color:#66d9ef">as</span> _;
+
+<span style="color:#66d9ef">let</span> strings <span style="color:#f92672">=</span> vec<span style="color:#f92672">!</span>[<span style="color:#e6db74">&#34;7&#34;</span>, <span style="color:#e6db74">&#34;42&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span>];
+<span style="color:#66d9ef">let</span> numbers <span style="color:#f92672">=</span> string
+    .into_iter()
+    .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
+    .bcollect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>()<span style="color:#f92672">?</span>;
+</code></pre></div><p>Errors with chains of causes, have their causal chains retained by being
+formatted with the <a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations">inline representation</a> where causes are separated
+by <code>:</code>.</p>
+<p>One of the results you&rsquo;re iterating over might have been the result of running
+<code>bcollect</code>.  As string concatenation is basically what we&rsquo;re doing here,
+<code>bcollect</code> will represent them alongside any new errors from this layer in the
+error message.  You can collect errors with <code>bcollect</code> at various layers within
+you application and they&rsquo;ll all be represented in one large error at the top
+level.</p>
+<p>Using <code>bcollect</code> at multiple levels and having a <code>main</code> that returns a result:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+    <span style="color:#66d9ef">use</span> anyhow::Context <span style="color:#66d9ef">as</span> _;
+
+    input_file <span style="color:#f92672">=</span> ...;
+
+    some_data <span style="color:#f92672">=</span> process_input(input_file)
+        .with_context(<span style="color:#f92672">|</span><span style="color:#f92672">|</span> format<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Errors found while processing {}&#34;</span>, input_file))<span style="color:#f92672">?</span>;
+
+    run_application(som_data)
+}
+</code></pre></div><p>Can have an error output that looks like:</p>
+<pre><code>$ ./my-cli-tool input_file.yaml
+Errors found while processing input_file.yaml
+
+Caused by:
+  &quot;foo_bar&quot; is not a valid name for X: underscores are not permitted
+
+  field &quot;baz&quot; is missing from input data
+
+  errors processing scale data
+  :
+  54 is too high for field_y
+  values must be positive: value -3 given for field_z is negative.
+
+  some other error because of: another error because of: specific problem.
+</code></pre><p>The error in the <code>Err</code> variant of the result returned by <code>main</code> is an
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"><code>anyhow::Error</code></a> with a message being the block seen below &ldquo;Caused
+by:&rdquo; and a context of &ldquo;Errors found while&hellip;&quot;.</p>
+<p>Using <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"><code>BeauCollector</code></a> in this way has the advantages that:</p>
+<ul>
+<li>Functions can return a <a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html">normal <code>Result</code></a>,</li>
+<li><code>?</code> can be used normally on all other <code>Results</code> in functions,</li>
+<li>If <code>main</code> returns <code>Result</code>, no special error handling is needed and the full
+collection of results will appear in stderr.</li>
+</ul>
+<p>There are some limitations too:</p>
+<ul>
+<li>Beyond placing each collected error on a newline, <code>bcollect</code> doesn&rsquo;t do any
+further formatting, or reformatting when different layers&rsquo; errors are
+combined.  It&rsquo;s left up to the error messages raised to add in some
+whitespace to appear more readable than a solid block of text.</li>
+<li>While the messages from the causal chain of an error are retained you loose
+some other error handling like getting the backtrace or downcasting to get
+the original error back.</li>
+</ul>
+<p>These are currently the price you pay for the ergonomics of <code>bcollect</code>.</p>
+<p>For writing applications, you&rsquo;re likely to be happy with this trade off and
+find the limitations of <code>bcollect</code> a small price to pay.</p>
+<p>For a library you might want the caller to have more options on what to do with
+the many errors than building up an error message, maybe not.  Perhaps
+<code>bcollect</code> could be enhanced to return an error type that can represent a tree
+of errors that can be added to as errors propagate back up the stack.  By all
+means <a href="https://github.com/tarquin-the-brave/beau-collector/">send in a pull request or raise an issue</a>.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>When I say you don&rsquo;t <em>need</em> the type hints, that is to say that the
+compiler won&rsquo;t need them to infer the type.  HUman readers of the code
+might prefer it is there so they can more easily infer the type.  Type
+hinting is also helpful when refactoring as it can catch errors. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/we-all-write-monads/"><i class="fa fa-chevron-circle-left"></i> We All Write Monads, Whether We Know It or Not</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+        <section id="utterances"></section>
+
+<script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    } else {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    }
+</script>
+
+    
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Tom Steavenson |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://tarquin-the-brave.github.io/blog/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://tarquin-the-brave.github.io/blog/js/scripts.js"></script>
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-161243400-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
+

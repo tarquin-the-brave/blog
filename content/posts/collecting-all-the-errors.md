@@ -1,6 +1,6 @@
 +++
 title = "Collecting All the Errors - Rust"
-date = 2020-05-08T13:55:36+01:00
+date = 2020-05-09T19:00:00+01:00
 images = []
 tags = []
 categories = []

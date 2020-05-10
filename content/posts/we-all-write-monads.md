@@ -42,7 +42,7 @@ Have you ever encoded error handling in the data you're using?  You've used
 something resembling a monad.
 
 Rust's ownership model is a formalisation of a set of memory management
-patterns that C developer might employ to attempt to write memory safe and
+patterns that a C developer might employ to attempt to write memory safe and
 thread safe code.
 
 Regardless of the language we're writing in, these data manipulation patterns
@@ -53,14 +53,14 @@ patterns by hand.
 
 What it comes down to is:
 
-[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIERbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXVxuICBFW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIERbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXVxuICBFW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIEQoW1lvdSdsbCB3cml0ZSBtb3JlIGNvbnNpc3RlbnQsIGNvcnJlY3QsIGFuZCBtYWludGluYWJsZSBjb2RlIGZhOmZhLXRodW1icy11cF0pXG4gIEUoW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXSlcbiAgQSAtLT58WWVzfCBDXG4gIEEgLS0-fE5vfCBCXG4gIEIgLS0-fFllc3wgRFxuICBCIC0tPiB8Tm98IEVcblx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIEQoW1lvdSdsbCB3cml0ZSBtb3JlIGNvbnNpc3RlbnQsIGNvcnJlY3QsIGFuZCBtYWludGluYWJsZSBjb2RlIGZhOmZhLXRodW1icy11cF0pXG4gIEUoW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXSlcbiAgQSAtLT58WWVzfCBDXG4gIEEgLS0-fE5vfCBCXG4gIEIgLS0-fFllc3wgRFxuICBCIC0tPiB8Tm98IEVcblx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
 
-When I first learned some Haskell a few years ago, the idea was sold to me as
-"it'll make you better at every other language".  That was enough to sell it to
-me at the time, and I believe it had that effect.  It's true of every language
-to some extent.  Every language formalises some number of data manipulation
-patterns, the question is to what extent, and are they good patterns to be
-using to get correct and maintainable code.
+When I first learned some Haskell a few years ago, the idea of spending my time
+doing that was sold to me as "it'll make you better at every other language".
+That was enough to sell it to me at the time, and I believe it had that effect.
+It's true of every language to some extent.  Every language formalises some
+number of data manipulation patterns, the question is: to what extent? And are
+they good patterns to be using to get correct and maintainable code?
 
 I hear so much from developers who would answer "No" to both of the above, that
 learning the concepts that formalise patterns of data manipulation is overly

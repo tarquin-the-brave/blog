@@ -11,8 +11,8 @@
 <meta property="og:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/" />
-<meta property="article:published_time" content="2020-05-08T13:55:36+01:00" />
-<meta property="article:modified_time" content="2020-05-08T13:55:36+01:00" />
+<meta property="article:published_time" content="2020-05-09T19:00:00+01:00" />
+<meta property="article:modified_time" content="2020-05-09T19:00:00+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Collecting All the Errors - Rust"/>
@@ -66,7 +66,7 @@
       <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2020-05-08T13:55:36&#43;01:00">May 8, 2020</time>
+            <time class="post-date" datetime="2020-05-09T19:00:00&#43;01:00">May 9, 2020</time>
         </li>
         
 
@@ -159,7 +159,7 @@ the user, ideally with writing as little special code as possible.</p>
 <p>To keep things as simple as possible: I wanted the ergonomics of <code>collect()</code>;
 and for my representation of &ldquo;many errors&rdquo; to be &ldquo;nothing special&rdquo;, so I can
 use all the existing error handling goodies out of the box.</p>
-<p>Enter <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"><code>BeauCollector</code></a>.  Trait <code>BeauCollecter</code> provides method
+<p>Enter <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"><code>BeauCollector</code></a>.  Trait <code>BeauCollector</code> provides method
 <code>bcollect</code> which will collect an iterator of errors into an
 <a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html"><code>anyhow::Result</code></a> with an <code>Err</code> variant containing an ad-hoc
 <a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"><code>anyhow::Error</code></a> with the messages from each error in the

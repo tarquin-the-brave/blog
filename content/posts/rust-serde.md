@@ -8,10 +8,8 @@ draft = false
 +++
 
 Rust's [`serde` library][serde] is a generic serialize-deserialize framework
-that has been implemented for [many file formats][ff].  It's
-
-an incredibly powerful framework and well worth giving [the
-documentation][docs] a read.
+that has been implemented for [many file formats][ff].  It's an incredibly
+powerful framework and well worth giving [the documentation][docs] a read.
 
 [serde]: https://crates.io/crates/serde
 [ff]: https://docs.serde.rs/serde/#data-formats

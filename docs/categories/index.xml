@@ -1779,9 +1779,8 @@ ever stop you from doing anything. &lt;a href=&#34;#fnref:1&#34; class=&#34;foot
        
        <guid>https://tarquin-the-brave.github.io/blog/posts/rust-serde/</guid>
        <description>&lt;p&gt;Rust&amp;rsquo;s &lt;a href=&#34;https://crates.io/crates/serde&#34;&gt;&lt;code&gt;serde&lt;/code&gt; library&lt;/a&gt; is a generic serialize-deserialize framework
-that has been implemented for &lt;a href=&#34;https://docs.serde.rs/serde/#data-formats&#34;&gt;many file formats&lt;/a&gt;.  It&amp;rsquo;s&lt;/p&gt;
-&lt;p&gt;an incredibly powerful framework and well worth giving &lt;a href=&#34;https://docs.serde.rs/serde/&#34;&gt;the
-documentation&lt;/a&gt; a read.&lt;/p&gt;
+that has been implemented for &lt;a href=&#34;https://docs.serde.rs/serde/#data-formats&#34;&gt;many file formats&lt;/a&gt;.  It&amp;rsquo;s an incredibly
+powerful framework and well worth giving &lt;a href=&#34;https://docs.serde.rs/serde/&#34;&gt;the documentation&lt;/a&gt; a read.&lt;/p&gt;
 &lt;p&gt;It can deserialize a file format into a strongly typed rust data structure, so
 that the data in code has no affiliation to the data format it was read from,
 then can be serialized into another file format.&lt;/p&gt;

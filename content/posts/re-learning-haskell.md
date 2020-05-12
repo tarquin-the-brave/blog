@@ -9,7 +9,7 @@ draft = false
 
 A few years ago I learned myself a Haskell for greater good from a book "Learn
 you a Haskell for greater good"[^1] and the first few chapters of another book
-"Haskell from first principals"[^2].
+"Haskell from first principles"[^2].
 
 It was fun to learn.  I didn't go onto use Haskell to build any real
 applications, beyond coding up some exercises and mini programs to learn
@@ -634,7 +634,7 @@ I'll go do some reading, then come back to these problems.
 [part2]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/
 
 [^1]: Learn you a Haskell for greater good. http://learnyouahaskell.com/chapters
-[^2]: Haskell from first principals. https://haskellbook.com/
+[^2]: Haskell from first principles. https://haskellbook.com/
 [^3]: Advent of code provided a coding challenge on each day of December.
 [^4]: [Poetry][poetry] does quite a good job of Python dependency management.
       It's not totally watertight, but it's a huge improvement on [pip][pip] & [Pipenv][pipenv]

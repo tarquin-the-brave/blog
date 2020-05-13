@@ -94,7 +94,7 @@ use all the existing error handling goodies out of the box.&lt;/p&gt;
 &lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html&#34;&gt;&lt;code&gt;anyhow::Result&lt;/code&gt;&lt;/a&gt; with an &lt;code&gt;Err&lt;/code&gt; variant containing an ad-hoc
 &lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html&#34;&gt;&lt;code&gt;anyhow::Error&lt;/code&gt;&lt;/a&gt; with the messages from each error in the
 collection of results on a new line in the error message.&lt;/p&gt;
-&lt;p&gt;Looking at out example above:&lt;/p&gt;
+&lt;p&gt;Looking at our example above:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; beau_collector::BeauCollector &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; strings &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; vec&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;];
@@ -120,7 +120,7 @@ level.&lt;/p&gt;
     some_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; process_input(input_file)
         .with_context(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Errors found while processing {}&amp;#34;&lt;/span&gt;, input_file))&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
 
-    run_application(som_data)
+    run_application(some_data)
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Can have an error output that looks like:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;$ ./my-cli-tool input_file.yaml

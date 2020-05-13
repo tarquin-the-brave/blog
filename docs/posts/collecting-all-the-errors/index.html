@@ -164,7 +164,7 @@ use all the existing error handling goodies out of the box.</p>
 <a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html"><code>anyhow::Result</code></a> with an <code>Err</code> variant containing an ad-hoc
 <a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"><code>anyhow::Error</code></a> with the messages from each error in the
 collection of results on a new line in the error message.</p>
-<p>Looking at out example above:</p>
+<p>Looking at our example above:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> beau_collector::BeauCollector <span style="color:#66d9ef">as</span> _;
 
 <span style="color:#66d9ef">let</span> strings <span style="color:#f92672">=</span> vec<span style="color:#f92672">!</span>[<span style="color:#e6db74">&#34;7&#34;</span>, <span style="color:#e6db74">&#34;42&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span>];
@@ -190,7 +190,7 @@ level.</p>
     some_data <span style="color:#f92672">=</span> process_input(input_file)
         .with_context(<span style="color:#f92672">|</span><span style="color:#f92672">|</span> format<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Errors found while processing {}&#34;</span>, input_file))<span style="color:#f92672">?</span>;
 
-    run_application(som_data)
+    run_application(some_data)
 }
 </code></pre></div><p>Can have an error output that looks like:</p>
 <pre><code>$ ./my-cli-tool input_file.yaml

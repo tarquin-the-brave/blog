@@ -103,7 +103,7 @@ Enter [`BeauCollector`][beau].  Trait `BeauCollector` provides method
 [`anyhow::Error`][anyhowerr] with the messages from each error in the
 collection of results on a new line in the error message.
 
-Looking at out example above:
+Looking at our example above:
 
 ```rust
 use beau_collector::BeauCollector as _;
@@ -137,7 +137,7 @@ fn main() -> anyhow::Result<()> {
     some_data = process_input(input_file)
         .with_context(|| format!("Errors found while processing {}", input_file))?;
 
-    run_application(som_data)
+    run_application(some_data)
 }
 ```
 

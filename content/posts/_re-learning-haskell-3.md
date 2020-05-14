@@ -246,6 +246,29 @@ prefer `Word8` over `Char8` unless you know the data is ascii - HTTP headers
 
 ## Containers
 
+when mapping over the keys in a map - data can be lost if the operation
+is not monotonic: one-to-one.  If an operation turns two keys into the
+same key, one of them will be dropped.
+
+## Vectors
+
+- Storable - data is instance of `Storable` typeclass and is pinned (w.r.t GC), can be used for FFI
+- unboxed - `Prim` typeclass, data is unpinned GC-managed
+
+Pick vector type based on the typeclass the values are in. if neither `Prim` or `Storable`
+use Boxed Vector.
+
+vector package has "stream fusion" - avoid unnecessary array creation and uses a tight loop where possible.
+
+No instances of Functor, Foldable, Traversable for Unboxed & Storable Vectors
+
+### Mutable Vectors
+
+`freeze`, `thaw`, go to/from immutable vector via Copy.
+`unsafeFreeze`, `unsafeThaw` does this in situ.
+
+ASIDE: lots of "unsafe is a bit faster but beware" - not "zero cost abstraction" like in Rust.
+
 
 
 # Refactoring AoC Solutions

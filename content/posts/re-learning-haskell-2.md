@@ -1045,10 +1045,10 @@ out solutions.
 I'm keen to read more into monad transformers and property based testing.
 
 I then want to loop back around and improve the performance of my solutions:
-looking into strictness and more efficient data structure.  I also want to
+looking into strictness and more efficient data structures.  I also want to
 make types fit the data better: where they could be more generic making them
 more generic and where they're too generic, and possible values of the type
-don't represent possible values of data the type represents, choose or make
+don't represent possible values of data the type represents, choose, or define,
 another type that's better suited.
 
 _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc]._

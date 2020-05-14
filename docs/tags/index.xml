@@ -1078,10 +1078,10 @@ with the tools I know.  But I&amp;rsquo;m keen to level up my Haskell and not ju
 out solutions.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;m keen to read more into monad transformers and property based testing.&lt;/p&gt;
 &lt;p&gt;I then want to loop back around and improve the performance of my solutions:
-looking into strictness and more efficient data structure.  I also want to
+looking into strictness and more efficient data structures.  I also want to
 make types fit the data better: where they could be more generic making them
 more generic and where they&amp;rsquo;re too generic, and possible values of the type
-don&amp;rsquo;t represent possible values of data the type represents, choose or make
+don&amp;rsquo;t represent possible values of data the type represents, choose, or define,
 another type that&amp;rsquo;s better suited.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;As with &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;, all my solutions are &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell&#34;&gt;mastered on Github&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;

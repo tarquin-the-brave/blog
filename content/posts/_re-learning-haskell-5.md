@@ -8,3 +8,8 @@ draft = true
 +++
 
 # Last thing's Last - Make it Fast
+
+Real perf tuning.
+
+Made big improvements in part 3 with introducing strictness and
+making better data structure choices.

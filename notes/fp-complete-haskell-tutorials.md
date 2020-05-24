@@ -264,3 +264,55 @@ ASIDE: lots of "unsafe is a bit faster but beware" - not "zero cost
 abstraction" like in Rust.
 
 
+# Monad Transformers
+
+## `transformers` package
+
+`ExceptT == EitherT`
+
+- always make the base monad `m` the 2nd to last type parameter in monad trnasformer definition.  Allows `MonadTrans` to be defined.
+
+stack of:
+base monad -> monad transformer -> monad transformer -> etc...
+
+`lift`
+
+- lift an action in the base monad up to the monad the transformer is for.
+- `MonadTrans` provides `lift`
+- "lift" will wrap the inner monad in the outer.
+
+## other stuff
+
+`mlt` provides `MonadState` typeclass which allows us to call `get` & `put` on _any_
+monad stack over `State`.
+
+`State` is actually also a transformer, over the identity monad:
+
+```haskell
+type State s = StateT s Identity
+```
+
+No IO transformer
+
+- IO has to be the base
+- `mlt` gives us `MonadIO` with `liftIO` to lift IO actions into other monads.
+  + I.E: functions that return `IO` can be lifted.
+
+## Unlifting
+
+What about when a function take IO as _input_?
+
+- "function is _contravarient_ on IO"
+- "funtion has IO in negative position"
+- function cannot be generalized for use in another monad with `liftIO`.
+
+Enter `MonadUnliftIO`
+
+Something to come back to - plenty of links here.
+
+# TODO - look into:
+
+- functional dependencies
+- `forall s.`
+
+

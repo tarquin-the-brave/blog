@@ -16,7 +16,7 @@ So I started search around to see what resources I could find.
 
 [part2]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/
 
-# Re-learning Haskell with(out) Advent of Code
+# (Re-)[^re]Learning Haskell with(out) Advent of Code
 
 After searching around a little, I stumbled upon [the Haskell learning resources
 shared by FP Complete][fpch]. There's so many goodies here!
@@ -26,10 +26,10 @@ shared by FP Complete][fpch]. There's so many goodies here!
 Ran through tutorials on:
 - Applicative Syntax
 - String Types
-- Vectors
-- Monad Transformers
 - Strictness
-- Safe Exception handling
+- Monad Transformers - todo exercises
+- Safe Exception handling - todo
+- Vectors - to finish
 
 loads more there.
 
@@ -44,6 +44,7 @@ on a 2nd look saw as obvious and trivial.
 
 * use `foldl'` over `foldl`
 * use map rather than list for day3
+* deriving instances
 
 ## Big Changes
 
@@ -77,3 +78,6 @@ all these improvements can be seen in this Monster PR...
 
 This is good.  I wonder how far Rust will get... TBF this is
 reflected in Rust too. Just different things.
+
+
+[^re]: thing

@@ -42,7 +42,35 @@ Let's see how I can improve the AoC solutions so far.
 Some small improvements I picked up as handy tips or
 on a 2nd look saw as obvious and trivial.
 
-* use `foldl'` over `foldl`
+### Writing Stack Scripts
+
+For the simpler problems, I didn't need the overhead of generating a full project
+with `stack new` and opted to replace that with a single `dayX.hs` script which starts like:
+
+```haskell
+#!/usr/bin/env stack
+-- stack --resovler lts-15.4 script
+
+```
+
+I'd gone with the full project structure given by the default template used by
+`stack new` to get used to importing and exporting and to find the namespacing
+control I was happy with.  I've done that now, so I can reduce some of the problems
+to simple scripts and "get things done!".
+
+### Using `where` More
+
+As I elucidated on in [Part 2][part2], my earlier solutions were plagued with the proliferation
+of small functions that don't really mean a huge amount on their own and are only called as part of
+another function.  `where` helps to clean this up by putting them inside the namespace of the function
+they're really part of and de-cluttering the namespace of the module.
+
+### Use `foldl'` Over `foldl`
+
+"For strict application of the operator" - [the docs say][folddoc].
+
+[folddoc]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-
+
 * use map rather than list for day3
 * deriving instances
 
@@ -55,6 +83,9 @@ Use monad transformers instead.
 ### No More Strings
 
 ### Strictness
+
+Day 1 solution before adding bang patterns:
+
 
 ### Vectors over lists
 

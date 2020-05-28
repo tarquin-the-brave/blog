@@ -681,7 +681,7 @@ around I found the [`MonadFail` typeclass][monadfail].  As `Maybe` and `List`
 both are instances of `MonadFail` we can redefine `maybePos` to be generic
 over `MonadFail` and cut out the conversion between failure representations.
 
-```
+```haskell
 maybePosM ::  MonadFail m => Int -> m Int
 maybePosM x
   | x < 0 = fail "woops"

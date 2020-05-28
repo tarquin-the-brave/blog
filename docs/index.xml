@@ -802,20 +802,20 @@ from one monad&amp;rsquo;s failure representation to another.  After a bit of lo
 around I found the &lt;a href=&#34;http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt; typeclass&lt;/a&gt;.  As &lt;code&gt;Maybe&lt;/code&gt; and &lt;code&gt;List&lt;/code&gt;
 both are instances of &lt;code&gt;MonadFail&lt;/code&gt; we can redefine &lt;code&gt;maybePos&lt;/code&gt; to be generic
 over &lt;code&gt;MonadFail&lt;/code&gt; and cut out the conversion between failure representations.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;maybePosM ::  MonadFail m =&amp;gt; Int -&amp;gt; m Int
-maybePosM x
-  | x &amp;lt; 0 = fail &amp;quot;woops&amp;quot;
-  | otherwise = return x
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;maybePosM&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;maybePosM&lt;/span&gt; x
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;woops&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return x
 
-thing&#39; :: Int -&amp;gt; [Int]
-thing&#39; = maybePosM
+&lt;span style=&#34;color:#a6e22e&#34;&gt;thing&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+&lt;span style=&#34;color:#a6e22e&#34;&gt;thing&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; maybePosM
 
-posIntoMaybe :: Int -&amp;gt; Maybe Int
-posIntoMaybe = maybePosM
+&lt;span style=&#34;color:#a6e22e&#34;&gt;posIntoMaybe&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Maybe&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;posIntoMaybe&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; maybePosM
 
-posIntoIO :: Int -&amp;gt; IO Int
-posIntoIO = maybePosM
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This pattern showed a lot of promise, and I wanted to see if I could employ
+&lt;span style=&#34;color:#a6e22e&#34;&gt;posIntoIO&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;posIntoIO&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; maybePosM
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This pattern showed a lot of promise, and I wanted to see if I could employ
 it in my intcode computer code.&lt;/p&gt;
 &lt;h3 id=&#34;refactoring-the-intcode-computer&#34;&gt;Refactoring the Intcode Computer&lt;/h3&gt;
 &lt;p&gt;Recall the &lt;code&gt;Program&lt;/code&gt; type I&amp;rsquo;ve been using to model an intcode computer

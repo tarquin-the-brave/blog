@@ -52,7 +52,6 @@ script which starts like:
 ```haskell
 #!/usr/bin/env stack
 -- stack --resovler lts-15.4 script
-
 ```
 
 I'd gone with the full project structure given by the default template used by
@@ -74,6 +73,7 @@ really part of and de-cluttering the namespace of the module.
 
 [folddoc]:
 https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-
+
 
 ### Where a List Was Very Slow
 
@@ -105,6 +105,16 @@ runtime of my solution from over 8 minutes, to 0.8 seconds.
 * deriving instances
 
 ## Big Changes
+
+For me, the biggest difference coming back to my solutions was more down to
+having more experience and confidence in the language, and coming at the code,
+with a view to cleaning up the expressions and abstractions rather than wanting
+to get the answer to plug into Advent of Code so it'll give me a gold star.
+:star:
+
+Looking past the general code tidying, there were some specific things I'd
+learned from doing some of [FP Complete's tutorials][fpch] that I was able to apply to
+my refactored solutions.
 
 ### Stop Matching Maybes - More Monad Transformers
 
@@ -175,15 +185,17 @@ replacement.
 I made some new imports:
 
 ```haskell
-import qualified Data.Text.IO as TIO
 import qualified Data.Text as Txt  // I was already importing Data.Tree as T, so went with Txt
+import qualified Data.Text.Encoding as TE
+import qualified Data.ByteString as B
 import Data.Monoid ((<>))
 ```
 
 and removed another: `import Data.List.Split (splitOn)`, then:
 
 - Swapped `String` for `Txt.Text` where it appeared in type statements,
-- Prepended `Txt.` to all the functions acting on strings, and
+- Prepended `Txt.` to all the functions acting on strings,
+- Swapped the use of Prelude's `readFile` with `fmap TE.decodeUtf8 . B.readFile`, and
 - Replaced usages of `++` with `<>`.
 
 The compiler picked up a couple of places I'd missed and voilà, the script ran
@@ -191,7 +203,7 @@ as it did before.
 
 I was able to completely remove `String` from the program, with one exception:
 the [`fail`][fail] function from [`MonadFail`][mfail] takes a `String`.  This
-required a call to [`unpack`][unpacktxt] to turn `Text` onto `String`.  So:
+required a call to [`unpack`][unpacktxt] to turn `Text` into `String`.  So:
 
 ```haskell
 fail $ "Could not find element: " ++ node
@@ -205,13 +217,111 @@ fail . Txt.unpack $ "Could not find element: " <> node
 
 [fail]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:fail
 [mfail]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail
-[unpack]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack
+[unpacktxt]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack
 
 TODO: Does the rest of String -> Text conversion go this smoothly?
 
+- Day 8: Had to dig out `Text.map` as `Text` is not a member of `Functor` :cry: ...not really that bothered.
+
 ### Strictness
 
-Day 1 solution before adding bang patterns:
+#### Text over String
+
+One of the reasons touted for `String`, a singly linked lazy list of `Char`s,
+being a bad representation of textual data is that it's lazy.
+
+[Day 8][day8] was a good problem to experiment with as my solution involved
+manipulating lists of characters, `[Char]`, a.k.a: `String`.
+
+[day8]: https://adventofcode.com/2019/day/8
+
+After refactoring the solution into a once page script and having a bit of a
+tidy up, but otherwise leaving the substance of the code the same, I built
+and ran the solution, in file `day8string.hs`, like so:
+
+```
+$ stack --resolver lts-15.4 ghc -- day8string.hs -O2 && ./day8string +RTS -s
+[1 of 1] Compiling Main             ( day8string.hs, day8string.o )
+Linking day8string ...
+...
+[solution output]
+...
+       4,892,080 bytes allocated in the heap
+         848,552 bytes copied during GC
+         394,736 bytes maximum residency (2 sample(s))
+          36,256 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0         3 colls,     0 par    0.000s   0.001s     0.0002s    0.0002s
+  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0003s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.000s  (  0.001s elapsed)
+  GC      time    0.000s  (  0.001s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.000s  (  0.002s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    0 bytes per MUT second
+
+  Productivity 100.0% of total user, 55.5% of total elapsed
+```
+
+This gets some statistics out of the garbage collector. [These docs][rts]
+tells you what they all mean. The memory usage stats at the top are what's
+interesting to us here.
+
+[rts]: https://downloads.haskell.org/~ghc/8.4.2/docs/html/users_guide/runtime_control.html#rts-flag--s%20[%E2%9F%A8file%E2%9F%A9]
+
+[As with my Day 6 solution][nostrings], I went through and replaced all
+the usages of `[Char]` with `Text`, and functions acting on them with their
+counterparts from [Data.Text][textlib], using [`Data.ByteString.readFile`][bsreadfile]
+to read the data from file.
+
+[nostrings]: #no-more-strings
+[textlib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html
+[bsreadfile]: https://hackage.haskell.org/package/bytestring-0.10.10.0/docs/Data-ByteString.html#v:readFile
+
+```
+$ stack --resolver lts-15.4 ghc -- day8.hs -O2 && ./day8 +RTS -s
+...
+       1,464,056 bytes allocated in the heap
+          10,264 bytes copied during GC
+          44,512 bytes maximum residency (1 sample(s))
+          29,216 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+```
+
+These numbers appear to significantly reduced, which is good.  I was interest
+how much of this was attributable to laziness alone and not other reasons
+why `Text` might be more efficient than `String`. I made another copy of the
+script, this time using the lazy counterparts of the `Text` libraries:
+[Data.Text.Lazy][lazytextlib], and [Data.Text.Lazy.IO][lazytextiolib].
+
+```
+$ stack --resolver lts-15.4 ghc -- day8lazy.hs -O2 && ./day8lazy +RTS -s
+...
+       3,566,680 bytes allocated in the heap
+          34,224 bytes copied during GC
+          86,824 bytes maximum residency (2 sample(s))
+          36,056 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+```
+
+The numbers went back up a bit, but no where near thew level of the solution
+using `String` and the [`readFile` from Prelude][preludereadfile].
+
+I imagine there's a few ways in which `Text` has been made to be more efficient than
+`String`.  It's good to know that in the rarer case where you might want to evaluate
+text lazily, lazy `Text` is still _that much more efficient_ than `String`.
+
+[lazytextlib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy.html
+[lazytextiolib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy-IO.html
+[preludereadfile]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:readFile
+
+TODO: More examples where strictness made a difference.
 
 ### Lenses
 
@@ -239,7 +349,7 @@ This is good.  I wonder how far Rust will get... TBF this is
 reflected in Rust too. Just different things.
 
 
-[^re]: By this stage, and really by the time I got to [Part 2][part2], I'm no longer "Re-learning"
-       Haskell as I've gone far beyondthe level I got to when I learned some Haskell a few years
-       ago.  I started this blog series with "re-learning", so for continuity's sake I'll keep
-       the title as it is.
+[^re]: By this stage, and really by the time I got to [Part 2][part2], I'm no
+  longer "Re-learning" Haskell as I've gone far beyond the level I got to when I
+  learned some Haskell a few years ago.  I started this blog series with
+  "re-learning", so for continuity's sake I'll keep the title as it is.

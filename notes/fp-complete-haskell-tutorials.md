@@ -222,11 +222,13 @@ rather than:
 "Hello " <> "there " <> "world" :: Text
 ```
 
-do:
+be lazy, do:
 
 ```haskell
 toLazyText ("Hello " <> "there " <> "world" :: Builder)
 ```
+
+Stops multiple allocations and copying to buffers.
 
 Same for bytestring.
 

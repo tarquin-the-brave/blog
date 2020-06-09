@@ -321,11 +321,199 @@ text lazily, lazy `Text` is still _that much more efficient_ than `String`.
 [lazytextiolib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy-IO.html
 [preludereadfile]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:readFile
 
+#### TODO Other
+
 TODO: More examples where strictness made a difference.
 
 ### Lenses
 
-### Vectors over lists
+### Replacing Lists with Vectors
+
+My solution to [Day 10][day10] involved _a lot_ of manipulating lists.  There were
+`fmap`s, zips, folds, concats, all over the place.  Chances are, as with the rest
+of the solutions I've revisited, this logic could be simplified somewhat.  But
+with it as it was, I saw it as a good exercise to convert to using Vectors and
+see what the result was.
+
+[day10]: https://adventofcode.com/2019/day/10
+
+Firstly: which Vector? The elements are of type:
+
+```haskell
+data Point = Point
+  { px :: !Int
+  , py :: !Int
+  , pAst :: !Bool
+  }
+  deriving(Show, Eq, Ord)
+```
+
+which isn't a member of `Prim` or `Storable`, so we need a [boxed Vector][vec].
+
+Importing boxed vectors:
+
+```haskell
+import qualified Data.Vector as V
+```
+
+I set out making a copy of each function, `functionName'`, which worked
+on Vectors instead of Lists, and once they all compiled: switching `main`
+over to using Vectors.
+
+As the boxed `Vector` is a member of a lot of the same typeclasses, `Funtor`,
+`Monad`, `Foldable`, etc, a fair amount of the code could stay the same.
+
+For the cases where it couldn't, there was generally a function from [Data.Vector][vec]
+that did the job.
+
+Where I was previously providing some data with coordinates by zipping the List
+with integers:
+
+```haskell
+zip [0..]
+```
+
+I was able to instead call [`indexed`][vecidx]:
+
+```haskell
+V.indexed
+```
+
+[vec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html
+[vecidx]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:indexed
+
+There was another place where I was putting a single value, `p`, in a List:
+
+```haskell
+[p]
+```
+
+I went with [`singleton`][singleton] for the vector case:
+
+[singleton]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:singleton
+
+```haskell
+V.singleton p
+```
+
+I could have also leverage `Vector`'s `Applicative` or `Monad` instances with
+`pure p` or `return p` respectively.
+
+There were a few places where I'd made use of [List comprehensions][listcomp].
+Replacing their usage with `fmap` and `filter` was fairly straight forward.
+In once case it made the code much simpler.  I had a function:
+
+[listcomp]: https://wiki.haskell.org/List_comprehension
+
+```haskell
+(\ps -> [p|p<-ps, pAst p])
+```
+
+which instead could be:
+
+```haskell
+(filter pAst)
+```
+
+When I learned a bit of Haskell a few years ago I absolutely lived off List
+comprehensions.  Perhaps because I was coming from Python at the time, and it
+was a point of familiarity.  These days Rust is my primary language and I'm
+much more comfortable with maps and filters and the like.  I've hardly used
+List comprehensions this time around and I haven't really missed them.  In fact
+when I first started writing Rust I can across the [cute][cute] library that
+lets you write Python style list comprehensions in Rust via a macro.  I liked
+this, but after some code review feedback saying "just get good at the Rust way
+of doing it", I realised I was only holding onto this as a safety blanket, and
+so let it go.
+
+I was thinking that I was mostly over List comprehensions and wouldn't use them
+a huge amount going forward.  But then I found this on the internet: [Monad
+comprehensions][monadcomp]! I've got to give these a spin at some point!
+
+[cute]: https://crates.io/crates/cute
+[monadcomp]: https://gitlab.haskell.org/ghc/ghc/-/wikis/monad-comprehensions
+
+TODO
+
+```
+$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 && time ./day10 +RTS -s
+((31,20),319)
+319
+Point {px = 5, py = 17, pAst = True}
+     344,589,992 bytes allocated in the heap
+      22,131,680 bytes copied during GC
+         332,688 bytes maximum residency (2 sample(s))
+          29,216 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0       329 colls,     0 par    0.015s   0.015s     0.0000s    0.0002s
+  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0003s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.120s  (  0.120s elapsed)
+  GC      time    0.015s  (  0.015s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.135s  (  0.135s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    2,863,065,646 bytes per MUT second
+
+  Productivity  88.8% of total user, 88.8% of total elapsed
+
+
+real    0m0.137s
+user    0m0.137s
+sys     0m0.000s
+```
+
+After:
+
+```
+$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 && time ./day10 +RTS -s
+((31,20),319)
+319
+Point {px = 5, py = 17, pAst = True}
+     509,421,528 bytes allocated in the heap
+      38,949,152 bytes copied during GC
+         298,760 bytes maximum residency (4 sample(s))
+          29,320 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0       487 colls,     0 par    0.026s   0.027s     0.0001s    0.0003s
+  Gen  1         4 colls,     0 par    0.000s   0.001s     0.0002s    0.0004s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.156s  (  0.163s elapsed)
+  GC      time    0.027s  (  0.028s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.183s  (  0.191s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    3,260,422,979 bytes per MUT second
+
+  Productivity  85.4% of total user, 85.2% of total elapsed
+
+
+real    0m0.193s
+user    0m0.185s
+sys     0m0.008s
+```
+
+- (++) os O(m + n)
+- toList is O(n)
+  * used because V.concat
+  * used in creating Set
+
+I considere if representing `Point` as a tuple and using `Unboxed` would work.
+- test nested tuple in ghci
+- ultimately ++ is still O(n)
+
+While you might here things discussed as good/bad it's about what you're trying to
+achieve.
 
 ### Mutable Vectors to Model Intcode
 

@@ -420,7 +420,7 @@ comprehensions.  Perhaps because I was coming from Python at the time, and it
 was a point of familiarity.  These days Rust is my primary language and I'm
 much more comfortable with maps and filters and the like.  I've hardly used
 List comprehensions this time around and I haven't really missed them.  In fact
-when I first started writing Rust I can across the [cute][cute] library that
+when I first started writing Rust I came across the [cute][cute] library that
 lets you write Python style list comprehensions in Rust via a macro.  I liked
 this, but after some code review feedback saying "just get good at the Rust way
 of doing it", I realised I was only holding onto this as a safety blanket, and
@@ -433,48 +433,56 @@ comprehensions][monadcomp]! I've got to give these a spin at some point!
 [cute]: https://crates.io/crates/cute
 [monadcomp]: https://gitlab.haskell.org/ghc/ghc/-/wikis/monad-comprehensions
 
-TODO
+As with [converting usages of `String` to `Text`][stt], this went fairly
+smoothly.  A lot of things work the same and for what isn't the same [the
+documentation][vec] is pretty good. My one complaint with the docs are that I
+wish related modules' docs linked to each other by default. I found myself
+re-finding the package page on [Hackage][hackage] and following the link to the
+other module's docs from there.
+
+[hackage]: https://hackage.haskell.org/
+[stt]: #no-more-strings
+
+#### Performance
+
+Let's see what effect this change had on memory usage.  Running the solution
+using Lists:
 
 ```
-$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 && time ./day10 +RTS -s
-((31,20),319)
-319
-Point {px = 5, py = 17, pAst = True}
-     344,589,992 bytes allocated in the heap
-      22,131,680 bytes copied during GC
-         332,688 bytes maximum residency (2 sample(s))
+$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 && ./day10 +RTS -s
+...
+problem output
+...
+     344,585,704 bytes allocated in the heap
+      22,319,112 bytes copied during GC
+         333,584 bytes maximum residency (2 sample(s))
           29,216 bytes maximum slop
                0 MB total memory in use (0 MB lost due to fragmentation)
 
                                      Tot time (elapsed)  Avg pause  Max pause
   Gen  0       329 colls,     0 par    0.015s   0.015s     0.0000s    0.0002s
-  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0003s
+  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0002s
 
   INIT    time    0.000s  (  0.000s elapsed)
-  MUT     time    0.120s  (  0.120s elapsed)
+  MUT     time    0.121s  (  0.121s elapsed)
   GC      time    0.015s  (  0.015s elapsed)
   EXIT    time    0.000s  (  0.000s elapsed)
-  Total   time    0.135s  (  0.135s elapsed)
+  Total   time    0.136s  (  0.136s elapsed)
 
   %GC     time       0.0%  (0.0% elapsed)
 
-  Alloc rate    2,863,065,646 bytes per MUT second
+  Alloc rate    2,849,888,381 bytes per MUT second
 
-  Productivity  88.8% of total user, 88.8% of total elapsed
-
-
-real    0m0.137s
-user    0m0.137s
-sys     0m0.000s
+  Productivity  88.8% of total user, 88.9% of total elapsed
 ```
 
-After:
+And then the solution refactored to use Vectors:
 
 ```
-$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 && time ./day10 +RTS -s
-((31,20),319)
-319
-Point {px = 5, py = 17, pAst = True}
+$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10vec.hs -O2 && ./day10vec +RTS -s
+...
+problem output
+...
      509,421,528 bytes allocated in the heap
       38,949,152 bytes copied during GC
          298,760 bytes maximum residency (4 sample(s))
@@ -482,38 +490,97 @@ Point {px = 5, py = 17, pAst = True}
                0 MB total memory in use (0 MB lost due to fragmentation)
 
                                      Tot time (elapsed)  Avg pause  Max pause
-  Gen  0       487 colls,     0 par    0.026s   0.027s     0.0001s    0.0003s
-  Gen  1         4 colls,     0 par    0.000s   0.001s     0.0002s    0.0004s
+  Gen  0       487 colls,     0 par    0.027s   0.029s     0.0001s    0.0008s
+  Gen  1         4 colls,     0 par    0.001s   0.001s     0.0003s    0.0008s
 
   INIT    time    0.000s  (  0.000s elapsed)
-  MUT     time    0.156s  (  0.163s elapsed)
-  GC      time    0.027s  (  0.028s elapsed)
+  MUT     time    0.166s  (  0.172s elapsed)
+  GC      time    0.028s  (  0.030s elapsed)
   EXIT    time    0.000s  (  0.000s elapsed)
-  Total   time    0.183s  (  0.191s elapsed)
+  Total   time    0.195s  (  0.203s elapsed)
 
   %GC     time       0.0%  (0.0% elapsed)
 
-  Alloc rate    3,260,422,979 bytes per MUT second
+  Alloc rate    3,065,812,448 bytes per MUT second
 
-  Productivity  85.4% of total user, 85.2% of total elapsed
-
-
-real    0m0.193s
-user    0m0.185s
-sys     0m0.008s
+  Productivity  85.3% of total user, 84.9% of total elapsed
 ```
 
-- (++) os O(m + n)
-- toList is O(n)
-  * used because V.concat
-  * used in creating Set
+So it performed worse with Vectors.  Taking a look at the code, I saw two
+reasons why this might be.
 
-I considere if representing `Point` as a tuple and using `Unboxed` would work.
-- test nested tuple in ghci
-- ultimately ++ is still O(n)
+[The problem][day10] deals with line of sight between between points on a
+grid.  Part of my solution sorted the points of interest into the rays they
+are on from a certain point, defined by their angle from the vertical.  It
+did this by folding over a `Set` of the points of interest to construct
+a `Map` of points on each ray.
 
-While you might here things discussed as good/bad it's about what you're trying to
-achieve.
+```haskell
+raysFromPoint :: Point -> Set.Set Point -> Rays
+raysFromPoint p0 = foldl (\rays p -> Map.insertWith (++) (angleFromPoints p0 p) [p] rays) Map.empty
+```
+and in the Vector implementation:
+
+```haskell
+raysFromPoint :: Point -> Set.Set Point -> Rays
+raysFromPoint p0 = Set.foldl (\rays p -> Map.insertWith (V.++) (angleFromPoints p0 p) (V.singleton p) rays) Map.empty
+```
+
+where `angleFromPoints` gives the angle between the vertical and the line between
+two points.
+
+```haskell
+angleFromPoints :: Point -> Point -> Angle Float
+```
+
+In the List case the `(++)` is quite efficient.  The left hand side is always
+a list with a single element, so Haskell only needs to allocate a new element
+which points to the existing list as its tail.
+
+For Vectors, `(++)` is [of order O(m + n)][consorder] as the whole new combined
+vector has to be allocated.  Granted, `m` is `1`
+in this case, but that leaves us with an operation of order `n` where previously
+it was constant complexity.
+
+[consorder]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:-43--43-
+[tolist]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:toList
+
+I also had to convert the Vector to a List in two places using [`toList`][tolist].
+
+* I couldn't see a way to directly turn a Vector into a Set so resorted to:
+
+```haskell
+Set.fromList V.toList
+```
+
+* I wanted to flatten a `Vector Vector Points` to `Vector Points`, but [`V.concat`][vconcat]
+  has signature `[ Vector a ] => Vector a`.  I couldn't find another way of doing
+  that so went with:
+
+```haskell
+V.concat V.toList
+```
+
+Looking at the input data, non of the rays are going to have more than around 10
+points on them, so these Vectors aren't going to ever be that large, but
+both of these things are work that isn't being done in the solution with Lists
+and will come at a cost.
+
+Are there any real savings? There might be some savings from Vector's strictness,
+but from what I can tell, Vector's really out perform Lists when they're being
+indexed.  This solution wasn't doing any indexing.
+
+#### Unboxed Vectors
+
+Out of curiosity, I had a go at refactoring the solution to use [unboxed Vectors][unboxed].
+
+[unboxed]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Unboxed.html
+
+First I refactored the implementation to be [generic over vector types][genericvec].
+
+[genericvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html
+
+TODO
 
 ### Mutable Vectors to Model Intcode
 

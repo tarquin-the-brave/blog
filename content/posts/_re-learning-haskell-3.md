@@ -150,6 +150,22 @@ Little victories. No code, no bugs.
 [structopt]: https://docs.rs/structopt/0.3.14/structopt/
 [dry]: https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/
 
+### Using Git Dependencies with Stack
+
+As part of my refactored Intcode Computer solution in [Part 2][part2] I had to
+fork and update the `base` version in [a library that provided testing of
+Monad, Applicative, Functor, and Monoid Laws][tastylaws].  I then included my
+fork as a [git submodule][gitsub] and pointed Stack at the dependency in the
+local file system.  This was a good bit of practice with git submodules.  I've
+found git submodules to be something that you never use, until you have to, and
+then you get it all spectacularly wrong and end up very confused.  But as the
+theme of this post is about tidying up and refactoring, I changed this to tell
+stack to get my fork [from git][stackgit].
+
+[tastylaws]: http://hackage.haskell.org/package/tasty-laws
+[gitsub]: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+[stackgit]: https://docs.haskellstack.org/en/stable/yaml_configuration/#extra-deps
+
 ## Big Changes
 
 For me, the biggest difference coming back to my solutions was more down to
@@ -265,13 +281,7 @@ fail . Txt.unpack $ "Could not find element: " <> node
 [mfail]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail
 [unpacktxt]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack
 
-TODO: Does the rest of String -> Text conversion go this smoothly?
-
-- Day 8: Had to dig out `Text.map` as `Text` is not a member of `Functor` :cry: ...not really that bothered.
-
-### Strictness
-
-#### Text over String
+#### Strictness
 
 One of the reasons touted for `String`, a singly linked lazy list of `Char`s,
 being a bad representation of textual data is that it's lazy.
@@ -321,10 +331,10 @@ interesting to us here.
 
 [rts]: https://downloads.haskell.org/~ghc/8.4.2/docs/html/users_guide/runtime_control.html#rts-flag--s%20[%E2%9F%A8file%E2%9F%A9]
 
-[As with my Day 6 solution][nostrings], I went through and replaced all
-the usages of `[Char]` with `Text`, and functions acting on them with their
-counterparts from [Data.Text][textlib], using [`Data.ByteString.readFile`][bsreadfile]
-to read the data from file.
+[As with my Day 6 solution][nostrings], I went through and replaced all the
+usages of `[Char]` with `Text`, and functions acting on them with their
+counterparts from [Data.Text][textlib], using
+[`Data.ByteString.readFile`][bsreadfile] to read the data from file.
 
 [nostrings]: #no-more-strings
 [textlib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html
@@ -341,8 +351,8 @@ $ stack --resolver lts-15.4 ghc -- day8.hs -O2 && ./day8 +RTS -s
 ```
 
 These numbers appear to significantly reduced, which is good.  I was interest
-how much of this was attributable to laziness alone and not other reasons
-why `Text` might be more efficient than `String`. I made another copy of the
+how much of this was attributable to laziness alone and not other reasons why
+`Text` might be more efficient than `String`. I made another copy of the
 script, this time using the lazy counterparts of the `Text` libraries:
 [Data.Text.Lazy][lazytextlib], and [Data.Text.Lazy.IO][lazytextiolib].
 
@@ -356,30 +366,220 @@ $ stack --resolver lts-15.4 ghc -- day8lazy.hs -O2 && ./day8lazy +RTS -s
                0 MB total memory in use (0 MB lost due to fragmentation)
 ```
 
-The numbers went back up a bit, but no where near thew level of the solution
+The numbers went back up a bit, but no where near the level of the solution
 using `String` and the [`readFile` from Prelude][preludereadfile].
 
-I imagine there's a few ways in which `Text` has been made to be more efficient than
-`String`.  It's good to know that in the rarer case where you might want to evaluate
-text lazily, lazy `Text` is still _that much more efficient_ than `String`.
+I imagine there's a few ways in which `Text` has been made to be more efficient
+than `String`.  It's good to know that in the rarer case where you might want
+to evaluate text lazily, lazy `Text` is still _that much more efficient_ than
+`String`.
 
 [lazytextlib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy.html
 [lazytextiolib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy-IO.html
 [preludereadfile]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:readFile
 
-#### TODO Other
-
-TODO: More examples where strictness made a difference.
-
 ### Lenses
+
+Lenses are awesome.
+
+In my intcode computer code, which the building of and using was the focus of
+[Part 2][part2], I had defined the core "intcode data" in its own module, that
+consisted of an `Intcode` type:
+
+```haskell
+data Intcode = Intcode {
+  input::[Int],
+  code::[Int],
+  -- ip: Instruction Pointer
+  ip::Int,
+  -- rb: Relative Base
+  rb::Int,
+  output::[Int]
+} deriving(Show, Eq)
+```
+
+and some functions that edit the subfields, such as:
+
+```haskell
+moveIp :: Int -> Intcode -> Intcode
+moveIp i ic = setIp (i + ip ic) ic
+
+setIp :: Int -> Intcode -> Intcode
+setIp i ic = Intcode{
+    input = input ic,
+    code = code ic,
+    ip = i,
+    rb = rb ic,
+    output = output ic
+}
+
+changeRb :: Int -> Intcode -> Intcode
+changeRb b ic = Intcode{
+    input = input ic,
+    code = code ic,
+    ip = ip ic,
+    rb = (rb ic) + b,
+    output = output ic
+}
+
+consOutput :: Int -> Intcode -> Intcode
+consOutput o ic = Intcode{
+    input = input ic,
+    code = code ic,
+    ip = ip ic,
+    rb = rb ic,
+    output = o:(output ic)
+}
+```
+
+With the exception of some like `moveIp` that called other functions,
+they all followed the same pattern of "make a new `Intcode` with one
+field different.
+
+The full list of them could be seen in export statement of the module:
+
+```haskell
+module Intcode.Data
+    ( Intcode (..)
+    , newIC
+    , moveIp
+    , setIp
+    , changeRb
+    , updateCode
+    , tailInput
+    , setInput
+    , consInput
+    , appendInput
+    , setOutput
+    , consOutput
+    , scrubOutput
+    ) where
+```
+
+A lot of copy pasting and Vim macros were used when I first wrote this out.
+
+I did later find out that Haskell has a built-in way for dealing with this
+boiler plate as an instance of a record type can be referred to with respect to another,
+only mentioning the records that change.  E.g. `consOutput` from above could have been
+written:
+
+```haskell
+consOutput :: Int -> Intcode -> Intcode
+consOutput o ic = ic { output = o:(output ic) }
+```
+
+And these can be chained, so you could have something like:
+
+```haskell
+ic { output = o:(output ic) } { ip = ip ic + 1 }
+```
+
+This would have massively reduced the boilerplate in this module on its own.  But
+we can go one better with lenses.
+
+Using the [`microlens-platform`][microlensplat] package, to also get auto generation
+of lenses with Template Haskell as well as the functions from `microlens`, I was
+able to refactor these functions to simple single liners such as:
+
+```haskell
+consInput :: Int -> Intcode -> Intcode
+consInput i = over input (\inp -> i:inp)
+```
+
+And the "set" functions became entirely trivial:
+
+```haskell
+setIp :: Int -> Intcode -> Intcode
+setIp = set ip
+```
+
+As the functions had become so trivial I decided to remove them entirely and in stead
+export the lenses for calling code to use.
+
+The previously 130+ lines of code module became:
+
+```haskell
+{-# LANGUAGE TemplateHaskell #-}
+module Intcode.Data
+    ( Intcode
+    -- Intcode Lenses
+    , input
+    , code
+    , ip
+    , rb
+    , output
+    -- init
+    , newIC
+    ) where
+
+import Lens.Micro.Platform (makeLenses, over, set)
+import qualified Data.Sequence as S
+
+--
+-- Intcode data
+--
+data Intcode = Intcode
+  { _input::[Int]
+  , _code :: S.Seq Int
+  -- ip: Instruction Pointer
+  , _ip::Int
+  -- rb: Relative Base
+  , _rb::Int
+  , _output::[Int]
+  } deriving(Show, Eq)
+
+makeLenses ''Intcode
+
+newIC :: S.Seq Int -> [Int] -> Intcode
+newIC newCode newInput = Intcode{
+  _input = newInput,
+  _code = newCode,
+  _ip = 0,
+  _rb = 0,
+  _output = []
+}
+```
+
+(I also [refactored the intcode data to be held in a Sequence][seq]).
+
+[seq]: #using-sequence-to-model-intcode
+[microlensplat]: http://hackage.haskell.org/package/microlens-platform
+
+This basic use of lenses with: auto-generation, getting, setting, and modifying
+seems an obvious win for whenever I'm defining my own data aggregate like this.
+When I have types nested inside types, lenses' composability will come in
+handy.  I think it's going to be my default approach in future.
+
+I looked through a couple of my other solutions to see where I had defined some
+non-trivial aggregation of data where I could clean up the code with lenses.
+My solutions to [Day 11][day11] and [Day 13][day13] both followed the same
+pattern:
+
+* Defined the state that matters in a type, `s`,
+* Write a "step function" to progress that state, of the form `s -> (a, s)`,
+  where `a` is some output of the computation,
+* Wrap that in [the State Monad][state],
+* And recurse, until some condition is met.
+
+[Part 2][part2] covers these solutions in more detail.
+
+[day11]: https://adventofcode.com/2019/day/11
+[day13]: https://adventofcode.com/2019/day/13
+[state]: https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html
+
+I started to look at refactoring these solutions to use lenses.  But the "step
+functions" were pretty much the only places lenses could be applied, and these
+functions did a "bulk update" of the state where every record is being changed.
+In this cases, I think the record syntax looked clearer than a long chain of
+lenses.
 
 ### Replacing Lists with Vectors
 
-My solution to [Day 10][day10] involved _a lot_ of manipulating lists.  There were
-`fmap`s, zips, folds, concats, all over the place.  Chances are, as with the rest
-of the solutions I've revisited, this logic could be simplified somewhat.  But
-with it as it was, I saw it as a good exercise to convert to using Vectors and
-see what the result was.
+My solution to [Day 10][day10] involved _a lot_ of manipulating lists.  There
+were `fmap`s, zips, folds, concats, all over the place.  Chances are, as with
+the rest of the solutions I've revisited, this logic could be simplified
+somewhat.  But with it as it was, I saw it as a good exercise to convert to
+using Vectors and see what the result was.
 
 [day10]: https://adventofcode.com/2019/day/10
 
@@ -402,15 +602,15 @@ Importing boxed vectors:
 import qualified Data.Vector as V
 ```
 
-I set out making a copy of each function, `functionName'`, which worked
-on Vectors instead of Lists, and once they all compiled: switching `main`
-over to using Vectors.
+I set out making a copy of each function, `functionName'`, which worked on
+Vectors instead of Lists, and once they all compiled: switching `main` over to
+using Vectors.
 
 As the boxed `Vector` is a member of a lot of the same typeclasses, `Funtor`,
 `Monad`, `Foldable`, etc, a fair amount of the code could stay the same.
 
-For the cases where it couldn't, there was generally a function from [Data.Vector][vec]
-that did the job.
+For the cases where it couldn't, there was generally a function from
+[Data.Vector][vec] that did the job.
 
 Where I was previously providing some data with coordinates by zipping the List
 with integers:
@@ -446,8 +646,8 @@ I could have also leverage `Vector`'s `Applicative` or `Monad` instances with
 `pure p` or `return p` respectively.
 
 There were a few places where I'd made use of [List comprehensions][listcomp].
-Replacing their usage with `fmap` and `filter` was fairly straight forward.
-In once case it made the code much simpler.  I had a function:
+Replacing their usage with `fmap` and `filter` was fairly straight forward.  In
+once case it made the code much simpler.  I had a function:
 
 [listcomp]: https://wiki.haskell.org/List_comprehension
 
@@ -579,14 +779,13 @@ two points.
 angleFromPoints :: Point -> Point -> Angle Float
 ```
 
-In the List case the `(++)` is quite efficient.  The left hand side is always
-a list with a single element, so Haskell only needs to allocate a new element
+In the List case the `(++)` is quite efficient.  The left hand side is always a
+list with a single element, so Haskell only needs to allocate a new element
 which points to the existing list as its tail.
 
 For Vectors, `(++)` is [of order O(m + n)][consorder] as the whole new combined
-vector has to be allocated.  Granted, `m` is `1`
-in this case, but that leaves us with an operation of order `n` where previously
-it was constant complexity.
+vector has to be allocated.  Granted, `m` is `1` in this case, but that leaves
+us with an operation of order `n` where previously it was constant complexity.
 
 [consorder]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:-43--43-
 [tolist]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:toList
@@ -599,24 +798,42 @@ I also had to convert the Vector to a List in two places using [`toList`][tolist
 Set.fromList V.toList
 ```
 
-* I wanted to flatten a `Vector Vector Points` to `Vector Points`, but [`V.concat`][vconcat]
-  has signature `[ Vector a ] => Vector a`.  I couldn't find another way of doing
-  that so went with:
+* I wanted to flatten a `Vector Vector Points` to `Vector Points`, but
+  [`V.concat`][vconcat] has signature `[ Vector a ] => Vector a`.  I couldn't
+  find another way of doing that so went with:
 
 ```haskell
 V.concat V.toList
 ```
 
-Looking at the input data, non of the rays are going to have more than around 10
-points on them, so these Vectors aren't going to ever be that large, but
+Looking at the input data, non of the rays are going to have more than around
+10 points on them, so these Vectors aren't going to ever be that large, but
 both of these things are work that isn't being done in the solution with Lists
 and will come at a cost.
 
-Are there any real savings? There might be some savings from Vector's strictness,
-but from what I can tell, Vector's really out perform Lists when they're being
-indexed.  This solution wasn't doing any indexing.
+Are there any real savings? There might be some savings from Vector's
+strictness, but from what I can tell, Vector's really out perform Lists when
+they're being indexed.  This solution wasn't doing any indexing.
 
-#### Unboxed Vectors
+### Using Sequence to Model Intcode
+
+...
+
+### No Prelude and RIO
+
+all these improvements can be seen in this Monster PR...
+
+## Some Failed Attempts
+
+There were some things that I had a go at, but after realising I'd bitten off
+more than I wanted to chew at that moment, left them as something to come back
+to.
+
+### Deriving Default
+
+if this was rust I'd do
+
+### Generalising over Vectors
 
 Out of curiosity, I had a go at refactoring the solution to use [unboxed Vectors][unboxed].
 
@@ -626,29 +843,7 @@ First I refactored the implementation to be [generic over vector types][genericv
 
 [genericvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html
 
-TODO
-
-### Mutable Vectors to Model Intcode
-
-### Making Types Generic
-
-### Making Types Specific
-
-### No Prelude
-
-### RIO - maybe going forward...
-
-all these improvements can be seen in this Monster PR...
-
-# general observations
-
-## Safety
-
-## Not 1 way to do things
-
-This is good.  I wonder how far Rust will get... TBF this is
-reflected in Rust too. Just different things.
-
+### Mutable Vector to Model Intcode
 
 # What Next?
 

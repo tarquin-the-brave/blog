@@ -1,6 +1,6 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 3"
-date = 2020-04-01T16:35:26+01:00
+date = 2020-06-12T15:35:26+01:00
 images = []
 tags = []
 categories = []
@@ -8,10 +8,10 @@ draft = true
 +++
 
 At the end of [Part 2][part2] I set out my next goals as:
-- gain a more complete understanding of monad transformers and property based
+- Gain a more complete understanding of monad transformers and property based
   testing,
-- cycle back around and improve the performance of my solutions, then
-- carry on with a more complete toolkit at my disposal.
+- Cycle back around and improve the performance of my solutions, then
+- Carry on with a more complete toolkit at my disposal.
 
 So I started search around to see what resources I could find.
 
@@ -19,31 +19,33 @@ So I started search around to see what resources I could find.
 
 # (Re-)[^re]Learning Haskell with(out) Advent of Code
 
-After searching around a little, I stumbled upon [the Haskell learning
+After looking around a little, I stumbled upon [the Haskell learning
 resources shared by FP Complete][fpch]. There's so many goodies here!
 
 [fpch]: https://tech.fpcomplete.com/haskell/learn
 
-Ran through tutorials on:
-- Applicative Syntax
-- String Types
-- Strictness
-- Monad Transformers - todo exercises
-- Safe Exception handling - todo
-- Vectors - to finish
+I ran through tutorials on:
+- Applicative Syntax,
+- String Types,
+- Strictness,
+- lenses,
+- The RIO library,
+- Monad Transformers, and
+- Vectors
 
 loads more there.
 
-Let's see how I can improve the AoC solutions so far.
+Armed with these newly learnt learnings, I went back to my Advent of Code
+solutions to see how I could improve them.
 
-# Refactoring AoC Solutions
+---
 
-## Small Improvements
+# Small Improvements
 
 Some small improvements I picked up as handy tips or on a 2nd look saw as
 obvious and trivial.
 
-### Writing Stack Scripts
+## Writing Stack Scripts
 
 For the simpler problems, I didn't need the overhead of generating a full
 project with `stack new` and opted to replace that with a single `dayX.hs`
@@ -59,7 +61,7 @@ I'd gone with the full project structure given by the default template used by
 control I was happy with.  I've done that now, so I can reduce some of the
 problems to simple scripts and "get things done!".
 
-### Using `where` More
+## Using `where` More
 
 As I elucidated on in [Part 2][part2], my earlier solutions were plagued with
 the proliferation of small functions that don't really mean a huge amount on
@@ -67,13 +69,17 @@ their own and are only called as part of another function.  `where` helps to
 clean this up by putting them inside the namespace of the function they're
 really part of and de-cluttering the namespace of the module.
 
-### Use `foldl'` Over `foldl`
+## Use `foldl'` Over `foldl`
 
 "For strict application of the operator" - [the docs say][folddoc].
 
+As I understand it, a lazy fold would build up a giant chain of thunks which,
+if the folding operation were cheap, would be more costly than strict
+evaluation.
+
 [folddoc]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-
 
-### Where a List Was Very Slow
+## Where a List Was Very Slow
 
 [Day 3][day3], which was the first real problem I tackled in this exercise to
 re-learn Haskell, has you drawing wires on a grid and finding where they cross.
@@ -98,7 +104,7 @@ runtime of my solution from over 8 minutes, to 0.8 seconds.
 [hashset]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#t:HashSet
 [intersec]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#v:intersection
 
-### Deriving Instances
+## Deriving Instances
 
 In Rust, I use the [`#[derive()]`][rustderive] attribute _a lot_. More often
 than not, defining some `struct`s and `emun`s to declare what aggregates of
@@ -143,14 +149,14 @@ became:
 data Prog a = Running a | AwaitInput a | End a | Crashed String deriving(Show, Eq, Functor)
 ```
 
-Little victories. No code, no bugs.
+Little victories. No code, no bugs. :bug:
 
 [rustderive]: https://doc.rust-lang.org/reference/attributes/derive.html
 [serde]: https://serde.rs/
 [structopt]: https://docs.rs/structopt/0.3.14/structopt/
 [dry]: https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/
 
-### Using Git Dependencies with Stack
+## Using Git Dependencies with Stack
 
 As part of my refactored Intcode Computer solution in [Part 2][part2] I had to
 fork and update the `base` version in [a library that provided testing of
@@ -166,7 +172,9 @@ stack to get my fork [from git][stackgit].
 [gitsub]: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 [stackgit]: https://docs.haskellstack.org/en/stable/yaml_configuration/#extra-deps
 
-## Big Changes
+---
+
+# Big Changes
 
 For me, the biggest difference coming back to my solutions was more down to
 having more experience and confidence in the language, and coming at the code,
@@ -178,11 +186,28 @@ Looking past the general code tidying, there were some specific things I'd
 learned from doing some of [FP Complete's tutorials][fpch] that I was able to apply to
 my refactored solutions.
 
-### Stop Matching Maybes - More Monad Transformers
+## Stop Matching Maybes - More Monad Transformers
 
-Use monad transformers instead.
+_Not a great first example, as it's very much a "Big Not-Change", but I thought
+it was worth a mention._
 
-### Alternatively, Use MonadFail
+After going through some of FP Complete's tutorials on monad transformers, I
+thought that I'd go back to my solutions finding vast swathes of code, matching
+on `Maybe`s and rip it all out in favour of monad transformer stacks.
+
+That didn't actually happen. There was actually relatively few cases where I
+was matching `Maybe`s and they were quite tidily cleaned up by making the
+function generic over `MonadFail` in stead, see below.
+
+It could be that there weren't lots places where monad transformers could have
+been used to really clean up my code.  Or perhaps the concept hasn't sunk in
+enough for me to spot those places.  I had used `StateT` in one of my solutions
+already so I could print out the state to terminal as it was evolving (covered
+in [Part 2][part2]).  It might be easier to spot where they could be used when
+I'm writing something fresh, rather than revisiting and refactoring code that
+was to some extent written around not knowing to use them.
+
+## Alternatively, Use MonadFail
 
 In [Part 2][part2] I discussed a pattern I found of defining functions who's
 result could represent a failure, as being generic over [`MonadFail`][mfail]
@@ -228,7 +253,7 @@ Causing the script to either print the number of orbital hops between `"YOU"` &
 
 [day6]: https://adventofcode.com/2019/day/6
 
-### No More Strings
+## No More Strings
 
 The wisdom appears to be:
 
@@ -281,7 +306,7 @@ fail . Txt.unpack $ "Could not find element: " <> node
 [mfail]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail
 [unpacktxt]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack
 
-#### Strictness
+### Strictness
 
 One of the reasons touted for `String`, a singly linked lazy list of `Char`s,
 being a bad representation of textual data is that it's lazy.
@@ -378,7 +403,7 @@ to evaluate text lazily, lazy `Text` is still _that much more efficient_ than
 [lazytextiolib]: https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy-IO.html
 [preludereadfile]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:readFile
 
-### Lenses
+## Lenses
 
 Lenses are awesome.
 
@@ -573,7 +598,7 @@ functions did a "bulk update" of the state where every record is being changed.
 In this cases, I think the record syntax looked clearer than a long chain of
 lenses.
 
-### Replacing Lists with Vectors
+## Replacing Lists with Vectors
 
 My solution to [Day 10][day10] involved _a lot_ of manipulating lists.  There
 were `fmap`s, zips, folds, concats, all over the place.  Chances are, as with
@@ -689,7 +714,7 @@ other module's docs from there.
 [hackage]: https://hackage.haskell.org/
 [stt]: #no-more-strings
 
-#### Performance
+### Performance
 
 Let's see what effect this change had on memory usage.  Running the solution
 using Lists:
@@ -792,19 +817,27 @@ us with an operation of order `n` where previously it was constant complexity.
 
 I also had to convert the Vector to a List in two places using [`toList`][tolist].
 
-* I couldn't see a way to directly turn a Vector into a Set so resorted to:
+I couldn't see a way to directly turn a Vector into a Set so resorted to:
 
 ```haskell
 Set.fromList V.toList
 ```
 
-* I wanted to flatten a `Vector Vector Points` to `Vector Points`, but
-  [`V.concat`][vconcat] has signature `[ Vector a ] => Vector a`.  I couldn't
-  find another way of doing that so went with:
+I wanted to flatten a `Vector Vector Points` to `Vector Points`, but
+[`V.concat`][vconcat] has signature `[ Vector a ] => Vector a`.  I couldn't
+find another way of doing that so went with:
+
+[vconcat]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:concat
 
 ```haskell
 V.concat V.toList
 ```
+
+UPDATE: It looks as if using [`V.concatMap`][vconcatmap] would have avoided the
+need to use the second of these `V.formList`s.  What effect that would have on
+performance, I don't know.
+
+[vconcatmap]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:concatMap
 
 Looking at the input data, non of the rays are going to have more than around
 10 points on them, so these Vectors aren't going to ever be that large, but
@@ -815,25 +848,102 @@ Are there any real savings? There might be some savings from Vector's
 strictness, but from what I can tell, Vector's really out perform Lists when
 they're being indexed.  This solution wasn't doing any indexing.
 
-### Using Sequence to Model Intcode
+## Using Sequence to Model Intcode
 
-...
+From the offset, when I first implemented a solution to [Day 2][day2], which
+introduces the problem of implementing an intcode computer, I knew storing the
+intcode data in a List was going to be bad for performance as the intcode data
+needed to be reference by index _a lot_ and have values at specific indices
+updated.
 
-### No Prelude and RIO
+I made a note to come back to it later, figuring that as the intcode computer
+implementation is built up over days 2, 5, 7, and 9, after implementing them
+I know all the things I need to do with the data, and choose a replacement for
+List then.  This did mean that I'd built up a solution around using Lists,
+but I backed myself to keeps things modular.
+
+After considering a few options, I decided I liked what I saw in [`Data.Sequence`][sequence]:
+
+* "Logarithmic-time access to any element",
+* "Logarithmic-time concatenation",
+* "Constant-time access to both the front and the rear" - appending and prepending,
+* The ability to change a value at an index with `update`, and
+* A List-like interface.
+
+[sequence]: https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Sequence.html
+[day2]: https://adventofcode.com/2019/day/2
+
+The refactor went pretty smoothly.  The List-like interface meant a lot of
+functions could be replaced like-for-like and those that couldn't had a fairly
+obvious replacement found in [the docs][sequence].  It having instances of
+`Functor`, `Foldable`, and `Monad` meant a lot of the code could stay the same.
+
+The part of the code that looked after updating values in the intcode,
+according to the rules set in the problem, ended up looking a lot cleaner.
+
+Where in the implementation with lists we had:
+
+```haskell
+replaceNth :: Integral a => MonadFail m => Int -> a -> [a] -> m [a]
+replaceNth n newVal xs
+  | n < 0 = fail "Cannot replace element with negative index"
+  | n < length xs = return $ replaceNthInner n newVal xs
+  | n == length xs = return $ xs ++ [newVal]
+  | n > length xs = return $ xs ++ [0 | _ <- [1..(n - length xs)]] ++ [newVal]
+
+replaceNthInner :: Int -> a -> [a] -> [a]
+replaceNthInner _ _ [] = []
+replaceNthInner n newVal (x:xs)
+   | n == 0 = newVal:xs
+   | otherwise = x:replaceNthInner (n-1) newVal xs
+```
+
+This was cleaned up, and made to match the sequence nomenclature:
+
+```haskell
+update :: Integral a => MonadFail m => Int -> a -> S.Seq a -> m (S.Seq a)
+update n newVal xs
+  | n < 0 = fail "Cannot replace element with negative index"
+  | n < S.length xs = return $ S.update n newVal xs
+  | n == S.length xs = return $ xs S.|> newVal
+  | n > S.length xs = return . flip (S.|>) newVal $ xs S.>< (S.replicate (n - S.length xs) 0)
+```
+
+`S.update` brought a lot of this clean up as it removed the need for
+`replaceNthInner`.  The first class ability to append, with `S.|>`, also got
+rid of the `++ [newVal]` which I've always found a bit nasty.
+
+I didn't examine what the performance effect was of this refactor. It's on
+my bucket list to read up on proper performance profiling.  When I do, this
+would be a good test case to come back to and benchmark.
+
+## No Prelude and RIO
+
+By the time I'd refactored a fair few of my solutions to not use `String` and
+`List`, I was hardly using Prelude at all. It felt time to take the plunge
+and stick:
+
+```haskell
+{-# LANGUAGE NoImplicitPrelude #-}
+```
+
+at the top of all my solutions.
+
+TODO
 
 all these improvements can be seen in this Monster PR...
 
-## Some Failed Attempts
+# Some Failed Attempts
 
 There were some things that I had a go at, but after realising I'd bitten off
 more than I wanted to chew at that moment, left them as something to come back
 to.
 
-### Deriving Default
+## Deriving Default
 
 if this was rust I'd do
 
-### Generalising over Vectors
+## Generalising over Vectors
 
 Out of curiosity, I had a go at refactoring the solution to use [unboxed Vectors][unboxed].
 
@@ -843,7 +953,7 @@ First I refactored the implementation to be [generic over vector types][genericv
 
 [genericvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html
 
-### Mutable Vector to Model Intcode
+## Mutable Vector to Model Intcode
 
 # What Next?
 

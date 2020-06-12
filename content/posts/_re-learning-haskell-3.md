@@ -71,9 +71,7 @@ really part of and de-cluttering the namespace of the module.
 
 "For strict application of the operator" - [the docs say][folddoc].
 
-[folddoc]:
-https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-
-
+[folddoc]: https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-
 
 ### Where a List Was Very Slow
 
@@ -100,9 +98,57 @@ runtime of my solution from over 8 minutes, to 0.8 seconds.
 [hashset]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#t:HashSet
 [intersec]: https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#v:intersection
 
-### TODO
+### Deriving Instances
 
-* deriving instances
+In Rust, I use the [`#[derive()]`][rustderive] attribute _a lot_. More often
+than not, defining some `struct`s and `emun`s to declare what aggregates of
+data matter becomes the cornerstone of any program I write.  Derive macros, via
+[`serde`][serde] and [`structopt`][structopt], are "how we do" serializing and
+deserializing data, and building CLIs.  I've even written my own derive macros
+recently. It's fair to say: Rust would be a very different language without
+derive macros.  I was going to say "completely fucking unusable", but I started
+to imagine a world where defining your own types was significantly more
+expensive, where people defined their data aggregates in a more anonymous, ad
+hoc manner, using generally available collection types, with a smattering of
+type aliases.  Perhaps there's some advantages to that style.  At least it
+would stop people writing reams of code to build spaghetti-like systems of
+entirely entangled "objects" that go right round the houses, dig holes, fill
+them back up again, pull in some state from who knows where or when, all just
+to "do a thing", espousing virtues of "encapsulation" and [DRY (at all
+costs)][dry].  I've seen code like that in Rust.  Defining your own types
+provides a lot of control and correctness to your program, as you can lean hard
+on the type system, but perhaps that can be taken too far.
+
+Anyway, while writing Haskell I've been trying to use `deriving` as much as
+possible. One thing I picked up from [FP Complete's tutorials][fpch] was the
+`DeriveFunctor` language extension. In [Part 2][part2] I refactored my Intcode
+Computer solution to define and use my own Monad instance.  It was good to go
+back and delete the 5 lines of code that defined the Functor instance.
+
+```haskell
+data Prog a = Running a | AwaitInput a | End a | Crashed String deriving(Show, Eq)
+
+instance Functor Prog where
+  fmap _ (Crashed e) = Crashed e
+  fmap f (End a) =  End (f a)
+  fmap f (Running a) = Running (f a)
+  fmap f (AwaitInput a) = AwaitInput (f a)
+```
+
+became:
+
+```haskell
+{-# LANGUAGE DerivingFunctor #-}
+
+data Prog a = Running a | AwaitInput a | End a | Crashed String deriving(Show, Eq, Functor)
+```
+
+Little victories. No code, no bugs.
+
+[rustderive]: https://doc.rust-lang.org/reference/attributes/derive.html
+[serde]: https://serde.rs/
+[structopt]: https://docs.rs/structopt/0.3.14/structopt/
+[dry]: https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/
 
 ## Big Changes
 
@@ -603,6 +649,14 @@ all these improvements can be seen in this Monster PR...
 This is good.  I wonder how far Rust will get... TBF this is
 reflected in Rust too. Just different things.
 
+
+# What Next?
+
+- Do some new AOC problems - no rush
+- More FPCO tutorials - absolutely
+- specific goals:
+  + performance profiling
+  + graphs - for day15 - failed attempt
 
 [^re]: By this stage, and really by the time I got to [Part 2][part2], I'm no
   longer "Re-learning" Haskell as I've gone far beyond the level I got to when I

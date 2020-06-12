@@ -157,7 +157,7 @@ come back to this and went on to problems from days [3][day-3], [4][day-4],
 [6][day-6], and [8][day-8].
 
 [Day 3][day-3] involved drawing lines on a grid and working out where they
-cross, [my solution][my-day-3] involved reminding myself of how to make use of:
+cross, my solution involved reminding myself of how to make use of:
 
 - Defining my own types: type constructors, sum types, record syntax,
 - Generating lists from infinite lists,
@@ -165,7 +165,7 @@ cross, [my solution][my-day-3] involved reminding myself of how to make use of:
 - `foldl`, and
 - Using lists as applicative functors,
 
-without too much hassle.  [The solution][my-day-3] wasn't very efficient, but
+without too much hassle.  The solution wasn't very efficient, but
 it worked.
 
 ## Fun With Folds
@@ -175,7 +175,7 @@ between two numbers that:
 * Have two adjacent digits that are the same, and
 * Who's digits never decrease.
 
-In [my solution][my-day-4] I used function currying again. A function took a
+In my solution I used function currying again. A function took a
 function that applies a rule between two characters as an argument, and folded
 over the digits in the numbers with `foldl` to apply the rules.
 
@@ -395,7 +395,7 @@ than one "root"/"orbital centre", so I'd need to use a [forest][forest], which i
 type Forest a = [Tree a]
 ```
 
-In [my solution][my-day-6] I was able to put the input data into a forest with
+In my solution I was able to put the input data into a forest with
 [`unfoldForest`][unfold-forest].
 
 ```haskell
@@ -489,7 +489,7 @@ That was enough to give me the answer to the first part of [Day 6][day-6].  In
 writing this I've just realised there's a second half to the problem that I
 missed before which looks like it's asking you to calculate how many steps it
 takes to get from one tree node to another.  I'll come back to this at some
-point and add to [my solution][my-day-6].
+point and add to my solution.
 
 ## No Editor Integration Yet
 
@@ -607,9 +607,6 @@ I'll go do some reading, then come back to these problems.
 [day-4]: https://adventofcode.com/2019/day/4
 [day-6]: https://adventofcode.com/2019/day/6
 [day-8]: https://adventofcode.com/2019/day/8
-[my-day-3]: https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3
-[my-day-4]: https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4
-[my-day-6]: https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6
 [aoc-cal]: https://adventofcode.com/2019
 [hoogle]: https://hoogle.haskell.org/
 [poetry]: https://python-poetry.org/

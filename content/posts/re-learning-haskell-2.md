@@ -1051,7 +1051,8 @@ more generic and where they're too generic, and possible values of the type
 don't represent possible values of data the type represents, choose, or define,
 another type that's better suited.
 
-_As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc]._
+_As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc], but
+are likely to have been refactored somewhat since this post was written._
 
 [monadfail]: http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html
 [tarquinaoc]: https://github.com/tarquin-the-brave/aoc-19-haskell

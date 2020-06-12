@@ -1083,7 +1083,8 @@ make types fit the data better: where they could be more generic making them
 more generic and where they&amp;rsquo;re too generic, and possible values of the type
 don&amp;rsquo;t represent possible values of data the type represents, choose, or define,
 another type that&amp;rsquo;s better suited.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;As with &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;, all my solutions are &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell&#34;&gt;mastered on Github&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;As with &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;, all my solutions are &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell&#34;&gt;mastered on Github&lt;/a&gt;, but
+are likely to have been refactored somewhat since this post was written.&lt;/em&gt;&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
@@ -1308,7 +1309,7 @@ extended and used in all odd day problems from day 5 onwards.  I decided to
 come back to this and went on to problems from days &lt;a href=&#34;https://adventofcode.com/2019/day/3&#34;&gt;3&lt;/a&gt;, &lt;a href=&#34;https://adventofcode.com/2019/day/4&#34;&gt;4&lt;/a&gt;,
 &lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;6&lt;/a&gt;, and &lt;a href=&#34;https://adventofcode.com/2019/day/8&#34;&gt;8&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/3&#34;&gt;Day 3&lt;/a&gt; involved drawing lines on a grid and working out where they
-cross, &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;my solution&lt;/a&gt; involved reminding myself of how to make use of:&lt;/p&gt;
+cross, my solution involved reminding myself of how to make use of:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Defining my own types: type constructors, sum types, record syntax,&lt;/li&gt;
 &lt;li&gt;Generating lists from infinite lists,&lt;/li&gt;
@@ -1316,7 +1317,7 @@ cross, &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/
 &lt;li&gt;&lt;code&gt;foldl&lt;/code&gt;, and&lt;/li&gt;
 &lt;li&gt;Using lists as applicative functors,&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;without too much hassle.  &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3&#34;&gt;The solution&lt;/a&gt; wasn&amp;rsquo;t very efficient, but
+&lt;p&gt;without too much hassle.  The solution wasn&amp;rsquo;t very efficient, but
 it worked.&lt;/p&gt;
 &lt;h2 id=&#34;fun-with-folds&#34;&gt;Fun With Folds&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/4&#34;&gt;Day 4&lt;/a&gt; introduced a simple problem of: work out the number of integers
@@ -1325,7 +1326,7 @@ between two numbers that:&lt;/p&gt;
 &lt;li&gt;Have two adjacent digits that are the same, and&lt;/li&gt;
 &lt;li&gt;Who&amp;rsquo;s digits never decrease.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4&#34;&gt;my solution&lt;/a&gt; I used function currying again. A function took a
+&lt;p&gt;In my solution I used function currying again. A function took a
 function that applies a rule between two characters as an argument, and folded
 over the digits in the numbers with &lt;code&gt;foldl&lt;/code&gt; to apply the rules.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ruleX&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Bool&lt;/span&gt;
@@ -1476,7 +1477,7 @@ B could be Venus, C could be the Earth, D would then be the Moon.&lt;/p&gt;
 than one &amp;ldquo;root&amp;rdquo;/&amp;ldquo;orbital centre&amp;rdquo;, so I&amp;rsquo;d need to use a &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#t:Forest&#34;&gt;forest&lt;/a&gt;, which in
 &lt;code&gt;Data.Tree&lt;/code&gt; is just a type alias for a list of trees.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; a]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6&#34;&gt;my solution&lt;/a&gt; I was able to put the input data into a forest with
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In my solution I was able to put the input data into a forest with
 &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:unfoldForest&#34;&gt;&lt;code&gt;unfoldForest&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldForest&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; (b &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; (a, [b])) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [b] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Forest&lt;/span&gt; a
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;b&lt;/code&gt; is the type of the &amp;ldquo;seed values&amp;rdquo;.  A &amp;ldquo;seed value&amp;rdquo; is a value from which a node
@@ -1532,7 +1533,7 @@ and then folding over that.&lt;/p&gt;
 writing this I&amp;rsquo;ve just realised there&amp;rsquo;s a second half to the problem that I
 missed before which looks like it&amp;rsquo;s asking you to calculate how many steps it
 takes to get from one tree node to another.  I&amp;rsquo;ll come back to this at some
-point and add to &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6&#34;&gt;my solution&lt;/a&gt;.&lt;/p&gt;
+point and add to my solution.&lt;/p&gt;
 &lt;h2 id=&#34;no-editor-integration-yet&#34;&gt;No Editor Integration Yet&lt;/h2&gt;
 &lt;p&gt;Interestingly, I didn&amp;rsquo;t setup any editor integration for Haskell in this first
 week.&lt;/p&gt;

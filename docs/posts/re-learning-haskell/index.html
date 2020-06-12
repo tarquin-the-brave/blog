@@ -211,7 +211,7 @@ extended and used in all odd day problems from day 5 onwards.  I decided to
 come back to this and went on to problems from days <a href="https://adventofcode.com/2019/day/3">3</a>, <a href="https://adventofcode.com/2019/day/4">4</a>,
 <a href="https://adventofcode.com/2019/day/6">6</a>, and <a href="https://adventofcode.com/2019/day/8">8</a>.</p>
 <p><a href="https://adventofcode.com/2019/day/3">Day 3</a> involved drawing lines on a grid and working out where they
-cross, <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3">my solution</a> involved reminding myself of how to make use of:</p>
+cross, my solution involved reminding myself of how to make use of:</p>
 <ul>
 <li>Defining my own types: type constructors, sum types, record syntax,</li>
 <li>Generating lists from infinite lists,</li>
@@ -219,7 +219,7 @@ cross, <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/
 <li><code>foldl</code>, and</li>
 <li>Using lists as applicative functors,</li>
 </ul>
-<p>without too much hassle.  <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day3">The solution</a> wasn&rsquo;t very efficient, but
+<p>without too much hassle.  The solution wasn&rsquo;t very efficient, but
 it worked.</p>
 <h2 id="fun-with-folds">Fun With Folds</h2>
 <p><a href="https://adventofcode.com/2019/day/4">Day 4</a> introduced a simple problem of: work out the number of integers
@@ -228,7 +228,7 @@ between two numbers that:</p>
 <li>Have two adjacent digits that are the same, and</li>
 <li>Who&rsquo;s digits never decrease.</li>
 </ul>
-<p>In <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day4">my solution</a> I used function currying again. A function took a
+<p>In my solution I used function currying again. A function took a
 function that applies a rule between two characters as an argument, and folded
 over the digits in the numbers with <code>foldl</code> to apply the rules.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">ruleX</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Char</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Char</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Bool</span>
@@ -379,7 +379,7 @@ B could be Venus, C could be the Earth, D would then be the Moon.</p>
 than one &ldquo;root&rdquo;/&ldquo;orbital centre&rdquo;, so I&rsquo;d need to use a <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#t:Forest">forest</a>, which in
 <code>Data.Tree</code> is just a type alias for a list of trees.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Forest</span> a <span style="color:#f92672">=</span> [<span style="color:#66d9ef">Tree</span> a]
-</code></pre></div><p>In <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6">my solution</a> I was able to put the input data into a forest with
+</code></pre></div><p>In my solution I was able to put the input data into a forest with
 <a href="https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Tree.html#v:unfoldForest"><code>unfoldForest</code></a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">unfoldForest</span> <span style="color:#f92672">::</span> (b <span style="color:#f92672">-&gt;</span> (a, [b])) <span style="color:#f92672">-&gt;</span> [b] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Forest</span> a
 </code></pre></div><p><code>b</code> is the type of the &ldquo;seed values&rdquo;.  A &ldquo;seed value&rdquo; is a value from which a node
@@ -435,7 +435,7 @@ and then folding over that.</p>
 writing this I&rsquo;ve just realised there&rsquo;s a second half to the problem that I
 missed before which looks like it&rsquo;s asking you to calculate how many steps it
 takes to get from one tree node to another.  I&rsquo;ll come back to this at some
-point and add to <a href="https://github.com/tarquin-the-brave/aoc-19-haskell/tree/master/day6">my solution</a>.</p>
+point and add to my solution.</p>
 <h2 id="no-editor-integration-yet">No Editor Integration Yet</h2>
 <p>Interestingly, I didn&rsquo;t setup any editor integration for Haskell in this first
 week.</p>

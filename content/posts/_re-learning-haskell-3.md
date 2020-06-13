@@ -1,17 +1,17 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 3"
-date = 2020-06-12T15:35:26+01:00
+date = 2020-06-13T12:35:26+01:00
 images = []
 tags = []
 categories = []
 draft = true
 +++
 
-At the end of [Part 2][part2] I set out my next goals as:
-- Gain a more complete understanding of monad transformers and property based
-  testing,
-- Cycle back around and improve the performance of my solutions, then
-- Carry on with a more complete toolkit at my disposal.
+After [Part 2][part2], I wanted to go and do some reading. I felt like I could
+crack on with the Advent of Code problems with the tools I had at my disposal,
+but felt if I learned more Haskell I could be doing better.  I wanted to learn
+some more about monad transformers and anything else that could improve my
+solutions.
 
 So I started search around to see what resources I could find.
 
@@ -33,7 +33,8 @@ I ran through tutorials on:
 - Monad Transformers, and
 - Vectors
 
-loads more there.
+This only scratched the surface of what's available there.  It's definitely a
+resource I will be revisiting.
 
 Armed with these newly learnt learnings, I went back to my Advent of Code
 solutions to see how I could improve them.
@@ -598,6 +599,151 @@ functions did a "bulk update" of the state where every record is being changed.
 In this cases, I think the record syntax looked clearer than a long chain of
 lenses.
 
+## Deriving Default
+
+While I was [refactoring the intcode solution to use lenses](#lenses) to
+access, fields in the `Intcode` type, I also wanted to refactor the "new"
+function, so it wasn't calling the record functions, now prepended with an
+underscore, directly.
+
+In Rust I'd do:
+
+```rust
+#[derive(Default)]
+struct SomeData {
+    foo: usize,
+    bar: String,
+    baz: Vec<String>,
+}
+
+impl SomeData {
+    fn new(bar: String) -> Self {
+        Self {
+            bar,
+            ..Default::default()
+        }
+    }
+}
+```
+
+([This code in Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=b15e306d979834af9ca6fe13d48aacc4)).
+
+I was hoping to achieve this with something similar in Haskell, like:
+
+```haskell
+--
+-- DOES NOT COMPILE
+--
+{-# LANGUAGE TemplateHaskell #-}
+import Lens.Micro.Platform (makeLenses, set)
+import qualified Data.Sequence as S
+import Data.Default
+
+data Intcode = Intcode
+  { _input::[Int]
+  , _code :: S.Seq Int
+  , _ip::Int
+  , _rb::Int
+  , _output::[Int]
+  } deriving(Show, Eq, Default)
+
+makeLenses ''Intcode
+
+newIC :: S.Seq Int -> [Int] -> Intcode
+newIC c i = set code c . set input i $ def
+```
+
+This failed to compile with:
+
+```
+error:
+    • Can't make a derived instance of ‘Default Intcode’:
+        ‘Default’ is not a stock derivable class (Eq, Show, etc.)
+        Try enabling DeriveAnyClass
+    • In the data declaration for ‘Intcode’
+   |
+29 |   } deriving(Show, Eq, Default)
+   |                        ^^^^^^^
+```
+
+So I included the `DeriveAnyClass` language extension, then:
+
+```
+ error:
+    • No instance for (GHC.Generics.Generic Intcode)
+        arising from the 'deriving' clause of a data type declaration
+      Possible fix:
+        use a standalone 'deriving instance' declaration,
+          so you can specify the instance context yourself
+    • When deriving the instance for (Default Intcode)
+   |
+29 |   } deriving(Show, Eq, Default)
+   |                        ^^^^^^^
+```
+
+`GHC.Generics.Generic`, I can "hoogle" that. Following a few links lead me to
+the [Generics.Deriving.Default][gendef] module.
+
+[gendef]: http://hackage.haskell.org/package/generic-deriving-1.13.1/docs/Generics-Deriving-Default.html
+
+After some fighting with the compiler and adding a bunch of language extensions
+that it was asking me to, one by one, I realised this isn't what I want.  This
+module appears to be a way to derive a default implementation of some class
+instances rather than deriving the ability to default the value of type
+`Intcode`.
+
+Going back to the last error I tried also deriving `Generic`, as that was shown
+in the examples in [Generics.Deriving.Default][gendef], and examples on the
+homepage of the [data-default-extra][defextra] which I also looked at while
+googling around.
+
+[defextra]: https://hackage.haskell.org/package/data-default-extra
+
+```
+error:
+    • Can't make a derived instance of ‘Generic Intcode’:
+        You need DeriveGeneric to derive an instance for this class
+    • In the data declaration for ‘Intcode’
+   |
+32 |   deriving(Generic, Default, Show, Eq)
+   |
+```
+
+I was anticipating another merry-go-round of the compiler telling me to add
+language extensions one by one, but adding `DeriveGeneric` made this work.
+
+The finished article looks like:
+
+```haskell
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+
+import Lens.Micro.Platform (makeLenses, set)
+import qualified Data.Sequence as S
+import GHC.Generics (Generic)
+import Data.Default (Default, def)
+
+data Intcode = Intcode
+  { _input::[Int]
+  , _code :: S.Seq Int
+  -- ip: Instruction Pointer
+  , _ip::Int
+  -- rb: Relative Base
+  , _rb::Int
+  , _output::[Int]
+  }
+  deriving(Generic, Default, Show, Eq)
+
+makeLenses ''Intcode
+
+newIC :: S.Seq Int -> [Int] -> Intcode
+newIC c i = set code c . set input i $ def
+```
+
+So deriving a `Default` instance isn't quite as easy as in Rust, and took a bit
+of playing around, but I'm happy that it was reasonably simple once I worked it
+out.
+
 ## Replacing Lists with Vectors
 
 My solution to [Day 10][day10] involved _a lot_ of manipulating lists.  There
@@ -917,51 +1063,187 @@ I didn't examine what the performance effect was of this refactor. It's on
 my bucket list to read up on proper performance profiling.  When I do, this
 would be a good test case to come back to and benchmark.
 
+# Some Failed Attempts
+
+There were some things that I had a go at, but after realising I'd bitten off
+more than I wanted to chew at that moment, left them as something to come back
+to, or tried something else.
+
+## Generalising over Vectors
+
+After converting my [Day 10][day10] solution from using Lists to boxed Vectors,
+and finding the [performance to be worse](#performance), I was going to see
+what the effect of refactoring the solution to use [unboxed Vectors][unboxed]
+would be.
+
+[unboxed]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Unboxed.html
+
+My plan for this was to refactor the solution to be generic over vector types
+by writing it in terms of [Data.Vector.Generic][genericvec], and then swapping
+the concrete vector type used, at (hopefully) the single point where that was
+defined.
+
+[genericvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html
+
+I made a start on this, and I'm reasonably happy with a process of swapping out
+the module behind the qualified import, and where there are compile errors,
+using [the documentation][genericvec] to find an equivalent function.  The
+only issue was there was a lot of this to do, and I lost the will to do it somewhat.
+I think a better approach will be: next time I'm writing something to use
+Vectors, try to write it with generic Vectors and see where that leads.
+
+There was one specific thing I hit, that I worked around, but didn't really
+understand. In the boxed Vector solution I defined the "rays" that different
+grid points lived on with a map of angle from the vertical to a Vector of
+grid points (`Point`).  I had the type alias:
+
+```haskell
+type Rays = Map.Map (Angle Float) (V.Vector Point)
+```
+
+In making this generic over vectors, I changed this to:
+
+```haskell
+type Rays v = V.Vector v Point => Map.Map (Angle Float) (v Point)
+```
+
+which worked just fine in all but 3 functions' type signatures. I had some functions
+to wrap these "rays" in the [State monad][state], with one function providing
+the `s -> (a, s)`, where `s` is "the rays" and another to wrap that in `state`,
+and a third to recursively evolve the state until a condition is met.
+
+Take a look at the "`s -> (a, s)` function", called `shootInner`, the compiler
+complained about the type signature:
+
+```haskell
+shootInner ::  V.Vector v Point => Int -> Rays v ->  ((Point, Int), Rays v)
+```
+
+```
+error:
+    • Illegal qualified type:
+        V.Vector v Point => Map.Map (Angle Float) (v Point)
+      GHC doesn't yet support impredicative polymorphism
+    • In the expansion of type synonym ‘Rays’
+      In the type signature:
+        shootInner :: V.Vector v Point =>
+                      Int -> Rays v -> ((Point, Int), Rays v)
+   |
+66 | shootInner ::  V.Vector v Point => Int -> Rays v ->  ((Point, Int), Rays v)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
+The same complaint was levied against the other two functions with signatures:
+
+```haskell
+shoot :: V.Vector v Point => Int -> State (Rays v) (Point, Int)
+shootUntil :: V.Vector v Point => Int -> Int -> State (Rays v) Point
+```
+
+(you can read [the problem description][day10] for the context behind the names,
+basically you spin round and shoot asteroids that are located on the rays).
+
+I reduced the script around the error to it's simplest form to try and
+isolate the source of the error:
+
+```haskell
+#!/usr/bin/env stack
+-- stack --resolver lts-15.4 script --package containers --package vector
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleContexts #-}
+
+import qualified Data.Map.Strict          as Map
+import qualified Data.Vector.Generic      as V
+
+main :: IO ()
+main = print "Hello"
+
+type Foo v = V.Vector v Int => Map.Map Int (v Int)
+
+bar :: V.Vector v Int => Int -> Foo v -> Foo v
+bar = undefined
+
+baz ::  V.Vector v Int => Int -> Foo v ->  ((Int, Int), Foo v)
+baz = undefined
+```
+
+I hit the same error about "[impredicative polymorphism][imppol]" here a well.
+
+[imppol]: https://gitlab.haskell.org/ghc/ghc/-/wikis/impredicative-polymorphism
+
+After a bit of changing things to see what happens, I found that removing
+the constraint from the type alias allowed this to compile:
+
+```
+type Foo v = Map.Map Int (v Int)
+```
+
+I did a bit of googling around "impredicative polymorphism" and it looks like
+I've got a bit of reading to do before I understand this one, and why it was
+hit for these functions but not others that both take and return `Rays v`.
+
+## Mutable Vector to Model Intcode
+
+Before I settled on [choosing a Sequence to represent the intcode
+program][seq], I was looking into representing it in a [mutable Vector][mutvec]
+as elements have to be changed a lot, I thought that might be more efficient.
+
+[mutvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Mutable.html
+
+But unlike with Sequence, where I was able to pretty much swap out Lists for
+Sequences, changing a few function calls, but otherwise hardly changing the
+surrounding functions or structure of the program, with mutable Vectors I'd
+need a fair amount of refactoring.  The [functions that access
+elements][mutvecelems] all return a monad that would need handling.
+
+[mutvecelems]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Mutable.html#g:10
+
+In this case as well I thought a better approach would be to earmark mutable
+vectors as something to try when attempting a future problem, rather than
+trying to do a big refactor of an existing solution.
+
+# Future Improvements
+
 ## No Prelude and RIO
 
-By the time I'd refactored a fair few of my solutions to not use `String` and
-`List`, I was hardly using Prelude at all. It felt time to take the plunge
-and stick:
+Now that I've refactored a fair few of my solutions to not use `String` and
+`List`, I'm hardly using Prelude at all in some of them.
+
+I think in next Advent of Code problem I attempt, I'll start by putting
 
 ```haskell
 {-# LANGUAGE NoImplicitPrelude #-}
 ```
 
-at the top of all my solutions.
+at the top of the file and using [RIO][rio] as a Prelude replacement and
+build the solution inside the RIO monad.
 
-TODO
-
-all these improvements can be seen in this Monster PR...
-
-# Some Failed Attempts
-
-There were some things that I had a go at, but after realising I'd bitten off
-more than I wanted to chew at that moment, left them as something to come back
-to.
-
-## Deriving Default
-
-if this was rust I'd do
-
-## Generalising over Vectors
-
-Out of curiosity, I had a go at refactoring the solution to use [unboxed Vectors][unboxed].
-
-[unboxed]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Unboxed.html
-
-First I refactored the implementation to be [generic over vector types][genericvec].
-
-[genericvec]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html
-
-## Mutable Vector to Model Intcode
+[rio]: https://hackage.haskell.org/package/rio
 
 # What Next?
 
-- Do some new AOC problems - no rush
-- More FPCO tutorials - absolutely
-- specific goals:
-  + performance profiling
-  + graphs - for day15 - failed attempt
+More Advent of Code I guess...
+
+Now I've done a "big refactor" of my existing solutions, the next thing to do
+would be to crack on with some new Advent of Code problems.  I'm not in any
+particular rush to get through them.  I'm finding them a decent backdrop to
+learn things with, and the sooner I finish them, the sooner I have to look
+elsewhere for fresh problems.  I'm definitely in the state of mind of seeing
+how much I can learn from doing a solution before moving onto the next one.
+
+In the process of attempting more problems I definitely going to return to [FP
+Complete's Tutorials][fpch], both for when I'm looking to learn something
+specific that they cover, and for when I'm speculating on what might be useful
+for an Advent of Code problem. I see they have a tutorial on performance
+profiling which I'm keep to look into.  In this blog post I've not been
+particularly rigorous when commenting on performance, and at some point I'd
+like to do some proper benchmarking on the choice of types in some solutions.
+
+_All the changes I've made are recorded in [this monster pull request][pr]
+(which seems to have done a decent job of following when I changed entire Stack
+project directories into single page scripts._ :dancer:
+
+[pr]: https://github.com/tarquin-the-brave/aoc-19-haskell/pull/1/files
 
 [^re]: By this stage, and really by the time I got to [Part 2][part2], I'm no
   longer "Re-learning" Haskell as I've gone far beyond the level I got to when I

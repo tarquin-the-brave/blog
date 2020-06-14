@@ -6,10 +6,872 @@
    <description>Recent content on tarquin-the-brave</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-   <lastBuildDate>Sat, 09 May 2020 19:00:00 +0100</lastBuildDate>
+   <lastBuildDate>Sun, 14 Jun 2020 12:35:26 +0100</lastBuildDate>
    
        <atom:link href="https://tarquin-the-brave.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Re-Learning Haskell with Advent of Code - Part 3</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</link>
+       <pubDate>Sun, 14 Jun 2020 12:35:26 +0100</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</guid>
+       <description>&lt;p&gt;After &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, I wanted to go and do some reading. I felt like I could
+crack on with the Advent of Code problems with the tools I had at my disposal,
+but felt if I learned more Haskell I could be doing better.  I wanted to learn
+some more about monad transformers and anything else that could improve my
+solutions.&lt;/p&gt;
+&lt;p&gt;So I started search around to see what resources I could find.&lt;/p&gt;
+&lt;h1 id=&#34;re-relearning-haskell-without-advent-of-code&#34;&gt;(Re-)&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;Learning Haskell with(out) Advent of Code&lt;/h1&gt;
+&lt;p&gt;After looking around a little, I stumbled upon &lt;a href=&#34;https://tech.fpcomplete.com/haskell/learn&#34;&gt;the Haskell learning
+resources shared by FP Complete&lt;/a&gt;. There&amp;rsquo;s so many goodies here!&lt;/p&gt;
+&lt;p&gt;I ran through tutorials on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Applicative Syntax,&lt;/li&gt;
+&lt;li&gt;String Types,&lt;/li&gt;
+&lt;li&gt;Strictness,&lt;/li&gt;
+&lt;li&gt;lenses,&lt;/li&gt;
+&lt;li&gt;The RIO library,&lt;/li&gt;
+&lt;li&gt;Monad Transformers, and&lt;/li&gt;
+&lt;li&gt;Vectors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This only scratched the surface of what&amp;rsquo;s available there.  It&amp;rsquo;s definitely a
+resource I will be revisiting.&lt;/p&gt;
+&lt;p&gt;Armed with these newly learnt learnings, I went back to my Advent of Code
+solutions to see how I could improve them. 👷 🔧&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;small-improvements&#34;&gt;Small Improvements&lt;/h1&gt;
+&lt;p&gt;Some small improvements I picked up as handy tips or on a 2nd look saw as
+obvious and trivial.&lt;/p&gt;
+&lt;h2 id=&#34;writing-stack-scripts&#34;&gt;Writing Stack Scripts&lt;/h2&gt;
+&lt;p&gt;For the simpler problems, I didn&amp;rsquo;t need the overhead of generating a full
+project with &lt;code&gt;stack new&lt;/code&gt; and opted to replace that with a single &lt;code&gt;dayX.hs&lt;/code&gt;
+script which starts like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env stack
+-- stack --resovler lts-15.4 script
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I&amp;rsquo;d gone with the full project structure, given by the default template used by
+&lt;code&gt;stack new&lt;/code&gt;, to get used to importing and exporting and to find the namespacing
+control I was happy with.  I&amp;rsquo;ve done that now, so I can reduce some of the
+problems to simple scripts and &amp;ldquo;get things done!&amp;quot;.&lt;/p&gt;
+&lt;h2 id=&#34;using-where-more&#34;&gt;Using &lt;code&gt;where&lt;/code&gt; More&lt;/h2&gt;
+&lt;p&gt;As I elucidated on in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, my earlier solutions were plagued with
+the proliferation of small functions that don&amp;rsquo;t really mean a huge amount on
+their own and are only called as part of another function.  &lt;code&gt;where&lt;/code&gt; helps to
+clean this up by putting them inside the namespace of the function they&amp;rsquo;re
+really part of and de-cluttering the namespace of the module.&lt;/p&gt;
+&lt;h2 id=&#34;use-foldl-over-foldl&#34;&gt;Use &lt;code&gt;foldl&#39;&lt;/code&gt; Over &lt;code&gt;foldl&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&amp;ldquo;For strict application of the operator&amp;rdquo; - &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Foldable.html#v:foldl-39-&#34;&gt;the docs say&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As I understand it, a lazy fold would build up a giant chain of thunks which,
+if the folding operation were cheap, would be more costly than strict
+evaluation.&lt;/p&gt;
+&lt;h2 id=&#34;where-a-list-was-very-slow&#34;&gt;Where a List Was Very Slow&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/3&#34;&gt;Day 3&lt;/a&gt;, which was the first real problem I tackled in this exercise to
+re-learn Haskell, has you drawing wires on a grid and finding where they cross.&lt;/p&gt;
+&lt;p&gt;I was using a long &lt;code&gt;List&lt;/code&gt; for each &amp;ldquo;wire&amp;rdquo; to store the coordinates it passed
+through, then finding where two wires had crossed by putting a function that
+matches the coordinates in an applicative functor across the two lists.  This
+ends up scaling with order &lt;code&gt;m * n&lt;/code&gt; as the wires get longer.&lt;/p&gt;
+&lt;p&gt;Essentially &lt;code&gt;List&lt;/code&gt; was a terrible choice of data structure for this.  Lists
+provide an ordering of their data, and allow you to express duplicates.  We
+want the answer to the question: &amp;ldquo;what points has a path visited?&amp;quot;, we don&amp;rsquo;t
+care about the answers to &amp;ldquo;what order did the path visit those points in?&amp;quot;, and
+&amp;ldquo;were any points visited more than once?&amp;quot;.  But by choosing &lt;code&gt;List&lt;/code&gt;, or any
+other ordered collection that allows duplicates, we pay for the answers to
+those questions.&lt;/p&gt;
+&lt;p&gt;A simple refactor to store this data in &lt;a href=&#34;https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#t:HashSet&#34;&gt;&lt;code&gt;HashSet&lt;/code&gt;s&lt;/a&gt;, and finding the
+&lt;a href=&#34;https://hackage.haskell.org/package/unordered-containers-0.2.10.0/docs/Data-HashSet.html#v:intersection&#34;&gt;intersection&lt;/a&gt; to get the points where the wires crossed reduced the
+runtime of my solution from over 8 minutes, to 0.8 seconds.&lt;/p&gt;
+&lt;h2 id=&#34;deriving-instances&#34;&gt;Deriving Instances&lt;/h2&gt;
+&lt;p&gt;In Rust, I use the &lt;a href=&#34;https://doc.rust-lang.org/reference/attributes/derive.html&#34;&gt;&lt;code&gt;#[derive()]&lt;/code&gt;&lt;/a&gt; attribute &lt;em&gt;a lot&lt;/em&gt;. More often
+than not, defining some &lt;code&gt;struct&lt;/code&gt;s and &lt;code&gt;emun&lt;/code&gt;s to declare what aggregates of
+data matter becomes the cornerstone of any program I write.  Derive macros, via
+&lt;a href=&#34;https://serde.rs/&#34;&gt;&lt;code&gt;serde&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://docs.rs/structopt/0.3.14/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt;, are &amp;ldquo;how we do&amp;rdquo; serializing and
+deserializing data, and building CLIs.  I&amp;rsquo;ve even written my own derive macros
+recently. It&amp;rsquo;s fair to say: Rust would be a very different language without
+derive macros.  I was going to say &amp;ldquo;completely fucking unusable&amp;rdquo;, but I started
+to imagine a world where defining your own types was significantly more
+expensive, where people defined their data aggregates in a more anonymous, ad
+hoc manner, using generally available collection types, with a smattering of
+type aliases.  Perhaps there&amp;rsquo;s some advantages to that style.  At least it
+would stop people writing reams of code to build spaghetti-like systems of
+entirely entangled &amp;ldquo;objects&amp;rdquo; that go right round the houses, dig holes, fill
+them back up again, pull in some state from who knows where or when, all just
+to &amp;ldquo;do a thing&amp;rdquo;, espousing virtues of &amp;ldquo;encapsulation&amp;rdquo; and &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/dry-not-a-goal/&#34;&gt;&amp;ldquo;DRY&amp;rdquo; (at all
+costs)&lt;/a&gt;.  I&amp;rsquo;ve seen code like that in Rust.  Defining your own types
+provides a lot of control and correctness to your program, as you can lean hard
+on the type system, but as with anything, there are costs as well.&lt;/p&gt;
+&lt;p&gt;Anyway, while writing Haskell I&amp;rsquo;ve been trying to use &lt;code&gt;deriving&lt;/code&gt; as much as
+possible. One thing I picked up from &lt;a href=&#34;https://tech.fpcomplete.com/haskell/learn&#34;&gt;FP Complete&amp;rsquo;s tutorials&lt;/a&gt; was the
+&lt;code&gt;DeriveFunctor&lt;/code&gt; language extension. In &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt; I refactored my Intcode
+Computer solution to define and use my own Monad instance.  It was good to go
+back and delete the 5 lines of code that defined the Functor instance.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Prog&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;End&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Crashed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;instance&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Functor&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Prog&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+  fmap &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;Crashed&lt;/span&gt; e) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Crashed&lt;/span&gt; e
+  fmap f (&lt;span style=&#34;color:#66d9ef&#34;&gt;End&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;End&lt;/span&gt; (f a)
+  fmap f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; (f a)
+  fmap f (&lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; (f a)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;became:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE DerivingFunctor #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Prog&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;End&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Crashed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Functor&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Little victories. No code, no bugs. 🐛&lt;/p&gt;
+&lt;h2 id=&#34;using-git-dependencies-with-stack&#34;&gt;Using Git Dependencies with Stack&lt;/h2&gt;
+&lt;p&gt;As part of my refactored Intcode Computer solution in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt; I had to
+fork and update the &lt;code&gt;base&lt;/code&gt; version in &lt;a href=&#34;http://hackage.haskell.org/package/tasty-laws&#34;&gt;a library that provided testing of
+Monad, Applicative, Functor, and Monoid Laws&lt;/a&gt;.  I then included my
+fork as a &lt;a href=&#34;https://git-scm.com/book/en/v2/Git-Tools-Submodules&#34;&gt;git submodule&lt;/a&gt; and pointed Stack at the dependency in the
+local file system.  This was a good bit of practice with git submodules.  I&amp;rsquo;ve
+found git submodules to be something that you never use, until you have to, and
+then you get it all spectacularly wrong and end up very confused.  But as the
+theme of this post is about tidying up and refactoring, I changed this to tell
+stack to get my fork &lt;a href=&#34;https://docs.haskellstack.org/en/stable/yaml_configuration/#extra-deps&#34;&gt;from git&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;big-changes&#34;&gt;Big Changes&lt;/h1&gt;
+&lt;p&gt;For me, the biggest difference coming back to my solutions was more down to
+having more experience and confidence in the language, and coming at the code,
+with a view to cleaning up the expressions and abstractions rather than wanting
+to get the answer to plug into Advent of Code so it&amp;rsquo;ll give me a gold star.
+⭐&lt;/p&gt;
+&lt;p&gt;Looking past the general code tidying, there were some specific things I&amp;rsquo;d
+learned from doing some of &lt;a href=&#34;https://tech.fpcomplete.com/haskell/learn&#34;&gt;FP Complete&amp;rsquo;s tutorials&lt;/a&gt; that I was able to apply to
+my refactored solutions.&lt;/p&gt;
+&lt;h2 id=&#34;stop-matching-maybes---more-monad-transformers&#34;&gt;Stop Matching Maybes - More Monad Transformers&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Not a great first example, as it&amp;rsquo;s very much a &amp;ldquo;Big Not-Change&amp;rdquo;, but I thought
+it was worth a mention.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;After going through some of FP Complete&amp;rsquo;s tutorials on monad transformers, I
+thought that I&amp;rsquo;d go back to my solutions finding vast swathes of code, matching
+on &lt;code&gt;Maybe&lt;/code&gt;s and rip it all out in favour of monad transformer stacks.&lt;/p&gt;
+&lt;p&gt;That didn&amp;rsquo;t actually happen. There was actually relatively few cases where I
+was matching &lt;code&gt;Maybe&lt;/code&gt;s and they were quite tidily cleaned up by making the
+function generic over &lt;code&gt;MonadFail&lt;/code&gt; in stead, see below.&lt;/p&gt;
+&lt;p&gt;It could be that there weren&amp;rsquo;t lots places where monad transformers could have
+been used to really clean up my code.  Or perhaps the concept hasn&amp;rsquo;t sunk in
+enough for me to spot those places.  I had used &lt;code&gt;StateT&lt;/code&gt; in one of my solutions
+already so I could print out the state to terminal as it was evolving (covered
+in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;).  It might be easier to spot where they could be used when
+I&amp;rsquo;m writing something fresh, rather than revisiting and refactoring code that
+was to some extent written around not knowing to use them.&lt;/p&gt;
+&lt;h2 id=&#34;alternatively-use-monadfail&#34;&gt;Alternatively, Use MonadFail&lt;/h2&gt;
+&lt;p&gt;In &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt; I discussed a pattern I found of defining functions who&amp;rsquo;s
+result could represent a failure, as being generic over &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt;&lt;/a&gt;
+and allowing the calling code to choose the instance of &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt;&lt;/a&gt; to
+represent the failure.&lt;/p&gt;
+&lt;p&gt;My solution to &lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;day 6&lt;/a&gt; involved loading some data into a Tree, and at a
+one point, finding the path to a given node. Trouble was, the code assumed the
+given node existed in the tree, and if it didn&amp;rsquo;t, the code didn&amp;rsquo;t crash, it
+gave a nonsensical answer. 😟&lt;/p&gt;
+&lt;p&gt;Using this pattern, this code was surprisingly easy to fix.  My function
+&lt;code&gt;orbitalHops&lt;/code&gt; which told you how many hops there were between two nodes of a
+tree was fixed up to look like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Tree &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; T
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;orbitalHops&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;orbitalHops&lt;/span&gt; orbs node1 node2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; orbs `contains` node1
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; orbs `contains` node2
+  return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;-- previous logic that assumed nodes were in tree&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+    contains &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m ()
+    contains tree node &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; node `elem` &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;flatten tree &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt; return () &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; fail &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In my example of using this pattern with &lt;code&gt;MonadFail&lt;/code&gt; in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, there
+was a top level function who&amp;rsquo;s type gave &lt;code&gt;m&lt;/code&gt; a concrete type.  This time, I
+used the fact that &lt;code&gt;IO&lt;/code&gt; implements &lt;code&gt;MonadFail&lt;/code&gt; and passed the non-concrete &lt;code&gt;m&lt;/code&gt;
+up to &lt;code&gt;main&lt;/code&gt; to let the script fail with the error above if a node given was
+not in the data.&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;main&lt;/code&gt; I had:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orbitalHops&lt;/span&gt; orbitTree &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;YOU&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SAN&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; print
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Causing the script to either print the number of orbital hops between &lt;code&gt;&amp;quot;YOU&amp;quot;&lt;/code&gt; &amp;amp;
+&lt;code&gt;&amp;quot;SAN&amp;quot;&lt;/code&gt; or fail with the error above, provided by the call to &lt;code&gt;fail&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;no-more-strings&#34;&gt;No More Strings&lt;/h2&gt;
+&lt;p&gt;The wisdom appears to be:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Don&amp;rsquo;t use &lt;code&gt;String&lt;/code&gt;, use &lt;code&gt;Text&lt;/code&gt; (or &lt;code&gt;ByteString&lt;/code&gt; for raw data)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;which a quick google will provide pretty solid justification for, so I&amp;rsquo;ll not
+repeat it here.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/6&#34;&gt;Day 6&lt;/a&gt; was also the first problem where the input data remained as a
+string throughout the program and some string manipulation was performed.&lt;/p&gt;
+&lt;p&gt;I was bracing myself for a bit of a fight to update the solution from using
+&lt;code&gt;String&lt;/code&gt; to using &lt;code&gt;Text&lt;/code&gt;, but actually found I could do an almost like for like
+replacement.&lt;/p&gt;
+&lt;p&gt;I made some new imports:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Text &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; Txt  &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;I&lt;/span&gt; was already importing &lt;span style=&#34;color:#66d9ef&#34;&gt;Data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; as &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;, so went with &lt;span style=&#34;color:#66d9ef&#34;&gt;Txt&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Text.Encoding &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; TE
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.ByteString &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; B
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.Monoid ((&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and removed another: &lt;code&gt;import Data.List.Split (splitOn)&lt;/code&gt;, then:&lt;/p&gt;
+&lt;p&gt;Swapped &lt;code&gt;String&lt;/code&gt; for &lt;code&gt;Txt.Text&lt;/code&gt; where it appeared in type statements.&lt;/p&gt;
+&lt;p&gt;Prepended &lt;code&gt;Txt.&lt;/code&gt; to all the functions acting on strings.&lt;/p&gt;
+&lt;p&gt;Swapped the use of Prelude&amp;rsquo;s &lt;code&gt;readFile&lt;/code&gt; with &lt;code&gt;fmap TE.decodeUtf8 . B.readFile&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;And Replaced usages of &lt;code&gt;++&lt;/code&gt; with &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The compiler picked up a couple of places I&amp;rsquo;d missed and voilà, the script ran
+as it did before.&lt;/p&gt;
+&lt;p&gt;I was able to completely remove &lt;code&gt;String&lt;/code&gt; from the program, with one exception:
+the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:fail&#34;&gt;&lt;code&gt;fail&lt;/code&gt;&lt;/a&gt; function from &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt;&lt;/a&gt; takes a &lt;code&gt;String&lt;/code&gt;.  This
+required a call to &lt;a href=&#34;https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack&#34;&gt;&lt;code&gt;unpack&lt;/code&gt;&lt;/a&gt; to turn &lt;code&gt;Text&lt;/code&gt; into &lt;code&gt;String&lt;/code&gt;.  So:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;became:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Txt&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unpack &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt; node
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;strictness&#34;&gt;Strictness&lt;/h3&gt;
+&lt;p&gt;One of the reasons touted for &lt;code&gt;String&lt;/code&gt;, a singly linked lazy list of &lt;code&gt;Char&lt;/code&gt;s,
+being a bad representation of textual data is that it&amp;rsquo;s lazy.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/8&#34;&gt;Day 8&lt;/a&gt; was a good problem to experiment with as my solution involved
+manipulating lists of characters, &lt;code&gt;[Char]&lt;/code&gt;, a.k.a: &lt;code&gt;String&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;After refactoring the solution into a once page script and having a bit of a
+tidy up, but otherwise leaving the substance of the code the same, I built
+and ran the solution, in file &lt;code&gt;day8string.hs&lt;/code&gt;, like so:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack --resolver lts-15.4 ghc -- day8string.hs -O2 &amp;amp;&amp;amp; ./day8string +RTS -s
+[1 of 1] Compiling Main             ( day8string.hs, day8string.o )
+Linking day8string ...
+...
+[solution output]
+...
+       4,892,080 bytes allocated in the heap
+         848,552 bytes copied during GC
+         394,736 bytes maximum residency (2 sample(s))
+          36,256 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0         3 colls,     0 par    0.000s   0.001s     0.0002s    0.0002s
+  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0003s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.000s  (  0.001s elapsed)
+  GC      time    0.000s  (  0.001s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.000s  (  0.002s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    0 bytes per MUT second
+
+  Productivity 100.0% of total user, 55.5% of total elapsed
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This gets some statistics out of the garbage collector. &lt;a href=&#34;https://downloads.haskell.org/~ghc/8.4.2/docs/html/users_guide/runtime_control.html#rts-flag--s%20%5B%E2%9F%A8file%E2%9F%A9%5D&#34;&gt;These docs&lt;/a&gt;
+tells you what they all mean. The memory usage stats at the top are what&amp;rsquo;s
+interesting to us here.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;#no-more-strings&#34;&gt;As with my Day 6 solution&lt;/a&gt;, I went through and replaced all the
+usages of &lt;code&gt;[Char]&lt;/code&gt; with &lt;code&gt;Text&lt;/code&gt;, and functions acting on them with their
+counterparts from &lt;a href=&#34;https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html&#34;&gt;Data.Text&lt;/a&gt;, using
+&lt;a href=&#34;https://hackage.haskell.org/package/bytestring-0.10.10.0/docs/Data-ByteString.html#v:readFile&#34;&gt;&lt;code&gt;Data.ByteString.readFile&lt;/code&gt;&lt;/a&gt; to read the data from file.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack --resolver lts-15.4 ghc -- day8.hs -O2 &amp;amp;&amp;amp; ./day8 +RTS -s
+...
+       1,464,056 bytes allocated in the heap
+          10,264 bytes copied during GC
+          44,512 bytes maximum residency (1 sample(s))
+          29,216 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;These numbers appear to significantly reduced, which is good.  I was interest
+how much of this was attributable to laziness alone and not other reasons why
+&lt;code&gt;Text&lt;/code&gt; might be more efficient than &lt;code&gt;String&lt;/code&gt;. I made another copy of the
+script, this time using the lazy counterparts of the &lt;code&gt;Text&lt;/code&gt; libraries:
+&lt;a href=&#34;https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy.html&#34;&gt;Data.Text.Lazy&lt;/a&gt;, and &lt;a href=&#34;https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text-Lazy-IO.html&#34;&gt;Data.Text.Lazy.IO&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack --resolver lts-15.4 ghc -- day8lazy.hs -O2 &amp;amp;&amp;amp; ./day8lazy +RTS -s
+...
+       3,566,680 bytes allocated in the heap
+          34,224 bytes copied during GC
+          86,824 bytes maximum residency (2 sample(s))
+          36,056 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The numbers went back up a bit, but nowhere near the level of the solution
+using &lt;code&gt;String&lt;/code&gt; and the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:readFile&#34;&gt;&lt;code&gt;readFile&lt;/code&gt; from Prelude&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I imagine there&amp;rsquo;s a few ways in which &lt;code&gt;Text&lt;/code&gt; has been made to be more efficient
+than &lt;code&gt;String&lt;/code&gt;.  It&amp;rsquo;s good to know that in the rarer case where you might want
+to evaluate text lazily, lazy &lt;code&gt;Text&lt;/code&gt; is still &lt;em&gt;that much more efficient&lt;/em&gt; than
+&lt;code&gt;String&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;lenses&#34;&gt;Lenses&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Lenses are awesome.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In my intcode computer code, which the building of and using was the focus of
+&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, I had defined the core &amp;ldquo;intcode data&amp;rdquo; in its own module, that
+consisted of an &lt;code&gt;Intcode&lt;/code&gt; type:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; {
+  input&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;],
+  code&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;],
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- ip: Instruction Pointer&lt;/span&gt;
+  ip&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;,
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- rb: Relative Base&lt;/span&gt;
+  rb&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;,
+  output&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+} &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and some functions that edit the subfields, such as:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;moveIp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;moveIp&lt;/span&gt; i ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; setIp (i &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; ip ic) ic
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;setIp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;setIp&lt;/span&gt; i ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;{
+    input &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; input ic,
+    code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; code ic,
+    ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; i,
+    rb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rb ic,
+    output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output ic
+}
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;changeRb&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;changeRb&lt;/span&gt; b ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;{
+    input &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; input ic,
+    code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; code ic,
+    ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ip ic,
+    rb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (rb ic) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; b,
+    output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output ic
+}
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;consOutput&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;consOutput&lt;/span&gt; o ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;{
+    input &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; input ic,
+    code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; code ic,
+    ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ip ic,
+    rb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rb ic,
+    output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; o&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;(output ic)
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With the exception of some like &lt;code&gt;moveIp&lt;/code&gt; that called other functions,
+they all followed the same pattern of &amp;ldquo;make a new &lt;code&gt;Intcode&lt;/code&gt; with one
+field different.&lt;/p&gt;
+&lt;p&gt;The full list of them could be seen in export statement of the module:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;module&lt;/span&gt; Intcode.Data
+    ( &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;)
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;moveIp&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;setIp&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;changeRb&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;updateCode&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;tailInput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;setInput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;consInput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;appendInput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;setOutput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;consOutput&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;scrubOutput&lt;/span&gt;
+    ) &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;em&gt;A lot of copy pasting and Vim macros were used when I first wrote this out.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I did later find out that Haskell has a built-in way for dealing with this
+boiler plate as an instance of a record type can be referred to with respect to another,
+only mentioning the records that change.  E.g. &lt;code&gt;consOutput&lt;/code&gt; from above could have been
+written:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;consOutput&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;consOutput&lt;/span&gt; o ic &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ic { output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; o&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;(output ic) }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And these can be chained, so you could have something like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ic&lt;/span&gt; { output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; o&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;(output ic) } { ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ip ic &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This would have massively reduced the boilerplate in this module on its own.  But
+we can go one better with lenses.&lt;/p&gt;
+&lt;p&gt;Using the &lt;a href=&#34;http://hackage.haskell.org/package/microlens-platform&#34;&gt;&lt;code&gt;microlens-platform&lt;/code&gt;&lt;/a&gt; package, to also get auto generation
+of lenses with Template Haskell as well as the functions from &lt;code&gt;microlens&lt;/code&gt;, I was
+able to refactor these functions to simple single liners such as:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;consInput&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;consInput&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; over input (&lt;span style=&#34;color:#a6e22e&#34;&gt;\&lt;/span&gt;inp &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; i&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;inp)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And the &amp;ldquo;set&amp;rdquo; functions became entirely trivial:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setIp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;setIp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set ip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As the functions had become so trivial I decided to remove them entirely and in stead
+export the lenses for calling code to use.&lt;/p&gt;
+&lt;p&gt;The previously 130+ lines of code module became:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;module&lt;/span&gt; Intcode.Data
+    ( &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;-- Intcode Lenses&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;input&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;code&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;ip&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;rb&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;output&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;-- init&lt;/span&gt;
+    , &lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt;
+    ) &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lens.Micro.Platform (&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;over&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Sequence &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; S
+
+&lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;-- Intcode data&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+  { _input&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  , _code &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- ip: Instruction Pointer&lt;/span&gt;
+  , _ip&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- rb: Relative Base&lt;/span&gt;
+  , _rb&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , _output&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  } &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;)
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;#39;&amp;#39;Intcode&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; newCode newInput &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;{
+  _input &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; newInput,
+  _code &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; newCode,
+  _ip &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+  _rb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+  _output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;[]&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(I also &lt;a href=&#34;#using-sequence-to-model-intcode&#34;&gt;refactored the intcode data to be held in a Sequence&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;This basic use of lenses with: auto-generation, getting, setting, and modifying
+seems an obvious win for whenever I&amp;rsquo;m defining my own data aggregate like this.
+When I have types nested inside types, lenses&amp;rsquo; composability will come in
+handy.  I think it&amp;rsquo;s going to be my default approach in future.&lt;/p&gt;
+&lt;p&gt;I looked through a couple of my other solutions to see where I had defined some
+non-trivial aggregation of data where I could clean up the code with lenses.
+My solutions to &lt;a href=&#34;https://adventofcode.com/2019/day/11&#34;&gt;Day 11&lt;/a&gt; and &lt;a href=&#34;https://adventofcode.com/2019/day/13&#34;&gt;Day 13&lt;/a&gt; both followed the same
+pattern:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Defined the state that matters in a type, &lt;code&gt;s&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;Write a &amp;ldquo;step function&amp;rdquo; to progress that state, of the form &lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt;,
+where &lt;code&gt;a&lt;/code&gt; is some output of the computation,&lt;/li&gt;
+&lt;li&gt;Wrap that in &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;the State Monad&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;And recurse, until some condition is met.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt; covers these solutions in more detail.&lt;/p&gt;
+&lt;p&gt;I started to look at refactoring these solutions to use lenses.  But the &amp;ldquo;step
+functions&amp;rdquo; were pretty much the only places lenses could be applied, and these
+functions did a &amp;ldquo;bulk update&amp;rdquo; of the state where every record is being changed.
+In this cases, I think the record syntax looked clearer than a long chain of
+lenses.&lt;/p&gt;
+&lt;h2 id=&#34;deriving-default&#34;&gt;Deriving Default&lt;/h2&gt;
+&lt;p&gt;While I was &lt;a href=&#34;#lenses&#34;&gt;refactoring the intcode solution to use lenses&lt;/a&gt; to
+access fields in the &lt;code&gt;Intcode&lt;/code&gt; type, I also wanted to refactor the &amp;ldquo;new&amp;rdquo;
+function, so it wasn&amp;rsquo;t calling the record functions, now prepended with an
+underscore, directly.&lt;/p&gt;
+&lt;p&gt;In Rust I&amp;rsquo;d do:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Default)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SomeData&lt;/span&gt; {
+    foo: &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;,
+    bar: String,
+    baz: Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;impl&lt;/span&gt; SomeData {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;new&lt;/span&gt;(bar: String) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Self&lt;/span&gt; {
+        Self {
+            bar,
+            ..Default::default()
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(&lt;a href=&#34;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=b15e306d979834af9ca6fe13d48aacc4&#34;&gt;This code in Rust playground&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;I was hoping to achieve this for my &lt;code&gt;Intcode&lt;/code&gt; type, with something similar in
+Haskell like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;-- DOES NOT COMPILE&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lens.Micro.Platform (&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Sequence &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; S
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.Default
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+  { _input&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  , _code &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , _ip&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , _rb&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , _output&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  } &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Default&lt;/span&gt;)
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;#39;&amp;#39;Intcode&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; c i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set code c &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; set input i &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; def
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This failed to compile with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;error:
+    • Can&#39;t make a derived instance of ‘Default Intcode’:
+        ‘Default’ is not a stock derivable class (Eq, Show, etc.)
+        Try enabling DeriveAnyClass
+    • In the data declaration for ‘Intcode’
+   |
+29 |   } deriving(Show, Eq, Default)
+   |                        ^^^^^^^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So I included the &lt;code&gt;DeriveAnyClass&lt;/code&gt; language extension, then:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; error:
+    • No instance for (GHC.Generics.Generic Intcode)
+        arising from the &#39;deriving&#39; clause of a data type declaration
+      Possible fix:
+        use a standalone &#39;deriving instance&#39; declaration,
+          so you can specify the instance context yourself
+    • When deriving the instance for (Default Intcode)
+   |
+29 |   } deriving(Show, Eq, Default)
+   |                        ^^^^^^^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;GHC.Generics.Generic&lt;/code&gt;, I can &amp;ldquo;hoogle&amp;rdquo; that. Following a few links lead me to
+the &lt;a href=&#34;http://hackage.haskell.org/package/generic-deriving-1.13.1/docs/Generics-Deriving-Default.html&#34;&gt;Generics.Deriving.Default&lt;/a&gt; module.&lt;/p&gt;
+&lt;p&gt;After some fighting with the compiler and adding a bunch of language extensions
+that it was asking me to, one by one, I realised this isn&amp;rsquo;t what I want.  This
+module appears to be a way to derive a default implementation of some class
+instances rather than deriving the ability to default the value of type
+&lt;code&gt;Intcode&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Going back to the last error I tried also deriving &lt;code&gt;Generic&lt;/code&gt;, as that was shown
+in the examples in &lt;a href=&#34;http://hackage.haskell.org/package/generic-deriving-1.13.1/docs/Generics-Deriving-Default.html&#34;&gt;Generics.Deriving.Default&lt;/a&gt;, and examples on the
+homepage of the &lt;a href=&#34;https://hackage.haskell.org/package/data-default-extra&#34;&gt;data-default-extra&lt;/a&gt; which I also looked at while
+googling around.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;error:
+    • Can&#39;t make a derived instance of ‘Generic Intcode’:
+        You need DeriveGeneric to derive an instance for this class
+    • In the data declaration for ‘Intcode’
+   |
+32 |   deriving(Generic, Default, Show, Eq)
+   |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I was anticipating another merry-go-round of the compiler telling me to add
+language extensions one by one, but adding &lt;code&gt;DeriveGeneric&lt;/code&gt; made this work.&lt;/p&gt;
+&lt;p&gt;The finished article looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE DeriveGeneric, DeriveAnyClass #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lens.Micro.Platform (&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Sequence &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; S
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; GHC.Generics (&lt;span style=&#34;color:#66d9ef&#34;&gt;Generic&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.Default (&lt;span style=&#34;color:#66d9ef&#34;&gt;Default&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;def&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+  { _input&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  , _code &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- ip: Instruction Pointer&lt;/span&gt;
+  , _ip&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;-- rb: Relative Base&lt;/span&gt;
+  , _rb&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , _output&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
+  }
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Generic&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Default&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;)
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;#39;&amp;#39;Intcode&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;newIC&lt;/span&gt; c i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set code c &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; set input i &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; def
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So deriving a &lt;code&gt;Default&lt;/code&gt; instance isn&amp;rsquo;t quite as easy as in Rust, and took a bit
+of playing around, but I&amp;rsquo;m happy that it was reasonably simple once I worked it
+out.&lt;/p&gt;
+&lt;h2 id=&#34;replacing-lists-with-vectors&#34;&gt;Replacing Lists with Vectors&lt;/h2&gt;
+&lt;p&gt;My solution to &lt;a href=&#34;https://adventofcode.com/2019/day/10&#34;&gt;Day 10&lt;/a&gt; involved &lt;em&gt;a lot&lt;/em&gt; of manipulating lists.  There
+were &lt;code&gt;fmap&lt;/code&gt;s, zips, folds, concats, all over the place.  Chances are, as with
+the rest of the solutions I&amp;rsquo;ve revisited, this logic could be simplified
+somewhat.  But with it as it was, I saw it as a good exercise to convert to
+using Vectors and see what the result was.&lt;/p&gt;
+&lt;p&gt;Firstly: which Vector? The elements are of type:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;
+  { px &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , py &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
+  , pAst &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Bool&lt;/span&gt;
+  }
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Ord&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;which isn&amp;rsquo;t a member of &lt;code&gt;Prim&lt;/code&gt; or &lt;code&gt;Storable&lt;/code&gt;, so we need a &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html&#34;&gt;boxed Vector&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Importing boxed vectors:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Vector &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; V
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I set out making a copy of each function, &lt;code&gt;functionName&#39;&lt;/code&gt;, which worked on
+Vectors instead of Lists. Once they all compiled, I switched &lt;code&gt;main&lt;/code&gt; over to
+using Vectors.&lt;/p&gt;
+&lt;p&gt;As the boxed &lt;code&gt;Vector&lt;/code&gt; is a member of a lot of the same typeclasses, &lt;code&gt;Funtor&lt;/code&gt;,
+&lt;code&gt;Monad&lt;/code&gt;, &lt;code&gt;Foldable&lt;/code&gt;, etc, a fair amount of the code could stay the same.&lt;/p&gt;
+&lt;p&gt;For the cases where it couldn&amp;rsquo;t, there was generally a function from
+&lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html&#34;&gt;Data.Vector&lt;/a&gt; that did the job.&lt;/p&gt;
+&lt;p&gt;Where I was previously providing some data with coordinates by zipping the List
+with integers:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;zip&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was able to instead call &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:indexed&#34;&gt;&lt;code&gt;indexed&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;indexed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There was another place where I was putting a single value, &lt;code&gt;p&lt;/code&gt;, in a List:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;[p]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I went with &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:singleton&#34;&gt;&lt;code&gt;singleton&lt;/code&gt;&lt;/a&gt; for the vector case:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;singleton p
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I could have also leveraged &lt;code&gt;Vector&lt;/code&gt;&#39;s &lt;code&gt;Applicative&lt;/code&gt; or &lt;code&gt;Monad&lt;/code&gt; instances with
+&lt;code&gt;pure p&lt;/code&gt; or &lt;code&gt;return p&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;p&gt;There were a few places where I&amp;rsquo;d made use of &lt;a href=&#34;https://wiki.haskell.org/List_comprehension&#34;&gt;List comprehensions&lt;/a&gt;.
+Replacing their usage with &lt;code&gt;fmap&lt;/code&gt; and &lt;code&gt;filter&lt;/code&gt; was fairly straight forward.  In
+once case it made the code much simpler.  I had a function:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;\&lt;/span&gt;ps &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [p&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;p&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;ps, pAst p])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;which instead could be:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;(filter pAst)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When I learned a bit of Haskell a few years ago I absolutely lived off List
+comprehensions.  Perhaps because I was coming from Python at the time, and it
+was a point of familiarity.  These days Rust is my primary language and I&amp;rsquo;m
+much more comfortable with maps and filters and the like.  I&amp;rsquo;ve hardly used
+List comprehensions this time around and I haven&amp;rsquo;t really missed them.  In fact
+when I first started writing Rust I came across the &lt;a href=&#34;https://crates.io/crates/cute&#34;&gt;cute&lt;/a&gt; crate that
+lets you write Python style list comprehensions in Rust via a macro.  I liked
+this, but after some code review feedback saying &amp;ldquo;just get good at the Rust way
+of doing it&amp;rdquo;, I realised I was only holding onto this as a safety blanket,
+so let it go.&lt;/p&gt;
+&lt;p&gt;I was thinking that I was mostly over List comprehensions and wouldn&amp;rsquo;t use them
+a huge amount going forward.  But then I found this on the internet: &lt;a href=&#34;https://gitlab.haskell.org/ghc/ghc/-/wikis/monad-comprehensions&#34;&gt;Monad
+comprehensions&lt;/a&gt;! I&amp;rsquo;ve got to give these a spin at some point!&lt;/p&gt;
+&lt;p&gt;As with &lt;a href=&#34;#no-more-strings&#34;&gt;converting usages of &lt;code&gt;String&lt;/code&gt; to &lt;code&gt;Text&lt;/code&gt;&lt;/a&gt;, this went fairly
+smoothly.  A lot of things work the same and for what isn&amp;rsquo;t the same &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html&#34;&gt;the
+documentation&lt;/a&gt; is pretty good. My one complaint with the docs are that I
+wish related modules&amp;rsquo; docs linked to each other by default. I found myself
+re-finding the package page on &lt;a href=&#34;https://hackage.haskell.org/&#34;&gt;Hackage&lt;/a&gt; and following the link to the
+other module&amp;rsquo;s docs from there.&lt;/p&gt;
+&lt;h3 id=&#34;performance&#34;&gt;Performance&lt;/h3&gt;
+&lt;p&gt;Let&amp;rsquo;s see what effect this change had on memory usage.  Running the solution
+using Lists:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10.hs -O2 &amp;amp;&amp;amp; ./day10 +RTS -s
+...
+problem output
+...
+     344,585,704 bytes allocated in the heap
+      22,319,112 bytes copied during GC
+         333,584 bytes maximum residency (2 sample(s))
+          29,216 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0       329 colls,     0 par    0.015s   0.015s     0.0000s    0.0002s
+  Gen  1         2 colls,     0 par    0.000s   0.000s     0.0002s    0.0002s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.121s  (  0.121s elapsed)
+  GC      time    0.015s  (  0.015s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.136s  (  0.136s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    2,849,888,381 bytes per MUT second
+
+  Productivity  88.8% of total user, 88.9% of total elapsed
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And then the solution refactored to use Vectors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ stack --resolver lts-15.4 ghc --package diagrams-lib --package statistics -- day10vec.hs -O2 &amp;amp;&amp;amp; ./day10vec +RTS -s
+...
+problem output
+...
+     509,421,528 bytes allocated in the heap
+      38,949,152 bytes copied during GC
+         298,760 bytes maximum residency (4 sample(s))
+          29,320 bytes maximum slop
+               0 MB total memory in use (0 MB lost due to fragmentation)
+
+                                     Tot time (elapsed)  Avg pause  Max pause
+  Gen  0       487 colls,     0 par    0.027s   0.029s     0.0001s    0.0008s
+  Gen  1         4 colls,     0 par    0.001s   0.001s     0.0003s    0.0008s
+
+  INIT    time    0.000s  (  0.000s elapsed)
+  MUT     time    0.166s  (  0.172s elapsed)
+  GC      time    0.028s  (  0.030s elapsed)
+  EXIT    time    0.000s  (  0.000s elapsed)
+  Total   time    0.195s  (  0.203s elapsed)
+
+  %GC     time       0.0%  (0.0% elapsed)
+
+  Alloc rate    3,065,812,448 bytes per MUT second
+
+  Productivity  85.3% of total user, 84.9% of total elapsed
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So it performed worse with Vectors.  Taking a look at the code, I saw two
+reasons why this might be.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://adventofcode.com/2019/day/10&#34;&gt;The problem&lt;/a&gt; deals with line of sight between points on a
+grid.  Part of my solution sorted the points of interest into the rays they
+are on from a certain point, defined by their angle from the vertical.  It
+did this by folding over a &lt;code&gt;Set&lt;/code&gt; of the points of interest to construct
+a &lt;code&gt;Map&lt;/code&gt; of points on each ray.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;raysFromPoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;raysFromPoint&lt;/span&gt; p0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; foldl (&lt;span style=&#34;color:#a6e22e&#34;&gt;\&lt;/span&gt;rays p &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;insertWith (&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;) (angleFromPoints p0 p) [p] rays) &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;empty
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and in the Vector implementation:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;raysFromPoint&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;raysFromPoint&lt;/span&gt; p0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;foldl (&lt;span style=&#34;color:#a6e22e&#34;&gt;\&lt;/span&gt;rays p &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;insertWith (&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.++&lt;/span&gt;) (angleFromPoints p0 p) (&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;singleton p) rays) &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;empty
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;where &lt;code&gt;angleFromPoints&lt;/code&gt; gives the angle between the vertical and the line between
+two points.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;angleFromPoints&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Angle&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Float&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In the List case the &lt;code&gt;(++)&lt;/code&gt; is quite efficient.  The left hand side is always a
+list with a single element, so Haskell only needs to allocate a new element
+which points to the existing list as its tail.&lt;/p&gt;
+&lt;p&gt;For Vectors, &lt;code&gt;(++)&lt;/code&gt; is &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:-43--43-&#34;&gt;of order O(m + n)&lt;/a&gt; as the whole new combined
+vector has to be allocated.  Granted, &lt;code&gt;m&lt;/code&gt; is &lt;code&gt;1&lt;/code&gt; in this case, but that leaves
+us with an operation of order &lt;code&gt;n&lt;/code&gt; where previously it was constant complexity.&lt;/p&gt;
+&lt;p&gt;I also had to convert the Vector to a List in two places using &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:toList&#34;&gt;&lt;code&gt;toList&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I couldn&amp;rsquo;t see a way to directly turn a Vector into a Set so resorted to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Set&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fromList &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;toList
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I wanted to flatten a &lt;code&gt;Vector Vector Points&lt;/code&gt; to &lt;code&gt;Vector Points&lt;/code&gt;, but
+&lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:concat&#34;&gt;&lt;code&gt;V.concat&lt;/code&gt;&lt;/a&gt; has signature &lt;code&gt;[ Vector a ] =&amp;gt; Vector a&lt;/code&gt;.  I couldn&amp;rsquo;t
+find another way of doing that so went with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;concat &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;toList
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;em&gt;UPDATE: It looks as if using &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:concatMap&#34;&gt;&lt;code&gt;V.concatMap&lt;/code&gt;&lt;/a&gt; would have avoided the
+need to use the second of these &lt;code&gt;V.formList&lt;/code&gt;s.  What effect that would have on
+performance, I don&amp;rsquo;t know.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the input data, non of the rays are going to have more than around
+10 points on them, so these Vectors aren&amp;rsquo;t going to ever be that large, but
+both of these things are work that isn&amp;rsquo;t being done in the solution with Lists
+and will come at a cost.&lt;/p&gt;
+&lt;p&gt;Are there any real savings? There might be some savings from Vector&amp;rsquo;s
+strictness, but from what I can tell, Vector&amp;rsquo;s really out perform Lists when
+they&amp;rsquo;re being indexed.  This solution wasn&amp;rsquo;t doing any indexing.&lt;/p&gt;
+&lt;h2 id=&#34;using-sequence-to-model-intcode&#34;&gt;Using Sequence to Model Intcode&lt;/h2&gt;
+&lt;p&gt;From the offset, when I first implemented a solution to &lt;a href=&#34;https://adventofcode.com/2019/day/2&#34;&gt;Day 2&lt;/a&gt;, which
+introduces the problem of implementing an intcode computer, I knew storing the
+intcode data in a List was going to be bad for performance as the intcode data
+needed to be reference by index &lt;em&gt;a lot&lt;/em&gt; and have values at specific indices
+updated.&lt;/p&gt;
+&lt;p&gt;I made a note to come back to it later, figuring that as the intcode computer
+implementation is built up over days 2, 5, 7, and 9, after implementing them
+I know all the things I need to do with the data, and choose a replacement for
+List then.  This did mean that I&amp;rsquo;d built up a solution around using Lists,
+but I backed myself to keeps things modular.&lt;/p&gt;
+&lt;p&gt;After considering a few options, I decided I liked what I saw in &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Sequence.html&#34;&gt;&lt;code&gt;Data.Sequence&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;Logarithmic-time access to any element&amp;rdquo;,&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Logarithmic-time concatenation&amp;rdquo;,&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Constant-time access to both the front and the rear&amp;rdquo; - appending and prepending,&lt;/li&gt;
+&lt;li&gt;The ability to change a value at an index with &lt;code&gt;update&lt;/code&gt;, and&lt;/li&gt;
+&lt;li&gt;A List-like interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The refactor went pretty smoothly.  The List-like interface meant a lot of
+functions could be replaced like-for-like and those that couldn&amp;rsquo;t had a fairly
+obvious replacement found in &lt;a href=&#34;https://hackage.haskell.org/package/containers-0.6.2.1/docs/Data-Sequence.html&#34;&gt;the docs&lt;/a&gt;.  It having instances of
+&lt;code&gt;Functor&lt;/code&gt;, &lt;code&gt;Foldable&lt;/code&gt;, and &lt;code&gt;Monad&lt;/code&gt; meant a lot of the code could stay the same.&lt;/p&gt;
+&lt;p&gt;The part of the code that looked after updating values in the intcode,
+according to the rules set in the problem, ended up looking a lot cleaner.&lt;/p&gt;
+&lt;p&gt;Where in the implementation with lists we had:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNth&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m [a]
+&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNth&lt;/span&gt; n newVal xs
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Cannot replace element with negative index&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; replaceNthInner n newVal xs
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [newVal]
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;(n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; length xs)]] &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [newVal]
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNthInner&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a]
+&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNthInner&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;[]&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNthInner&lt;/span&gt; n newVal (x&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;xs)
+   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; newVal&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;xs
+   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#66d9ef&#34;&gt;:&lt;/span&gt;replaceNthInner (n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) newVal xs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This was cleaned up, and made to match the sequence nomenclature:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; a)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt; n newVal xs
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Cannot replace element with negative index&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update n newVal xs
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.|&amp;gt;&lt;/span&gt; newVal
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; flip (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.|&amp;gt;&lt;/span&gt;) newVal &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&amp;gt;&amp;lt;&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replicate (n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs) &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;S.update&lt;/code&gt; brought a lot of this clean up as it removed the need for
+&lt;code&gt;replaceNthInner&lt;/code&gt;.  The first class ability to append, with &lt;code&gt;S.|&amp;gt;&lt;/code&gt;, also got
+rid of the &lt;code&gt;++ [newVal]&lt;/code&gt; which I&amp;rsquo;ve always found a bit nasty.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t examine what the performance effect was of this refactor. It&amp;rsquo;s on
+my bucket list to read up on proper performance profiling.  When I do, this
+would be a good test case to come back to and benchmark.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;some-failed-attempts&#34;&gt;Some Failed Attempts&lt;/h1&gt;
+&lt;p&gt;There were some things that I had a go at, but after realising I&amp;rsquo;d bitten off
+more than I wanted to chew at that moment, left them as something to come back
+to, or tried something else.&lt;/p&gt;
+&lt;h2 id=&#34;generalising-over-vectors&#34;&gt;Generalising over Vectors&lt;/h2&gt;
+&lt;p&gt;After converting my &lt;a href=&#34;https://adventofcode.com/2019/day/10&#34;&gt;Day 10&lt;/a&gt; solution from using Lists to boxed Vectors,
+and finding the &lt;a href=&#34;#performance&#34;&gt;performance to be worse&lt;/a&gt;, I was going to see
+what the effect of refactoring the solution to use &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Unboxed.html&#34;&gt;unboxed Vectors&lt;/a&gt;
+would be.&lt;/p&gt;
+&lt;p&gt;My plan for this was to refactor the solution to be generic over vector types
+by writing it in terms of &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html&#34;&gt;Data.Vector.Generic&lt;/a&gt;, and then swapping
+the concrete vector type used, at (hopefully) the single point where that was
+defined.&lt;/p&gt;
+&lt;p&gt;I made a start on this, and I&amp;rsquo;m reasonably happy with a process of swapping out
+the module behind the qualified import, and where there are compile errors,
+using &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Generic.html&#34;&gt;the documentation&lt;/a&gt; to find an equivalent function.  The
+only issue was there was a lot of this to do, and I lost the will to do it somewhat.
+I think a better approach will be: next time I&amp;rsquo;m writing something to use
+Vectors, try to write it with generic Vectors and see where that leads.&lt;/p&gt;
+&lt;p&gt;There was one specific thing I hit, that I fixed, but didn&amp;rsquo;t fully
+understand. In the boxed Vector solution I defined the &amp;ldquo;rays&amp;rdquo; that different
+grid points lived on with a map of angle from the vertical to a Vector of
+grid points (&lt;code&gt;Point&lt;/code&gt;).  I had the type alias:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;Angle&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Float&lt;/span&gt;) (&lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In making this generic over vectors, I changed this to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;Angle&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Float&lt;/span&gt;) (v &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;which worked just fine in all but 3 functions&amp;rsquo; type signatures. I had some functions
+to wrap these &amp;ldquo;rays&amp;rdquo; in the &lt;a href=&#34;https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-State-Lazy.html&#34;&gt;State monad&lt;/a&gt;, with one function providing
+the &lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt;, where &lt;code&gt;s&lt;/code&gt; is &amp;ldquo;the rays&amp;rdquo; and another to wrap that in &lt;code&gt;state&lt;/code&gt;,
+and a third to recursively evolve the state until a condition is met.&lt;/p&gt;
+&lt;p&gt;Taking a look at the &amp;ldquo;&lt;code&gt;s -&amp;gt; (a, s)&lt;/code&gt; function&amp;rdquo;, called &lt;code&gt;shootInner&lt;/code&gt;, the compiler
+complained about the type signature:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;shootInner&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;  ((&lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;), &lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; v)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;error:
+    • Illegal qualified type:
+        V.Vector v Point =&amp;gt; Map.Map (Angle Float) (v Point)
+      GHC doesn&#39;t yet support impredicative polymorphism
+    • In the expansion of type synonym ‘Rays’
+      In the type signature:
+        shootInner :: V.Vector v Point =&amp;gt;
+                      Int -&amp;gt; Rays v -&amp;gt; ((Point, Int), Rays v)
+   |
+66 | shootInner ::  V.Vector v Point =&amp;gt; Int -&amp;gt; Rays v -&amp;gt;  ((Point, Int), Rays v)
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The same complaint was levied against the other two functions with signatures:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;shoot&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;State&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; v) (&lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;shootUntil&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;State&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;Rays&lt;/span&gt; v) &lt;span style=&#34;color:#66d9ef&#34;&gt;Point&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(you can read &lt;a href=&#34;https://adventofcode.com/2019/day/10&#34;&gt;the problem description&lt;/a&gt; for the context behind the names,
+basically you spin round and shoot asteroids that are located on the rays).&lt;/p&gt;
+&lt;p&gt;I reduced the script around the error to it&amp;rsquo;s simplest form to try and
+isolate the source of the error:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;#!/&lt;/span&gt;usr&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;bin&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;env stack
+&lt;span style=&#34;color:#75715e&#34;&gt;-- stack --resolver lts-15.4 script --package containers --package vector&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE RankNTypes #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE FlexibleContexts #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Map.Strict          &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; Map
+&lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Vector.Generic      &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; V
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; ()
+&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; print &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hello&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; (v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;)
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;bar&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v
+&lt;span style=&#34;color:#a6e22e&#34;&gt;bar&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; undefined
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;baz&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;  ((&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;), &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;baz&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; undefined
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I hit the same error about &amp;ldquo;impredicative polymorphism&amp;rdquo; here a well.&lt;/p&gt;
+&lt;p&gt;After a bit of changing things to see what happens, I found that removing
+the constraint from the type alias allowed this to compile:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; (v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I did a bit of googling around &amp;ldquo;&lt;a href=&#34;https://gitlab.haskell.org/ghc/ghc/-/wikis/impredicative-polymorphism&#34;&gt;impredicative polymorphism&lt;/a&gt;&amp;rdquo; and it looks like
+I&amp;rsquo;ve got a bit of reading to do before I understand this one, and why it was
+hit for these functions but not others that both take and return &lt;code&gt;Rays v&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For now my take away is: &amp;ldquo;don&amp;rsquo;t put constraints in type aliases&amp;rdquo;.&lt;/p&gt;
+&lt;h2 id=&#34;mutable-vector-to-model-intcode&#34;&gt;Mutable Vector to Model Intcode&lt;/h2&gt;
+&lt;p&gt;Before I settled on &lt;a href=&#34;#using-sequence-to-model-intcode&#34;&gt;choosing a Sequence to represent the intcode
+program&lt;/a&gt;, I was looking into representing it in a &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Mutable.html&#34;&gt;mutable Vector&lt;/a&gt;
+as elements have to be changed a lot, I thought that might be more efficient.&lt;/p&gt;
+&lt;p&gt;But unlike with Sequence, where I was able to pretty much swap out Lists for
+Sequences, changing a few function calls, but otherwise hardly changing the
+surrounding functions or structure of the program, with mutable Vectors I&amp;rsquo;d
+need a fair amount of refactoring.  The &lt;a href=&#34;https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector-Mutable.html#g:10&#34;&gt;functions that access
+elements&lt;/a&gt; all return a monad that would need handling.&lt;/p&gt;
+&lt;p&gt;In this case as well I thought a better approach would be to earmark mutable
+vectors as something to try when attempting a future problem, rather than
+trying to do a big refactor of an existing solution.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;future-improvements&#34;&gt;Future Improvements&lt;/h1&gt;
+&lt;h2 id=&#34;no-prelude-and-rio&#34;&gt;No Prelude and RIO&lt;/h2&gt;
+&lt;p&gt;Now that I&amp;rsquo;ve refactored a fair few of my solutions to not use &lt;code&gt;String&lt;/code&gt; and
+&lt;code&gt;List&lt;/code&gt;, I&amp;rsquo;m hardly using Prelude at all in some of them.&lt;/p&gt;
+&lt;p&gt;I think in next Advent of Code problem I attempt, I&amp;rsquo;ll start by putting&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE NoImplicitPrelude #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;at the top of the file and using &lt;a href=&#34;https://hackage.haskell.org/package/rio&#34;&gt;RIO&lt;/a&gt; as a Prelude replacement and
+build the solution inside the RIO monad.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;what-next&#34;&gt;What Next?&lt;/h1&gt;
+&lt;p&gt;More Advent of Code I guess&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Now I&amp;rsquo;ve done a &amp;ldquo;big refactor&amp;rdquo; of my existing solutions, the next thing to do
+would be to crack on with some new Advent of Code problems.  I&amp;rsquo;m not in any
+particular rush to get through them.  I&amp;rsquo;m finding them a decent backdrop to
+learn things with, and the sooner I finish them, the sooner I have to look
+elsewhere for fresh problems.  I&amp;rsquo;m definitely in the state of mind of seeing
+how much I can learn from doing a solution before moving onto the next one.&lt;/p&gt;
+&lt;p&gt;In the process of attempting more problems I&amp;rsquo;m definitely going to return to &lt;a href=&#34;https://tech.fpcomplete.com/haskell/learn&#34;&gt;FP
+Complete&amp;rsquo;s Tutorials&lt;/a&gt;, both for when I&amp;rsquo;m looking to learn something
+specific that they cover, and for when I&amp;rsquo;m speculating on what might be useful
+for an Advent of Code problem. I see they have a tutorial on performance
+profiling which I&amp;rsquo;m keen to look into.  In this blog post I&amp;rsquo;ve not been
+particularly rigorous when commenting on performance, and at some point I&amp;rsquo;d
+like to do some proper benchmarking on the choice of types in some solutions.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;All the changes I&amp;rsquo;ve made are recorded in &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell/pull/1/files&#34;&gt;this monster pull request&lt;/a&gt;
+(which seems to have done a decent job of following when I changed entire Stack
+project directories into single page scripts).&lt;/em&gt; 💃&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;By this stage, and really by the time I got to &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, I&amp;rsquo;m no
+longer &amp;ldquo;Re-learning&amp;rdquo; Haskell as I&amp;rsquo;ve gone far beyond the level I got to when I
+learned some Haskell a few years ago.  I started this blog series with
+&amp;ldquo;re-learning&amp;rdquo;, so for continuity&amp;rsquo;s sake I&amp;rsquo;ll keep the title as it is. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+     </item>
    
      <item>
        <title>Collecting All the Errors - Rust</title>
@@ -1086,6 +1948,7 @@ don&amp;rsquo;t represent possible values of data the type represents, choose, o
 another type that&amp;rsquo;s better suited.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;As with &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;&gt;Part 1&lt;/a&gt;, all my solutions are &lt;a href=&#34;https://github.com/tarquin-the-brave/aoc-19-haskell&#34;&gt;mastered on Github&lt;/a&gt;, but
 are likely to have been refactored somewhat since this post was written.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/&#34;&gt;&lt;strong&gt;Re-learning Haskell with Advent of Code - Part 3&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;

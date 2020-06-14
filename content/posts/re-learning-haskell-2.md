@@ -1054,6 +1054,9 @@ another type that's better suited.
 _As with [Part 1][part1], all my solutions are [mastered on Github][tarquinaoc], but
 are likely to have been refactored somewhat since this post was written._
 
+[**Re-learning Haskell with Advent of Code - Part 3**][part3]
+
+[part3]: https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/
 [monadfail]: http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Monad-Fail.html
 [tarquinaoc]: https://github.com/tarquin-the-brave/aoc-19-haskell
 [valueofvalues]: https://www.youtube.com/watch?v=-6BsiVyC1kM

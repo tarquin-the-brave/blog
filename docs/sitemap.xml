@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/</loc>
-    <lastmod>2020-05-09T19:00:00+01:00</lastmod>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
+    <lastmod>2020-06-14T12:35:26+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
-    <lastmod>2020-05-09T19:00:00+01:00</lastmod>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</loc>
+    <lastmod>2020-06-14T12:35:26+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://tarquin-the-brave.github.io/blog/</loc>
+    <lastmod>2020-06-14T12:35:26+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/</loc>
     <lastmod>2020-05-09T19:00:00+01:00</lastmod>
   </url>
   

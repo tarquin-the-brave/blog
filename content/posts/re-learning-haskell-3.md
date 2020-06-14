@@ -1,10 +1,10 @@
 +++
 title = "Re-Learning Haskell with Advent of Code - Part 3"
-date = 2020-06-13T12:35:26+01:00
+date = 2020-06-14T12:35:26+01:00
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 After [Part 2][part2], I wanted to go and do some reading. I felt like I could
@@ -37,7 +37,7 @@ This only scratched the surface of what's available there.  It's definitely a
 resource I will be revisiting.
 
 Armed with these newly learnt learnings, I went back to my Advent of Code
-solutions to see how I could improve them.
+solutions to see how I could improve them. :construction_worker: :wrench:
 
 ---
 
@@ -52,13 +52,13 @@ For the simpler problems, I didn't need the overhead of generating a full
 project with `stack new` and opted to replace that with a single `dayX.hs`
 script which starts like:
 
-```haskell
+```
 #!/usr/bin/env stack
 -- stack --resovler lts-15.4 script
 ```
 
-I'd gone with the full project structure given by the default template used by
-`stack new` to get used to importing and exporting and to find the namespacing
+I'd gone with the full project structure, given by the default template used by
+`stack new`, to get used to importing and exporting and to find the namespacing
 control I was happy with.  I've done that now, so I can reduce some of the
 problems to simple scripts and "get things done!".
 
@@ -88,14 +88,15 @@ re-learn Haskell, has you drawing wires on a grid and finding where they cross.
 I was using a long `List` for each "wire" to store the coordinates it passed
 through, then finding where two wires had crossed by putting a function that
 matches the coordinates in an applicative functor across the two lists.  This
-ends up scaling like n<sup>2</sup> as the wires get longer.
+ends up scaling with order `m * n` as the wires get longer.
 
 Essentially `List` was a terrible choice of data structure for this.  Lists
 provide an ordering of their data, and allow you to express duplicates.  We
 want the answer to the question: "what points has a path visited?", we don't
 care about the answers to "what order did the path visit those points in?", and
-"were any points visited more than once?".  But by choosing `List` we pay for
-the answers to those questions.
+"were any points visited more than once?".  But by choosing `List`, or any
+other ordered collection that allows duplicates, we pay for the answers to
+those questions.
 
 A simple refactor to store this data in [`HashSet`s][hashset], and finding the
 [intersection][intersec] to get the points where the wires crossed reduced the
@@ -121,10 +122,10 @@ type aliases.  Perhaps there's some advantages to that style.  At least it
 would stop people writing reams of code to build spaghetti-like systems of
 entirely entangled "objects" that go right round the houses, dig holes, fill
 them back up again, pull in some state from who knows where or when, all just
-to "do a thing", espousing virtues of "encapsulation" and [DRY (at all
+to "do a thing", espousing virtues of "encapsulation" and ["DRY" (at all
 costs)][dry].  I've seen code like that in Rust.  Defining your own types
 provides a lot of control and correctness to your program, as you can lean hard
-on the type system, but perhaps that can be taken too far.
+on the type system, but as with anything, there are costs as well.
 
 Anyway, while writing Haskell I've been trying to use `deriving` as much as
 possible. One thing I picked up from [FP Complete's tutorials][fpch] was the
@@ -212,13 +213,13 @@ was to some extent written around not knowing to use them.
 
 In [Part 2][part2] I discussed a pattern I found of defining functions who's
 result could represent a failure, as being generic over [`MonadFail`][mfail]
-and allowing the calling code to choose the type, that is an instance of
-[`MonadFail`][mfail], to represent the failure.
+and allowing the calling code to choose the instance of [`MonadFail`][mfail] to
+represent the failure.
 
 My solution to [day 6][day6] involved loading some data into a Tree, and at a
 one point, finding the path to a given node. Trouble was, the code assumed the
 given node existed in the tree, and if it didn't, the code didn't crash, it
-gave a nonsensical answer - which is often worse.
+gave a nonsensical answer. :worried:
 
 Using this pattern, this code was surprisingly easy to fix.  My function
 `orbitalHops` which told you how many hops there were between two nodes of a
@@ -231,7 +232,7 @@ orbitalHops :: MonadFail m => T.Tree String -> String -> String -> m Int
 orbitalHops orbs node1 node2 = do
   _ <- orbs `contains` node1
   _ <- orbs `contains` node2
-  return $ // previous logic that assumed nodes were in tree
+  return $ -- previous logic that assumed nodes were in tree
   where
     contains :: MonadFail m => T.Tree String -> String -> m ()
     contains tree node = if node `elem` T.flatten tree then return () else fail $ "Could not find element: " ++ node
@@ -260,7 +261,7 @@ The wisdom appears to be:
 
 > Don't use `String`, use `Text` (or `ByteString` for raw data)
 
-which a quick Google will provide pretty solid justification for, so I'll not
+which a quick google will provide pretty solid justification for, so I'll not
 repeat it here.
 
 [Day 6][day6] was also the first problem where the input data remained as a
@@ -281,10 +282,13 @@ import Data.Monoid ((<>))
 
 and removed another: `import Data.List.Split (splitOn)`, then:
 
-- Swapped `String` for `Txt.Text` where it appeared in type statements,
-- Prepended `Txt.` to all the functions acting on strings,
-- Swapped the use of Prelude's `readFile` with `fmap TE.decodeUtf8 . B.readFile`, and
-- Replaced usages of `++` with `<>`.
+Swapped `String` for `Txt.Text` where it appeared in type statements.
+
+Prepended `Txt.` to all the functions acting on strings.
+
+Swapped the use of Prelude's `readFile` with `fmap TE.decodeUtf8 . B.readFile`
+
+And Replaced usages of `++` with `<>`.
 
 The compiler picked up a couple of places I'd missed and voilà, the script ran
 as it did before.
@@ -392,7 +396,7 @@ $ stack --resolver lts-15.4 ghc -- day8lazy.hs -O2 && ./day8lazy +RTS -s
                0 MB total memory in use (0 MB lost due to fragmentation)
 ```
 
-The numbers went back up a bit, but no where near the level of the solution
+The numbers went back up a bit, but nowhere near the level of the solution
 using `String` and the [`readFile` from Prelude][preludereadfile].
 
 I imagine there's a few ways in which `Text` has been made to be more efficient
@@ -406,7 +410,7 @@ to evaluate text lazily, lazy `Text` is still _that much more efficient_ than
 
 ## Lenses
 
-Lenses are awesome.
+_Lenses are awesome._
 
 In my intcode computer code, which the building of and using was the focus of
 [Part 2][part2], I had defined the core "intcode data" in its own module, that
@@ -482,7 +486,7 @@ module Intcode.Data
     ) where
 ```
 
-A lot of copy pasting and Vim macros were used when I first wrote this out.
+_A lot of copy pasting and Vim macros were used when I first wrote this out._
 
 I did later find out that Haskell has a built-in way for dealing with this
 boiler plate as an instance of a record type can be referred to with respect to another,
@@ -602,7 +606,7 @@ lenses.
 ## Deriving Default
 
 While I was [refactoring the intcode solution to use lenses](#lenses) to
-access, fields in the `Intcode` type, I also wanted to refactor the "new"
+access fields in the `Intcode` type, I also wanted to refactor the "new"
 function, so it wasn't calling the record functions, now prepended with an
 underscore, directly.
 
@@ -628,7 +632,8 @@ impl SomeData {
 
 ([This code in Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=b15e306d979834af9ca6fe13d48aacc4)).
 
-I was hoping to achieve this with something similar in Haskell, like:
+I was hoping to achieve this for my `Intcode` type, with something similar in
+Haskell like:
 
 ```haskell
 --
@@ -774,7 +779,7 @@ import qualified Data.Vector as V
 ```
 
 I set out making a copy of each function, `functionName'`, which worked on
-Vectors instead of Lists, and once they all compiled: switching `main` over to
+Vectors instead of Lists. Once they all compiled, I switched `main` over to
 using Vectors.
 
 As the boxed `Vector` is a member of a lot of the same typeclasses, `Funtor`,
@@ -813,7 +818,7 @@ I went with [`singleton`][singleton] for the vector case:
 V.singleton p
 ```
 
-I could have also leverage `Vector`'s `Applicative` or `Monad` instances with
+I could have also leveraged `Vector`'s `Applicative` or `Monad` instances with
 `pure p` or `return p` respectively.
 
 There were a few places where I'd made use of [List comprehensions][listcomp].
@@ -837,10 +842,10 @@ comprehensions.  Perhaps because I was coming from Python at the time, and it
 was a point of familiarity.  These days Rust is my primary language and I'm
 much more comfortable with maps and filters and the like.  I've hardly used
 List comprehensions this time around and I haven't really missed them.  In fact
-when I first started writing Rust I came across the [cute][cute] library that
+when I first started writing Rust I came across the [cute][cute] crate that
 lets you write Python style list comprehensions in Rust via a macro.  I liked
 this, but after some code review feedback saying "just get good at the Rust way
-of doing it", I realised I was only holding onto this as a safety blanket, and
+of doing it", I realised I was only holding onto this as a safety blanket,
 so let it go.
 
 I was thinking that I was mostly over List comprehensions and wouldn't use them
@@ -926,7 +931,7 @@ problem output
 So it performed worse with Vectors.  Taking a look at the code, I saw two
 reasons why this might be.
 
-[The problem][day10] deals with line of sight between between points on a
+[The problem][day10] deals with line of sight between points on a
 grid.  Part of my solution sorted the points of interest into the rays they
 are on from a certain point, defined by their angle from the vertical.  It
 did this by folding over a `Set` of the points of interest to construct
@@ -979,9 +984,9 @@ find another way of doing that so went with:
 V.concat V.toList
 ```
 
-UPDATE: It looks as if using [`V.concatMap`][vconcatmap] would have avoided the
+_UPDATE: It looks as if using [`V.concatMap`][vconcatmap] would have avoided the
 need to use the second of these `V.formList`s.  What effect that would have on
-performance, I don't know.
+performance, I don't know._
 
 [vconcatmap]: https://hackage.haskell.org/package/vector-0.12.1.2/docs/Data-Vector.html#v:concatMap
 
@@ -1063,6 +1068,8 @@ I didn't examine what the performance effect was of this refactor. It's on
 my bucket list to read up on proper performance profiling.  When I do, this
 would be a good test case to come back to and benchmark.
 
+---
+
 # Some Failed Attempts
 
 There were some things that I had a go at, but after realising I'd bitten off
@@ -1092,7 +1099,7 @@ only issue was there was a lot of this to do, and I lost the will to do it somew
 I think a better approach will be: next time I'm writing something to use
 Vectors, try to write it with generic Vectors and see where that leads.
 
-There was one specific thing I hit, that I worked around, but didn't really
+There was one specific thing I hit, that I fixed, but didn't fully
 understand. In the boxed Vector solution I defined the "rays" that different
 grid points lived on with a map of angle from the vertical to a Vector of
 grid points (`Point`).  I had the type alias:
@@ -1112,7 +1119,7 @@ to wrap these "rays" in the [State monad][state], with one function providing
 the `s -> (a, s)`, where `s` is "the rays" and another to wrap that in `state`,
 and a third to recursively evolve the state until a condition is met.
 
-Take a look at the "`s -> (a, s)` function", called `shootInner`, the compiler
+Taking a look at the "`s -> (a, s)` function", called `shootInner`, the compiler
 complained about the type signature:
 
 ```haskell
@@ -1167,20 +1174,22 @@ baz ::  V.Vector v Int => Int -> Foo v ->  ((Int, Int), Foo v)
 baz = undefined
 ```
 
-I hit the same error about "[impredicative polymorphism][imppol]" here a well.
+I hit the same error about "impredicative polymorphism" here a well.
 
 [imppol]: https://gitlab.haskell.org/ghc/ghc/-/wikis/impredicative-polymorphism
 
 After a bit of changing things to see what happens, I found that removing
 the constraint from the type alias allowed this to compile:
 
-```
+```haskell
 type Foo v = Map.Map Int (v Int)
 ```
 
-I did a bit of googling around "impredicative polymorphism" and it looks like
+I did a bit of googling around "[impredicative polymorphism][imppol]" and it looks like
 I've got a bit of reading to do before I understand this one, and why it was
 hit for these functions but not others that both take and return `Rays v`.
+
+For now my take away is: "don't put constraints in type aliases".
 
 ## Mutable Vector to Model Intcode
 
@@ -1202,6 +1211,8 @@ In this case as well I thought a better approach would be to earmark mutable
 vectors as something to try when attempting a future problem, rather than
 trying to do a big refactor of an existing solution.
 
+---
+
 # Future Improvements
 
 ## No Prelude and RIO
@@ -1220,6 +1231,8 @@ build the solution inside the RIO monad.
 
 [rio]: https://hackage.haskell.org/package/rio
 
+---
+
 # What Next?
 
 More Advent of Code I guess...
@@ -1231,17 +1244,17 @@ learn things with, and the sooner I finish them, the sooner I have to look
 elsewhere for fresh problems.  I'm definitely in the state of mind of seeing
 how much I can learn from doing a solution before moving onto the next one.
 
-In the process of attempting more problems I definitely going to return to [FP
+In the process of attempting more problems I'm definitely going to return to [FP
 Complete's Tutorials][fpch], both for when I'm looking to learn something
 specific that they cover, and for when I'm speculating on what might be useful
 for an Advent of Code problem. I see they have a tutorial on performance
-profiling which I'm keep to look into.  In this blog post I've not been
+profiling which I'm keen to look into.  In this blog post I've not been
 particularly rigorous when commenting on performance, and at some point I'd
 like to do some proper benchmarking on the choice of types in some solutions.
 
 _All the changes I've made are recorded in [this monster pull request][pr]
 (which seems to have done a decent job of following when I changed entire Stack
-project directories into single page scripts._ :dancer:
+project directories into single page scripts)._ :dancer:
 
 [pr]: https://github.com/tarquin-the-brave/aoc-19-haskell/pull/1/files
 

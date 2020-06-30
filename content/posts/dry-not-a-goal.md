@@ -56,7 +56,7 @@ I could take verbose and repetitive code, and chop it up into loads of
 functions and squirrel them away in modules "utils\_1", "utils\_2", &
 "utils\_3", and I would have "achieved DRY".  But the code would be more all
 over the place than when I started and I wouldn't have addressed the underlying
-cause of the problem that the abstractions we just wrong.
+cause of the problem: that the abstractions were just wrong.
 
 > Dry can be a sign of good abstractions, but not a goal in itself.
 

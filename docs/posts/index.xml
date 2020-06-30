@@ -2025,7 +2025,7 @@ as good sign that the abstractions are about right.&lt;/p&gt;
 functions and squirrel them away in modules &amp;ldquo;utils_1&amp;rdquo;, &amp;ldquo;utils_2&amp;rdquo;, &amp;amp;
 &amp;ldquo;utils_3&amp;rdquo;, and I would have &amp;ldquo;achieved DRY&amp;rdquo;.  But the code would be more all
 over the place than when I started and I wouldn&amp;rsquo;t have addressed the underlying
-cause of the problem that the abstractions we just wrong.&lt;/p&gt;
+cause of the problem: that the abstractions were just wrong.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Dry can be a sign of good abstractions, but not a goal in itself.&lt;/p&gt;
 &lt;/blockquote&gt;

@@ -6,10 +6,311 @@
    <description>Recent content on tarquin-the-brave</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-   <lastBuildDate>Thu, 27 Aug 2020 12:29:17 +0100</lastBuildDate>
+   <lastBuildDate>Mon, 05 Oct 2020 20:30:00 +0100</lastBuildDate>
    
        <atom:link href="https://tarquin-the-brave.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Why I Scatter Use Statements Throughout My Rust</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/rust_use_statements/</link>
+       <pubDate>Mon, 05 Oct 2020 20:30:00 +0100</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/rust_use_statements/</guid>
+       <description>&lt;p&gt;A standard pattern across pretty much every language I&amp;rsquo;ve worked with at least,
+is to stick statements that import modules and libraries at the top of the
+page.  Some languages make you do this.  In Rust I don&amp;rsquo;t do this for
+everything, &lt;em&gt;here&amp;rsquo;s why&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;I started to think more and more about what code is like to read rather than
+write. I for one was reading code far more often than I was writing, and the
+code I was writing would, over its lifetime, be read far more often than
+written or edited.&lt;/p&gt;
+&lt;p&gt;To set the scene, take the following code for a fairly pointless CLI tool
+to echo some data or give you a JSON Schema, in a variety of formats:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; anyhow::{anyhow, Context, Result};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; itertools::Itertools;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; schemars::{schema_for, JsonSchema};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde::{Deserialize, Serialize};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde_json::{to_value &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; to_json_value, Value};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde_yaml::{from_reader, to_vec};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::collections::HashSet;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::io::{stdin, stdout, Write};
+&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; structopt::StructOpt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
+    output: String,
+    format: String,
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Deserialize, Serialize, JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; {
+    name: String,
+    data: &lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;,
+    aliases: &lt;span style=&#34;color:#a6e22e&#34;&gt;HashSet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; args &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Cli::from_args();
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; input: &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; from_reader(stdin()).context(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;couldn&amp;#39;t read stdin&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
+        val_to_vec(input.data, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; schema &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; schema_for&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(Data);
+        schema.schema.metadata().description &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Some(format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aliases can be {}&amp;#34;&lt;/span&gt;,
+            input.aliases.into_iter().format(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;, &amp;#34;&lt;/span&gt;)
+        ));
+
+        val_to_vec(to_json_value(schema)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Err(anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output type&amp;#34;&lt;/span&gt;));
+    };
+
+    stdout().write_all(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;output)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+
+    Ok(())
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
+        to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
+        serde_json::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
+        toml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+        Err(anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output format&amp;#34;&lt;/span&gt;))
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;While this example is quite small, and uses mostly well heard of crates, you
+can imagine a longer file with longer functions, that might be somewhere deep
+in a codebase that uses more obscure crates that you may not be familiar with.
+Suddenly you&amp;rsquo;re eyes are jumping up and down the page trying to cross reference
+types you&amp;rsquo;re not familiar with.  Next you see a method call you&amp;rsquo;re not familiar
+with on a type that you are.  You go to the type&amp;rsquo;s documentation and the method
+is nowhere to be seen.&lt;/p&gt;
+&lt;p&gt;Suppose I re-wrote this code to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
+    output: String,
+    format: String,
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; {
+    name: String,
+    data: &lt;span style=&#34;color:#a6e22e&#34;&gt;serde_json&lt;/span&gt;::Value,
+    aliases: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::collections::HashSet&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; args &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; structopt::StructOpt &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+        Cli::from_args()
+    };
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; input: &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; anyhow::Context &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+        serde_yaml::from_reader(std::io::stdin()).context(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;couldn&amp;#39;t read stdin&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    };
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
+        val_to_vec(input.data, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; schema &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; schemars::schema_for&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(Data);
+
+        schema.schema.metadata().description &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Some({
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; itertools::Itertools &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+            format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aliases can be {}&amp;#34;&lt;/span&gt;, input.aliases.into_iter().format(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;, &amp;#34;&lt;/span&gt;))
+        });
+
+        val_to_vec(serde_json::to_value(schema)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Err(anyhow::anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output type&amp;#34;&lt;/span&gt;));
+    };
+
+    {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::io::Write &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+        std::io::stdout().write_all(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;output)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+    }
+
+    Ok(())
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;serde_json&lt;/span&gt;::Value, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
+        serde_yaml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
+        serde_json::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
+        toml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+        Err(anyhow::anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output format&amp;#34;&lt;/span&gt;))
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Granted: these are two opposite extremes, but hopefully their comparison helps
+to make my point. I might not write code exactly like the latter, but I&amp;rsquo;d lean
+more towards it than the former. I&amp;rsquo;d keep the &lt;code&gt;use&lt;/code&gt; statements of the things
+that are ubiquitously known across rust: the derive macros &lt;code&gt;Serialize&lt;/code&gt; &amp;amp;
+&lt;code&gt;Deserialize&lt;/code&gt;, and &lt;code&gt;HashSet&lt;/code&gt; at the top. I won&amp;rsquo;t always create a little scope
+to wrap when a method from a trait is used with a &lt;code&gt;use&lt;/code&gt; of the trait, but I try
+to keep them close.&lt;/p&gt;
+&lt;p&gt;Below I expand on some of my justifications for employing this pattern.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;NOTE: I wrote the examples after writing the sections below, so I&amp;rsquo;ll not
+referring to them any further.&lt;/em&gt;&lt;/p&gt;
+&lt;h1 id=&#34;namespace-hygiene&#34;&gt;Namespace Hygiene&lt;/h1&gt;
+&lt;p&gt;This started for me with &lt;code&gt;main.rs&lt;/code&gt;.  It&amp;rsquo;s a first port of call for someone
+reading application code for the first time and I decided I wanted readers
+to find &lt;code&gt;fn main()&lt;/code&gt; and have what they need in front of them.  As I was pulling
+the &lt;code&gt;use&lt;/code&gt; statements for the things used inside &lt;code&gt;main&lt;/code&gt; into &lt;code&gt;main&lt;/code&gt; it would
+be silly and confusing to have any other functions not do the same and take from
+the top level namespace. The result of this exercise is that each function in
+&lt;code&gt;main.rs&lt;/code&gt; serves as its own little island that can be visited without hopping
+around the page to cross reference imported things, and the top level namespace
+is clean.&lt;/p&gt;
+&lt;p&gt;While for code in &lt;code&gt;main.rs&lt;/code&gt; I was playing with creating little islands to try
+out the idea, without worrying too much about having a sound justification to
+do so, when this idea of &amp;ldquo;namespace hygiene&amp;rdquo; is extended to the rest of your
+code: it can have some quite profound implications on the simplicity and
+robustness of the code.&lt;/p&gt;
+&lt;p&gt;When I think about complexity of code I try to look at things like: how many
+moving parts are at play, how many different logical outcomes there are, how
+many different paths of code flow go through the code (I believe that last one
+is referred to as &amp;ldquo;cyclomatic complexity&amp;rdquo;).  These are all things that we can
+quantify and through which can have a meaningful discussion about complexity,
+without conflating complexity with subjective judgements of how easy or hard
+it is for any one individual to read or follow, given their unique life up to
+that point. That&amp;rsquo;s not to say that metrics of complexity should be the only
+guiding principle to how we write code.  There&amp;rsquo;s are elements of style, personal
+expression, and story telling that go into code to communicate ideas.  But
+when complexity is what&amp;rsquo;s being discussed, it serves to have things that can
+be measured.&lt;/p&gt;
+&lt;p&gt;Possibly the main huge benefit of namespace hygiene is refactoring. You want to
+move some code around, how nice it is when your code blocks are &lt;strong&gt;portable&lt;/strong&gt;.
+Being minimally dependent on a higher namespace makes moving code so much
+easier.&lt;/p&gt;
+&lt;h1 id=&#34;where-did-that-function-come-from&#34;&gt;Where Did That Function Come From?&lt;/h1&gt;
+&lt;p&gt;For me, this is the one pet peeve I have with Rust&amp;rsquo;s syntax/semantics.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It&amp;rsquo;s too easy to magically import methods via traits in a way that
+makes tracking down the documentation for them very hard.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In the above example I covered the case where you see a type you know and love,
+but then see a method call on it that you&amp;rsquo;re not so familiar with. You go the
+that type&amp;rsquo;s documentation, and this mysterious method is nowhere to be seen.
+Where do you go from there? You search the &lt;code&gt;use&lt;/code&gt; statements at the top of the
+page for anything that isn&amp;rsquo;t reference below, hoping that the writer of the
+code has fixed build warnings about unused imports: you can take this as a sign
+it&amp;rsquo;s a trait.  You then exhaustively search the documentation of each trait
+until you find a method of that name.  Unfortunately a method of that name
+appears under two of the traits you&amp;rsquo;ve looked up.  Thankfully the orphan rule
+can help you out here.  If the crate defining the type had implemented a trait,
+the method would have appeared in the type&amp;rsquo;s documentation.  If not, the crate
+defining the trait must have implemented it for the type, and the fact it was
+implemented for the type will appear in its documentation.  So you scroll down
+to search of an implementation on your type in each trait&amp;rsquo;s documentation and
+finally you find the documentation you were looking for.  Whilst sitting back
+in you chair to take a moment to admire your detective skills you realise it&amp;rsquo;s
+half an hour later, your tea&amp;rsquo;s gone cold, and all you wanted to do was read a
+line of code.&lt;/p&gt;
+&lt;p&gt;So this happened to me a few times.  While I wax and wane on how much I stick
+to keeping imports of functions, macro, and types close to where they&amp;rsquo;re called
+vs. just putting them at the top like everyone else, I do make sure to put
+&lt;code&gt;use&lt;/code&gt;s of traits as tightly scoped to their usage as possible.  While it
+doesn&amp;rsquo;t fully prevent the above scenarios it does really help.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; input: &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; anyhow::Context &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+    serde_yaml::from_reader(std::io::stdin()).context(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;couldn&amp;#39;t read stdin&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Above you have a pretty clear indication of where &lt;code&gt;context()&lt;/code&gt; came from.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also very helpful to mark an import as a trait by importing it to a hole.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; anyhow::Context &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Given that you&amp;rsquo;re not going to do this for anything that isn&amp;rsquo;t a trait, it
+serves as a pretty strong indicator.&lt;/p&gt;
+&lt;p&gt;When you see a method you don&amp;rsquo;t recognise and just above it an import of a
+trait, it&amp;rsquo;s a pretty good indication of where the method came from.&lt;/p&gt;
+&lt;p&gt;If playing around with clearing out the top level namespace in &lt;code&gt;main.rs&lt;/code&gt; was
+what got me started with moving &lt;code&gt;use&lt;/code&gt; statements around, this issue is what
+really convinced me it was a good idea.&lt;/p&gt;
+&lt;h1 id=&#34;code-is-text&#34;&gt;Code Is Text&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Is the answer not to just bring up the code in you IDE and hover your mouse
+over it&amp;rdquo;?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I&amp;rsquo;ve already had a rant about this in &lt;a href=&#34;./ide-read-code.md&#34;&gt;a previous post&lt;/a&gt;, so I&amp;rsquo;ll not
+launch into this one again. Essentially IDEs are there to make code easier to
+write and can make code completely unreadable through a web GUI or a vanilla
+text editor.  And code is mostly read through a web GUI whether that be in the
+form of pull requests or visiting the source control of a library or
+application.&lt;/p&gt;
+&lt;h1 id=&#34;taking-this-further&#34;&gt;Taking This Further&lt;/h1&gt;
+&lt;p&gt;Rust lets you define scopes within functions.  This gives us the opportunity to
+make the things we import only be accessible in the tightest scope possible.&lt;/p&gt;
+&lt;p&gt;In practice I tend to do this only for traits and only when it make sense to
+isolate the expression.  I might if it&amp;rsquo;s an especially large function where a
+bunch of imports are only relevant to a small section, but generally Rust
+doesn&amp;rsquo;t need yet another reason to have yet another level of indentation.&lt;/p&gt;
+&lt;h1 id=&#34;not-importing-at-all&#34;&gt;Not Importing At All&lt;/h1&gt;
+&lt;p&gt;For one off uses of things, especially for less often used parts of the
+standard library or crates that no-one&amp;rsquo;s ever heard of, I tend not to use a
+&lt;code&gt;use&lt;/code&gt; at all.&lt;/p&gt;
+&lt;p&gt;If it&amp;rsquo;s a one-off use, then why pollute your namespace with it? If reader
+immediately break their flow of reading through your code to lookup where an
+unfamiliar thing comes from, why not detail where that came from inline to not
+break the reader&amp;rsquo;s flow?&lt;/p&gt;
+&lt;p&gt;There are also lots of cases where the path to the thing you&amp;rsquo;re importing
+provide vital context for what that thing represents.  Take &lt;code&gt;semver::Version&lt;/code&gt;
+for example: the fact that it&amp;rsquo;s &amp;ldquo;semver&amp;rdquo; is what&amp;rsquo;s important.  Being semver is
+what gives it all the properties of semver versioning.  Without semver, or an
+alternative versioning scheme, a version is no more than an arbitrary text
+field.  Basically mentioning that it&amp;rsquo;s semver is important.  For things like
+these I never use a &lt;code&gt;use&lt;/code&gt; statement.&lt;/p&gt;
+&lt;p&gt;There &lt;a href=&#34;https://rust-lang.github.io/rust-clippy/master/#module_name_repetitions&#34;&gt;a clippy lint&lt;/a&gt; in the pedantic group, for not repeating module
+names in names of things. That idea doesn&amp;rsquo;t appear to have caught on that well
+in most crates as the path to things can usually be thrown away.  If more
+crates did this we&amp;rsquo;d probably find cases like &lt;code&gt;semver::Version&lt;/code&gt; more often.&lt;/p&gt;
+&lt;p&gt;In fact, putting the full paths to things is where I tend to start, only later
+employing &lt;code&gt;use&lt;/code&gt; statements.&lt;/p&gt;
+&lt;h1 id=&#34;when-i-dont-do-this&#34;&gt;When I Don&amp;rsquo;t Do This&lt;/h1&gt;
+&lt;p&gt;For small, truly single purpose modules, I pop all the &lt;code&gt;use&lt;/code&gt; statements at the
+top of the page.  If all the code in the file is performing roughly the same
+role, and you can see it all on a page, the same concepts are going to be
+familiar to all the code and there&amp;rsquo;s not any overhead of context switching.&lt;/p&gt;
+&lt;p&gt;For very commonly used and widely recognised things, like
+&lt;code&gt;std::collections::HashMap&lt;/code&gt; I tend to just put a use for at the top of the
+file.  No-one who&amp;rsquo;s vaguely Rust literate is going to see &lt;code&gt;HashMap&lt;/code&gt; and wonder
+what it is.  &lt;code&gt;std::collections::VecDeque&lt;/code&gt; however, I might not put a &lt;code&gt;use&lt;/code&gt; for
+at the top of file.&lt;/p&gt;
+&lt;h1 id=&#34;only-doing-this-in-some-places&#34;&gt;Only Doing This In Some Places&lt;/h1&gt;
+&lt;p&gt;It&amp;rsquo;s all well and good when writing a new module for the first time to adopt
+this style, or any other style you want. But when you come to working on
+existing code, it often serves to stick with the style of the code already
+there.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve found this isn&amp;rsquo;t so true with this issue of moving &lt;code&gt;use&lt;/code&gt; statements away
+from the top or not using them at all.  When you start doing this in code that
+defines all its imports at the top, it doesn&amp;rsquo;t wreck the consistency or create
+confusion.  I&amp;rsquo;ve found it&amp;rsquo;s just one less place where the reader has to jump
+around and cross reference as they&amp;rsquo;re reading.&lt;/p&gt;
+&lt;h1 id=&#34;a-word-on-dry&#34;&gt;A Word On DRY&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;./dry-not-a-goal.md&#34;&gt;I&amp;rsquo;ve blogged before about how the pursuit of DRY above all other things can
+lead to bad software&lt;/a&gt;.  I&amp;rsquo;d anticipate a counter argument
+to moving imports closer their use or calling things by their full path is that
+it&amp;rsquo;s repetition.  Putting &lt;code&gt;use&lt;/code&gt; statements at the top of the file means you
+only write them once.  But you can take that argument to absurdity.  Why not
+then have everything in the same namespace with all you code in one &lt;code&gt;main.rs&lt;/code&gt;
+file, then you only every have to import things once?  Even without that, I
+think this serves as a good example of where DRY isn&amp;rsquo;t the be all and end all.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;I don&amp;rsquo;t have the strongest of convictions about all of this, except &lt;a href=&#34;#where-did-that-function-come-from%3F&#34;&gt;importing
+traits&lt;/a&gt;, but overall it&amp;rsquo;s a pattern I&amp;rsquo;ve
+found useful.  And the portability really helps. It won&amp;rsquo;t change the world, but
+hopefully makes someone&amp;rsquo;s life just a little bit better when they come across
+some of my code years down the line.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Is it time to Stop Referring to things as Functional?</title>

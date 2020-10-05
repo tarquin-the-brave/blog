@@ -1,36 +1,169 @@
 +++
 title = "Why I Scatter Use Statements Throughout My Rust"
-date = 2020-07-15T15:35:41+01:00
+date = 2020-10-05T20:30:00+01:00
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 A standard pattern across pretty much every language I've worked with at least,
-is to stick statements that import modules and libraries, at the top of the
+is to stick statements that import modules and libraries at the top of the
 page.  Some languages make you do this.  In Rust I don't do this for
-everything, here's why.
+everything, _here's why_.
 
 I started to think more and more about what code is like to read rather than
 write. I for one was reading code far more often than I was writing, and the
 code I was writing would, over its lifetime, be read far more often than
 written or edited.
 
-To set the scene, take the following code:
+To set the scene, take the following code for a fairly pointless CLI tool
+to echo some data or give you a JSON Schema, in a variety of formats:
 
-TODO: Example
+```rust
+use anyhow::{anyhow, Context, Result};
+use itertools::Itertools;
+use schemars::{schema_for, JsonSchema};
+use serde::{Deserialize, Serialize};
+use serde_json::{to_value as to_json_value, Value};
+use serde_yaml::{from_reader, to_vec};
+use std::collections::HashSet;
+use std::io::{stdin, stdout, Write};
+use structopt::StructOpt;
 
-While this example is quite simple, you can imagine this file having more and
-longer functions and not fitting onto one page.  Suddenly you're eyes are
-jumping up and down the page trying to cross reference types you're not
-familiar with.  Next you see a method call you're not familiar with on a type
-that you are.  You go to the type's documentation and the method is nowhere to
-be seen.
+#[derive(Debug, StructOpt)]
+struct Cli {
+    output: String,
+    format: String,
+}
+
+#[derive(Deserialize, Serialize, JsonSchema)]
+struct Data {
+    name: String,
+    data: Value,
+    aliases: HashSet<String>,
+}
+
+fn main() -> Result<()> {
+    let args = Cli::from_args();
+
+    let input: Data = from_reader(stdin()).context("couldn't read stdin")?;
+
+    let output = if args.output == "data" {
+        val_to_vec(input.data, &args.format)?
+    } else if args.output == "schema" {
+        let mut schema = schema_for!(Data);
+        schema.schema.metadata().description = Some(format!(
+            "aliases can be {}",
+            input.aliases.into_iter().format(", ")
+        ));
+
+        val_to_vec(to_json_value(schema)?, &args.format)?
+    } else {
+        return Err(anyhow!("Unknown output type"));
+    };
+
+    stdout().write_all(&output)?;
+
+    Ok(())
+}
+
+fn val_to_vec(value: Value, form: &str) -> Result<Vec<u8>> {
+    if form == "yaml" {
+        to_vec(&value).map_err(Into::into)
+    } else if form == "json" {
+        serde_json::to_vec(&value).map_err(Into::into)
+    } else if form == "toml" {
+        toml::to_vec(&value).map_err(Into::into)
+    } else {
+        Err(anyhow!("Unknown output format"))
+    }
+}
+```
+
+While this example is quite small, and uses mostly well heard of crates, you
+can imagine a longer file with longer functions, that might be somewhere deep
+in a codebase that uses more obscure crates that you may not be familiar with.
+Suddenly you're eyes are jumping up and down the page trying to cross reference
+types you're not familiar with.  Next you see a method call you're not familiar
+with on a type that you are.  You go to the type's documentation and the method
+is nowhere to be seen.
 
 Suppose I re-wrote this code to:
 
-TODO: Example
+```rust
+#[derive(Debug, structopt::StructOpt)]
+struct Cli {
+    output: String,
+    format: String,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)]
+struct Data {
+    name: String,
+    data: serde_json::Value,
+    aliases: std::collections::HashSet<String>,
+}
+
+fn main() -> anyhow::Result<()> {
+    let args = {
+        use structopt::StructOpt as _;
+        Cli::from_args()
+    };
+
+    let input: Data = {
+        use anyhow::Context as _;
+        serde_yaml::from_reader(std::io::stdin()).context("couldn't read stdin")?
+    };
+
+    let output = if args.output == "data" {
+        val_to_vec(input.data, &args.format)?
+    } else if args.output == "schema" {
+        let mut schema = schemars::schema_for!(Data);
+
+        schema.schema.metadata().description = Some({
+            use itertools::Itertools as _;
+            format!("aliases can be {}", input.aliases.into_iter().format(", "))
+        });
+
+        val_to_vec(serde_json::to_value(schema)?, &args.format)?
+    } else {
+        return Err(anyhow::anyhow!("Unknown output type"));
+    };
+
+    {
+        use std::io::Write as _;
+        std::io::stdout().write_all(&output)?;
+    }
+
+    Ok(())
+}
+
+fn val_to_vec(value: serde_json::Value, form: &str) -> anyhow::Result<Vec<u8>> {
+    if form == "yaml" {
+        serde_yaml::to_vec(&value).map_err(Into::into)
+    } else if form == "json" {
+        serde_json::to_vec(&value).map_err(Into::into)
+    } else if form == "toml" {
+        toml::to_vec(&value).map_err(Into::into)
+    } else {
+        Err(anyhow::anyhow!("Unknown output format"))
+    }
+}
+```
+
+Granted: these are two opposite extremes, but hopefully their comparison helps
+to make my point. I might not write code exactly like the latter, but I'd lean
+more towards it than the former. I'd keep the `use` statements of the things
+that are ubiquitously known across rust: the derive macros `Serialize` &
+`Deserialize`, and `HashSet` at the top. I won't always create a little scope
+to wrap when a method from a trait is used with a `use` of the trait, but I try
+to keep them close.
+
+Below I expand on some of my justifications for employing this pattern.
+
+_NOTE: I wrote the examples after writing the sections below, so I'll not
+referring to them any further._
 
 [ide-rant]: ./ide-read-code.md
 
@@ -52,7 +185,6 @@ do so, when this idea of "namespace hygiene" is extended to the rest of your
 code: it can have some quite profound implications on the simplicity and
 robustness of the code.
 
-TODO: further on simplicity, what's in scope.
 When I think about complexity of code I try to look at things like: how many
 moving parts are at play, how many different logical outcomes there are, how
 many different paths of code flow go through the code (I believe that last one
@@ -99,9 +231,18 @@ line of code.
 
 So this happened to me a few times.  While I wax and wane on how much I stick
 to keeping imports of functions, macro, and types close to where they're called
-vs.  just putting them at the top like everyone else, I do make sure to put
+vs. just putting them at the top like everyone else, I do make sure to put
 `use`s of traits as tightly scoped to their usage as possible.  While it
 doesn't fully prevent the above scenarios it does really help.
+
+```rust
+let input: Data = {
+    use anyhow::Context as _;
+    serde_yaml::from_reader(std::io::stdin()).context("couldn't read stdin")?
+};
+```
+
+Above you have a pretty clear indication of where `context()` came from.
 
 It's also very helpful to mark an import as a trait by importing it to a hole.
 
@@ -136,12 +277,10 @@ application.
 Rust lets you define scopes within functions.  This gives us the opportunity to
 make the things we import only be accessible in the tightest scope possible.
 
-TODO: example
-
-I tend not to do this in practice.  I might if it's an especially large
-function where a bunch of imports are only relevant to a small section, but
-generally Rust doesn't need yet another reason to have yet another level of
-indentation.
+In practice I tend to do this only for traits and only when it make sense to
+isolate the expression.  I might if it's an especially large function where a
+bunch of imports are only relevant to a small section, but generally Rust
+doesn't need yet another reason to have yet another level of indentation.
 
 # Not Importing At All
 

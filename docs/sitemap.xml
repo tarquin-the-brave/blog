@@ -3,17 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</loc>
-    <lastmod>2020-08-27T12:29:17+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://tarquin-the-brave.github.io/blog/posts/</loc>
-    <lastmod>2020-08-27T12:29:17+01:00</lastmod>
+    <lastmod>2020-10-05T20:30:00+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://tarquin-the-brave.github.io/blog/</loc>
+    <lastmod>2020-10-05T20:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/rust_use_statements/</loc>
+    <lastmod>2020-10-05T20:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</loc>
     <lastmod>2020-08-27T12:29:17+01:00</lastmod>
   </url>
   

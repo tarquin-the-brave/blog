@@ -13,10 +13,10 @@
    
      <item>
        <title>Is it time to Stop Referring to things as Functional?</title>
-       <link>https://tarquin-the-brave.github.io/blog/posts/data_oriented_not_functional/</link>
+       <link>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</link>
        <pubDate>Thu, 27 Aug 2020 12:29:17 +0100</pubDate>
        
-       <guid>https://tarquin-the-brave.github.io/blog/posts/data_oriented_not_functional/</guid>
+       <guid>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</guid>
        <description>&lt;p&gt;Language is transient.  It evolves through a cascade of misappropriations.
 &amp;ldquo;Correct&amp;rdquo; usage is only ever as strongly defined as &amp;ldquo;the current generally
 accepted usage&amp;rdquo;.&lt;/p&gt;
@@ -39,27 +39,32 @@ different meaning.&lt;/p&gt;
 understanding of what a &amp;ldquo;function&amp;rdquo; is as the understanding that underpins
 &amp;ldquo;functional&amp;rdquo; being a meaningful description, the description of &amp;ldquo;functional&amp;rdquo;
 loses its meaning and value.&lt;/p&gt;
-&lt;p&gt;If not &amp;ldquo;functional&amp;rdquo;, what should we call it?  I quite like &amp;ldquo;data oriented&amp;rdquo;.
-Rich Hickey does a great job&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; of explaining the difference between &amp;ldquo;data&amp;rdquo;
-and &amp;ldquo;places&amp;rdquo;.  &amp;ldquo;Data&amp;rdquo; representing observed facts about the world, and &amp;ldquo;places&amp;rdquo;
-being those bits of computer memory that we use to temporarily store those
-facts or other things.  Hickey coins the term &amp;ldquo;PLOP&amp;rdquo; (PLace Oriented
-Programming) to describe languages where the programmer is, knowingly or not,
-making statements about the places in memory that the program will use to
-process its data.&lt;/p&gt;
+&lt;p&gt;If not &amp;ldquo;functional&amp;rdquo;, what should we call it?  &lt;del&gt;I quite like &amp;ldquo;data oriented&amp;rdquo;.&lt;/del&gt;
+&lt;em&gt;UPDATE: Since first writing this I&amp;rsquo;ve found out that &lt;a href=&#34;https://en.wikipedia.org/wiki/Data-oriented_design&#34;&gt;&amp;ldquo;Data Oriented
+Design&amp;rdquo;&lt;/a&gt; is already a thing, and means something completely
+different. I then thought perhaps &amp;ldquo;value oriented&amp;rdquo; would be a good name for
+it&amp;hellip; but it turns out that&amp;rsquo;s already a thing too.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Rich Hickey does a great job&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; of explaining the difference between
+&amp;ldquo;data&amp;rdquo;/&amp;ldquo;values&amp;rdquo; and &amp;ldquo;places&amp;rdquo;.  &amp;ldquo;Data&amp;rdquo;/&amp;ldquo;values&amp;rdquo; representing observed facts
+about the world, and &amp;ldquo;places&amp;rdquo; being those bits of computer memory that we use
+to temporarily store those facts or other things.  Hickey coins the term &amp;ldquo;PLOP&amp;rdquo;
+(Place Oriented Programming) to describe languages where the programmer is,
+knowingly or not, making statements about the places in memory that the program
+will use to process its data.&lt;/p&gt;
 &lt;p&gt;&amp;ldquo;Functional&amp;rdquo; languages aren&amp;rsquo;t PLOP.  You don&amp;rsquo;t tell the program to create a
 location in memory, put data in, change that data (mutation), etc.  In a
 &amp;ldquo;functional&amp;rdquo; language you describe data.  You describe how the data you want
 maps from the data you have with &amp;ldquo;functions&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;If instead of describing things as &amp;ldquo;functional&amp;rdquo; we described them as &amp;ldquo;data
-oriented&amp;rdquo;, I wonder if that would help with programmers being introduced to the
-concepts and distinguish them from what they already know. I think it would
-also help to the value and simplicity of a &amp;ldquo;functional&amp;rdquo;/&amp;ldquo;data oriented&amp;rdquo;
-approach. You describe how data flows through your program.  You don&amp;rsquo;t need to
-worry about all the moving parts that PLOP brings that can ruin your
-abstractions at any moment.&lt;/p&gt;
+&lt;p&gt;If instead of describing things as &amp;ldquo;functional&amp;rdquo; we &lt;del&gt;described them as &amp;ldquo;data
+oriented&amp;quot;&lt;/del&gt; &lt;em&gt;UPDATE: find some other name for it&lt;/em&gt;, I wonder if that would help
+with programmers being introduced to the concepts and distinguish them from
+what they already know. I think it would also help to the value and simplicity
+of a &amp;ldquo;functional&amp;rdquo;/&lt;del&gt;&amp;quot;data oriented&amp;quot;&lt;/del&gt; approach. You describe how data flows
+through your program.  You don&amp;rsquo;t need to worry about all the moving parts that
+PLOP brings that can ruin your abstractions at any moment.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;Instead of &amp;ldquo;functional&amp;rdquo;, should we say &amp;ldquo;data oriented&amp;rdquo;?&lt;/p&gt;
+&lt;p&gt;Instead of &amp;ldquo;functional&amp;rdquo;, should we say &lt;del&gt;&amp;quot;data oriented&amp;quot;&lt;/del&gt; UPDATE: open to
+suggestions on this one?&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;But then what should we call &amp;ldquo;functions&amp;rdquo;?&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;

@@ -34,35 +34,42 @@ understanding of what a "function" is as the understanding that underpins
 "functional" being a meaningful description, the description of "functional"
 loses its meaning and value.
 
-If not "functional", what should we call it?  I quite like "data oriented".
-Rich Hickey does a great job[^val] of explaining the difference between "data"
-and "places".  "Data" representing observed facts about the world, and "places"
-being those bits of computer memory that we use to temporarily store those
-facts or other things.  Hickey coins the term "PLOP" (PLace Oriented
-Programming) to describe languages where the programmer is, knowingly or not,
-making statements about the places in memory that the program will use to
-process its data.
+If not "functional", what should we call it?  ~~I quite like "data oriented".~~
+_UPDATE: Since first writing this I've found out that ["Data Oriented
+Design"][data-oriented] is already a thing, and means something completely
+different. I then thought perhaps "value oriented" would be a good name for
+it... but it turns out that's already a thing too._
+
+Rich Hickey does a great job[^val] of explaining the difference between
+"data"/"values" and "places".  "Data"/"values" representing observed facts
+about the world, and "places" being those bits of computer memory that we use
+to temporarily store those facts or other things.  Hickey coins the term "PLOP"
+(Place Oriented Programming) to describe languages where the programmer is,
+knowingly or not, making statements about the places in memory that the program
+will use to process its data.
 
 "Functional" languages aren't PLOP.  You don't tell the program to create a
 location in memory, put data in, change that data (mutation), etc.  In a
 "functional" language you describe data.  You describe how the data you want
 maps from the data you have with "functions".
 
-If instead of describing things as "functional" we described them as "data
-oriented", I wonder if that would help with programmers being introduced to the
-concepts and distinguish them from what they already know. I think it would
-also help to the value and simplicity of a "functional"/"data oriented"
-approach. You describe how data flows through your program.  You don't need to
-worry about all the moving parts that PLOP brings that can ruin your
-abstractions at any moment.
+If instead of describing things as "functional" we ~~described them as "data
+oriented"~~ _UPDATE: find some other name for it_, I wonder if that would help
+with programmers being introduced to the concepts and distinguish them from
+what they already know. I think it would also help to the value and simplicity
+of a "functional"/~~"data oriented"~~ approach. You describe how data flows
+through your program.  You don't need to worry about all the moving parts that
+PLOP brings that can ruin your abstractions at any moment.
 
-> Instead of "functional", should we say "data oriented"?
+> Instead of "functional", should we say ~~"data oriented"~~ UPDATE: open to
+> suggestions on this one?
 
 But then what should we call "functions"?
 
 [val]: https://www.youtube.com/watch?v=-6BsiVyC1kM
 [meaning]: https://www.bbc.co.uk/bitesize/articles/znbct39
 [ironic]: https://www.google.com/search?q=alanis+morissette+ironic+lyrics
+[data-oriented]: https://en.wikipedia.org/wiki/Data-oriented_design
 
 [^val]: Rich Hickey talk: ["The Value of Values"][val]
 [^meaning]: BBC article on: ["Five words that have changed meaning over time"][meaning]

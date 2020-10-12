@@ -84,7 +84,7 @@ fn val_to_vec(value: Value, form: &str) -> Result<Vec<u8>> {
 While this example is quite small, and uses mostly well heard of crates, you
 can imagine a longer file with longer functions, that might be somewhere deep
 in a codebase that uses more obscure crates that you may not be familiar with.
-Suddenly you're eyes are jumping up and down the page trying to cross reference
+Suddenly your eyes are jumping up and down the page trying to cross reference
 types you're not familiar with.  Next you see a method call you're not familiar
 with on a type that you are.  You go to the type's documentation and the method
 is nowhere to be seen.

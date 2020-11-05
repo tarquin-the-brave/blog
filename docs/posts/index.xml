@@ -1463,41 +1463,61 @@ are there. The language may formalise them, it may not. By formalising data
 manipulation patterns in a language, there&amp;rsquo;s the opportunity for the compiler
 to tell you if you&amp;rsquo;re using them right, otherwise you&amp;rsquo;re performing these
 patterns by hand.&lt;/p&gt;
-&lt;p&gt;What it comes down to is:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIEQoW1lvdSdsbCB3cml0ZSBtb3JlIGNvbnNpc3RlbnQsIGNvcnJlY3QsIGFuZCBtYWludGluYWJsZSBjb2RlIGZhOmZhLXRodW1icy11cF0pXG4gIEUoW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXSlcbiAgQSAtLT58WWVzfCBDXG4gIEEgLS0-fE5vfCBCXG4gIEIgLS0-fFllc3wgRFxuICBCIC0tPiB8Tm98IEVcblx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ&#34;&gt;&lt;img src=&#34;https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdWggcmlnaHQgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgQltBcmUgeW91IGF3YXJlIHlvdSdyZSB3cml0aW5nIHRoZW0gYnkgaGFuZD9dXG4gIEQoW1lvdSdsbCB3cml0ZSBtb3JlIGNvbnNpc3RlbnQsIGNvcnJlY3QsIGFuZCBtYWludGluYWJsZSBjb2RlIGZhOmZhLXRodW1icy11cF0pXG4gIEUoW0J1Z3Mgd2lsbCBoYXBwZW4gZmE6ZmEtYnVnXSlcbiAgQSAtLT58WWVzfCBDXG4gIEEgLS0-fE5vfCBCXG4gIEIgLS0-fFllc3wgRFxuICBCIC0tPiB8Tm98IEVcblx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;When I first learned some Haskell a few years ago, the idea of spending my time
-doing that was sold to me as &amp;ldquo;it&amp;rsquo;ll make you better at every other language&amp;rdquo;.
-That was enough to sell it to me at the time, and I believe it had that effect.
-It&amp;rsquo;s true of every language to some extent.  Every language formalises some
-number of data manipulation patterns, the question is: to what extent? And are
-they good patterns to be using to get correct and maintainable code?&lt;/p&gt;
-&lt;p&gt;I hear so much from developers who would answer &amp;ldquo;No&amp;rdquo; to both of the above, that
-learning the concepts that formalise patterns of data manipulation is overly
-esoteric and not pragmatic.  To try to understand these things makes you a
-&amp;ldquo;purist&amp;rdquo;, and gets in the way of &amp;ldquo;getting things done&amp;rdquo;.  I think the reality is
-that the software industry, as a whole, is not under enough commercial pressure
-to write software that works with enough efficiency.  Developers can get away
-with not needing to really understand what they&amp;rsquo;re doing, unknowingly
-handwriting attempts at the data manipulation patterns, and producing code
-that&amp;rsquo;s inefficient to write, expensive to maintain, and inevitably bugged.&lt;/p&gt;
+&lt;p&gt;What it comes down to is:
+&lt;a href=&#34;https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ&#34;&gt;&lt;img src=&#34;https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;When I first learned some Haskell a few years ago, the idea of spending my free
+time doing that was sold to me as &amp;ldquo;it&amp;rsquo;ll make you better at every other
+language&amp;rdquo;.  That was enough to sell it to me at the time, and I believe it had
+that effect.  It&amp;rsquo;s true of every language to some extent.  Every language
+formalises some number of data manipulation patterns, the question is: to what
+extent? And are they good patterns to be using to get correct and maintainable
+code?&lt;/p&gt;
+&lt;p&gt;There is the argument I&amp;rsquo;ve seen where someone might answer &amp;ldquo;No&amp;rdquo; to both of the
+above, adding &amp;ldquo;and it doesn&amp;rsquo;t matter&amp;rdquo;. I&amp;rsquo;ve seen claims that learning the
+concepts that formalise patterns of data manipulation is overly esoteric and
+not pragmatic.  To try to understand these things makes you a &amp;ldquo;purist&amp;rdquo;, and
+gets in the way of &amp;ldquo;getting things done&amp;rdquo;.  I think the reality is that
+software, in general, has had growth as a higher priority than quality and
+correctness for some amount of time. A lot of code can have quite a short shelf
+life so preference is given to being able to produce code quickly and the
+negative side effects of that aren&amp;rsquo;t felt so much. I&amp;rsquo;m not totally convinced by
+this position. There&amp;rsquo;s potential for a feedback loop where the consequences of
+trying to produce things quickly drive the short shelf lives.  And I&amp;rsquo;m not
+entirely convinced that languages that do formalize a lot of these patterns and
+have a compiler that keeps you right on them is generally slower to produce
+things.  There&amp;rsquo;s learning time that you have to put in, but once you&amp;rsquo;ve learned
+to satiate the compiler on your first try, you don&amp;rsquo;t tend to spend that much
+time fighting it.  There are specific problems that are going to be slower to
+develop solutions to, but I don&amp;rsquo;t thing it&amp;rsquo;s necessarily true generally.  There
+a counter argument that to produce anything of a meaningful size you can
+produce things faster because the compiler has stopped you hitting things that
+you would hit and have to address before you were able to ship something.  This
+one probably depends on the problem you&amp;rsquo;re trying to build a solution to.&lt;/p&gt;
+&lt;p&gt;Regardless of the relative strengths of those arguments, it&amp;rsquo;s certainly true
+that developers have been able to &amp;ldquo;get away with&amp;rdquo; not having these patterns
+formalised and not necessarily knowing they&amp;rsquo;re hand rolling them. Whether that
+continues into the future is going to be interesting.&lt;/p&gt;
 &lt;p&gt;As software becomes more prevalent in all industries, every professional is
 writing code, and every child learns coding in school (which they already are):
-this situation is going to change.  Software developers will no longer be able
-to deliver broken things and convince everyone else that that&amp;rsquo;s OK. In the
-meantime let us hope that the bugs that we inevitably write due to this willful
-negligence won&amp;rsquo;t cost someone their life.&lt;/p&gt;
+I&amp;rsquo;d wager we&amp;rsquo;ll see the general quality bar expected by users/consumers to go
+up, as they&amp;rsquo;ll have greater visibility into how unnecessary a lot of broken and
+slow software is. As the systems we&amp;rsquo;re building are getting more interconnected
+and complex, is correctness going to become more of a priority?&lt;/p&gt;
 &lt;p&gt;This isn&amp;rsquo;t to say that there won&amp;rsquo;t always be bugs in software.  No matter how
 solid the tools you use are, you could have just missed the mark on
 requirements and built the wrong thing.  But there are whole classes of bugs
 and errors that can be eliminated by formalising these patterns and encoding
 them into the fundamental tools with which we build things.&lt;/p&gt;
 &lt;p&gt;I work with Rust most working days.  While it&amp;rsquo;s missing higher kinded types,
-it&amp;rsquo;s got a lot going for it with its strong type system, its state ownership
-model, and generally how it makes you be explicit about what you&amp;rsquo;re doing.
-People say with Rust that &amp;ldquo;if it compiles it works&amp;rdquo;, and provided you&amp;rsquo;ve
-written code that leverages the type system, there&amp;rsquo;s some truth to that. It
-makes me hopeful for the future, and I believe that Rust will stand as one of
-the cornerstones of a new generation of software that works.&lt;/p&gt;
+it&amp;rsquo;s got a lot going for it with its strong type system, its ownership model,
+and generally how it makes you be explicit about what you&amp;rsquo;re doing.  People say
+with Rust that &amp;ldquo;if it compiles it works&amp;rdquo;, and provided you&amp;rsquo;ve written code that
+leverages the type system, there&amp;rsquo;s some truth to that.  I might re-phrase that
+to &amp;ldquo;if it compiles then what you&amp;rsquo;ve asked for is guaranteed to be consistent in
+various ways, but you might still have asked for the wrong thing&amp;rdquo;, but that&amp;rsquo;s a
+little less catchy. It makes me hopeful for the future, and I believe that Rust
+will stand as one of the cornerstones of a new generation of software that
+works.&lt;/p&gt;
 </description>
      </item>
    

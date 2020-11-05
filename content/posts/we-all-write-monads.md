@@ -77,7 +77,7 @@ entirely convinced that languages that do formalize a lot of these patterns and
 have a compiler that keeps you right on them is generally slower to produce
 things.  There's learning time that you have to put in, but once you've learned
 to satiate the compiler on your first try, you don't tend to spend that much
-time fighting it.  There are specific problems that are going to be slower
+time fighting it.  There are specific problems that are going to be slower to
 develop solutions to, but I don't thing it's necessarily true generally.  There
 a counter argument that to produce anything of a meaningful size you can
 produce things faster because the compiler has stopped you hitting things that
@@ -87,7 +87,7 @@ one probably depends on the problem you're trying to build a solution to.
 Regardless of the relative strengths of those arguments, it's certainly true
 that developers have been able to "get away with" not having these patterns
 formalised and not necessarily knowing they're hand rolling them. Whether that
-continues into the future is going to be quite interesting.
+continues into the future is going to be interesting.
 
 As software becomes more prevalent in all industries, every professional is
 writing code, and every child learns coding in school (which they already are):

@@ -63,6 +63,8 @@ So what I'm looking for is config file documentation that:
 - Is navigable by following links into and back out of config substructure, and
 - Defined in code.
 
+:mag:
+
 # Enter Rust Docs
 
 I've been developing a CLI tool at work recently.  It's written in
@@ -173,9 +175,9 @@ I admit, I am massively skimming over the face that in both cases of `Source`
 and `Config` what I'm showing above [isn't all that appears on the page][config2]. There's
 methods and trait implementations below and a sidebar that links you to them
 with a big Rust symbol in it.  This is definitely a problem, but one that
-I'm going to come back to.
+I'm going to come back to. :see_no_evil: :hear_no_evil:
 
-Let's make this config more complex and see what happens!
+Let's make this config more complex and see what happens! :smirk_cat:
 
 ```rust
 #[derive(serde::Deserialize)]
@@ -221,7 +223,7 @@ pub enum Actions {
 
 So now our top level `Config` object defines some metadata fields: `name`, `version`,
 and a now optional `description`, and flattens in the configuration data for the
-application.  This might take a bit more explaining in the comments...
+application.  This might take a bit more explaining in the comments... :cold_sweat:
 
 
 

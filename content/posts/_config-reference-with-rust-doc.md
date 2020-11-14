@@ -1,5 +1,5 @@
 +++
-title = "Using Rust Doc to Generate a Config File Reference"
+title = "Generate a Config File Reference for a CLI Tool in Rust"
 date = 2020-07-15T14:58:19+01:00
 images = []
 tags = []
@@ -65,7 +65,7 @@ So what I'm looking for is config file documentation that:
 
 :mag:
 
-# Enter Rust Docs
+# Rust Docs
 
 I've been developing a CLI tool at work recently.  It's written in
 Rust.  I'm not sure I fully understand why, but Rust is a excellent language
@@ -85,8 +85,7 @@ some really well designed libraries to make CLI tools with: [`clap`][clap],
 I've noticed the Rust docs going largely unused as the crate is a binary...
 
 Perhaps they could fulfil what I'm looking for.  Rust docs reflect the structure
-of structures. If you're using [`structopt`][structopt]
-then the tool's config is defined in a Rust structure. Rust docs are navigable by
+of structures. Rust docs are navigable by
 following links.  The source for them is defined in code. It's sounding like a
 strong candidate, on paper at least...
 
@@ -192,7 +191,7 @@ pub struct Config {
 #[derive(serde::Deserialize)]
 pub struct AppData {
     source: Source,
-    target: Target,
+    target: std::path::PathBuf,
     actions: Vec<Actions>,
 }
 
@@ -201,11 +200,6 @@ pub struct AppData {
 pub enum Source {
     File(std::path::PathBuf),
     Url(String),
-}
-
-#[derive(serde::Deserialize)]
-pub struct Target {
-    path: std::path::PathBuf,
 }
 
 #[derive(serde::Deserialize)]
@@ -223,16 +217,336 @@ pub enum Actions {
 
 So now our top level `Config` object defines some metadata fields: `name`, `version`,
 and a now optional `description`, and flattens in the configuration data for the
-application.  This might take a bit more explaining in the comments... :cold_sweat:
+application.  This is going to take a bit more explaining in the comments... :cold_sweat:
 
+![](/images/rust-docs-config-ref/config4.png)
 
+The `Option` in the `description` field looks OK.  With the accompanying "_Optional_:"
+added to the field description it gets across the field is optional without too
+much confusion.
 
+The flattened fields under `data` are less ideal.  An explanation and an example
+can "set the record straight" but we're starting to have the docs deviate from
+our goal of representing the structure of the config data.
 
-# Alternative Approaches
+The docs that come from the `AppData` have come out OK as it's a structure that
+we're not changing field names of structure of with the serde representation.
 
-Define config file/CLI in OpenAPI spec and use an existing OpenAPI -> HTML tool?
+![](/images/rust-docs-config-ref/appdata4.png)
 
-# Potential Project
+We're even able to link to the "possible operations" from the `actions` field.
+
+![](/images/rust-docs-config-ref/actions4.png)
+
+As with the `Sources` enum and the flattening of the `AppData` into the top level
+config we're having the problem of:
+
+> Every time the Rust code doesn't match the representation in a config file
+> we need to compensate with a comment that explains things.
+
+This is going to happen every time we do anything like:
+- renaming fields,
+- flattening structures,
+- making enum variants be represented by lowercase versions of themselves,
+- ["un-tag" an enum](https://serde.rs/container-attrs.html#untagged), or
+- any other [alternative way of representing enums](https://serde.rs/enum-representations.html).
+
+There's other things we might want to do to the Rust code that would cause
+further explaining and back tracking in the comments.  We might find the
+top level encapsulating structure of the config is something we want to
+reuse throughout the codebase and make it generic over the data the user
+provides and what we transform that data into:
+
+```rust
+#[derive(serde::Deserialize)]
+pub struct Config<T> {
+    name: String,
+    version: semver::Version,
+    description: Option<String>,
+    #[serde(flatten)]
+    data: T,
+}
+```
+
+Parsing `Config<AppData>` when we read the config file, but later transform
+the data under `data` into another type.
+
+Finally the problem I've been ignoring so far:
+
+> These are Rust docs and have a load of other stuff in them that aren't relevant
+> to someone writing the config file.
+
+![](/images/rust-docs-config-ref/config4wide.png)
+
+This could cause some confusion for the reader. :dizzy_face:
+
+So can you use Rust docs to generate a config file reference to supplement the
+main docs for a tool? Probably not for a
+tool with a public user base. But if you're developing a tool internally in
+an organisation that are predominately Rust literate, the downsides may not
+be too bad for you, and you could benefit from the completeness and navigability.
+
+Obviously it's not what Rust docs were made to do, but it's been interesting
+to see how far I can get.
+
+My example project has [published these docs][config5] so you can take a look for yourself.
+
+# Via A Generated Schema
+
+For this blog post I was looking around at "what APIs do" to provide this navigable
+reference.  It seems a lot of them don't, providing only an OpenAPI specification
+instead.  There seems to be a few tools out there that turn OpenAPI specs into
+an HTML page. I wonder if something similar can be done for config files.
+
+"Something similar" in this case being:
+
+> Have a description of the config file in a well known schema language and
+  find a tool to turn that into HTML.
+
+My initial thought about this was that I didn't really fancy mastering the description
+of config in a schema language rather than in in code.
+
+But take [JSON Schema][jsonsch] as an example, the [`schemars`][schemars] crate
+lets you generate schemas from structures. So I stuck `#[derive(schemars::JsonSchema)]`
+to all my config structures and got the tool to output a JSON Schema:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Config Reference",
+  "description": "Config file reference for `a_cli_tool`.\n\nBy default `a_cli_tool` looks for configuration in `./config.yaml`, unless another path is specified with the `-c/--config` parameter.\n\n`Config` details the structure of the configuration.",
+  "type": "object",
+  "required": [
+    "actions",
+    "name",
+    "source",
+    "target",
+    "version"
+  ],
+  "properties": {
+    "name": {
+      "description": "The name of the thing this CLI tool is building for you.",
+      "type": "string"
+    },
+    "version": {
+      "description": "The version of the thing this CLI tool will build for you.\n\nThis is a [SemVer][semver] version, e.g:\n\n```yaml version: 1.2.3 ```\n\n[semver]: https://semver.org/",
+      "type": "string"
+    },
+    "description": {
+      "description": "_Optional:_ A description of the thing this CLI tool is building for you.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "description": "The configuration for the source of data for this tool.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/Source"
+        }
+      ]
+    },
+    "target": {
+      "description": "A path to write the created thing to.",
+      "type": "string"
+    },
+    "actions": {
+      "description": "The operations to perform on the data this tool manipulates.\n\nThis array of operations will be performed in order and an operation may appear more than once.\n\nE.g:\n\n```yaml actions: [ foo, bar, baz, bar ] ```",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Actions"
+      }
+    }
+  },
+  "definitions": {
+    "Source": {
+      "description": "The configuration for the source of data for this tool.\n\nThis can either be set to a local file:\n\n```yaml source: file: path/to/file.yaml ```\n\nOr a URL:\n\n```yaml source: url: https://urlofsource.com/sourcedata/ ```\n\n---\n\nBack to:\n\n- [App Configuration](./struct.AppData.html#structfield.source) - [Configuration Reference](./struct.Config.html#structfield.data)",
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "url"
+          ],
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "Actions": {
+      "description": "The possible operations to perform on the data this tool manipulates.\n\nSee each option below for what it does and how it's referenced in config.",
+      "type": "string",
+      "enum": [
+        "foo",
+        "bar",
+        "baz",
+        "foo_bar",
+        "bar_baz",
+        "fbb"
+      ]
+    }
+  }
+}
+```
+
+There was one change I had to make. Where previously I had the `version` field
+typed as:
+
+```rust
+  version: sever::Version,
+```
+
+This gave me error:
+
+```
+error[E0277]: the trait bound `semver::Version: schemars::JsonSchema` is not satisfied
+  --> src/config5.rs:29:14
+   |
+29 |     version: semver::Version,
+   |              ^^^^^^ the trait `schemars::JsonSchema` is not implemented for `semver::Version`
+   |
+   = note: required by `schemars::JsonSchema::add_schema_as_property`
+```
+
+I could have tried to implement the trait for a newtype wrapper around `semver::Version` but for
+now I just changed that to be a `String`.  If using this approach on a
+real tool, where there may be a few foreign types that don't implement
+`JsonSchema` included in the tool's config, it might end up more practical
+to parse the config first in terms of types that `JsonSchema` _is_ implemented
+for then perform a 2nd parsing stage.
+
+In this example we could do:
+
+```rust
+#[derive(serde::Deserialize, schemars::JsonSchema)]
+pub struct Config<V = String> {
+    name: String,
+    version: V,
+    description: Option<String>,
+    #[serde(flatten)]
+    data: AppData,
+}
+
+impl Config<String> {
+    pub fn parse(self) -> anyhow::Result<Config<semver::Version>> {
+        Ok(Config {
+            name: self.name,
+            description: self.description,
+            data: self.data,
+
+            version: semver::Version::parse(&self.version)?,
+        })
+    }
+}
+```
+
+and generate the JSON Schema for `Config<String>`.
+
+Although as the number of foreign types, or types not implementing `JsonSchema`,
+grows this might produce an unwieldy number of type parameters.
+
+So after a quick look on the internet I found [a tool to turn a JSON Schema
+into an HTML page](https://coveooss.github.io/json-schema-for-humans/).  The result
+looks rather smart.
+
+Recall the config structures (with comments and derive attributes removed) are:
+
+```rust
+pub struct Config<V = String> {
+    name: String,
+    version: V,
+    description: Option<String>,
+    #[serde(flatten)]
+    data: AppData,
+}
+
+pub struct AppData {
+    source: Source,
+    target: std::path::PathBuf,
+    actions: Vec<Actions>,
+}
+
+pub enum Source {
+    File(std::path::PathBuf),
+    Url(String),
+}
+
+#[serde(rename_all = "snake_case")]
+pub enum Actions {
+    Foo,
+    Bar,
+    Baz,
+    FooBar,
+    BarBaz,
+    #[serde(rename = "fbb")]
+    FooBarBaz,
+}
+```
+
+The HTML document looks like:
+
+![](/images/rust-docs-config-ref/config6.png)
+
+This time I'm not cropping anything out!  This is all that appears.
+The fields from `AppData` have been nicely flattened into the
+top level.
+
+We can click on the fields to expand them:
+
+![](/images/rust-docs-config-ref/config6meta.png)
+
+It's even tried to render the markdown in the fields' doc comments.
+Unfortunately it hasn't rendered the syntax highlighting hint properly.
+But this was the first tool I found from searching on the internet so
+I'll not let small formatting details put a downer on things for now.
+
+What it's done for our enums is nice:
+
+![](/images/rust-docs-config-ref/config6source1.png)
+
+Clicking on `Option 2` we see:
+
+![](/images/rust-docs-config-ref/config6source2.png)
+
+Here I put the doc comments on the enum rather than individual variants.
+Had I done that instead there'd be a description of `url` and `file` available.
+
+I really like how the `actions` field has rendered:
+
+![](/images/rust-docs-config-ref/config6actions.png)
+
+This is all looking quite good. As config grows in complexity
+it looks like this format will naturally extend and be navigable and
+readable.
+
+The `schemars::Schema` trait seems to generate a god JSON Schema,
+and once you have your JSON Schema you can make your choice
+of JSON Schema -> HTML renderer.
+
+What's going to make or break this approach is how hard it
+is to generate that Schema. In this example I went for a workaround to
+`JsonSchema` not being implemented for a foreign type by parsing
+config in two steps, but looking at [some of the implementations](https://docs.rs/schemars/0.8.0/src/schemars/json_schema_impls/serdejson.rs.html#7-17)
+of the trait, it doesn't seem like it would be too hard to
+implement it for a newtype wrapper around a foreign type.
+
+# What About CLIs?
+
+# Potential Project?
 
 - Is there anything out there that does this?
   + perhaps for another langauge

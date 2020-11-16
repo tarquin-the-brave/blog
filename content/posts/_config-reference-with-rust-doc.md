@@ -14,36 +14,38 @@ giving a "Quick Start" guide, and demonstrating some use cases.
 
 Where I find tools' documentation is missing something, is when you're already
 well acquainted with the tool, and you want to know some specific detail about
-a single field like what possible values it can have or exactly where it sits in the
-structure of the config. I find myself really in need of a "config file
+a single field like what possible values it can have or exactly where it sits
+in the structure of the config. I find myself really in need of a "config file
 reference" akin to the ones you see for APIs which get generated from API Specs
 or code.
 
 Having worked with the Kubernetes API a fair bit over the last few years I find
-myself going straight to [the API reference][k8sapi] whenever I need to look something
-up, as I'm normally looking up the specifics of where a field lives or what it
-does. Having documentation that allows you to follow links to navigate through
-the structure of the API objects is really helpful. Kubernetes also has a load
-of concept guides and walkthroughs in [its documentation][k8sdocs]. It's something
-I'd hold up as a generally well documented thing.
+myself going straight to [the API reference][k8sapi] whenever I need to look
+something up, as I'm normally looking up the specifics of where a field lives
+or what it does. Having documentation that allows you to follow links to
+navigate through the structure of the API objects is really helpful. Kubernetes
+also has a load of concept guides and walkthroughs in [its
+documentation][k8sdocs]. It's something I'd hold up as a generally well
+documented thing.
 
 [k8sapi]: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/
 [k8sdocs]: https://kubernetes.io/docs/home/
 
-It's often hard to find out the specifics of a config field if it
-doesn't appear in examples or some explanation. Projects that make an attempt
-to provide a reference for config seem to follow the same pattern.  For
-relatively simple config files they provide an example with all the fields,
-optional and not, provided, and then comment the example to say what's option,
-what the possible values are.
+It's often hard to find out the specifics of a config field if it doesn't
+appear in examples or some explanation. Projects that make an attempt to
+provide a reference for config seem to follow the same pattern.  For relatively
+simple config files they provide an example with all the fields, optional and
+not, provided, and then comment the example to say what's option, what the
+possible values are.
 
 ![](/images/rust-docs-config-ref/helm-chart-file.png)
 
 This works OK while the config is small and simple.  But as config grows in
 size and becomes more complex in terms of what fields are needed, where
 sections of config could have alternatives, or be required only if some other
-config is set, it starts to get out of hand. That example above is the documentation
-for [Helm charts' `Chart.yaml` file](https://helm.sh/docs/topics/charts/#the-chartyaml-file).
+config is set, it starts to get out of hand. That example above is the
+documentation for [Helm charts' `Chart.yaml`
+file](https://helm.sh/docs/topics/charts/#the-chartyaml-file).
 
 It seems beyond a certain point projects, that do provide a config reference,
 resort to a more protracted form of a web page that lists each field and
@@ -67,15 +69,15 @@ So what I'm looking for is config file documentation that:
 
 # Rust Docs
 
-I've been developing a CLI tool at work recently.  It's written in
-Rust.  I'm not sure I fully understand why, but Rust is a excellent language
-for writing CLI tools in.  I don't think there's much about the core tenets
-of the language that necessarily make that so.  The representation
-of errors in sum types, `Result<T, E>`, does strongly encourage the errors to be handled
-right back to `main` and the user, but the `?` operator makes it all to
-easy to throw out a cryptic error message from a library you've called with
-no context relevant to your application. I think really it's just that there's
-some really well designed libraries to make CLI tools with: [`clap`][clap],
+I've been developing a CLI tool at work recently.  It's written in Rust.  I'm
+not sure I fully understand why, but Rust is a excellent language for writing
+CLI tools in.  I don't think there's much about the core tenets of the language
+that necessarily make that so.  The representation of errors in sum types,
+`Result<T, E>`, does strongly encourage the errors to be handled right back to
+`main` and the user, but the `?` operator makes it all to easy to throw out a
+cryptic error message from a library you've called with no context relevant to
+your application. I think really it's just that there's some really well
+designed libraries to make CLI tools with: [`clap`][clap],
 [`structopt`][structopt], and [`serde`][serde] (for parsing config files).
 
 [clap]: https://docs.rs/clap/2.33.3/clap/
@@ -84,10 +86,10 @@ some really well designed libraries to make CLI tools with: [`clap`][clap],
 
 I've noticed the Rust docs going largely unused as the crate is a binary...
 
-Perhaps they could fulfil what I'm looking for.  Rust docs reflect the structure
-of structures. Rust docs are navigable by
-following links.  The source for them is defined in code. It's sounding like a
-strong candidate, on paper at least...
+Perhaps they could fulfil what I'm looking for.  Rust docs reflect the
+structure of structures. Rust docs are navigable by following links.  The
+source for them is defined in code. It's sounding like a strong candidate, on
+paper at least...
 
 I've made this dummy CLI tool to see how this looks.
 
@@ -133,15 +135,14 @@ We can follow the link to `Source` to see what that is:
 
 Granted, there's some obvious problems emerging already.
 
-If a reader follows
-a link to a foreign type there's no guarantee that that type's documentation
-will helpfully portray how that type is serialized in our chosen config
-file format.
+If a reader follows a link to a foreign type there's no guarantee that that
+type's documentation will helpfully portray how that type is serialized in our
+chosen config file format.
 
 For the enum above, the representation in the Rust docs is quite diverged from
-how it would appear in the config file.  And perhaps some Rust literacy
-is going to be needed to know that an enum is something that could be one
-variant, or could be another.
+how it would appear in the config file.  And perhaps some Rust literacy is
+going to be needed to know that an enum is something that could be one variant,
+or could be another.
 
 Any difference between the Rust structure and config file representation that's
 given by attributes, e.g. the:
@@ -152,8 +153,8 @@ given by attributes, e.g. the:
 
 isn't accounted for.
 
-But maybe these are things we can fix up with comments.  Let's assume for
-now the config file format is YAML.
+But maybe these are things we can fix up with comments.  Let's assume for now
+the config file format is YAML.
 
 ![](/images/rust-docs-config-ref/config2.png)
 
@@ -161,20 +162,20 @@ Following the link to `Source` again:
 
 ![](/images/rust-docs-config-ref/source2.png)
 
-This doesn't look so bad now.  There's even a nice link to go back up to
-top level config, which when you follow it, takes you to the field this
-data is under in the parent.
+This doesn't look so bad now.  There's even a nice link to go back up to top
+level config, which when you follow it, takes you to the field this data is
+under in the parent.
 
 ![](/images/rust-docs-config-ref/config2source.png)
 
-You can also expand and collapse the descriptions of each field as you
-browse around.
+You can also expand and collapse the descriptions of each field as you browse
+around.
 
 I admit, I am massively skimming over the face that in both cases of `Source`
-and `Config` what I'm showing above [isn't all that appears on the page][config2]. There's
-methods and trait implementations below and a sidebar that links you to them
-with a big Rust symbol in it.  This is definitely a problem, but one that
-I'm going to come back to. :see_no_evil: :hear_no_evil:
+and `Config` what I'm showing above [isn't all that appears on the
+page][config2]. There's methods and trait implementations below and a sidebar
+that links you to them with a big Rust symbol in it.  This is definitely a
+problem, but one that I'm going to come back to. :see_no_evil: :hear_no_evil:
 
 Let's make this config more complex and see what happens! :smirk_cat:
 
@@ -215,19 +216,20 @@ pub enum Actions {
 }
 ```
 
-So now our top level `Config` object defines some metadata fields: `name`, `version`,
-and a now optional `description`, and flattens in the configuration data for the
-application.  This is going to take a bit more explaining in the comments... :cold_sweat:
+So now our top level `Config` object defines some metadata fields: `name`,
+`version`, and a now optional `description`, and flattens in the configuration
+data for the application.  This is going to take a bit more explaining in the
+comments... :cold_sweat:
 
 ![](/images/rust-docs-config-ref/config4.png)
 
-The `Option` in the `description` field looks OK.  With the accompanying "_Optional_:"
-added to the field description it gets across the field is optional without too
-much confusion.
+The `Option` in the `description` field looks OK.  With the accompanying
+"_Optional_:" added to the field description it gets across the field is
+optional without too much confusion.
 
-The flattened fields under `data` are less ideal.  An explanation and an example
-can "set the record straight" but we're starting to have the docs deviate from
-our goal of representing the structure of the config data.
+The flattened fields under `data` are less ideal.  An explanation and an
+example can "set the record straight" but we're starting to have the docs
+deviate from our goal of representing the structure of the config data.
 
 The docs that come from the `AppData` have come out OK as it's a structure that
 we're not changing field names of structure of with the serde representation.
@@ -238,8 +240,8 @@ We're even able to link to the "possible operations" from the `actions` field.
 
 ![](/images/rust-docs-config-ref/actions4.png)
 
-As with the `Sources` enum and the flattening of the `AppData` into the top level
-config we're having the problem of:
+As with the `Sources` enum and the flattening of the `AppData` into the top
+level config we're having the problem of:
 
 > Every time the Rust code doesn't match the representation in a config file
 > we need to compensate with a comment that explains things.
@@ -249,13 +251,14 @@ This is going to happen every time we do anything like:
 - flattening structures,
 - making enum variants be represented by lowercase versions of themselves,
 - ["un-tag" an enum](https://serde.rs/container-attrs.html#untagged), or
-- any other [alternative way of representing enums](https://serde.rs/enum-representations.html).
+- any other [alternative way of representing
+  enums](https://serde.rs/enum-representations.html).
 
 There's other things we might want to do to the Rust code that would cause
-further explaining and back tracking in the comments.  We might find the
-top level encapsulating structure of the config is something we want to
-reuse throughout the codebase and make it generic over the data the user
-provides and what we transform that data into:
+further explaining and back tracking in the comments.  We might find the top
+level encapsulating structure of the config is something we want to reuse
+throughout the codebase and make it generic over the data the user provides and
+what we transform that data into:
 
 ```rust
 #[derive(serde::Deserialize)]
@@ -268,8 +271,8 @@ pub struct Config<T> {
 }
 ```
 
-Parsing `Config<AppData>` when we read the config file, but later transform
-the data under `data` into another type.
+Parsing `Config<AppData>` when we read the config file, but later transform the
+data under `data` into another type.
 
 Finally the problem I've been ignoring so far:
 
@@ -281,34 +284,37 @@ Finally the problem I've been ignoring so far:
 This could cause some confusion for the reader. :dizzy_face:
 
 So can you use Rust docs to generate a config file reference to supplement the
-main docs for a tool? Probably not for a
-tool with a public user base. But if you're developing a tool internally in
-an organisation that are predominately Rust literate, the downsides may not
-be too bad for you, and you could benefit from the completeness and navigability.
+main docs for a tool? Probably not for a tool with a public user base. But if
+you're developing a tool internally in an organisation that are predominately
+Rust literate, the downsides may not be too bad for you, and you could benefit
+from the completeness and navigability.
 
-Obviously it's not what Rust docs were made to do, but it's been interesting
-to see how far I can get.
+Obviously it's not what Rust docs were made to do, but it's been interesting to
+see how far I can get.
 
-My example project has [published these docs][config5] so you can take a look for yourself.
+My example project has [published these docs][config5] so you can take a look
+for yourself.
 
 # Via A Generated Schema
 
-For this blog post I was looking around at "what APIs do" to provide this navigable
-reference.  It seems a lot of them don't, providing only an OpenAPI specification
-instead.  There seems to be a few tools out there that turn OpenAPI specs into
-an HTML page. I wonder if something similar can be done for config files.
+For this blog post I was looking around at "what APIs do" to provide this
+navigable reference.  It seems a lot of them don't, providing only an OpenAPI
+specification instead.  There seems to be a few tools out there that turn
+OpenAPI specs into an HTML page. I wonder if something similar can be done for
+config files.
 
 "Something similar" in this case being:
 
 > Have a description of the config file in a well known schema language and
   find a tool to turn that into HTML.
 
-My initial thought about this was that I didn't really fancy mastering the description
-of config in a schema language rather than in in code.
+My initial thought about this was that I didn't really fancy mastering the
+description of config in a schema language rather than in in code.
 
 But take [JSON Schema][jsonsch] as an example, the [`schemars`][schemars] crate
-lets you generate schemas from structures. So I stuck `#[derive(schemars::JsonSchema)]`
-to all my config structures and got the tool to output a JSON Schema:
+lets you generate schemas from structures. So I stuck
+`#[derive(schemars::JsonSchema)]` to all my config structures and got the tool
+to output a JSON Schema:
 
 ```json
 {
@@ -422,12 +428,12 @@ error[E0277]: the trait bound `semver::Version: schemars::JsonSchema` is not sat
    = note: required by `schemars::JsonSchema::add_schema_as_property`
 ```
 
-I could have tried to implement the trait for a newtype wrapper around `semver::Version` but for
-now I just changed that to be a `String`.  If using this approach on a
-real tool, where there may be a few foreign types that don't implement
-`JsonSchema` included in the tool's config, it might end up more practical
-to parse the config first in terms of types that `JsonSchema` _is_ implemented
-for then perform a 2nd parsing stage.
+I could have tried to implement the trait for a newtype wrapper around
+`semver::Version` but for now I just changed that to be a `String`.  If using
+this approach on a real tool, where there may be a few foreign types that don't
+implement `JsonSchema` included in the tool's config, it might end up more
+practical to parse the config first in terms of types that `JsonSchema` _is_
+implemented for then perform a 2nd parsing stage.
 
 In this example we could do:
 
@@ -456,12 +462,12 @@ impl Config<String> {
 
 and generate the JSON Schema for `Config<String>`.
 
-Although as the number of foreign types, or types not implementing `JsonSchema`,
-grows this might produce an unwieldy number of type parameters.
+Although as the number of foreign types, or types not implementing
+`JsonSchema`, grows this might produce an unwieldy number of type parameters.
 
 So after a quick look on the internet I found [a tool to turn a JSON Schema
-into an HTML page](https://coveooss.github.io/json-schema-for-humans/).  The result
-looks rather smart.
+into an HTML page](https://coveooss.github.io/json-schema-for-humans/).  The
+result looks rather smart.
 
 Recall the config structures (with comments and derive attributes removed) are:
 
@@ -501,18 +507,17 @@ The HTML document looks like:
 
 ![](/images/rust-docs-config-ref/config6.png)
 
-This time I'm not cropping anything out!  This is all that appears.
-The fields from `AppData` have been nicely flattened into the
-top level.
+This time I'm not cropping anything out!  This is all that appears.  The fields
+from `AppData` have been nicely flattened into the top level.
 
 We can click on the fields to expand them:
 
 ![](/images/rust-docs-config-ref/config6meta.png)
 
 It's even tried to render the markdown in the fields' doc comments.
-Unfortunately it hasn't rendered the syntax highlighting hint properly.
-But this was the first tool I found from searching on the internet so
-I'll not let small formatting details put a downer on things for now.
+Unfortunately it hasn't rendered the syntax highlighting hint properly.  But
+this was the first tool I found from searching on the internet so I'll not let
+small formatting details put a downer on things for now.
 
 What it's done for our enums is nice:
 
@@ -522,29 +527,54 @@ Clicking on `Option 2` we see:
 
 ![](/images/rust-docs-config-ref/config6source2.png)
 
-Here I put the doc comments on the enum rather than individual variants.
-Had I done that instead there'd be a description of `url` and `file` available.
+Here I put the doc comments on the enum rather than individual variants.  Had I
+done that instead there'd be a description of `url` and `file` available.
 
 I really like how the `actions` field has rendered:
 
 ![](/images/rust-docs-config-ref/config6actions.png)
 
-This is all looking quite good. As config grows in complexity
-it looks like this format will naturally extend and be navigable and
-readable.
+This is all looking quite good. As config grows in complexity it looks like
+this format will naturally extend and be navigable and readable.
 
-The `schemars::Schema` trait seems to generate a god JSON Schema,
-and once you have your JSON Schema you can make your choice
-of JSON Schema -> HTML renderer.
+The `schemars::Schema` trait seems to generate a god JSON Schema, and once you
+have your JSON Schema you can make your choice of JSON Schema -> HTML renderer.
 
-What's going to make or break this approach is how hard it
-is to generate that Schema. In this example I went for a workaround to
-`JsonSchema` not being implemented for a foreign type by parsing
-config in two steps, but looking at [some of the implementations](https://docs.rs/schemars/0.8.0/src/schemars/json_schema_impls/serdejson.rs.html#7-17)
-of the trait, it doesn't seem like it would be too hard to
-implement it for a newtype wrapper around a foreign type.
+What could be a problem with this approach is generating that Schema. In this
+example I went for a workaround to `JsonSchema` not being implemented for a
+foreign type by parsing config in two steps, but looking at [some of the
+implementations](https://docs.rs/schemars/0.8.0/src/schemars/json_schema_impls/serdejson.rs.html#7-17)
+of the trait, it's not too hard to implement it for a newtype wrapper around a
+foreign type.
+
+```rust
+#[derive(serde::Deserialize)]
+pub struct Version(semver::Version);
+
+impl schemars::JsonSchema for Version {
+    fn is_referenceable() -> bool {
+        false
+    }
+
+    fn schema_name() -> String {
+        "Version".to_string()
+    }
+
+    fn json_schema(_: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        schemars::schema::SchemaObject {
+            instance_type: Some(schemars::schema::InstanceType::String.into()),
+            ..Default::default()
+        }
+        .into()
+    }
+}
+```
+
+So maybe there's a bit of work to get the JSON Schema for your config, but once
+you've generated it, you can choose what you use to render it into HTML.
 
 # What About CLIs?
+
 
 # Potential Project?
 

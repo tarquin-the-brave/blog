@@ -1,10 +1,10 @@
 +++
 title = "Generating a Config File Reference for a CLI Tool in Rust"
-date = 2020-07-15T14:58:19+01:00
+date = 2020-11-17T21:00:00+00:00
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 There's something missing from the documentation of CLI tools.
@@ -177,6 +177,8 @@ page][config2]. There's methods and trait implementations below and a sidebar
 that links you to them with a big Rust symbol in it.  This is definitely a
 problem, but one that I'm going to come back to. :see_no_evil: :hear_no_evil:
 
+[config2]: https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config2/struct.Config.html
+
 Let's make this config more complex and see what happens! :smirk_cat:
 
 ```rust
@@ -295,6 +297,8 @@ see how far I can get.
 My example project has [published these docs][config5] so you can take a look
 for yourself.
 
+[config5]: https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config5/struct.Config.html
+
 # Via A Generated Schema
 
 For this blog post I was looking around at "what APIs do" to provide this
@@ -315,6 +319,9 @@ But take [JSON Schema][jsonsch] as an example, the [`schemars`][schemars] crate
 lets you generate schemas from structures. So I stuck
 `#[derive(schemars::JsonSchema)]` to all my config structures and got the tool
 to output a JSON Schema:
+
+[jsonsch]: https://json-schema.org/
+[schemars]: https://docs.rs/schemars/0.8.0/schemars/
 
 ```json
 {
@@ -620,35 +627,44 @@ And rendering a generated JSON Schema looks like:
 
 ![](/images/rust-docs-config-ref/cli1html.png)
 
-The "rendered JSON Schema" approach had an advantage
-over the "Rust docs" approach, for generating a reference for
-the config file, as the `serde` annotations that mapped the
-Rust representation to the representation the user sees were
-taken account of. In this case, neither approach gets the
-`structopt` annotations taken account of and both would require
-commenting to explain which fields are arguments, parameters, subcommands
-and how they're represented on the CLI.
+The "rendered JSON Schema" approach had an advantage over the "Rust docs"
+approach, for generating a reference for the config file, as the `serde`
+annotations that mapped the Rust representation to the representation the user
+sees were taken account of. In this case, neither approach gets the `structopt`
+annotations taken account of and both would require commenting to explain which
+fields are arguments, parameters, subcommands and how they're represented on
+the CLI.
 
-An alternative approach here could be to generate man pages,
-then use something like [Pandoc][pandoc] to convert them to HTML.
+An alternative approach here could be to generate man pages, then use something
+like [Pandoc][pandoc] to convert them to HTML.
 
-I wanted to give this a go, but [the approach the "Rust CLI" book][genman] suggests
-for generating man pages
-tells you to use the `clap_generate::gen_manuals` function, which I can't find
-in the [`clap_generate` documentation][clapgen]... That might require waiting
-for `clap` V3.
+[pandoc]: https://pandoc.org/
+
+I wanted to give this a go, but [the approach the "Rust CLI" book][genman]
+suggests for generating man pages tells you to use the
+`clap_generate::gen_manuals` function, which I can't find in the
+[`clap_generate` documentation][clapgen]... That might require waiting for
+`clap` V3.
 
 [clapgen]: https://docs.rs/clap_generate/3.0.0-beta.2/clap_generate/
 [genman]: https://rust-cli.github.io/book/in-depth/docs.html
 
 # These Examples
 
-I've published the examples from this blog to TODO
+I've published the examples from this blog on Github Pages. Take a look around.
+
+- Rust Docs
+  + [Config File Reference](https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config7/struct.Config.html)
+  + [CLI Reference (uncommented)](https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/cli/struct.Cli.html)
+  + [All Rust Docs](https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/)
+- Generated from JSON Schema
+  + [Config File Reference](https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config/schema_doc.html)
+  + [CLI Reference (uncommented)](https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/cli/schema_doc.html)
 
 # Potential Project?
 
 I wonder, and please do comment, if there's anything I've missed that can do a
-better job of these things.
+better job of generating a reference to supplement user docs.
 
 If I was making a new CLI tool today that took a config file, I think I'd take
 [the JSON Schema approach](#via-a-generated-schema), and shop around a bit for

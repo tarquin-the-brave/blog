@@ -1,0 +1,724 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Generating a Config File Reference for a CLI Tool in Rust - tarquin-the-brave</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="The HTML5 Herald" />
+<meta name="author" content="Tom Steavenson" /><meta property="og:title" content="Generating a Config File Reference for a CLI Tool in Rust" />
+<meta property="og:description" content="There&rsquo;s something missing from the documentation of CLI tools.
+They often have home pages that do a great job of explaining the core concepts, giving a &ldquo;Quick Start&rdquo; guide, and demonstrating some use cases." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/generating-config-reference-rust-cli/" />
+<meta property="article:published_time" content="2020-11-17T21:00:00+00:00" />
+<meta property="article:modified_time" content="2020-11-17T21:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Generating a Config File Reference for a CLI Tool in Rust"/>
+<meta name="twitter:description" content="There&rsquo;s something missing from the documentation of CLI tools.
+They often have home pages that do a great job of explaining the core concepts, giving a &ldquo;Quick Start&rdquo; guide, and demonstrating some use cases."/>
+
+<meta name="generator" content="Hugo 0.64.1" />
+    
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://tarquin-the-brave.github.io/blog/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://tarquin-the-brave.github.io/blog/">tarquin-the-brave</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/tarquin-the-brave" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://stackoverflow.com/users/10132181/tom-steavenson" title="StackOverflow">
+               <i class="fab fa-stack-overflow fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em><p>Some things I think.</p>
+<p><a href="https://tarquin-the-brave.github.io/blog/posts/"><strong>&mdash; All Posts &mdash;</strong></a></p>
+</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Generating a Config File Reference for a CLI Tool in Rust</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-11-17T21:00:00Z">Nov 17, 2020</time>
+        </li>
+        
+        
+
+        
+
+        <li>16 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+<div class="featured_image">
+    <a href="https://tarquin-the-brave.github.io/blog/posts/generating-config-reference-rust-cli/" title="Generating a Config File Reference for a CLI Tool in Rust">
+        <img src="">
+    </a>
+</div>
+
+
+
+    <p>There&rsquo;s something missing from the documentation of CLI tools.</p>
+<p>They often have home pages that do a great job of explaining the core concepts,
+giving a &ldquo;Quick Start&rdquo; guide, and demonstrating some use cases.</p>
+<p>Where I find tools&rsquo; documentation is missing something, is when you&rsquo;re already
+well acquainted with the tool, and you want to know some specific detail about
+a single field like what possible values it can have or exactly where it sits
+in the structure of the config. I find myself really in need of a &ldquo;config file
+reference&rdquo; akin to the ones you see for APIs which get generated from API Specs
+or code.</p>
+<p>Having worked with the Kubernetes API a fair bit over the last few years I find
+myself going straight to <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/">the API reference</a> whenever I need to look
+something up, as I&rsquo;m normally looking up the specifics of where a field lives
+or what it does. Having documentation that allows you to follow links to
+navigate through the structure of the API objects is really helpful. Kubernetes
+also has a load of concept guides and walkthroughs in <a href="https://kubernetes.io/docs/home/">its
+documentation</a>. It&rsquo;s something I&rsquo;d hold up as a generally well
+documented thing.</p>
+<p>It&rsquo;s often hard to find out the specifics of a config field if it doesn&rsquo;t
+appear in examples or some explanation. Projects that make an attempt to
+provide a reference for config seem to follow the same pattern.  For relatively
+simple config files they provide an example with all the fields, optional and
+not, provided, and then comment the example to say what&rsquo;s option, what the
+possible values are.</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/helm-chart-file.png" alt=""></p>
+<p>This works OK while the config is small and simple.  But as config grows in
+size and becomes more complex in terms of what fields are needed, where
+sections of config could have alternatives, or be required only if some other
+config is set, it starts to get out of hand. That example above is the
+documentation for <a href="https://helm.sh/docs/topics/charts/#the-chartyaml-file">Helm charts&rsquo; <code>Chart.yaml</code>
+file</a>.</p>
+<p>It seems beyond a certain point projects, that do provide a config reference,
+resort to a more protracted form of a web page that lists each field and
+provides the information on it.  This produces something that is complete, but
+isn&rsquo;t always that easy to navigate, scrolling is often your only resort, and I
+often find I lose track of where a field is nested within the structure.</p>
+<p>In both approaches mentioned there, there is the problem that the config file
+reference is maintained separately from the code that defines it.  For
+maintainability and correctness&rsquo; sake, we really want the code that defines
+config, and the documentation that attempts to provide a complete and correct
+reference for it, to be together.</p>
+<p>So what I&rsquo;m looking for is config file documentation that:</p>
+<ul>
+<li>Reflects the structure of the config,</li>
+<li>Is navigable by following links into and back out of config substructure, and</li>
+<li>Defined in code.</li>
+</ul>
+<p>🔍</p>
+<h1 id="rust-docs">Rust Docs</h1>
+<p>I&rsquo;ve been developing a CLI tool at work recently.  It&rsquo;s written in Rust.  I&rsquo;m
+not sure I fully understand why, but Rust is a excellent language for writing
+CLI tools in.  I don&rsquo;t think there&rsquo;s much about the core tenets of the language
+that necessarily make that so.  The representation of errors in sum types,
+<code>Result&lt;T, E&gt;</code>, does strongly encourage the errors to be handled right back to
+<code>main</code> and the user, but the <code>?</code> operator makes it all to easy to throw out a
+cryptic error message from a library you&rsquo;ve called with no context relevant to
+your application. I think really it&rsquo;s just that there&rsquo;s some really well
+designed libraries to make CLI tools with: <a href="https://docs.rs/clap/2.33.3/clap/"><code>clap</code></a>,
+<a href="https://docs.rs/structopt/0.3.20"><code>structopt</code></a>, and <a href="https://serde.rs/"><code>serde</code></a> (for parsing config files).</p>
+<p>I&rsquo;ve noticed the Rust docs going largely unused as the crate is a binary&hellip;</p>
+<p>Perhaps they could fulfil what I&rsquo;m looking for.  Rust docs reflect the
+structure of structures. Rust docs are navigable by following links.  The
+source for them is defined in code. It&rsquo;s sounding like a strong candidate, on
+paper at least&hellip;</p>
+<p>I&rsquo;ve made this dummy CLI tool to see how this looks.</p>
+<p>Defining a reasonably simplistic config structure:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
+    name: String,
+    version: <span style="color:#a6e22e">semver</span>::Version,
+    description: String,
+    source: <span style="color:#a6e22e">Source</span>,
+    target: <span style="color:#a6e22e">std</span>::path::PathBuf,
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Source</span> {
+    File(std::path::PathBuf),
+    Url(String),
+}
+</code></pre></div><p>The Rust docs looks like:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config1.png" alt=""></p>
+<p>We can see the fields and their types. Not all the types are types in the
+format language of the config file, but with a comment we can clarify that.
+Where the type doesn&rsquo;t map to a type of the config file format people can
+follow the link to see what it is.</p>
+<p>This is in keeping with API documentations that may show a fields type to be
+another object.  Take the documentation for a <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#pod-v1-core">Kubernetes
+Pod</a>
+for example:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/k8s1.png" alt=""></p>
+<p>We can follow the link to <code>Source</code> to see what that is:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/source1.png" alt=""></p>
+<p>Granted, there&rsquo;s some obvious problems emerging already.</p>
+<p>If a reader follows a link to a foreign type there&rsquo;s no guarantee that that
+type&rsquo;s documentation will helpfully portray how that type is serialized in our
+chosen config file format.</p>
+<p>For the enum above, the representation in the Rust docs is quite diverged from
+how it would appear in the config file.  And perhaps some Rust literacy is
+going to be needed to know that an enum is something that could be one variant,
+or could be another.</p>
+<p>Any difference between the Rust structure and config file representation that&rsquo;s
+given by attributes, e.g. the:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+</code></pre></div><p>isn&rsquo;t accounted for.</p>
+<p>But maybe these are things we can fix up with comments.  Let&rsquo;s assume for now
+the config file format is YAML.</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config2.png" alt=""></p>
+<p>Following the link to <code>Source</code> again:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/source2.png" alt=""></p>
+<p>This doesn&rsquo;t look so bad now.  There&rsquo;s even a nice link to go back up to top
+level config, which when you follow it, takes you to the field this data is
+under in the parent.</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config2source.png" alt=""></p>
+<p>You can also expand and collapse the descriptions of each field as you browse
+around.</p>
+<p>I admit, I am massively skimming over the face that in both cases of <code>Source</code>
+and <code>Config</code> what I&rsquo;m showing above <a href="https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config2/struct.Config.html">isn&rsquo;t all that appears on the
+page</a>. There&rsquo;s methods and trait implementations below and a sidebar
+that links you to them with a big Rust symbol in it.  This is definitely a
+problem, but one that I&rsquo;m going to come back to. 🙈 🙉</p>
+<p>Let&rsquo;s make this config more complex and see what happens! 😼</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
+    name: String,
+    version: <span style="color:#a6e22e">semver</span>::Version,
+    description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    data: <span style="color:#a6e22e">AppData</span>,
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AppData</span> {
+    source: <span style="color:#a6e22e">Source</span>,
+    target: <span style="color:#a6e22e">std</span>::path::PathBuf,
+    actions: Vec<span style="color:#f92672">&lt;</span>Actions<span style="color:#f92672">&gt;</span>,
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Source</span> {
+    File(std::path::PathBuf),
+    Url(String),
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Actions</span> {
+    Foo,
+    Bar,
+    Baz,
+    FooBar,
+    BarBaz,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">fbb</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+    FooBarBaz,
+}
+</code></pre></div><p>So now our top level <code>Config</code> object defines some metadata fields: <code>name</code>,
+<code>version</code>, and a now optional <code>description</code>, and flattens in the configuration
+data for the application.  This is going to take a bit more explaining in the
+comments&hellip; 😰</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config4.png" alt=""></p>
+<p>The <code>Option</code> in the <code>description</code> field looks OK.  With the accompanying
+&ldquo;<em>Optional</em>:&rdquo; added to the field description it gets across the field is
+optional without too much confusion.</p>
+<p>The flattened fields under <code>data</code> are less ideal.  An explanation and an
+example can &ldquo;set the record straight&rdquo; but we&rsquo;re starting to have the docs
+deviate from our goal of representing the structure of the config data.</p>
+<p>The docs that come from the <code>AppData</code> have come out OK as it&rsquo;s a structure that
+we&rsquo;re not changing field names of structure of with the serde representation.</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/appdata4.png" alt=""></p>
+<p>We&rsquo;re even able to link to the &ldquo;possible operations&rdquo; from the <code>actions</code> field.</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/actions4.png" alt=""></p>
+<p>As with the <code>Sources</code> enum and the flattening of the <code>AppData</code> into the top
+level config we&rsquo;re having the problem of:</p>
+<blockquote>
+<p>Every time the Rust code doesn&rsquo;t match the representation in a config file
+we need to compensate with a comment that explains things.</p>
+</blockquote>
+<p>This is going to happen every time we do anything like:</p>
+<ul>
+<li>renaming fields,</li>
+<li>flattening structures,</li>
+<li>making enum variants be represented by lowercase versions of themselves,</li>
+<li><a href="https://serde.rs/container-attrs.html#untagged">&ldquo;un-tag&rdquo; an enum</a>, or</li>
+<li>any other <a href="https://serde.rs/enum-representations.html">alternative way of representing
+enums</a>.</li>
+</ul>
+<p>There&rsquo;s other things we might want to do to the Rust code that would cause
+further explaining and back tracking in the comments.  We might find the top
+level encapsulating structure of the config is something we want to reuse
+throughout the codebase and make it generic over the data the user provides and
+what we transform that data into:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> {
+    name: String,
+    version: <span style="color:#a6e22e">semver</span>::Version,
+    description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    data: <span style="color:#a6e22e">T</span>,
+}
+</code></pre></div><p>Parsing <code>Config&lt;AppData&gt;</code> when we read the config file, but later transform the
+data under <code>data</code> into another type.</p>
+<p>Finally the problem I&rsquo;ve been ignoring so far:</p>
+<blockquote>
+<p>These are Rust docs and have a load of other stuff in them that aren&rsquo;t relevant
+to someone writing the config file.</p>
+</blockquote>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config4wide.png" alt=""></p>
+<p>This could cause some confusion for the reader. 😵</p>
+<p>So can you use Rust docs to generate a config file reference to supplement the
+main docs for a tool? Probably not for a tool with a public user base. But if
+you&rsquo;re developing a tool internally in an organisation that are predominately
+Rust literate, the downsides may not be too bad for you, and you could benefit
+from the completeness and navigability.</p>
+<p>Obviously it&rsquo;s not what Rust docs were made to do, but it&rsquo;s been interesting to
+see how far I can get.</p>
+<p>My example project has <a href="https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config5/struct.Config.html">published these docs</a> so you can take a look
+for yourself.</p>
+<h1 id="via-a-generated-schema">Via A Generated Schema</h1>
+<p>For this blog post I was looking around at &ldquo;what APIs do&rdquo; to provide this
+navigable reference.  It seems a lot of them don&rsquo;t, providing only an OpenAPI
+specification instead.  There seems to be a few tools out there that turn
+OpenAPI specs into an HTML page. I wonder if something similar can be done for
+config files.</p>
+<p>&ldquo;Something similar&rdquo; in this case being:</p>
+<blockquote>
+<p>Have a description of the config file in a well known schema language and
+find a tool to turn that into HTML.</p>
+</blockquote>
+<p>My initial thought about this was that I didn&rsquo;t really fancy mastering the
+description of config in a schema language rather than in in code.</p>
+<p>But take <a href="https://json-schema.org/">JSON Schema</a> as an example, the <a href="https://docs.rs/schemars/0.8.0/schemars/"><code>schemars</code></a> crate
+lets you generate schemas from structures. So I stuck
+<code>#[derive(schemars::JsonSchema)]</code> to all my config structures and got the tool
+to output a JSON Schema:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;$schema&#34;</span>: <span style="color:#e6db74">&#34;http://json-schema.org/draft-07/schema#&#34;</span>,
+  <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;Config Reference&#34;</span>,
+  <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;Config file reference for `a_cli_tool`.\n\nBy default `a_cli_tool` looks for configuration in `./config.yaml`, unless another path is specified with the `-c/--config` parameter.\n\n`Config` details the structure of the configuration.&#34;</span>,
+  <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+  <span style="color:#f92672">&#34;required&#34;</span>: [
+    <span style="color:#e6db74">&#34;actions&#34;</span>,
+    <span style="color:#e6db74">&#34;name&#34;</span>,
+    <span style="color:#e6db74">&#34;source&#34;</span>,
+    <span style="color:#e6db74">&#34;target&#34;</span>,
+    <span style="color:#e6db74">&#34;version&#34;</span>
+  ],
+  <span style="color:#f92672">&#34;properties&#34;</span>: {
+    <span style="color:#f92672">&#34;name&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The name of the thing this CLI tool is building for you.&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+    },
+    <span style="color:#f92672">&#34;version&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The version of the thing this CLI tool will build for you.\n\nThis is a [SemVer][semver] version, e.g:\n\n```yaml version: 1.2.3 ```\n\n[semver]: https://semver.org/&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+    },
+    <span style="color:#f92672">&#34;description&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;_Optional:_ A description of the thing this CLI tool is building for you.&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: [
+        <span style="color:#e6db74">&#34;string&#34;</span>,
+        <span style="color:#e6db74">&#34;null&#34;</span>
+      ]
+    },
+    <span style="color:#f92672">&#34;source&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The configuration for the source of data for this tool.&#34;</span>,
+      <span style="color:#f92672">&#34;allOf&#34;</span>: [
+        {
+          <span style="color:#f92672">&#34;$ref&#34;</span>: <span style="color:#e6db74">&#34;#/definitions/Source&#34;</span>
+        }
+      ]
+    },
+    <span style="color:#f92672">&#34;target&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;A path to write the created thing to.&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+    },
+    <span style="color:#f92672">&#34;actions&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The operations to perform on the data this tool manipulates.\n\nThis array of operations will be performed in order and an operation may appear more than once.\n\nE.g:\n\n```yaml actions: [ foo, bar, baz, bar ] ```&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;array&#34;</span>,
+      <span style="color:#f92672">&#34;items&#34;</span>: {
+        <span style="color:#f92672">&#34;$ref&#34;</span>: <span style="color:#e6db74">&#34;#/definitions/Actions&#34;</span>
+      }
+    }
+  },
+  <span style="color:#f92672">&#34;definitions&#34;</span>: {
+    <span style="color:#f92672">&#34;Source&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The configuration for the source of data for this tool.\n\nThis can either be set to a local file:\n\n```yaml source: file: path/to/file.yaml ```\n\nOr a URL:\n\n```yaml source: url: https://urlofsource.com/sourcedata/ ```\n\n---\n\nBack to:\n\n- [App Configuration](./struct.AppData.html#structfield.source) - [Configuration Reference](./struct.Config.html#structfield.data)&#34;</span>,
+      <span style="color:#f92672">&#34;anyOf&#34;</span>: [
+        {
+          <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+          <span style="color:#f92672">&#34;required&#34;</span>: [
+            <span style="color:#e6db74">&#34;file&#34;</span>
+          ],
+          <span style="color:#f92672">&#34;properties&#34;</span>: {
+            <span style="color:#f92672">&#34;file&#34;</span>: {
+              <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+            }
+          }
+        },
+        {
+          <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+          <span style="color:#f92672">&#34;required&#34;</span>: [
+            <span style="color:#e6db74">&#34;url&#34;</span>
+          ],
+          <span style="color:#f92672">&#34;properties&#34;</span>: {
+            <span style="color:#f92672">&#34;url&#34;</span>: {
+              <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+            }
+          }
+        }
+      ]
+    },
+    <span style="color:#f92672">&#34;Actions&#34;</span>: {
+      <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;The possible operations to perform on the data this tool manipulates.\n\nSee each option below for what it does and how it&#39;s referenced in config.&#34;</span>,
+      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>,
+      <span style="color:#f92672">&#34;enum&#34;</span>: [
+        <span style="color:#e6db74">&#34;foo&#34;</span>,
+        <span style="color:#e6db74">&#34;bar&#34;</span>,
+        <span style="color:#e6db74">&#34;baz&#34;</span>,
+        <span style="color:#e6db74">&#34;foo_bar&#34;</span>,
+        <span style="color:#e6db74">&#34;bar_baz&#34;</span>,
+        <span style="color:#e6db74">&#34;fbb&#34;</span>
+      ]
+    }
+  }
+}
+</code></pre></div><p>There was one change I had to make. Where previously I had the <code>version</code> field
+typed as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">  version: <span style="color:#a6e22e">sever</span>::Version,
+</code></pre></div><p>This gave me error:</p>
+<pre><code>error[E0277]: the trait bound `semver::Version: schemars::JsonSchema` is not satisfied
+  --&gt; src/config5.rs:29:14
+   |
+29 |     version: semver::Version,
+   |              ^^^^^^ the trait `schemars::JsonSchema` is not implemented for `semver::Version`
+   |
+   = note: required by `schemars::JsonSchema::add_schema_as_property`
+</code></pre><p>I could have tried to implement the trait for a newtype wrapper around
+<code>semver::Version</code> but for now I just changed that to be a <code>String</code>.  If using
+this approach on a real tool, where there may be a few foreign types that don&rsquo;t
+implement <code>JsonSchema</code> included in the tool&rsquo;s config, it might end up more
+practical to parse the config first in terms of types that <code>JsonSchema</code> <em>is</em>
+implemented for then perform a 2nd parsing stage.</p>
+<p>In this example we could do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span><span style="color:#f92672">&lt;</span>V <span style="color:#f92672">=</span> String<span style="color:#f92672">&gt;</span> {
+    name: String,
+    version: <span style="color:#a6e22e">V</span>,
+    description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    data: <span style="color:#a6e22e">AppData</span>,
+}
+
+<span style="color:#66d9ef">impl</span> Config<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> {
+    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">parse</span>(self) -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>Config<span style="color:#f92672">&lt;</span>semver::Version<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> {
+        Ok(Config {
+            name: <span style="color:#a6e22e">self</span>.name,
+            description: <span style="color:#a6e22e">self</span>.description,
+            data: <span style="color:#a6e22e">self</span>.data,
+
+            version: <span style="color:#a6e22e">semver</span>::Version::parse(<span style="color:#f92672">&amp;</span>self.version)<span style="color:#f92672">?</span>,
+        })
+    }
+}
+</code></pre></div><p>and generate the JSON Schema for <code>Config&lt;String&gt;</code>.</p>
+<p>Although as the number of foreign types, or types not implementing
+<code>JsonSchema</code>, grows this might produce an unwieldy number of type parameters.</p>
+<p>So after a quick look on the internet I found <a href="https://coveooss.github.io/json-schema-for-humans/">a tool to turn a JSON Schema
+into an HTML page</a>.  The
+result looks rather smart.</p>
+<p>Recall the config structures (with comments and derive attributes removed) are:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span><span style="color:#f92672">&lt;</span>V <span style="color:#f92672">=</span> String<span style="color:#f92672">&gt;</span> {
+    name: String,
+    version: <span style="color:#a6e22e">V</span>,
+    description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    data: <span style="color:#a6e22e">AppData</span>,
+}
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AppData</span> {
+    source: <span style="color:#a6e22e">Source</span>,
+    target: <span style="color:#a6e22e">std</span>::path::PathBuf,
+    actions: Vec<span style="color:#f92672">&lt;</span>Actions<span style="color:#f92672">&gt;</span>,
+}
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Source</span> {
+    File(std::path::PathBuf),
+    Url(String),
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Actions</span> {
+    Foo,
+    Bar,
+    Baz,
+    FooBar,
+    BarBaz,
+    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">fbb</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+    FooBarBaz,
+}
+</code></pre></div><p>The HTML document looks like:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6.png" alt=""></p>
+<p>This time I&rsquo;m not cropping anything out!  This is all that appears.  The fields
+from <code>AppData</code> have been nicely flattened into the top level.</p>
+<p>We can click on the fields to expand them:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6meta.png" alt=""></p>
+<p>It&rsquo;s even tried to render the markdown in the fields&rsquo; doc comments.
+Unfortunately it hasn&rsquo;t rendered the syntax highlighting hint properly.  But
+this was the first tool I found from searching on the internet so I&rsquo;ll not let
+small formatting details put a downer on things for now.</p>
+<p>What it&rsquo;s done for our enums is nice:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6source1.png" alt=""></p>
+<p>Clicking on <code>Option 2</code> we see:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6source2.png" alt=""></p>
+<p>Here I put the doc comments on the enum rather than individual variants.  Had I
+done that instead there&rsquo;d be a description of <code>url</code> and <code>file</code> available.</p>
+<p>I really like how the <code>actions</code> field has rendered:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6actions.png" alt=""></p>
+<p>This is all looking quite good. As config grows in complexity it looks like
+this format will naturally extend and be navigable and readable.</p>
+<p>The <code>schemars::Schema</code> trait seems to generate a god JSON Schema, and once you
+have your JSON Schema you can make your choice of JSON Schema -&gt; HTML renderer.</p>
+<p>What could be a problem with this approach is generating that Schema. In this
+example I went for a workaround to <code>JsonSchema</code> not being implemented for a
+foreign type by parsing config in two steps, but looking at <a href="https://docs.rs/schemars/0.8.0/src/schemars/json_schema_impls/serdejson.rs.html#7-17">some of the
+implementations</a>
+of the trait, it&rsquo;s not too hard to implement it for a newtype wrapper around a
+foreign type.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Version</span>(semver::Version);
+
+<span style="color:#66d9ef">impl</span> schemars::JsonSchema <span style="color:#66d9ef">for</span> Version {
+    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">is_referenceable</span>() -&gt; <span style="color:#66d9ef">bool</span> {
+        <span style="color:#66d9ef">false</span>
+    }
+
+    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">schema_name</span>() -&gt; String {
+        <span style="color:#e6db74">&#34;Version&#34;</span>.to_string()
+    }
+
+    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">json_schema</span>(_: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> schemars::gen::SchemaGenerator) -&gt; <span style="color:#a6e22e">schemars</span>::schema::Schema {
+        schemars::schema::SchemaObject {
+            instance_type: Some(schemars::schema::InstanceType::String.into()),
+            ..Default::default()
+        }
+        .into()
+    }
+}
+</code></pre></div><p>So maybe there&rsquo;s a bit of work to get the JSON Schema for your config, but once
+you&rsquo;ve generated it, you can choose what you use to render it into HTML.</p>
+<p>It might be a good thing on its own, for a tool to be able to produce a JSON
+Schema for its config file.</p>
+<h1 id="what-about-clis">What About CLIs?</h1>
+<p>CLIs have a structure.  If you use <a href="https://docs.rs/structopt/0.3.20"><code>structopt</code></a> to define your CLI
+you define a Rust structure with annotations on the fields.</p>
+<p>The CLI help text
+you get from <a href="https://docs.rs/clap/2.33.3/clap/"><code>clap</code></a> (the crate <code>structopt</code> calls) is pretty good, but
+if we&rsquo;re creating a navigable HTML reference for our config, why not for our
+CLI too?</p>
+<p>I gave this a quick go, trying both of the approaches above.  Defining a dummy
+CLI with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(structopt::StructOpt, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
+    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(short, long)</span><span style="color:#75715e">]</span>
+    config: <span style="color:#a6e22e">std</span>::path::PathBuf,
+
+    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long)</span><span style="color:#75715e">]</span>
+    dry_run: <span style="color:#66d9ef">bool</span>,
+
+    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(subcommand)</span><span style="color:#75715e">]</span>
+    subcommand: <span style="color:#a6e22e">Subcommands</span>,
+}
+
+<span style="color:#75715e">#[</span><span style="color:#75715e">derive(structopt::StructOpt, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Subcommands</span> {
+    Foo,
+    Bar,
+    Baz,
+}
+</code></pre></div><p>Without adding any comments: the Rust docs look like:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/cli1.png" alt=""></p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/subcommands1.png" alt=""></p>
+<p>And rendering a generated JSON Schema looks like:</p>
+<p><img src="https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/cli1html.png" alt=""></p>
+<p>The &ldquo;rendered JSON Schema&rdquo; approach had an advantage over the &ldquo;Rust docs&rdquo;
+approach, for generating a reference for the config file, as the <code>serde</code>
+annotations that mapped the Rust representation to the representation the user
+sees were taken account of. In this case, neither approach gets the <code>structopt</code>
+annotations taken account of and both would require commenting to explain which
+fields are arguments, parameters, subcommands and how they&rsquo;re represented on
+the CLI.</p>
+<p>An alternative approach here could be to generate man pages, then use something
+like <a href="https://pandoc.org/">Pandoc</a> to convert them to HTML.</p>
+<p>I wanted to give this a go, but <a href="https://rust-cli.github.io/book/in-depth/docs.html">the approach the &ldquo;Rust CLI&rdquo; book</a>
+suggests for generating man pages tells you to use the
+<code>clap_generate::gen_manuals</code> function, which I can&rsquo;t find in the
+<a href="https://docs.rs/clap_generate/3.0.0-beta.2/clap_generate/"><code>clap_generate</code> documentation</a>&hellip; That might require waiting for
+<code>clap</code> V3.</p>
+<h1 id="these-examples">These Examples</h1>
+<p>I&rsquo;ve published the examples from this blog on Github Pages. Take a look around.</p>
+<ul>
+<li>Rust Docs
+<ul>
+<li><a href="https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config7/struct.Config.html">Config File Reference</a></li>
+<li><a href="https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/cli/struct.Cli.html">CLI Reference (uncommented)</a></li>
+<li><a href="https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/">All Rust Docs</a></li>
+</ul>
+</li>
+<li>Generated from JSON Schema
+<ul>
+<li><a href="https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config/schema_doc.html">Config File Reference</a></li>
+<li><a href="https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/cli/schema_doc.html">CLI Reference (uncommented)</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="potential-project">Potential Project?</h1>
+<p>I wonder, and please do comment, if there&rsquo;s anything I&rsquo;ve missed that can do a
+better job of generating a reference to supplement user docs.</p>
+<p>If I was making a new CLI tool today that took a config file, I think I&rsquo;d take
+<a href="#via-a-generated-schema">the JSON Schema approach</a>, and shop around a bit for
+the &ldquo;JSON Schema -&gt; HTML&rdquo; renderer.</p>
+<p>But that approach still requires going to the effort of producing the JSON
+Schema. I&rsquo;m also not sure that every config file format, that have crates that
+implement deserializers for <code>serde</code>, can have what you&rsquo;d reasonably express in
+it described by JSON Schema.  I say &ldquo;reasonably&rdquo;, because I know of examples
+like in YAML where you can have non-strings as keys to objects, but when you&rsquo;re
+defining structured config, I don&rsquo;t know that you would expect to do that.</p>
+<p>Wouldn&rsquo;t it be nice if there was a <code>cargo</code> subcommand that could generate these
+navigable, complete, reference docs for both config files and CLIs?</p>
+<p>Perhaps you could give it a structure, tell it whether it it&rsquo;s config or a CLI,
+and get some HTML generated.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cargo user-docs config config::MyAppConfig
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cargo user-docs cli cli::MyAppCli
+</code></pre></div><p>My guess on how to start looking into how to do this would be to read though
+the <code>cargo-doc</code> source code and see what it does, and whether it&rsquo;s possible to
+use some of it.</p>
+<p>At some point it&rsquo;ll have to spot the existence or expansion of the annotations
+given that describe how the Rust structures are represented in config or as CLI
+commands.  This might be problematic as it would probably have to have
+knowledge of or assume particular crates have been used, but it being limited
+to the mainline crate (or shortlist of crates) for each purpose is probably not
+too limiting.</p>
+<p>Please do comment if you have any thoughts: knowing of a project like this,
+advise on how one might go about doing this, or experience from other
+languages.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/rust_use_statements/"><i class="fa fa-chevron-circle-left"></i> Why I Scatter Use Statements Throughout My Rust</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+        <section id="utterances"></section>
+
+<script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    } else {
+        let s = document.createElement("script");
+        s.setAttribute("repo", "tarquin-the-brave\/blog");
+        s.src = "https://utteranc.es/client.js";
+        
+          s.setAttribute("issue-term", "pathname");
+        
+        
+        document.getElementById("utterances").innerHTML = "";
+        document.getElementById("utterances").appendChild(s);
+    }
+</script>
+
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright © 2020 - Tom Steavenson |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://tarquin-the-brave.github.io/blog/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://tarquin-the-brave.github.io/blog/js/scripts.js"></script>
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-161243400-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+
+</html>
+

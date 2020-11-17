@@ -22,7 +22,7 @@ googleAnalytics = "UA-161243400-1"
     #facebook = "username"
     #twitter = "ds_says"
     #instagram = "username"
-    stackoverflow = "tom-steavenson"
+    stackoverflow = "users/10132181/tom-steavenson"
     #youtube = "user/username" # or channel/channelname
 
 [params]

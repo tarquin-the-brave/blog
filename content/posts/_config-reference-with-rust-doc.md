@@ -1,5 +1,5 @@
 +++
-title = "Generate a Config File Reference for a CLI Tool in Rust"
+title = "Generating a Config File Reference for a CLI Tool in Rust"
 date = 2020-07-15T14:58:19+01:00
 images = []
 tags = []
@@ -573,10 +573,119 @@ impl schemars::JsonSchema for Version {
 So maybe there's a bit of work to get the JSON Schema for your config, but once
 you've generated it, you can choose what you use to render it into HTML.
 
+It might be a good thing on its own, for a tool to be able to produce a JSON
+Schema for its config file.
+
 # What About CLIs?
 
+CLIs have a structure.  If you use [`structopt`][structopt] to define your CLI
+you define a Rust structure with annotations on the fields.
+
+The CLI help text
+you get from [`clap`][clap] (the crate `structopt` calls) is pretty good, but
+if we're creating a navigable HTML reference for our config, why not for our
+CLI too?
+
+I gave this a quick go, trying both of the approaches above.  Defining a dummy
+CLI with:
+
+```rust
+#[derive(structopt::StructOpt, schemars::JsonSchema)]
+pub struct Cli {
+    #[structopt(short, long)]
+    config: std::path::PathBuf,
+
+    #[structopt(long)]
+    dry_run: bool,
+
+    #[structopt(subcommand)]
+    subcommand: Subcommands,
+}
+
+#[derive(structopt::StructOpt, schemars::JsonSchema)]
+pub enum Subcommands {
+    Foo,
+    Bar,
+    Baz,
+}
+```
+
+Without adding any comments: the Rust docs look like:
+
+![](/images/rust-docs-config-ref/cli1.png)
+
+![](/images/rust-docs-config-ref/subcommands1.png)
+
+And rendering a generated JSON Schema looks like:
+
+![](/images/rust-docs-config-ref/cli1html.png)
+
+The "rendered JSON Schema" approach had an advantage
+over the "Rust docs" approach, for generating a reference for
+the config file, as the `serde` annotations that mapped the
+Rust representation to the representation the user sees were
+taken account of. In this case, neither approach gets the
+`structopt` annotations taken account of and both would require
+commenting to explain which fields are arguments, parameters, subcommands
+and how they're represented on the CLI.
+
+An alternative approach here could be to generate man pages,
+then use something like [Pandoc][pandoc] to convert them to HTML.
+
+I wanted to give this a go, but [the approach the "Rust CLI" book][genman] suggests
+for generating man pages
+tells you to use the `clap_generate::gen_manuals` function, which I can't find
+in the [`clap_generate` documentation][clapgen]... That might require waiting
+for `clap` V3.
+
+[clapgen]: https://docs.rs/clap_generate/3.0.0-beta.2/clap_generate/
+[genman]: https://rust-cli.github.io/book/in-depth/docs.html
+
+# These Examples
+
+I've published the examples from this blog to TODO
 
 # Potential Project?
 
-- Is there anything out there that does this?
-  + perhaps for another langauge
+I wonder, and please do comment, if there's anything I've missed that can do a
+better job of these things.
+
+If I was making a new CLI tool today that took a config file, I think I'd take
+[the JSON Schema approach](#via-a-generated-schema), and shop around a bit for
+the "JSON Schema -> HTML" renderer.
+
+But that approach still requires going to the effort of producing the JSON
+Schema. I'm also not sure that every config file format, that have crates that
+implement deserializers for `serde`, can have what you'd reasonably express in
+it described by JSON Schema.  I say "reasonably", because I know of examples
+like in YAML where you can have non-strings as keys to objects, but when you're
+defining structured config, I don't know that you would expect to do that.
+
+Wouldn't it be nice if there was a `cargo` subcommand that could generate these
+navigable, complete, reference docs for both config files and CLIs?
+
+Perhaps you could give it a structure, tell it whether it it's config or a CLI,
+and get some HTML generated.
+
+```bash
+cargo user-docs config config::MyAppConfig
+```
+
+```bash
+cargo user-docs cli cli::MyAppCli
+```
+
+My guess on how to start looking into how to do this would be to read though
+the `cargo-doc` source code and see what it does, and whether it's possible to
+use some of it.
+
+At some point it'll have to spot the existence or expansion of the annotations
+given that describe how the Rust structures are represented in config or as CLI
+commands.  This might be problematic as it would probably have to have
+knowledge of or assume particular crates have been used, but it being limited
+to the mainline crate (or shortlist of crates) for each purpose is probably not
+too limiting.
+
+Please do comment if you have any thoughts: knowing of a project like this,
+advise on how one might go about doing this, or experience from other
+languages.

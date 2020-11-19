@@ -37,7 +37,7 @@ documented thing.&lt;/p&gt;
 appear in examples or some explanation. Projects that make an attempt to
 provide a reference for config seem to follow the same pattern.  For relatively
 simple config files they provide an example with all the fields, optional and
-not, provided, and then comment the example to say what&amp;rsquo;s option, what the
+not, provided, and then comment the example to say what&amp;rsquo;s optional and what the
 possible values are.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/helm-chart-file.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;This works OK while the config is small and simple.  But as config grows in
@@ -46,40 +46,40 @@ sections of config could have alternatives, or be required only if some other
 config is set, it starts to get out of hand. That example above is the
 documentation for &lt;a href=&#34;https://helm.sh/docs/topics/charts/#the-chartyaml-file&#34;&gt;Helm charts&amp;rsquo; &lt;code&gt;Chart.yaml&lt;/code&gt;
 file&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;It seems beyond a certain point projects, that do provide a config reference,
+&lt;p&gt;It seems beyond a certain point projects that do provide a config reference
 resort to a more protracted form of a web page that lists each field and
 provides the information on it.  This produces something that is complete, but
 isn&amp;rsquo;t always that easy to navigate, scrolling is often your only resort, and I
-often find I lose track of where a field is nested within the structure.&lt;/p&gt;
+find I lose track of where a field is nested within the structure.&lt;/p&gt;
 &lt;p&gt;In both approaches mentioned there, there is the problem that the config file
 reference is maintained separately from the code that defines it.  For
 maintainability and correctness&amp;rsquo; sake, we really want the code that defines
 config, and the documentation that attempts to provide a complete and correct
 reference for it, to be together.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve written a few CLI tool in Rust.  I&amp;rsquo;m not sure I fully understand why, but
+Rust is a excellent language for writing CLI tools in.  I don&amp;rsquo;t think there&amp;rsquo;s
+much about the core tenets of the language that necessarily make that so.  The
+representation of errors in sum types, &lt;code&gt;Result&amp;lt;T, E&amp;gt;&lt;/code&gt;, does strongly encourage
+the errors to be handled right back to &lt;code&gt;main&lt;/code&gt; and the user, but the &lt;code&gt;?&lt;/code&gt;
+operator makes it all to easy to throw out a cryptic error message from a
+library you&amp;rsquo;ve called with no context relevant to your application. I think
+really it&amp;rsquo;s just that there&amp;rsquo;s some really well designed libraries to make CLI
+tools with: &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt;, &lt;a href=&#34;https://docs.rs/structopt/0.3.20&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt;, and &lt;a href=&#34;https://serde.rs/&#34;&gt;&lt;code&gt;serde&lt;/code&gt;&lt;/a&gt; (for
+parsing config files).&lt;/p&gt;
 &lt;p&gt;So what I&amp;rsquo;m looking for is config file documentation that:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Reflects the structure of the config,&lt;/li&gt;
 &lt;li&gt;Is navigable by following links into and back out of config substructure, and&lt;/li&gt;
-&lt;li&gt;Defined in code.&lt;/li&gt;
+&lt;li&gt;Is defined in code.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;🔍&lt;/p&gt;
 &lt;h1 id=&#34;rust-docs&#34;&gt;Rust Docs&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;ve been developing a CLI tool at work recently.  It&amp;rsquo;s written in Rust.  I&amp;rsquo;m
-not sure I fully understand why, but Rust is a excellent language for writing
-CLI tools in.  I don&amp;rsquo;t think there&amp;rsquo;s much about the core tenets of the language
-that necessarily make that so.  The representation of errors in sum types,
-&lt;code&gt;Result&amp;lt;T, E&amp;gt;&lt;/code&gt;, does strongly encourage the errors to be handled right back to
-&lt;code&gt;main&lt;/code&gt; and the user, but the &lt;code&gt;?&lt;/code&gt; operator makes it all to easy to throw out a
-cryptic error message from a library you&amp;rsquo;ve called with no context relevant to
-your application. I think really it&amp;rsquo;s just that there&amp;rsquo;s some really well
-designed libraries to make CLI tools with: &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt;,
-&lt;a href=&#34;https://docs.rs/structopt/0.3.20&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt;, and &lt;a href=&#34;https://serde.rs/&#34;&gt;&lt;code&gt;serde&lt;/code&gt;&lt;/a&gt; (for parsing config files).&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve noticed the Rust docs going largely unused as the crate is a binary&amp;hellip;&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve noticed Rust docs going largely unused in binary crates.&lt;/p&gt;
 &lt;p&gt;Perhaps they could fulfil what I&amp;rsquo;m looking for.  Rust docs reflect the
 structure of structures. Rust docs are navigable by following links.  The
 source for them is defined in code. It&amp;rsquo;s sounding like a strong candidate, on
 paper at least&amp;hellip;&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve made this dummy CLI tool to see how this looks.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve made a dummy CLI tool to see how this looks.&lt;/p&gt;
 &lt;p&gt;Defining a reasonably simplistic config structure:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt; {
@@ -107,6 +107,8 @@ another object.  Take the documentation for a &lt;a href=&#34;https://kubernetes
 Pod&lt;/a&gt;
 for example:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/k8s1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ObjectMeta&lt;/code&gt; &amp;amp; &lt;code&gt;PodSpec&lt;/code&gt; aren&amp;rsquo;t JSON types, but you follow the link to see
+what JSON they&amp;rsquo;re made of.&lt;/p&gt;
 &lt;p&gt;We can follow the link to &lt;code&gt;Source&lt;/code&gt; to see what that is:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/source1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Granted, there&amp;rsquo;s some obvious problems emerging already.&lt;/p&gt;
@@ -116,7 +118,7 @@ chosen config file format.&lt;/p&gt;
 &lt;p&gt;For the enum above, the representation in the Rust docs is quite diverged from
 how it would appear in the config file.  And perhaps some Rust literacy is
 going to be needed to know that an enum is something that could be one variant,
-or could be another.&lt;/p&gt;
+or another.&lt;/p&gt;
 &lt;p&gt;Any difference between the Rust structure and config file representation that&amp;rsquo;s
 given by attributes, e.g. the:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
@@ -384,7 +386,7 @@ implemented for then perform a 2nd parsing stage.&lt;/p&gt;
 &lt;code&gt;JsonSchema&lt;/code&gt;, grows this might produce an unwieldy number of type parameters.&lt;/p&gt;
 &lt;p&gt;So after a quick look on the internet I found &lt;a href=&#34;https://coveooss.github.io/json-schema-for-humans/&#34;&gt;a tool to turn a JSON Schema
 into an HTML page&lt;/a&gt;.  The
-result looks rather smart.&lt;/p&gt;
+result &lt;a href=&#34;https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config/schema_doc.html&#34;&gt;looks rather smart&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Recall the config structures (with comments and derive attributes removed) are:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;V &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
     name: String,
@@ -424,7 +426,7 @@ from &lt;code&gt;AppData&lt;/code&gt; have been nicely flattened into the top le
 &lt;p&gt;It&amp;rsquo;s even tried to render the markdown in the fields&amp;rsquo; doc comments.
 Unfortunately it hasn&amp;rsquo;t rendered the syntax highlighting hint properly.  But
 this was the first tool I found from searching on the internet so I&amp;rsquo;ll not let
-small formatting details put a downer on things for now.&lt;/p&gt;
+small formatting details put a downer on things for now. 🌞&lt;/p&gt;
 &lt;p&gt;What it&amp;rsquo;s done for our enums is nice:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6source1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Clicking on &lt;code&gt;Option 2&lt;/code&gt; we see:&lt;/p&gt;
@@ -435,7 +437,7 @@ done that instead there&amp;rsquo;d be a description of &lt;code&gt;url&lt;/code
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config6actions.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;This is all looking quite good. As config grows in complexity it looks like
 this format will naturally extend and be navigable and readable.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;schemars::Schema&lt;/code&gt; trait seems to generate a god JSON Schema, and once you
+&lt;p&gt;The &lt;code&gt;schemars::Schema&lt;/code&gt; trait seems to generate a good JSON Schema, and once you
 have your JSON Schema you can make your choice of JSON Schema -&amp;gt; HTML renderer.&lt;/p&gt;
 &lt;p&gt;What could be a problem with this approach is generating that Schema. In this
 example I went for a workaround to &lt;code&gt;JsonSchema&lt;/code&gt; not being implemented for a
@@ -499,8 +501,8 @@ CLI with:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/subcommands1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;And rendering a generated JSON Schema looks like:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/cli1html.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The &amp;ldquo;rendered JSON Schema&amp;rdquo; approach had an advantage over the &amp;ldquo;Rust docs&amp;rdquo;
-approach, for generating a reference for the config file, as the &lt;code&gt;serde&lt;/code&gt;
+&lt;p&gt;When generating a reference for the config file, the &amp;ldquo;rendered JSON Schema&amp;rdquo;
+approach had an advantage over the &amp;ldquo;Rust docs&amp;rdquo; approach  as the &lt;code&gt;serde&lt;/code&gt;
 annotations that mapped the Rust representation to the representation the user
 sees were taken account of. In this case, neither approach gets the &lt;code&gt;structopt&lt;/code&gt;
 annotations taken account of and both would require commenting to explain which
@@ -554,9 +556,7 @@ use some of it.&lt;/p&gt;
 &lt;p&gt;At some point it&amp;rsquo;ll have to spot the existence or expansion of the annotations
 given that describe how the Rust structures are represented in config or as CLI
 commands.  This might be problematic as it would probably have to have
-knowledge of or assume particular crates have been used, but it being limited
-to the mainline crate (or shortlist of crates) for each purpose is probably not
-too limiting.&lt;/p&gt;
+knowledge of or assume particular crates have been used for each purpose.&lt;/p&gt;
 &lt;p&gt;Please do comment if you have any thoughts: knowing of a project like this,
 advise on how one might go about doing this, or experience from other
 languages.&lt;/p&gt;

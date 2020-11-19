@@ -35,7 +35,7 @@ It's often hard to find out the specifics of a config field if it doesn't
 appear in examples or some explanation. Projects that make an attempt to
 provide a reference for config seem to follow the same pattern.  For relatively
 simple config files they provide an example with all the fields, optional and
-not, provided, and then comment the example to say what's option, what the
+not, provided, and then comment the example to say what's optional and what the
 possible values are.
 
 ![](/images/rust-docs-config-ref/helm-chart-file.png)
@@ -47,11 +47,11 @@ config is set, it starts to get out of hand. That example above is the
 documentation for [Helm charts' `Chart.yaml`
 file](https://helm.sh/docs/topics/charts/#the-chartyaml-file).
 
-It seems beyond a certain point projects, that do provide a config reference,
+It seems beyond a certain point projects that do provide a config reference
 resort to a more protracted form of a web page that lists each field and
 provides the information on it.  This produces something that is complete, but
 isn't always that easy to navigate, scrolling is often your only resort, and I
-often find I lose track of where a field is nested within the structure.
+find I lose track of where a field is nested within the structure.
 
 In both approaches mentioned there, there is the problem that the config file
 reference is maintained separately from the code that defines it.  For
@@ -59,39 +59,39 @@ maintainability and correctness' sake, we really want the code that defines
 config, and the documentation that attempts to provide a complete and correct
 reference for it, to be together.
 
-So what I'm looking for is config file documentation that:
-
-- Reflects the structure of the config,
-- Is navigable by following links into and back out of config substructure, and
-- Defined in code.
-
-:mag:
-
-# Rust Docs
-
-I've been developing a CLI tool at work recently.  It's written in Rust.  I'm
-not sure I fully understand why, but Rust is a excellent language for writing
-CLI tools in.  I don't think there's much about the core tenets of the language
-that necessarily make that so.  The representation of errors in sum types,
-`Result<T, E>`, does strongly encourage the errors to be handled right back to
-`main` and the user, but the `?` operator makes it all to easy to throw out a
-cryptic error message from a library you've called with no context relevant to
-your application. I think really it's just that there's some really well
-designed libraries to make CLI tools with: [`clap`][clap],
-[`structopt`][structopt], and [`serde`][serde] (for parsing config files).
+I've written a few CLI tool in Rust.  I'm not sure I fully understand why, but
+Rust is a excellent language for writing CLI tools in.  I don't think there's
+much about the core tenets of the language that necessarily make that so.  The
+representation of errors in sum types, `Result<T, E>`, does strongly encourage
+the errors to be handled right back to `main` and the user, but the `?`
+operator makes it all to easy to throw out a cryptic error message from a
+library you've called with no context relevant to your application. I think
+really it's just that there's some really well designed libraries to make CLI
+tools with: [`clap`][clap], [`structopt`][structopt], and [`serde`][serde] (for
+parsing config files).
 
 [clap]: https://docs.rs/clap/2.33.3/clap/
 [structopt]: https://docs.rs/structopt/0.3.20
 [serde]: https://serde.rs/
 
-I've noticed the Rust docs going largely unused as the crate is a binary...
+So what I'm looking for is config file documentation that:
+
+- Reflects the structure of the config,
+- Is navigable by following links into and back out of config substructure, and
+- Is defined in code.
+
+:mag:
+
+# Rust Docs
+
+I've noticed Rust docs going largely unused in binary crates.
 
 Perhaps they could fulfil what I'm looking for.  Rust docs reflect the
 structure of structures. Rust docs are navigable by following links.  The
 source for them is defined in code. It's sounding like a strong candidate, on
 paper at least...
 
-I've made this dummy CLI tool to see how this looks.
+I've made a dummy CLI tool to see how this looks.
 
 Defining a reasonably simplistic config structure:
 
@@ -129,6 +129,9 @@ for example:
 
 ![](/images/rust-docs-config-ref/k8s1.png)
 
+`ObjectMeta` & `PodSpec` aren't JSON types, but you follow the link to see
+what JSON they're made of.
+
 We can follow the link to `Source` to see what that is:
 
 ![](/images/rust-docs-config-ref/source1.png)
@@ -142,7 +145,7 @@ chosen config file format.
 For the enum above, the representation in the Rust docs is quite diverged from
 how it would appear in the config file.  And perhaps some Rust literacy is
 going to be needed to know that an enum is something that could be one variant,
-or could be another.
+or another.
 
 Any difference between the Rust structure and config file representation that's
 given by attributes, e.g. the:
@@ -474,7 +477,7 @@ Although as the number of foreign types, or types not implementing
 
 So after a quick look on the internet I found [a tool to turn a JSON Schema
 into an HTML page](https://coveooss.github.io/json-schema-for-humans/).  The
-result looks rather smart.
+result [looks rather smart](https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config/schema_doc.html).
 
 Recall the config structures (with comments and derive attributes removed) are:
 
@@ -524,7 +527,7 @@ We can click on the fields to expand them:
 It's even tried to render the markdown in the fields' doc comments.
 Unfortunately it hasn't rendered the syntax highlighting hint properly.  But
 this was the first tool I found from searching on the internet so I'll not let
-small formatting details put a downer on things for now.
+small formatting details put a downer on things for now. :sun_with_face:
 
 What it's done for our enums is nice:
 
@@ -544,7 +547,7 @@ I really like how the `actions` field has rendered:
 This is all looking quite good. As config grows in complexity it looks like
 this format will naturally extend and be navigable and readable.
 
-The `schemars::Schema` trait seems to generate a god JSON Schema, and once you
+The `schemars::Schema` trait seems to generate a good JSON Schema, and once you
 have your JSON Schema you can make your choice of JSON Schema -> HTML renderer.
 
 What could be a problem with this approach is generating that Schema. In this
@@ -627,8 +630,8 @@ And rendering a generated JSON Schema looks like:
 
 ![](/images/rust-docs-config-ref/cli1html.png)
 
-The "rendered JSON Schema" approach had an advantage over the "Rust docs"
-approach, for generating a reference for the config file, as the `serde`
+When generating a reference for the config file, the "rendered JSON Schema"
+approach had an advantage over the "Rust docs" approach  as the `serde`
 annotations that mapped the Rust representation to the representation the user
 sees were taken account of. In this case, neither approach gets the `structopt`
 annotations taken account of and both would require commenting to explain which
@@ -698,9 +701,7 @@ use some of it.
 At some point it'll have to spot the existence or expansion of the annotations
 given that describe how the Rust structures are represented in config or as CLI
 commands.  This might be problematic as it would probably have to have
-knowledge of or assume particular crates have been used, but it being limited
-to the mainline crate (or shortlist of crates) for each purpose is probably not
-too limiting.
+knowledge of or assume particular crates have been used for each purpose.
 
 Please do comment if you have any thoughts: knowing of a project like this,
 advise on how one might go about doing this, or experience from other

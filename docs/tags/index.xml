@@ -102,7 +102,7 @@ paper at least&amp;hellip;&lt;/p&gt;
 format language of the config file, but with a comment we can clarify that.
 Where the type doesn&amp;rsquo;t map to a type of the config file format people can
 follow the link to see what it is.&lt;/p&gt;
-&lt;p&gt;This is in keeping with API documentations that may show a fields type to be
+&lt;p&gt;This is in keeping with API documentations that may show a field&amp;rsquo;s type to be
 another object.  Take the documentation for a &lt;a href=&#34;https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#pod-v1-core&#34;&gt;Kubernetes
 Pod&lt;/a&gt;
 for example:&lt;/p&gt;
@@ -134,7 +134,7 @@ under in the parent.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://tarquin-the-brave.github.io/blog/images/rust-docs-config-ref/config2source.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;You can also expand and collapse the descriptions of each field as you browse
 around.&lt;/p&gt;
-&lt;p&gt;I admit, I am massively skimming over the face that in both cases of &lt;code&gt;Source&lt;/code&gt;
+&lt;p&gt;I admit, I am massively skimming over the fact that in both cases of &lt;code&gt;Source&lt;/code&gt;
 and &lt;code&gt;Config&lt;/code&gt; what I&amp;rsquo;m showing above &lt;a href=&#34;https://tarquin-the-brave.github.io/a-cli-tool/rust-docs/a_cli_tool/config2/struct.Config.html&#34;&gt;isn&amp;rsquo;t all that appears on the
 page&lt;/a&gt;. There&amp;rsquo;s methods and trait implementations below and a sidebar
 that links you to them with a big Rust symbol in it.  This is definitely a

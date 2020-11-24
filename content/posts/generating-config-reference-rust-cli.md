@@ -174,7 +174,7 @@ under in the parent.
 You can also expand and collapse the descriptions of each field as you browse
 around.
 
-I admit, I am massively skimming over the face that in both cases of `Source`
+I admit, I am massively skimming over the fact that in both cases of `Source`
 and `Config` what I'm showing above [isn't all that appears on the
 page][config2]. There's methods and trait implementations below and a sidebar
 that links you to them with a big Rust symbol in it.  This is definitely a

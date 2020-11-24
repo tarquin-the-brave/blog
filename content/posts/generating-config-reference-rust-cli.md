@@ -122,7 +122,7 @@ format language of the config file, but with a comment we can clarify that.
 Where the type doesn't map to a type of the config file format people can
 follow the link to see what it is.
 
-This is in keeping with API documentations that may show a fields type to be
+This is in keeping with API documentations that may show a field's type to be
 another object.  Take the documentation for a [Kubernetes
 Pod](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#pod-v1-core)
 for example:

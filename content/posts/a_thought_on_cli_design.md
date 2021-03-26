@@ -225,4 +225,42 @@ using.
 
 ---
 
-What about some unix standard tooling?
+So what does some unix tooling have to say about all this?
+
+Take [`tcpdump`][tcpdump].  When we give it two
+`-w` parameters like so:
+
+```
+tcpdump port 8000 -w foo.pcap -w -
+```
+
+it writes the capture to the second `-w` parameter (`-w -` means "write to
+stdout").  Sending some traffic into port 8000 I saw the capture appear in
+stdout but no `foo.pcap` was created when I cancelled the command.  Swapping
+the parameters around, and the opposite was true.
+
+Running [`useradd`][useradd], specifying the home directory to create twice:
+
+```
+useradd foo --home-dir /home/foo/  --home-dir /home/foo2/
+```
+
+User `foo` is created with home directory `/home/foo2/`.
+
+[tcpdump]: https://linux.die.net/man/8/tcpdump
+[useradd]: https://linux.die.net/man/8/useradd
+
+One could imagine having wrapper scripts for these that set a value then
+include extra parameters to allow them to be overridden.
+
+---
+
+With the very small sample set of the tools/frameworks I've looked at above it
+wouldn't be right to say there's definitely a trend here, but if we assume
+there is, have CLI tools potentially lost something?  In attempting to catch a
+possible error by a direct user have they lost something in terms of how easy
+it is to write wrappers around them?
+
+Maybe.
+
+Next time I'm making a CLI tools this will be something I consider.

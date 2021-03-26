@@ -163,7 +163,7 @@ to keep them close.
 Below I expand on some of my justifications for employing this pattern.
 
 _NOTE: I wrote the examples after writing the sections below, so I'll not
-referring to them any further._
+be referring to them any further._
 
 [ide-rant]: ./ide-read-code.md
 

@@ -11,6 +11,205 @@
    
    
      <item>
+       <title>A Thought on CLI Design</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_cli_design/</link>
+       <pubDate>Sat, 27 Mar 2021 09:00:00 +0000</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_cli_design/</guid>
+       <description>&lt;p&gt;Recently I was using a wrapper around a CLI tool.  It does what you might
+expect a CLI wrapper to do: set up some peripheral things, environment
+variables and such like, then runs the underlying CLI tool with some CLI
+parameters set and passes argument given to the wrapper down to provide extra
+parameters.  This pattern can be pretty useful to make a particular use case of
+a CLI tool easier to perform. E.g:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env sh
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;underlying-cli-tool --some-param foo --other-param bar $@
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But there was a problem.  One of the parameters I passed to the wrapper was
+already being set by the wrapper.  The underlying CLI tool then errored with
+something to the effect of:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;You&amp;rsquo;ve set the same parameter twice! 😱&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This was easy enough to work around.  I had ownership of the wrapper and could
+edit the source code to &lt;em&gt;not&lt;/em&gt; set that parameter explicitly, rebuild it and run
+it as I&amp;rsquo;d initially intended.  But I did think:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;That was a bit annoying&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;and had I not had ownership of the wrapper it could have been more annoying to
+fork it, edit the source, then potentially deal with rebuilding it when I
+haven&amp;rsquo;t got the build environment for it at my fingertips.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;This got me thinking:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;How should have things worked here?&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I can see where the designers of the underlying CLI tool were coming from.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;If a parameter is provided twice, when it makes no sense to provide it twice,
+obviously it&amp;rsquo;s a user error and we should error on this.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;But this does mean that any wrappers written around the CLI tool have to deal
+with the complexity of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Look at the extra parameters&lt;/li&gt;
+&lt;li&gt;For any of them that conflict with ones already set:
+&lt;ul&gt;
+&lt;li&gt;Does the underlying CLI tool allow it to be set twice?&lt;/li&gt;
+&lt;li&gt;If not: take that parameter out of the ones being set by default to allow
+the user&amp;rsquo;s value to be set instead.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And maybe it isn&amp;rsquo;t a user error.  Imagine you&amp;rsquo;ve just run a big long command
+then want to change the one of the earlier parameters you gave and run it again.
+It would be more convenient to arrow up then put the parameter again at the
+end to override it than to go back into the command line and edit the parameter.&lt;/p&gt;
+&lt;p&gt;Wouldn&amp;rsquo;t this all be easier if the underlying CLI tool accepted a repeated
+parameter, taking the latter as overriding the former?&lt;/p&gt;
+&lt;p&gt;Ultimately there&amp;rsquo;s a trade off between a potential bit of robustness against an
+error by a direct user of the CLI tool and the ability to write convenient
+wrappers around it.  I suspect in many cases the latter isn&amp;rsquo;t considered.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;In reality if you&amp;rsquo;re writing a CLI tool, you&amp;rsquo;re likely using a library to
+do the heavy lifting, rather than hand rolling it yourself.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s have a look at a couple (using the basic mainline usage).&lt;/p&gt;
+&lt;p&gt;Rust&amp;rsquo;s &lt;a href=&#34;https://docs.rs/structopt/0.3.21/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt; (&lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; under the covers):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    foo: String,
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    bar: String,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; structopt::StructOpt &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; cli &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Cli::from_args();
+
+    println&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got: {:?}&amp;#34;&lt;/span&gt;, cli);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;$ cargo run -q -- --foo foo --bar bar
+Got: Cli { foo: &amp;quot;foo&amp;quot;, bar: &amp;quot;bar&amp;quot; }
+$ cargo run -q -- --foo foo --bar bar --foo foo2
+error: The argument &#39;--foo &amp;lt;foo&amp;gt;&#39; was provided more than once, but cannot be used multiple times
+
+USAGE:
+    a-cli-tool --bar &amp;lt;bar&amp;gt; --foo &amp;lt;foo&amp;gt;
+
+For more information try --help
+$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Python&amp;rsquo;s &lt;a href=&#34;https://click.palletsprojects.com/en/7.x/&#34;&gt;&lt;code&gt;click&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; click
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.command&lt;/span&gt;()
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;--foo&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;--bar&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;(foo, bar):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Got: foo={foo}, bar={bar}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;:
+    hello()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;$ python3 some-tool.py --foo foo --bar bar
+Got: foo=foo, bar=bar
+$ python3 some-tool.py --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+$
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reading the docs for &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; I can get it to allow this overriding
+behaviour:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long, multiple = true, required = true)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    foo: Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
+
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    bar: String,
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; structopt::StructOpt &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; _;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; cli &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Cli::from_args();
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; foo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cli.foo.pop().unwrap();
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; bar &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cli.bar.clone();
+
+    println&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got: foo={}, bar={}&amp;#34;&lt;/span&gt;, foo, bar);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;$ cargo run -q -- --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But handling that &lt;code&gt;Vec&lt;/code&gt; of values for the parameter is a pain when we want the
+last to override what&amp;rsquo;s come before.  Really we want to discard earlier values
+of the parameter before parsing.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.rs/structopt/0.3.21/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt; is a library that lets you define your CLI as
+structured data, adding annotations to specify behaviours of the
+arguments/parameters.  It in turn calls down to the &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; library to
+parse the CLI into structured data.  Using &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; directly we can
+achieve the override behaviour I&amp;rsquo;m looking for:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; matches &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; clap::App::new(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Some CLI Tool&amp;#34;&lt;/span&gt;)
+        .global_setting(clap::AppSettings::AllArgsOverrideSelf)
+        .arg(
+            clap::Arg::with_name(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;)
+                .takes_value(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+                .required(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+                .long(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;),
+        )
+        .arg(
+            clap::Arg::with_name(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bar&amp;#34;&lt;/span&gt;)
+                .takes_value(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+                .required(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+                .long(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bar&amp;#34;&lt;/span&gt;),
+        )
+        .get_matches();
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; foo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; matches.value_of(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;).unwrap();
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; bar &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; matches.value_of(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bar&amp;#34;&lt;/span&gt;).unwrap();
+    println&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got: foo={}, bar={}&amp;#34;&lt;/span&gt;, foo, bar);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;$ cargo run -q -- --foo foo --bar bar
+Got: foo=foo, bar=bar
+$ cargo run -q -- --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;There might be a way to set the &lt;code&gt;AppSettings::AllArgsOverrideSelf&lt;/code&gt; via
+&lt;a href=&#34;https://docs.rs/structopt/0.3.21/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt;, but from a quick skim of the docs and a little
+playing around I didn&amp;rsquo;t spot it.&lt;/p&gt;
+&lt;p&gt;The fact you &lt;em&gt;can&lt;/em&gt; get this overriding behaviour from
+&lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt;/&lt;a href=&#34;https://docs.rs/structopt/0.3.21/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt; is somewhat beside the point, it&amp;rsquo;s not
+the default, and writing the CLI tool you&amp;rsquo;d explicitly have to go to the effort
+of enabling it.&lt;/p&gt;
+&lt;p&gt;Without exhaustively going through every CLI building library in every
+language, I can&amp;rsquo;t say too much about whether there&amp;rsquo;s a trend either way.  It&amp;rsquo;s
+probably safe to assume that some libraries allow you to repeat and override
+parameters by default, some don&amp;rsquo;t.  And it&amp;rsquo;s also probably a safe assumption
+that a lot of CLI tools will have adopted the default from the library their
+using.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;So what does some unix tooling have to say about all this?&lt;/p&gt;
+&lt;p&gt;Take &lt;a href=&#34;https://linux.die.net/man/8/tcpdump&#34;&gt;&lt;code&gt;tcpdump&lt;/code&gt;&lt;/a&gt;.  When we give it two
+&lt;code&gt;-w&lt;/code&gt; parameters like so:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tcpdump port 8000 -w foo.pcap -w -
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;it writes the capture to the second &lt;code&gt;-w&lt;/code&gt; parameter (&lt;code&gt;-w -&lt;/code&gt; means &amp;ldquo;write to
+stdout&amp;rdquo;).  Sending some traffic into port 8000 I saw the capture appear in
+stdout but no &lt;code&gt;foo.pcap&lt;/code&gt; was created when I cancelled the command.  Swapping
+the parameters around, and the opposite was true.&lt;/p&gt;
+&lt;p&gt;Running &lt;a href=&#34;https://linux.die.net/man/8/useradd&#34;&gt;&lt;code&gt;useradd&lt;/code&gt;&lt;/a&gt;, specifying the home directory to create twice:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;useradd foo --home-dir /home/foo/  --home-dir /home/foo2/
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;User &lt;code&gt;foo&lt;/code&gt; is created with home directory &lt;code&gt;/home/foo2/&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;One could imagine having wrapper scripts for these that set a value then
+include extra parameters to allow them to be overridden.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;With the very small sample set of the tools/frameworks I&amp;rsquo;ve looked at above it
+wouldn&amp;rsquo;t be right to say there&amp;rsquo;s definitely a trend here, but if we assume
+there is, have CLI tools potentially lost something?  In attempting to catch a
+possible error by a direct user have they lost something in terms of how easy
+it is to write wrappers around them?&lt;/p&gt;
+&lt;p&gt;Maybe.&lt;/p&gt;
+&lt;p&gt;Next time I&amp;rsquo;m making a CLI tool, I&amp;rsquo;ll consider this.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>Generating a Config File Reference for a CLI Tool in Rust</title>
        <link>https://tarquin-the-brave.github.io/blog/posts/generating-config-reference-rust-cli/</link>
        <pubDate>Tue, 17 Nov 2020 21:00:00 +0000</pubDate>

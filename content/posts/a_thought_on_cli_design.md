@@ -1,10 +1,10 @@
 +++
 title = "A Thought on CLI Design"
-date = 2021-03-22T18:31:15Z
+date = 2021-03-27T09:00:00Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 Recently I was using a wrapper around a CLI tool.  It does what you might
@@ -62,9 +62,6 @@ end to override it than to go back into the command line and edit the parameter.
 
 Wouldn't this all be easier if the underlying CLI tool accepted a repeated
 parameter, taking the latter as overriding the former?
-
-I might consider this next time I'm creating a CLI tool.  Composability
-matters.
 
 Ultimately there's a trade off between a potential bit of robustness against an
 error by a direct user of the CLI tool and the ability to write convenient
@@ -166,7 +163,7 @@ But handling that `Vec` of values for the parameter is a pain when we want the
 last to override what's come before.  Really we want to discard earlier values
 of the parameter before parsing.
 
-[`structopt`][structoppt] is a library that lets you define your CLI as
+[`structopt`][structopt] is a library that lets you define your CLI as
 structured data, adding annotations to specify behaviours of the
 arguments/parameters.  It in turn calls down to the [`clap`][clap] library to
 parse the CLI into structured data.  Using [`clap`][clap] directly we can
@@ -263,4 +260,4 @@ it is to write wrappers around them?
 
 Maybe.
 
-Next time I'm making a CLI tools this will be something I consider.
+Next time I'm making a CLI tool, I'll consider this.

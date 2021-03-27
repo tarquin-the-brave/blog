@@ -911,7 +911,7 @@ to wrap when a method from a trait is used with a &lt;code&gt;use&lt;/code&gt; o
 to keep them close.&lt;/p&gt;
 &lt;p&gt;Below I expand on some of my justifications for employing this pattern.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;NOTE: I wrote the examples after writing the sections below, so I&amp;rsquo;ll not
-referring to them any further.&lt;/em&gt;&lt;/p&gt;
+be referring to them any further.&lt;/em&gt;&lt;/p&gt;
 &lt;h1 id=&#34;namespace-hygiene&#34;&gt;Namespace Hygiene&lt;/h1&gt;
 &lt;p&gt;This started for me with &lt;code&gt;main.rs&lt;/code&gt;.  It&amp;rsquo;s a first port of call for someone
 reading application code for the first time and I decided I wanted readers

@@ -1,0 +1,139 @@
+<!doctype html><html lang=en><head><title>A Thought on CLI Design - tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="The HTML5 Herald"><meta name=author content="Tom Steavenson"><meta property="og:title" content="A Thought on CLI Design"><meta property="og:description" content="Recently I was using a wrapper around a CLI tool. It does what you might expect a CLI wrapper to do: set up some peripheral things, environment variables and such like, then runs the underlying CLI tool with some CLI parameters set and passes argument given to the wrapper down to provide extra parameters."><meta property="og:type" content="article"><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/a_thought_on_cli_design/"><meta property="article:published_time" content="2021-03-27T09:00:00+00:00"><meta property="article:modified_time" content="2021-03-27T09:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="A Thought on CLI Design"><meta name=twitter:description content="Recently I was using a wrapper around a CLI tool. It does what you might expect a CLI wrapper to do: set up some peripheral things, environment variables and such like, then runs the underlying CLI tool with some CLI parameters set and passes argument given to the wrapper down to provide extra parameters."><meta name=generator content="Hugo 0.68.3"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda"><link rel=stylesheet type=text/css href=https://tarquin-the-brave.github.io/blog/css/styles.css></head><body><div id=container><header><h1><a href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave</a></h1><ul id=social-media><li><a href=https://github.com/tarquin-the-brave title=GitHub><i class="fab fa-github fa-lg"></i></a></li><li><a href=https://stackoverflow.com/users/10132181/tom-steavenson title=StackOverflow><i class="fab fa-stack-overflow fa-lg"></i></a></li></ul><p><em><p>Some things I think.</p><p><a href=https://tarquin-the-brave.github.io/blog/posts/><strong>&mdash; All Posts &mdash;</strong></a></p></em></p></header><nav><ul></ul></nav><main><article><h1>A Thought on CLI Design</h1><aside><ul><li><time class=post-date datetime=2021-03-27T09:00:00Z>Mar 27, 2021</time></li><li>6 minutes read</li></ul></aside><div class=featured_image><a href=https://tarquin-the-brave.github.io/blog/posts/a_thought_on_cli_design/ title="A Thought on CLI Design"><img src></a></div><p>Recently I was using a wrapper around a CLI tool. It does what you might
+expect a CLI wrapper to do: set up some peripheral things, environment
+variables and such like, then runs the underlying CLI tool with some CLI
+parameters set and passes argument given to the wrapper down to provide extra
+parameters. This pattern can be pretty useful to make a particular use case of
+a CLI tool easier to perform. E.g:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/usr/bin/env sh
+</span><span style=color:#75715e></span>underlying-cli-tool --some-param foo --other-param bar $@
+</code></pre></div><p>But there was a problem. One of the parameters I passed to the wrapper was
+already being set by the wrapper. The underlying CLI tool then errored with
+something to the effect of:</p><blockquote><p>&ldquo;You&rsquo;ve set the same parameter twice! 😱&rdquo;</p></blockquote><p>This was easy enough to work around. I had ownership of the wrapper and could
+edit the source code to <em>not</em> set that parameter explicitly, rebuild it and run
+it as I&rsquo;d initially intended. But I did think:</p><blockquote><p>&ldquo;That was a bit annoying&rdquo;</p></blockquote><p>and had I not had ownership of the wrapper it could have been more annoying to
+fork it, edit the source, then potentially deal with rebuilding it when I
+haven&rsquo;t got the build environment for it at my fingertips.</p><hr><p>This got me thinking:</p><blockquote><p>&ldquo;How should have things worked here?&rdquo;</p></blockquote><p>I can see where the designers of the underlying CLI tool were coming from.</p><blockquote><p>&ldquo;If a parameter is provided twice, when it makes no sense to provide it twice,
+obviously it&rsquo;s a user error and we should error on this.&rdquo;</p></blockquote><p>But this does mean that any wrappers written around the CLI tool have to deal
+with the complexity of:</p><ul><li>Look at the extra parameters</li><li>For any of them that conflict with ones already set:<ul><li>Does the underlying CLI tool allow it to be set twice?</li><li>If not: take that parameter out of the ones being set by default to allow
+the user&rsquo;s value to be set instead.</li></ul></li></ul><p>And maybe it isn&rsquo;t a user error. Imagine you&rsquo;ve just run a big long command
+then want to change the one of the earlier parameters you gave and run it again.
+It would be more convenient to arrow up then put the parameter again at the
+end to override it than to go back into the command line and edit the parameter.</p><p>Wouldn&rsquo;t this all be easier if the underlying CLI tool accepted a repeated
+parameter, taking the latter as overriding the former?</p><p>Ultimately there&rsquo;s a trade off between a potential bit of robustness against an
+error by a direct user of the CLI tool and the ability to write convenient
+wrappers around it. I suspect in many cases the latter isn&rsquo;t considered.</p><hr><p>In reality if you&rsquo;re writing a CLI tool, you&rsquo;re likely using a library to
+do the heavy lifting, rather than hand rolling it yourself.</p><p>Let&rsquo;s have a look at a couple (using the basic mainline usage).</p><p>Rust&rsquo;s <a href=https://docs.rs/structopt/0.3.21/structopt/><code>structopt</code></a> (<a href=https://docs.rs/clap/2.33.3/clap/index.html><code>clap</code></a> under the covers):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>#[derive(Debug, structopt::StructOpt)]</span>
+<span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Cli</span> {
+    <span style=color:#75715e>#[structopt(long)]</span>
+    foo: String,
+
+    <span style=color:#75715e>#[structopt(long)]</span>
+    bar: String,
+}
+
+<span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>use</span> structopt::StructOpt <span style=color:#66d9ef>as</span> _;
+    <span style=color:#66d9ef>let</span> cli <span style=color:#f92672>=</span> Cli::from_args();
+
+    println<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Got: {:?}&#34;</span>, cli);
+}
+</code></pre></div><pre><code>$ cargo run -q -- --foo foo --bar bar
+Got: Cli { foo: &quot;foo&quot;, bar: &quot;bar&quot; }
+$ cargo run -q -- --foo foo --bar bar --foo foo2
+error: The argument '--foo &lt;foo&gt;' was provided more than once, but cannot be used multiple times
+
+USAGE:
+    a-cli-tool --bar &lt;bar&gt; --foo &lt;foo&gt;
+
+For more information try --help
+$
+</code></pre><p>Python&rsquo;s <a href=https://click.palletsprojects.com/en/7.x/><code>click</code></a>:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> click
+
+<span style=color:#a6e22e>@click.command</span>()
+<span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#39;--foo&#39;</span>, required<span style=color:#f92672>=</span>True)
+<span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#39;--bar&#39;</span>, required<span style=color:#f92672>=</span>True)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>hello</span>(foo, bar):
+    <span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>&#34;Got: foo={foo}, bar={bar}&#34;</span>)
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+    hello()
+</code></pre></div><pre><code>$ python3 some-tool.py --foo foo --bar bar
+Got: foo=foo, bar=bar
+$ python3 some-tool.py --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+$
+</code></pre><p>Reading the docs for <a href=https://docs.rs/clap/2.33.3/clap/index.html><code>clap</code></a> I can get it to allow this overriding
+behaviour:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>#[derive(Debug, structopt::StructOpt)]</span>
+<span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Cli</span> {
+    <span style=color:#75715e>#[structopt(long, multiple = true, required = true)]</span>
+    foo: Vec<span style=color:#f92672>&lt;</span>String<span style=color:#f92672>&gt;</span>,
+
+    <span style=color:#75715e>#[structopt(long)]</span>
+    bar: String,
+}
+
+<span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>use</span> structopt::StructOpt <span style=color:#66d9ef>as</span> _;
+    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> cli <span style=color:#f92672>=</span> Cli::from_args();
+
+    <span style=color:#66d9ef>let</span> foo <span style=color:#f92672>=</span> cli.foo.pop().unwrap();
+    <span style=color:#66d9ef>let</span> bar <span style=color:#f92672>=</span> cli.bar.clone();
+
+    println<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Got: foo={}, bar={}&#34;</span>, foo, bar);
+}
+</code></pre></div><pre><code>$ cargo run -q -- --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+</code></pre><p>But handling that <code>Vec</code> of values for the parameter is a pain when we want the
+last to override what&rsquo;s come before. Really we want to discard earlier values
+of the parameter before parsing.</p><p><a href=https://docs.rs/structopt/0.3.21/structopt/><code>structopt</code></a> is a library that lets you define your CLI as
+structured data, adding annotations to specify behaviours of the
+arguments/parameters. It in turn calls down to the <a href=https://docs.rs/clap/2.33.3/clap/index.html><code>clap</code></a> library to
+parse the CLI into structured data. Using <a href=https://docs.rs/clap/2.33.3/clap/index.html><code>clap</code></a> directly we can
+achieve the override behaviour I&rsquo;m looking for:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>let</span> matches <span style=color:#f92672>=</span> clap::App::new(<span style=color:#e6db74>&#34;Some CLI Tool&#34;</span>)
+        .global_setting(clap::AppSettings::AllArgsOverrideSelf)
+        .arg(
+            clap::Arg::with_name(<span style=color:#e6db74>&#34;foo&#34;</span>)
+                .takes_value(<span style=color:#66d9ef>true</span>)
+                .required(<span style=color:#66d9ef>true</span>)
+                .long(<span style=color:#e6db74>&#34;foo&#34;</span>),
+        )
+        .arg(
+            clap::Arg::with_name(<span style=color:#e6db74>&#34;bar&#34;</span>)
+                .takes_value(<span style=color:#66d9ef>true</span>)
+                .required(<span style=color:#66d9ef>true</span>)
+                .long(<span style=color:#e6db74>&#34;bar&#34;</span>),
+        )
+        .get_matches();
+
+    <span style=color:#66d9ef>let</span> foo <span style=color:#f92672>=</span> matches.value_of(<span style=color:#e6db74>&#34;foo&#34;</span>).unwrap();
+    <span style=color:#66d9ef>let</span> bar <span style=color:#f92672>=</span> matches.value_of(<span style=color:#e6db74>&#34;bar&#34;</span>).unwrap();
+    println<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;Got: foo={}, bar={}&#34;</span>, foo, bar);
+}
+</code></pre></div><pre><code>$ cargo run -q -- --foo foo --bar bar
+Got: foo=foo, bar=bar
+$ cargo run -q -- --foo foo --bar bar --foo foo2
+Got: foo=foo2, bar=bar
+</code></pre><p>There might be a way to set the <code>AppSettings::AllArgsOverrideSelf</code> via
+<a href=https://docs.rs/structopt/0.3.21/structopt/><code>structopt</code></a>, but from a quick skim of the docs and a little
+playing around I didn&rsquo;t spot it.</p><p>The fact you <em>can</em> get this overriding behaviour from
+<a href=https://docs.rs/clap/2.33.3/clap/index.html><code>clap</code></a>/<a href=https://docs.rs/structopt/0.3.21/structopt/><code>structopt</code></a> is somewhat beside the point, it&rsquo;s not
+the default, and writing the CLI tool you&rsquo;d explicitly have to go to the effort
+of enabling it.</p><p>Without exhaustively going through every CLI building library in every
+language, I can&rsquo;t say too much about whether there&rsquo;s a trend either way. It&rsquo;s
+probably safe to assume that some libraries allow you to repeat and override
+parameters by default, some don&rsquo;t. And it&rsquo;s also probably a safe assumption
+that a lot of CLI tools will have adopted the default from the library their
+using.</p><hr><p>So what does some unix tooling have to say about all this?</p><p>Take <a href=https://linux.die.net/man/8/tcpdump><code>tcpdump</code></a>. When we give it two
+<code>-w</code> parameters like so:</p><pre><code>tcpdump port 8000 -w foo.pcap -w -
+</code></pre><p>it writes the capture to the second <code>-w</code> parameter (<code>-w -</code> means &ldquo;write to
+stdout&rdquo;). Sending some traffic into port 8000 I saw the capture appear in
+stdout but no <code>foo.pcap</code> was created when I cancelled the command. Swapping
+the parameters around, and the opposite was true.</p><p>Running <a href=https://linux.die.net/man/8/useradd><code>useradd</code></a>, specifying the home directory to create twice:</p><pre><code>useradd foo --home-dir /home/foo/  --home-dir /home/foo2/
+</code></pre><p>User <code>foo</code> is created with home directory <code>/home/foo2/</code>.</p><p>One could imagine having wrapper scripts for these that set a value then
+include extra parameters to allow them to be overridden.</p><hr><p>With the very small sample set of the tools/frameworks I&rsquo;ve looked at above it
+wouldn&rsquo;t be right to say there&rsquo;s definitely a trend here, but if we assume
+there is, have CLI tools potentially lost something? In attempting to catch a
+possible error by a direct user have they lost something in terms of how easy
+it is to write wrappers around them?</p><p>Maybe.</p><p>Next time I&rsquo;m making a CLI tool, I&rsquo;ll consider this.</p></article><section class=post-nav><ul><li><a href=https://tarquin-the-brave.github.io/blog/posts/generating-config-reference-rust-cli/><i class="fa fa-chevron-circle-left"></i>Generating a Config File Reference for a CLI Tool in Rust</a></li><li><a href=https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/>Why I Found Microsoft Office So Jarring <i class="fa fa-chevron-circle-right"></i></a></li></ul></section><section id=utterances></section><script>if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){let s=document.createElement("script");s.setAttribute("repo","tarquin-the-brave\/blog");s.src="https://utteranc.es/client.js";s.setAttribute("issue-term","pathname");document.getElementById("utterances").innerHTML="";document.getElementById("utterances").appendChild(s);}else{let s=document.createElement("script");s.setAttribute("repo","tarquin-the-brave\/blog");s.src="https://utteranc.es/client.js";s.setAttribute("issue-term","pathname");document.getElementById("utterances").innerHTML="";document.getElementById("utterances").appendChild(s);}</script></main><footer><h6>Copyright © 2020 - Tom Steavenson |
+Rendered by <a href=https://gohugo.io title=Hugo>Hugo</a> |
+<a href=https://tarquin-the-brave.github.io/blog/index.xml>Subscribe</a></h6></footer></div><script src=https://tarquin-the-brave.github.io/blog/js/scripts.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-161243400-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

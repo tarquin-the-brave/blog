@@ -1083,73 +1083,7 @@ think this serves as a good example of where DRY isn&amp;rsquo;t the be all and 
 traits&lt;/a>, but overall it&amp;rsquo;s a pattern I&amp;rsquo;ve
 found useful. And the portability really helps. It won&amp;rsquo;t change the world, but
 hopefully makes someone&amp;rsquo;s life just a little bit better when they come across
-some of my code years down the line.&lt;/p></description></item><item><title>Is it time to Stop Referring to things as Functional?</title><link>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</link><pubDate>Thu, 27 Aug 2020 12:29:17 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/new_name_for_functional/</guid><description>&lt;p>Language is transient. It evolves through a cascade of misappropriations.
-&amp;ldquo;Correct&amp;rdquo; usage is only ever as strongly defined as &amp;ldquo;the current generally
-accepted usage&amp;rdquo;.&lt;/p>
-&lt;p>There&amp;rsquo;s many words that in the past meant something quite different&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>,
-&amp;ldquo;silly&amp;rdquo; used to mean &amp;ldquo;blessed&amp;rdquo;. Current common misappropriations of words are
-the beginning of that process. Even if by today&amp;rsquo;s reckoning, everything Alanis
-Morissette claims to be &amp;ldquo;ironic&amp;rdquo;&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup> is instead just &amp;ldquo;unfortunate&amp;rdquo;, one
-day that might be what &amp;ldquo;ironic&amp;rdquo; is taken to mean&amp;hellip; Literally!&lt;/p>
-&lt;p>Now consider the word &amp;ldquo;function&amp;rdquo;. To a mathematician, or a programmer talking
-in the context of what we know as &amp;ldquo;functional languages&amp;rdquo;, it&amp;rsquo;s a referentially
-transparent description of how some data maps from some other data. To a
-programmer thinking in a procedural paradigm (OOP included), it&amp;rsquo;s a
-sub-routine.&lt;/p>
-&lt;p>This difference in understanding of what a &amp;ldquo;function&amp;rdquo; is causes a chasm between
-programmers. Whether we like it or not, the software community has rather
-strongly misappropriated the word &amp;ldquo;function&amp;rdquo; to the extent that it&amp;rsquo;s taken on a
-different meaning.&lt;/p>
-&lt;p>This then makes it less meaningful to refer to concepts or languages as
-&amp;ldquo;functional&amp;rdquo;. With the majority of programmers not having the same
-understanding of what a &amp;ldquo;function&amp;rdquo; is as the understanding that underpins
-&amp;ldquo;functional&amp;rdquo; being a meaningful description, the description of &amp;ldquo;functional&amp;rdquo;
-loses its meaning and value.&lt;/p>
-&lt;p>If not &amp;ldquo;functional&amp;rdquo;, what should we call it? &lt;del>I quite like &amp;ldquo;data oriented&amp;rdquo;.&lt;/del>
-&lt;em>UPDATE: Since first writing this I&amp;rsquo;ve found out that &lt;a href="https://en.wikipedia.org/wiki/Data-oriented_design">&amp;ldquo;Data Oriented
-Design&amp;rdquo;&lt;/a> is already a thing, and means something completely
-different. I then thought perhaps &amp;ldquo;value oriented&amp;rdquo; would be a good name for
-it&amp;hellip; but it turns out that&amp;rsquo;s already a thing too.&lt;/em>&lt;/p>
-&lt;p>Rich Hickey does a great job&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup> of explaining the difference between
-&amp;ldquo;data&amp;rdquo;/&amp;ldquo;values&amp;rdquo; and &amp;ldquo;places&amp;rdquo;. &amp;ldquo;Data&amp;rdquo;/&amp;ldquo;values&amp;rdquo; representing observed facts
-about the world, and &amp;ldquo;places&amp;rdquo; being those bits of computer memory that we use
-to temporarily store those facts or other things. Hickey coins the term &amp;ldquo;PLOP&amp;rdquo;
-(Place Oriented Programming) to describe languages where the programmer is,
-knowingly or not, making statements about the places in memory that the program
-will use to process its data.&lt;/p>
-&lt;p>&amp;ldquo;Functional&amp;rdquo; languages aren&amp;rsquo;t PLOP. You don&amp;rsquo;t tell the program to create a
-location in memory, put data in, change that data (mutation), etc. In a
-&amp;ldquo;functional&amp;rdquo; language you describe data. You describe how the data you want
-maps from the data you have with &amp;ldquo;functions&amp;rdquo;.&lt;/p>
-&lt;p>If instead of describing things as &amp;ldquo;functional&amp;rdquo; we &lt;del>described them as &amp;ldquo;data
-oriented&amp;quot;&lt;/del> &lt;em>UPDATE: find some other name for it&lt;/em>, I wonder if that would help
-with programmers being introduced to the concepts and distinguish them from
-what they already know. I think it would also help to the value and simplicity
-of a &amp;ldquo;functional&amp;rdquo;/&lt;del>&amp;quot;data oriented&amp;quot;&lt;/del> approach. You describe how data flows
-through your program. You don&amp;rsquo;t need to worry about all the moving parts that
-PLOP brings that can ruin your abstractions at any moment.&lt;/p>
-&lt;blockquote>
-&lt;p>Instead of &amp;ldquo;functional&amp;rdquo;, should we say &lt;del>&amp;quot;data oriented&amp;quot;&lt;/del> UPDATE: open to
-suggestions on this one?&lt;/p>
-&lt;/blockquote>
-&lt;p>But then what should we call &amp;ldquo;functions&amp;rdquo;?&lt;/p>
-&lt;section class="footnotes" role="doc-endnotes">
-&lt;hr>
-&lt;ol>
-&lt;li id="fn:1" role="doc-endnote">
-&lt;p>BBC article on: &lt;a href="https://www.bbc.co.uk/bitesize/articles/znbct39">&amp;ldquo;Five words that have changed meaning over time&amp;rdquo;&lt;/a> &lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:2" role="doc-endnote">
-&lt;p>I can&amp;rsquo;t see anything in &lt;a href="https://www.google.com/search?q=alanis+morissette+ironic+lyrics">the lyrics&lt;/a> to &amp;ldquo;Ironic&amp;rdquo; that&amp;rsquo;s actually ironic.
-&amp;ldquo;Rain on your wedding day&amp;rdquo;. If you&amp;rsquo;d gone to the effort of arranging a wedding
-in the Atacama desert, specifically to avoid being rained on, then yes, it&amp;rsquo;s
-ironic. But in places where it rains, weddings get rained on. &lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li id="fn:3" role="doc-endnote">
-&lt;p>Rich Hickey talk: &lt;a href="https://www.youtube.com/watch?v=-6BsiVyC1kM">&amp;ldquo;The Value of Values&amp;rdquo;&lt;/a> &lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;/section></description></item><item><title>Re-Learning Haskell with Advent of Code - Part 3</title><link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</link><pubDate>Sun, 14 Jun 2020 12:35:26 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</guid><description>&lt;p>After &lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/">Part 2&lt;/a>, I wanted to go and do some reading. I felt like I could
+some of my code years down the line.&lt;/p></description></item><item><title>Re-Learning Haskell with Advent of Code - Part 3</title><link>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</link><pubDate>Sun, 14 Jun 2020 12:35:26 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-3/</guid><description>&lt;p>After &lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/">Part 2&lt;/a>, I wanted to go and do some reading. I felt like I could
 crack on with the Advent of Code problems with the tools I had at my disposal,
 but felt if I learned more Haskell I could be doing better. I wanted to learn
 some more about monad transformers and anything else that could improve my

@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Re-Learning Haskell with Advent of Code - Part 3"/>
 <meta name="twitter:description" content="After Part 2, I wanted to go and do some reading. I felt like I could crack on with the Advent of Code problems with the tools I had at my disposal, but felt if I learned more Haskell I could be doing better."/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -195,7 +195,7 @@ back and delete the 5 lines of code that defined the Functor instance.</p>
   fmap f (<span style="color:#66d9ef">Running</span> a) <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> (f a)
   fmap f (<span style="color:#66d9ef">AwaitInput</span> a) <span style="color:#f92672">=</span> <span style="color:#66d9ef">AwaitInput</span> (f a)
 </code></pre></div><p>became:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE DerivingFunctor #</span><span style="color:#75715e">-}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-# LANGUAGE DerivingFunctor #-}</span>
 
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">Prog</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">Running</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">AwaitInput</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">End</span> a <span style="color:#f92672">|</span> <span style="color:#66d9ef">Crashed</span> <span style="color:#66d9ef">String</span> <span style="color:#66d9ef">deriving</span>(<span style="color:#66d9ef">Show</span>, <span style="color:#66d9ef">Eq</span>, <span style="color:#66d9ef">Functor</span>)
 </code></pre></div><p>Little victories. No code, no bugs. 🐛</p>
@@ -256,14 +256,14 @@ tree was fixed up to look like:</p>
   return <span style="color:#f92672">$</span> <span style="color:#75715e">-- previous logic that assumed nodes were in tree</span>
   <span style="color:#66d9ef">where</span>
     contains <span style="color:#f92672">::</span> <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">T</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Tree</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">-&gt;</span> m ()
-    contains tree node <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> node `elem` <span style="color:#66d9ef">T</span><span style="color:#f92672">.</span>flatten tree <span style="color:#66d9ef">then</span> return () <span style="color:#66d9ef">else</span> fail <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Could not find element: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> node
+    contains tree node <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> node `elem` <span style="color:#66d9ef">T</span><span style="color:#f92672">.</span>flatten tree <span style="color:#66d9ef">then</span> return () <span style="color:#66d9ef">else</span> fail <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;Could not find element: &#34;</span> <span style="color:#f92672">++</span> node
 </code></pre></div><p>In my example of using this pattern with <code>MonadFail</code> in <a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/">Part 2</a>, there
 was a top level function who&rsquo;s type gave <code>m</code> a concrete type.  This time, I
 used the fact that <code>IO</code> implements <code>MonadFail</code> and passed the non-concrete <code>m</code>
 up to <code>main</code> to let the script fail with the error above if a node given was
 not in the data.</p>
 <p>In <code>main</code> I had:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">orbitalHops</span> orbitTree <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">YOU</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SAN</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&gt;&gt;=</span> print
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">orbitalHops</span> orbitTree <span style="color:#e6db74">&#34;YOU&#34;</span> <span style="color:#e6db74">&#34;SAN&#34;</span> <span style="color:#f92672">&gt;&gt;=</span> print
 </code></pre></div><p>Causing the script to either print the number of orbital hops between <code>&quot;YOU&quot;</code> &amp;
 <code>&quot;SAN&quot;</code> or fail with the error above, provided by the call to <code>fail</code>.</p>
 <h2 id="no-more-strings">No More Strings</h2>
@@ -293,9 +293,9 @@ as it did before.</p>
 <p>I was able to completely remove <code>String</code> from the program, with one exception:
 the <a href="https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:fail"><code>fail</code></a> function from <a href="https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail"><code>MonadFail</code></a> takes a <code>String</code>.  This
 required a call to <a href="https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack"><code>unpack</code></a> to turn <code>Text</code> into <code>String</code>.  So:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">fail</span> <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Could not find element: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> node
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">fail</span> <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;Could not find element: &#34;</span> <span style="color:#f92672">++</span> node
 </code></pre></div><p>became:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">fail</span> <span style="color:#f92672">.</span> <span style="color:#66d9ef">Txt</span><span style="color:#f92672">.</span>unpack <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Could not find element: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;&gt;</span> node
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">fail</span> <span style="color:#f92672">.</span> <span style="color:#66d9ef">Txt</span><span style="color:#f92672">.</span>unpack <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;Could not find element: &#34;</span> <span style="color:#f92672">&lt;&gt;</span> node
 </code></pre></div><h3 id="strictness">Strictness</h3>
 <p>One of the reasons touted for <code>String</code>, a singly linked lazy list of <code>Char</code>s,
 being a bad representation of textual data is that it&rsquo;s lazy.</p>
@@ -448,7 +448,7 @@ able to refactor these functions to simple single liners such as:</p>
 </code></pre></div><p>As the functions had become so trivial I decided to remove them entirely and in stead
 export the lenses for calling code to use.</p>
 <p>The previously 130+ lines of code module became:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE TemplateHaskell #</span><span style="color:#75715e">-}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-# LANGUAGE TemplateHaskell #-}</span>
 <span style="color:#66d9ef">module</span> Intcode.Data
     ( <span style="color:#66d9ef">Intcode</span>
     <span style="color:#75715e">-- Intcode Lenses</span>
@@ -515,7 +515,7 @@ access fields in the <code>Intcode</code> type, I also wanted to refactor the &l
 function, so it wasn&rsquo;t calling the record functions, now prepended with an
 underscore, directly.</p>
 <p>In Rust I&rsquo;d do:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(Default)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Default)]</span>
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SomeData</span> {
     foo: <span style="color:#66d9ef">usize</span>,
     bar: String,
@@ -536,7 +536,7 @@ Haskell like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">--</span>
 <span style="color:#75715e">-- DOES NOT COMPILE</span>
 <span style="color:#75715e">--</span>
-<span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE TemplateHaskell #</span><span style="color:#75715e">-}</span>
+<span style="color:#75715e">{-# LANGUAGE TemplateHaskell #-}</span>
 <span style="color:#66d9ef">import</span> Lens.Micro.Platform (<span style="color:#a6e22e">makeLenses</span>, <span style="color:#a6e22e">set</span>)
 <span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Data.Sequence <span style="color:#66d9ef">as</span> S
 <span style="color:#66d9ef">import</span> Data.Default
@@ -594,8 +594,8 @@ googling around.</p>
 </code></pre><p>I was anticipating another merry-go-round of the compiler telling me to add
 language extensions one by one, but adding <code>DeriveGeneric</code> made this work.</p>
 <p>The finished article looks like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE TemplateHaskell #</span><span style="color:#75715e">-}</span>
-<span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE DeriveGeneric, DeriveAnyClass #</span><span style="color:#75715e">-}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-# LANGUAGE TemplateHaskell #-}</span>
+<span style="color:#75715e">{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}</span>
 
 <span style="color:#66d9ef">import</span> Lens.Micro.Platform (<span style="color:#a6e22e">makeLenses</span>, <span style="color:#a6e22e">set</span>)
 <span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Data.Sequence <span style="color:#66d9ef">as</span> S
@@ -799,7 +799,7 @@ according to the rules set in the problem, ended up looking a lot cleaner.</p>
 <p>Where in the implementation with lists we had:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">replaceNth</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> [a] <span style="color:#f92672">-&gt;</span> m [a]
 <span style="color:#a6e22e">replaceNth</span> n newVal xs
-  <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Cannot replace element with negative index</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;Cannot replace element with negative index&#34;</span>
   <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> replaceNthInner n newVal xs
   <span style="color:#f92672">|</span> n <span style="color:#f92672">==</span> length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#f92672">++</span> [newVal]
   <span style="color:#f92672">|</span> n <span style="color:#f92672">&gt;</span> length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#f92672">++</span> [<span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">_</span> <span style="color:#f92672">&lt;-</span> [<span style="color:#ae81ff">1</span><span style="color:#f92672">..</span>(n <span style="color:#f92672">-</span> length xs)]] <span style="color:#f92672">++</span> [newVal]
@@ -812,7 +812,7 @@ according to the rules set in the problem, ended up looking a lot cleaner.</p>
 </code></pre></div><p>This was cleaned up, and made to match the sequence nomenclature:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">update</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> a <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Seq</span> a <span style="color:#f92672">-&gt;</span> m (<span style="color:#66d9ef">S</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Seq</span> a)
 <span style="color:#a6e22e">update</span> n newVal xs
-  <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Cannot replace element with negative index</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;Cannot replace element with negative index&#34;</span>
   <span style="color:#f92672">|</span> n <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>update n newVal xs
   <span style="color:#f92672">|</span> n <span style="color:#f92672">==</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#66d9ef">S</span><span style="color:#f92672">.|&gt;</span> newVal
   <span style="color:#f92672">|</span> n <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>length xs <span style="color:#f92672">=</span> return <span style="color:#f92672">.</span> flip (<span style="color:#66d9ef">S</span><span style="color:#f92672">.|&gt;</span>) newVal <span style="color:#f92672">$</span> xs <span style="color:#66d9ef">S</span><span style="color:#f92672">.&gt;&lt;</span> (<span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>replicate (n <span style="color:#f92672">-</span> <span style="color:#66d9ef">S</span><span style="color:#f92672">.</span>length xs) <span style="color:#ae81ff">0</span>)
@@ -876,14 +876,14 @@ basically you spin round and shoot asteroids that are located on the rays).</p>
 isolate the source of the error:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#f92672">#!/</span>usr<span style="color:#f92672">/</span>bin<span style="color:#f92672">/</span>env stack
 <span style="color:#75715e">-- stack --resolver lts-15.4 script --package containers --package vector</span>
-<span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE RankNTypes #</span><span style="color:#75715e">-}</span>
-<span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE FlexibleContexts #</span><span style="color:#75715e">-}</span>
+<span style="color:#75715e">{-# LANGUAGE RankNTypes #-}</span>
+<span style="color:#75715e">{-# LANGUAGE FlexibleContexts #-}</span>
 
 <span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Data.Map.Strict          <span style="color:#66d9ef">as</span> Map
 <span style="color:#66d9ef">import</span> <span style="color:#66d9ef">qualified</span> Data.Vector.Generic      <span style="color:#66d9ef">as</span> V
 
 <span style="color:#a6e22e">main</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">IO</span> ()
-<span style="color:#a6e22e">main</span> <span style="color:#f92672">=</span> print <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Hello</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#a6e22e">main</span> <span style="color:#f92672">=</span> print <span style="color:#e6db74">&#34;Hello&#34;</span>
 
 <span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Foo</span> v <span style="color:#f92672">=</span> <span style="color:#66d9ef">V</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Vector</span> v <span style="color:#66d9ef">Int</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Map</span><span style="color:#f92672">.</span><span style="color:#66d9ef">Map</span> <span style="color:#66d9ef">Int</span> (v <span style="color:#66d9ef">Int</span>)
 
@@ -918,7 +918,7 @@ trying to do a big refactor of an existing solution.</p>
 <p>Now that I&rsquo;ve refactored a fair few of my solutions to not use <code>String</code> and
 <code>List</code>, I&rsquo;m hardly using Prelude at all in some of them.</p>
 <p>I think in next Advent of Code problem I attempt, I&rsquo;ll start by putting</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-</span><span style="color:#75715e"># LANGUAGE NoImplicitPrelude #</span><span style="color:#75715e">-}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#75715e">{-# LANGUAGE NoImplicitPrelude #-}</span>
 </code></pre></div><p>at the top of the file and using <a href="https://hackage.haskell.org/package/rio">RIO</a> as a Prelude replacement and
 build the solution inside the RIO monad.</p>
 <hr>

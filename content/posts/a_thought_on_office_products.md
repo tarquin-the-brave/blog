@@ -4,7 +4,7 @@ date = 2022-02-19T12:54:00Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 Like a lot of people.  I was brought up on Microsoft Office: Word, Powerpoint,
@@ -34,7 +34,7 @@ when you're done someone comes along and says "I'll put that away for you".
 reply, "just let me know when you want it back".  But then after they take it,
 the file is still somehow there in your desk draw...
 
-Confusion and fear would understandable ensue.
+Confusion and fear would understandably ensue.
 
 My experience of Microsoft 365 (I think is what they call it when things are
 stored off in the cloud) is continuous second guessing about what's on my

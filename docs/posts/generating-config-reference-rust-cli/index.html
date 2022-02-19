@@ -20,7 +20,7 @@ They often have home pages that do a great job of explaining the core concepts, 
 <meta name="twitter:description" content="There&rsquo;s something missing from the documentation of CLI tools.
 They often have home pages that do a great job of explaining the core concepts, giving a &ldquo;Quick Start&rdquo; guide, and demonstrating some use cases."/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -165,7 +165,7 @@ source for them is defined in code. It&rsquo;s sounding like a strong candidate,
 paper at least&hellip;</p>
 <p>I&rsquo;ve made a dummy CLI tool to see how this looks.</p>
 <p>Defining a reasonably simplistic config structure:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(serde::Deserialize)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
     name: String,
     version: <span style="color:#a6e22e">semver</span>::Version,
@@ -174,8 +174,8 @@ paper at least&hellip;</p>
     target: <span style="color:#a6e22e">std</span>::path::PathBuf,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
-<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(serde::Deserialize)]</span>
+<span style="color:#75715e">#[serde(rename_all = </span><span style="color:#e6db74">&#34;snake_case&#34;</span><span style="color:#75715e">)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Source</span> {
     File(std::path::PathBuf),
     Url(String),
@@ -205,7 +205,7 @@ going to be needed to know that an enum is something that could be one variant,
 or another.</p>
 <p>Any difference between the Rust structure and config file representation that&rsquo;s
 given by attributes, e.g. the:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[serde(rename_all = </span><span style="color:#e6db74">&#34;snake_case&#34;</span><span style="color:#75715e">)]</span>
 </code></pre></div><p>isn&rsquo;t accounted for.</p>
 <p>But maybe these are things we can fix up with comments.  Let&rsquo;s assume for now
 the config file format is YAML.</p>
@@ -224,38 +224,38 @@ page</a>. There&rsquo;s methods and trait implementations below and a sidebar
 that links you to them with a big Rust symbol in it.  This is definitely a
 problem, but one that I&rsquo;m going to come back to. 🙈 🙉</p>
 <p>Let&rsquo;s make this config more complex and see what happens! 😼</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(serde::Deserialize)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span> {
     name: String,
     version: <span style="color:#a6e22e">semver</span>::Version,
     description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(flatten)]</span>
     data: <span style="color:#a6e22e">AppData</span>,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(serde::Deserialize)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AppData</span> {
     source: <span style="color:#a6e22e">Source</span>,
     target: <span style="color:#a6e22e">std</span>::path::PathBuf,
     actions: Vec<span style="color:#f92672">&lt;</span>Actions<span style="color:#f92672">&gt;</span>,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
-<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(serde::Deserialize)]</span>
+<span style="color:#75715e">#[serde(rename_all = </span><span style="color:#e6db74">&#34;snake_case&#34;</span><span style="color:#75715e">)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Source</span> {
     File(std::path::PathBuf),
     Url(String),
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
-<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(serde::Deserialize)]</span>
+<span style="color:#75715e">#[serde(rename_all = </span><span style="color:#e6db74">&#34;snake_case&#34;</span><span style="color:#75715e">)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Actions</span> {
     Foo,
     Bar,
     Baz,
     FooBar,
     BarBaz,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">fbb</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(rename = </span><span style="color:#e6db74">&#34;fbb&#34;</span><span style="color:#75715e">)]</span>
     FooBarBaz,
 }
 </code></pre></div><p>So now our top level <code>Config</code> object defines some metadata fields: <code>name</code>,
@@ -294,12 +294,12 @@ further explaining and back tracking in the comments.  We might find the top
 level encapsulating structure of the config is something we want to reuse
 throughout the codebase and make it generic over the data the user provides and
 what we transform that data into:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(serde::Deserialize)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> {
     name: String,
     version: <span style="color:#a6e22e">semver</span>::Version,
     description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(flatten)]</span>
     data: <span style="color:#a6e22e">T</span>,
 }
 </code></pre></div><p>Parsing <code>Config&lt;AppData&gt;</code> when we read the config file, but later transform the
@@ -445,17 +445,17 @@ implement <code>JsonSchema</code> included in the tool&rsquo;s config, it might 
 practical to parse the config first in terms of types that <code>JsonSchema</code> <em>is</em>
 implemented for then perform a 2nd parsing stage.</p>
 <p>In this example we could do:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(serde::Deserialize, schemars::JsonSchema)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Config</span><span style="color:#f92672">&lt;</span>V <span style="color:#f92672">=</span> String<span style="color:#f92672">&gt;</span> {
     name: String,
     version: <span style="color:#a6e22e">V</span>,
     description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(flatten)]</span>
     data: <span style="color:#a6e22e">AppData</span>,
 }
 
 <span style="color:#66d9ef">impl</span> Config<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> {
-    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">parse</span>(self) -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>Config<span style="color:#f92672">&lt;</span>semver::Version<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> {
+    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">parse</span>(self) -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>Config<span style="color:#f92672">&lt;</span>semver::Version<span style="color:#f92672">&gt;&gt;</span> {
         Ok(Config {
             name: <span style="color:#a6e22e">self</span>.name,
             description: <span style="color:#a6e22e">self</span>.description,
@@ -476,7 +476,7 @@ result <a href="https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config
     name: String,
     version: <span style="color:#a6e22e">V</span>,
     description: Option<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(flatten)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(flatten)]</span>
     data: <span style="color:#a6e22e">AppData</span>,
 }
 
@@ -491,14 +491,14 @@ result <a href="https://tarquin-the-brave.github.io/a-cli-tool/schema-ref/config
     Url(String),
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename_all = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">snake_case</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[serde(rename_all = </span><span style="color:#e6db74">&#34;snake_case&#34;</span><span style="color:#75715e">)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Actions</span> {
     Foo,
     Bar,
     Baz,
     FooBar,
     BarBaz,
-    <span style="color:#75715e">#[</span><span style="color:#75715e">serde(rename = </span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">fbb</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[serde(rename = </span><span style="color:#e6db74">&#34;fbb&#34;</span><span style="color:#75715e">)]</span>
     FooBarBaz,
 }
 </code></pre></div><p>The HTML document looks like:</p>
@@ -529,7 +529,7 @@ foreign type by parsing config in two steps, but looking at <a href="https://doc
 implementations</a>
 of the trait, it&rsquo;s not too hard to implement it for a newtype wrapper around a
 foreign type.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(serde::Deserialize)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Version</span>(semver::Version);
 
 <span style="color:#66d9ef">impl</span> schemars::JsonSchema <span style="color:#66d9ef">for</span> Version {
@@ -562,19 +562,19 @@ if we&rsquo;re creating a navigable HTML reference for our config, why not for o
 CLI too?</p>
 <p>I gave this a quick go, trying both of the approaches above.  Defining a dummy
 CLI with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(structopt::StructOpt, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(structopt::StructOpt, schemars::JsonSchema)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(short, long)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(short, long)]</span>
     config: <span style="color:#a6e22e">std</span>::path::PathBuf,
 
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(long)]</span>
     dry_run: <span style="color:#66d9ef">bool</span>,
 
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(subcommand)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(subcommand)]</span>
     subcommand: <span style="color:#a6e22e">Subcommands</span>,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(structopt::StructOpt, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(structopt::StructOpt, schemars::JsonSchema)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Subcommands</span> {
     Foo,
     Bar,

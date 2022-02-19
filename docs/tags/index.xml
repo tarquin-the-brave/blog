@@ -11,6 +11,64 @@
    
    
      <item>
+       <title>Why I Found Microsoft Office So Jarring</title>
+       <link>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</link>
+       <pubDate>Sat, 19 Feb 2022 12:54:00 +0000</pubDate>
+       
+       <guid>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</guid>
+       <description>&lt;p&gt;Like a lot of people.  I was brought up on Microsoft Office: Word, Powerpoint,
+etc. You did what you needed to do, save it to your computer, and if you wanted
+to take it elsewhere you copied it onto a pendrive or disc, and haphazardly
+left it on a train for a journalist to find. But throughout the process your
+files were very much &lt;em&gt;in your possession&lt;/em&gt;.  I had a whole childhood and
+adolescence where that was the model.&lt;/p&gt;
+&lt;p&gt;Then at some point last decade the upgraded versions of the same office
+products you&amp;rsquo;d been using starting taking your files from you, from your
+computer that you were working  on the in, and storing them off &amp;ldquo;somewhere in
+the cloud&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Contrast this to Google&amp;rsquo;s equivalent products.  I make casual use of them for
+personal stuff: speadsheeting holiday expenses, etc.  I&amp;rsquo;ve always used them
+through the browser and the model is more like: I go to the cloud, work on my
+files, then leave them there in my little bit of the cloud and they never leave
+there.&lt;/p&gt;
+&lt;p&gt;An analogy I find is: imagine that your doing an office job before we had all
+these computery things. Say you had a workflow you were fairly content with:
+You had your desk, you took your files out of a draw, worked on them, then put
+them back in.  Then one you&amp;rsquo;re sitting at your desk working on a file, but now
+when you&amp;rsquo;re done someone comes along and says &amp;ldquo;I&amp;rsquo;ll put that away for you&amp;rdquo;.
+&amp;ldquo;But where are you putting it?&amp;rdquo; you ask.  &amp;ldquo;Oh don&amp;rsquo;t worry about that&amp;rdquo; they
+reply, &amp;ldquo;just let me know when you want it back&amp;rdquo;.  But then after they take it,
+the file is still somehow there in your desk draw&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Confusion and fear would understandably ensue.&lt;/p&gt;
+&lt;p&gt;My experience of Microsoft 365 (I think is what they call it when things are
+stored off in the cloud) is continuous second guessing about what&amp;rsquo;s on my
+computer, what&amp;rsquo;s in the cloud, or both.  This is largely driven by the fact
+we&amp;rsquo;re still using the same desktop applications that we were brought up with
+and are built around the model that your files are on your computer.  There are
+other issues I&amp;rsquo;ve encountered around syncing, and locking which could be put
+down to implementation quality.  But I&amp;rsquo;ve never been that confident
+conceptually with what&amp;rsquo;s going on.&lt;/p&gt;
+&lt;p&gt;Good usable design of products, physical and software, helps the user to form a
+good mental model of how it works that stays true to it&amp;rsquo;s behaviour.  You don&amp;rsquo;t
+have to know how it &lt;em&gt;really&lt;/em&gt; works, but you need a model which you base your
+usage of the product on, and that needs to manifest the same outcomes and the
+true implementation.&lt;/p&gt;
+&lt;p&gt;With the Google office products the mental model is one of going &lt;em&gt;to&lt;/em&gt; your bit
+of the cloud through your browser, doing what you need to do, then leaving your
+bit of the cloud, happy that your files will be there when you come back. I
+never find myself worrying.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The good news is: I&amp;rsquo;m writing this blog post a few years too late.  These days
+I don&amp;rsquo;t have to deal with that many Word Documents or Powerpoints, and the
+entirely online, in the browser, version of Microsoft Office is useable enough
+for my purposes.  I also don&amp;rsquo;t run Windows locally these days.  But in the past
+when I did, and the browser native version of office was fairly unusable, I
+inevitably found myself using the desktop Office applications and was in this
+constant state of unease.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>A Thought on CLI Design</title>
        <link>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_cli_design/</link>
        <pubDate>Sat, 27 Mar 2021 09:00:00 +0000</pubDate>
@@ -75,12 +133,12 @@ wrappers around it.  I suspect in many cases the latter isn&amp;rsquo;t consider
 do the heavy lifting, rather than hand rolling it yourself.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s have a look at a couple (using the basic mainline usage).&lt;/p&gt;
 &lt;p&gt;Rust&amp;rsquo;s &lt;a href=&#34;https://docs.rs/structopt/0.3.21/structopt/&#34;&gt;&lt;code&gt;structopt&lt;/code&gt;&lt;/a&gt; (&lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; under the covers):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Debug, structopt::StructOpt)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(long)]&lt;/span&gt;
     foo: String,
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(long)]&lt;/span&gt;
     bar: String,
 }
 
@@ -104,12 +162,12 @@ $
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; click
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;@click.command&lt;/span&gt;()
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;--foo&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;--bar&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;--foo&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@click.option&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;--bar&amp;#39;&lt;/span&gt;, required&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
 &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;(foo, bar):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Got: foo={foo}, bar={bar}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Got: foo={foo}, bar={bar}&amp;#34;&lt;/span&gt;)
 
-&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;:
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
     hello()
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;$ python3 some-tool.py --foo foo --bar bar
 Got: foo=foo, bar=bar
@@ -118,12 +176,12 @@ Got: foo=foo2, bar=bar
 $
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Reading the docs for &lt;a href=&#34;https://docs.rs/clap/2.33.3/clap/index.html&#34;&gt;&lt;code&gt;clap&lt;/code&gt;&lt;/a&gt; I can get it to allow this overriding
 behaviour:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Debug, structopt::StructOpt)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long, multiple = true, required = true)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(long, multiple = true, required = true)]&lt;/span&gt;
     foo: Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(long)]&lt;/span&gt;
     bar: String,
 }
 
@@ -280,7 +338,7 @@ source for them is defined in code. It&amp;rsquo;s sounding like a strong candid
 paper at least&amp;hellip;&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;ve made a dummy CLI tool to see how this looks.&lt;/p&gt;
 &lt;p&gt;Defining a reasonably simplistic config structure:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt; {
     name: String,
     version: &lt;span style=&#34;color:#a6e22e&#34;&gt;semver&lt;/span&gt;::Version,
@@ -289,8 +347,8 @@ paper at least&amp;hellip;&lt;/p&gt;
     target: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::path::PathBuf,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;snake_case&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Source&lt;/span&gt; {
     File(std::path::PathBuf),
     Url(String),
@@ -320,7 +378,7 @@ going to be needed to know that an enum is something that could be one variant,
 or another.&lt;/p&gt;
 &lt;p&gt;Any difference between the Rust structure and config file representation that&amp;rsquo;s
 given by attributes, e.g. the:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;snake_case&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;isn&amp;rsquo;t accounted for.&lt;/p&gt;
 &lt;p&gt;But maybe these are things we can fix up with comments.  Let&amp;rsquo;s assume for now
 the config file format is YAML.&lt;/p&gt;
@@ -339,38 +397,38 @@ page&lt;/a&gt;. There&amp;rsquo;s methods and trait implementations below and a 
 that links you to them with a big Rust symbol in it.  This is definitely a
 problem, but one that I&amp;rsquo;m going to come back to. 🙈 🙉&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s make this config more complex and see what happens! 😼&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt; {
     name: String,
     version: &lt;span style=&#34;color:#a6e22e&#34;&gt;semver&lt;/span&gt;::Version,
     description: Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(flatten)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(flatten)]&lt;/span&gt;
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;AppData&lt;/span&gt;,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AppData&lt;/span&gt; {
     source: &lt;span style=&#34;color:#a6e22e&#34;&gt;Source&lt;/span&gt;,
     target: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::path::PathBuf,
     actions: Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Actions&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;snake_case&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Source&lt;/span&gt; {
     File(std::path::PathBuf),
     Url(String),
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;snake_case&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Actions&lt;/span&gt; {
     Foo,
     Bar,
     Baz,
     FooBar,
     BarBaz,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;fbb&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fbb&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
     FooBarBaz,
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So now our top level &lt;code&gt;Config&lt;/code&gt; object defines some metadata fields: &lt;code&gt;name&lt;/code&gt;,
@@ -409,12 +467,12 @@ further explaining and back tracking in the comments.  We might find the top
 level encapsulating structure of the config is something we want to reuse
 throughout the codebase and make it generic over the data the user provides and
 what we transform that data into:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
     name: String,
     version: &lt;span style=&#34;color:#a6e22e&#34;&gt;semver&lt;/span&gt;::Version,
     description: Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(flatten)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(flatten)]&lt;/span&gt;
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;T&lt;/span&gt;,
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Parsing &lt;code&gt;Config&amp;lt;AppData&amp;gt;&lt;/code&gt; when we read the config file, but later transform the
@@ -560,17 +618,17 @@ implement &lt;code&gt;JsonSchema&lt;/code&gt; included in the tool&amp;rsquo;s c
 practical to parse the config first in terms of types that &lt;code&gt;JsonSchema&lt;/code&gt; &lt;em&gt;is&lt;/em&gt;
 implemented for then perform a 2nd parsing stage.&lt;/p&gt;
 &lt;p&gt;In this example we could do:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize, schemars::JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize, schemars::JsonSchema)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;V &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
     name: String,
     version: &lt;span style=&#34;color:#a6e22e&#34;&gt;V&lt;/span&gt;,
     description: Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(flatten)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(flatten)]&lt;/span&gt;
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;AppData&lt;/span&gt;,
 }
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;impl&lt;/span&gt; Config&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parse&lt;/span&gt;(self) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Config&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;semver::Version&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parse&lt;/span&gt;(self) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Config&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;semver::Version&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
         Ok(Config {
             name: &lt;span style=&#34;color:#a6e22e&#34;&gt;self&lt;/span&gt;.name,
             description: &lt;span style=&#34;color:#a6e22e&#34;&gt;self&lt;/span&gt;.description,
@@ -591,7 +649,7 @@ result &lt;a href=&#34;https://tarquin-the-brave.github.io/a-cli-tool/schema-ref
     name: String,
     version: &lt;span style=&#34;color:#a6e22e&#34;&gt;V&lt;/span&gt;,
     description: Option&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(flatten)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(flatten)]&lt;/span&gt;
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;AppData&lt;/span&gt;,
 }
 
@@ -606,14 +664,14 @@ result &lt;a href=&#34;https://tarquin-the-brave.github.io/a-cli-tool/schema-ref
     Url(String),
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;snake_case&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;snake_case&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Actions&lt;/span&gt; {
     Foo,
     Bar,
     Baz,
     FooBar,
     BarBaz,
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;fbb&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fbb&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;)]&lt;/span&gt;
     FooBarBaz,
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The HTML document looks like:&lt;/p&gt;
@@ -644,7 +702,7 @@ foreign type by parsing config in two steps, but looking at &lt;a href=&#34;http
 implementations&lt;/a&gt;
 of the trait, it&amp;rsquo;s not too hard to implement it for a newtype wrapper around a
 foreign type.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt;(semver::Version);
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;impl&lt;/span&gt; schemars::JsonSchema &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; Version {
@@ -677,19 +735,19 @@ if we&amp;rsquo;re creating a navigable HTML reference for our config, why not f
 CLI too?&lt;/p&gt;
 &lt;p&gt;I gave this a quick go, trying both of the approaches above.  Defining a dummy
 CLI with:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(structopt::StructOpt, schemars::JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(structopt::StructOpt, schemars::JsonSchema)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(short, long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(short, long)]&lt;/span&gt;
     config: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::path::PathBuf,
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(long)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(long)]&lt;/span&gt;
     dry_run: &lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt;,
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;structopt(subcommand)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;#[structopt(subcommand)]&lt;/span&gt;
     subcommand: &lt;span style=&#34;color:#a6e22e&#34;&gt;Subcommands&lt;/span&gt;,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(structopt::StructOpt, schemars::JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(structopt::StructOpt, schemars::JsonSchema)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;enum&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Subcommands&lt;/span&gt; {
     Foo,
     Bar,
@@ -788,13 +846,13 @@ to echo some data or give you a JSON Schema, in a variety of formats:&lt;/p&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::io::{stdin, stdout, Write};
 &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; structopt::StructOpt;
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Debug, StructOpt)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
     output: String,
     format: String,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Deserialize, Serialize, JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Deserialize, Serialize, JsonSchema)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; {
     name: String,
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;,
@@ -806,9 +864,9 @@ to echo some data or give you a JSON Schema, in a variety of formats:&lt;/p&gt;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; input: &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; from_reader(stdin()).context(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;couldn&amp;#39;t read stdin&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
         val_to_vec(input.data, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
         &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; schema &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; schema_for&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(Data);
         schema.schema.metadata().description &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Some(format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(
             &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aliases can be {}&amp;#34;&lt;/span&gt;,
@@ -825,12 +883,12 @@ to echo some data or give you a JSON Schema, in a variety of formats:&lt;/p&gt;
     Ok(())
 }
 
-&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
         to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
         serde_json::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
         toml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
     } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
         Err(anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output format&amp;#34;&lt;/span&gt;))
@@ -844,13 +902,13 @@ types you&amp;rsquo;re not familiar with.  Next you see a method call you&amp;rs
 with on a type that you are.  You go to the type&amp;rsquo;s documentation and the method
 is nowhere to be seen.&lt;/p&gt;
 &lt;p&gt;Suppose I re-wrote this code to:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Debug, structopt::StructOpt)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Debug, structopt::StructOpt)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Cli&lt;/span&gt; {
     output: String,
     format: String,
 }
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt; {
     name: String,
     data: &lt;span style=&#34;color:#a6e22e&#34;&gt;serde_json&lt;/span&gt;::Value,
@@ -868,9 +926,9 @@ is nowhere to be seen.&lt;/p&gt;
         serde_yaml::from_reader(std::io::stdin()).context(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;couldn&amp;#39;t read stdin&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
     };
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt; {
         val_to_vec(input.data, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;args.format)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; args.output &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;schema&amp;#34;&lt;/span&gt; {
         &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; schema &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; schemars::schema_for&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(Data);
 
         schema.schema.metadata().description &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Some({
@@ -891,12 +949,12 @@ is nowhere to be seen.&lt;/p&gt;
     Ok(())
 }
 
-&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;serde_json&lt;/span&gt;::Value, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;val_to_vec&lt;/span&gt;(value: &lt;span style=&#34;color:#a6e22e&#34;&gt;serde_json&lt;/span&gt;::Value, form: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;) -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;yaml&amp;#34;&lt;/span&gt; {
         serde_yaml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;json&amp;#34;&lt;/span&gt; {
         serde_json::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; form &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;toml&amp;#34;&lt;/span&gt; {
         toml::to_vec(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;value).map_err(Into::into)
     } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
         Err(anyhow::anyhow&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unknown output format&amp;#34;&lt;/span&gt;))
@@ -1242,7 +1300,7 @@ back and delete the 5 lines of code that defined the Functor instance.&lt;/p&gt;
   fmap f (&lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; (f a)
   fmap f (&lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; a) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; (f a)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;became:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE DerivingFunctor #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE DerivingFunctor #-}&lt;/span&gt;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Prog&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Running&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AwaitInput&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;End&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Crashed&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;deriving&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;Show&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Eq&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;Functor&lt;/span&gt;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Little victories. No code, no bugs. 🐛&lt;/p&gt;
@@ -1303,14 +1361,14 @@ tree was fixed up to look like:&lt;/p&gt;
   return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;-- previous logic that assumed nodes were in tree&lt;/span&gt;
   &lt;span style=&#34;color:#66d9ef&#34;&gt;where&lt;/span&gt;
     contains &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Tree&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m ()
-    contains tree node &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; node `elem` &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;flatten tree &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt; return () &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; fail &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
+    contains tree node &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; node `elem` &lt;span style=&#34;color:#66d9ef&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;flatten tree &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt; return () &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; fail &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Could not find element: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In my example of using this pattern with &lt;code&gt;MonadFail&lt;/code&gt; in &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;&gt;Part 2&lt;/a&gt;, there
 was a top level function who&amp;rsquo;s type gave &lt;code&gt;m&lt;/code&gt; a concrete type.  This time, I
 used the fact that &lt;code&gt;IO&lt;/code&gt; implements &lt;code&gt;MonadFail&lt;/code&gt; and passed the non-concrete &lt;code&gt;m&lt;/code&gt;
 up to &lt;code&gt;main&lt;/code&gt; to let the script fail with the error above if a node given was
 not in the data.&lt;/p&gt;
 &lt;p&gt;In &lt;code&gt;main&lt;/code&gt; I had:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orbitalHops&lt;/span&gt; orbitTree &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;YOU&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SAN&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; print
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;orbitalHops&lt;/span&gt; orbitTree &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;YOU&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SAN&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; print
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Causing the script to either print the number of orbital hops between &lt;code&gt;&amp;quot;YOU&amp;quot;&lt;/code&gt; &amp;amp;
 &lt;code&gt;&amp;quot;SAN&amp;quot;&lt;/code&gt; or fail with the error above, provided by the call to &lt;code&gt;fail&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;no-more-strings&#34;&gt;No More Strings&lt;/h2&gt;
@@ -1340,9 +1398,9 @@ as it did before.&lt;/p&gt;
 &lt;p&gt;I was able to completely remove &lt;code&gt;String&lt;/code&gt; from the program, with one exception:
 the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#v:fail&#34;&gt;&lt;code&gt;fail&lt;/code&gt;&lt;/a&gt; function from &lt;a href=&#34;https://hackage.haskell.org/package/base-4.14.0.0/docs/Prelude.html#t:MonadFail&#34;&gt;&lt;code&gt;MonadFail&lt;/code&gt;&lt;/a&gt; takes a &lt;code&gt;String&lt;/code&gt;.  This
 required a call to &lt;a href=&#34;https://hackage.haskell.org/package/text-1.2.4.0/docs/Data-Text.html#v:unpack&#34;&gt;&lt;code&gt;unpack&lt;/code&gt;&lt;/a&gt; to turn &lt;code&gt;Text&lt;/code&gt; into &lt;code&gt;String&lt;/code&gt;.  So:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Could not find element: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; node
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;became:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Txt&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unpack &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Could not find element: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt; node
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fail&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Txt&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unpack &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Could not find element: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;gt;&lt;/span&gt; node
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;strictness&#34;&gt;Strictness&lt;/h3&gt;
 &lt;p&gt;One of the reasons touted for &lt;code&gt;String&lt;/code&gt;, a singly linked lazy list of &lt;code&gt;Char&lt;/code&gt;s,
 being a bad representation of textual data is that it&amp;rsquo;s lazy.&lt;/p&gt;
@@ -1495,7 +1553,7 @@ able to refactor these functions to simple single liners such as:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As the functions had become so trivial I decided to remove them entirely and in stead
 export the lenses for calling code to use.&lt;/p&gt;
 &lt;p&gt;The previously 130+ lines of code module became:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE TemplateHaskell #-}&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;module&lt;/span&gt; Intcode.Data
     ( &lt;span style=&#34;color:#66d9ef&#34;&gt;Intcode&lt;/span&gt;
     &lt;span style=&#34;color:#75715e&#34;&gt;-- Intcode Lenses&lt;/span&gt;
@@ -1562,7 +1620,7 @@ access fields in the &lt;code&gt;Intcode&lt;/code&gt; type, I also wanted to ref
 function, so it wasn&amp;rsquo;t calling the record functions, now prepended with an
 underscore, directly.&lt;/p&gt;
 &lt;p&gt;In Rust I&amp;rsquo;d do:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Default)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Default)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;SomeData&lt;/span&gt; {
     foo: &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;,
     bar: String,
@@ -1583,7 +1641,7 @@ Haskell like:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;-- DOES NOT COMPILE&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE TemplateHaskell #-}&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lens.Micro.Platform (&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;)
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Sequence &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; S
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Data.Default
@@ -1641,8 +1699,8 @@ googling around.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I was anticipating another merry-go-round of the compiler telling me to add
 language extensions one by one, but adding &lt;code&gt;DeriveGeneric&lt;/code&gt; made this work.&lt;/p&gt;
 &lt;p&gt;The finished article looks like:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE TemplateHaskell #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE DeriveGeneric, DeriveAnyClass #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE TemplateHaskell #-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}&lt;/span&gt;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; Lens.Micro.Platform (&lt;span style=&#34;color:#a6e22e&#34;&gt;makeLenses&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;set&lt;/span&gt;)
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Sequence &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; S
@@ -1846,7 +1904,7 @@ according to the rules set in the problem, ended up looking a lot cleaner.&lt;/p
 &lt;p&gt;Where in the implementation with lists we had:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNth&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m [a]
 &lt;span style=&#34;color:#a6e22e&#34;&gt;replaceNth&lt;/span&gt; n newVal xs
-  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Cannot replace element with negative index&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Cannot replace element with negative index&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; replaceNthInner n newVal xs
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [newVal]
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;..&lt;/span&gt;(n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; length xs)]] &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; [newVal]
@@ -1859,7 +1917,7 @@ according to the rules set in the problem, ended up looking a lot cleaner.&lt;/p
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This was cleaned up, and made to match the sequence nomenclature:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Seq&lt;/span&gt; a)
 &lt;span style=&#34;color:#a6e22e&#34;&gt;update&lt;/span&gt; n newVal xs
-  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Cannot replace element with negative index&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Cannot replace element with negative index&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;update n newVal xs
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.|&amp;gt;&lt;/span&gt; newVal
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; flip (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.|&amp;gt;&lt;/span&gt;) newVal &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&amp;gt;&amp;lt;&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replicate (n &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;S&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;length xs) &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
@@ -1923,14 +1981,14 @@ basically you spin round and shoot asteroids that are located on the rays).&lt;/
 isolate the source of the error:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;#!/&lt;/span&gt;usr&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;bin&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;env stack
 &lt;span style=&#34;color:#75715e&#34;&gt;-- stack --resolver lts-15.4 script --package containers --package vector&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE RankNTypes #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE FlexibleContexts #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE RankNTypes #-}&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE FlexibleContexts #-}&lt;/span&gt;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Map.Strict          &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; Map
 &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;qualified&lt;/span&gt; Data.Vector.Generic      &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; V
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; ()
-&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; print &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hello&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; print &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Foo&lt;/span&gt; v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;V&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Vector&lt;/span&gt; v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;Map&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; (v &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;)
 
@@ -1965,7 +2023,7 @@ trying to do a big refactor of an existing solution.&lt;/p&gt;
 &lt;p&gt;Now that I&amp;rsquo;ve refactored a fair few of my solutions to not use &lt;code&gt;String&lt;/code&gt; and
 &lt;code&gt;List&lt;/code&gt;, I&amp;rsquo;m hardly using Prelude at all in some of them.&lt;/p&gt;
 &lt;p&gt;I think in next Advent of Code problem I attempt, I&amp;rsquo;ll start by putting&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# LANGUAGE NoImplicitPrelude #&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;-}&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;{-# LANGUAGE NoImplicitPrelude #-}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;at the top of the file and using &lt;a href=&#34;https://hackage.haskell.org/package/rio&#34;&gt;RIO&lt;/a&gt; as a Prelude replacement and
 build the solution inside the RIO monad.&lt;/p&gt;
 &lt;hr&gt;
@@ -2014,7 +2072,7 @@ use &lt;code&gt;collect()&lt;/code&gt; to collect an iterator of results into a 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; numbers: Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string
     .into_iter()
     .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; s.parse::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;i32&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;())
-    .collect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;();
+    .collect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt;();
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You only need either the type hint on &lt;code&gt;numbers&lt;/code&gt; or the turbofish on &lt;code&gt;collect&lt;/code&gt;
 to coerce the iterator of results into a result.  I prefer the turbofish on
 &lt;code&gt;collect&lt;/code&gt; as I feel it makes the code flow better when reading, and is what you
@@ -2091,7 +2149,7 @@ collection of results on a new line in the error message.&lt;/p&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; numbers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string
     .into_iter()
     .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; s.parse::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;i32&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;())
-    .bcollect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+    .bcollect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Errors with chains of causes, have their causal chains retained by being
 formatted with the &lt;a href=&#34;https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations&#34;&gt;inline representation&lt;/a&gt; where causes are separated
 by &lt;code&gt;:&lt;/code&gt;.&lt;/p&gt;
@@ -2108,7 +2166,7 @@ level.&lt;/p&gt;
     input_file &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ...;
 
     some_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; process_input(input_file)
-        .with_context(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Errors found while processing {}&amp;#34;&lt;/span&gt;, input_file))&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+        .with_context(&lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt; format&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Errors found while processing {}&amp;#34;&lt;/span&gt;, input_file))&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
 
     run_application(some_data)
 }
@@ -2703,7 +2761,7 @@ and for the State Monad we can use the &lt;a href=&#34;https://hackage.haskell.o
   &lt;span style=&#34;color:#75715e&#34;&gt;--&lt;/span&gt;
   &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; grid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gridDisplay &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; gameDisplay game
   &lt;span style=&#34;color:#66d9ef&#34;&gt;_&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; liftIO &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; mapM print grid
-  liftIO &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; print &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Your score: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; show (sc liveData))
+  liftIO &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; print &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Your score: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; show (sc liveData))
   liftIO &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; cursorUp &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; (length grid) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
 
   &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IC&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;progState (gameProg game) &lt;span style=&#34;color:#66d9ef&#34;&gt;of&lt;/span&gt;
@@ -2814,7 +2872,7 @@ both are instances of &lt;code&gt;MonadFail&lt;/code&gt; we can redefine &lt;cod
 over &lt;code&gt;MonadFail&lt;/code&gt; and cut out the conversion between failure representations.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;maybePosM&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;maybePosM&lt;/span&gt; x
-  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;woops&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;woops&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return x
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;thing&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; [&lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt;]
@@ -2906,7 +2964,7 @@ the end of the list, &lt;code&gt;(!!!)&lt;/code&gt; went from:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!!!&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Integral&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;MonadFail&lt;/span&gt; m &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; [a] &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Int&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; m a
 &lt;span style=&#34;color:#66d9ef&#34;&gt;infixl&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!!!&lt;/span&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;xs&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!!!&lt;/span&gt; i
-  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;index &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; show i &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; less that zero&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fail &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; show i &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; less that zero&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; length xs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
   &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; otherwise &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; return &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; xs &lt;span style=&#34;color:#f92672&#34;&gt;!!&lt;/span&gt; i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I was then able to strip out all of the &lt;code&gt;case&lt;/code&gt; statements that were matching
@@ -3295,7 +3353,7 @@ about what&amp;rsquo;s in what file, but use it to get used to exporting and imp
 
 &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;IO&lt;/span&gt; ()
 &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
-  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; readFile &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;inputs.txt&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; readFile &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;inputs.txt&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; inputs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fmap read &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; lines &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; contents
   print &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Lib&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tot_1 &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; inputs
   print &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;Lib&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tot_2 &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; inputs
@@ -3519,7 +3577,7 @@ of the body given in the data.&lt;/p&gt;
 &lt;span style=&#34;color:#a6e22e&#34;&gt;unfoldFunction&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; forestBuilder orbits
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Stringing that together, we can load the input data into a forest:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-haskell&#34; data-lang=&#34;haskell&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;do&lt;/span&gt;
-  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; fmap lines &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; readFile &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;input.txt&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+  contents &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; fmap lines &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; readFile &lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;input.txt&amp;#34;&lt;/span&gt;
   &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; orbits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fmap parseOrbit contents
   &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; myForest &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; unfoldForest (forestBuilder orbits) (roots orbits)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the data is loaded into a &lt;code&gt;Forest&lt;/code&gt;, I want to walk through the forest and
@@ -3797,11 +3855,11 @@ powerful framework and well worth giving &lt;a href=&#34;https://docs.serde.rs/s
 &lt;p&gt;It can deserialize a file format into a strongly typed rust data structure, so
 that the data in code has no affiliation to the data format it was read from,
 then can be serialized into another file format.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#![&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;allow(unused_variables)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#![allow(unused_variables)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde_derive::{Deserialize, Serialize};
 
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;derive(Serialize, Deserialize, Debug, Clone, PartialEq)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
-&lt;span style=&#34;color:#75715e&#34;&gt;#[&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;camelCase&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;, deny_unknown_fields)&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;camelCase&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;, deny_unknown_fields)]&lt;/span&gt;
 &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyData&lt;/span&gt; {
     field_one: &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;,
     field_two: String,
@@ -3810,7 +3868,7 @@ then can be serialized into another file format.&lt;/p&gt;
 }
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
         fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
         fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
         fieldThree: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
@@ -3818,9 +3876,9 @@ then can be serialized into another file format.&lt;/p&gt;
             &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
             y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
             z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
         fieldOne &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
         fieldTwo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
         fieldThree &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
@@ -3829,9 +3887,9 @@ then can be serialized into another file format.&lt;/p&gt;
         x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
         y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
         z &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
         {
           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fieldOne&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;,
           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fieldTwo&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;,
@@ -3842,7 +3900,7 @@ then can be serialized into another file format.&lt;/p&gt;
             &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;z&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
           }
         }
-        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml);
     &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; toml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_toml);
@@ -3857,16 +3915,16 @@ then can be serialized into another file format.&lt;/p&gt;
     assert_eq&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_yaml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_toml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);
     assert_eq&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(deserialized_toml_copy&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_json&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
         fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
         fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
         someData:
             &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
             y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
             z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
         fieldOne: &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
         fieldTwo: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lorem&amp;#34;&lt;/span&gt;
         fieldThree: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
@@ -3875,7 +3933,7 @@ then can be serialized into another file format.&lt;/p&gt;
             y: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
             z: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
         out_of_schema_data: &lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;
-        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+        &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_missing_field);
     &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_extra_field);
@@ -3906,9 +3964,9 @@ other format&amp;rsquo;s &lt;code&gt;Value&lt;/code&gt;, and you&amp;rsquo;ll ge
 &lt;a href=&#34;https://docs.rs/serde_yaml/0.8.11/src/serde_yaml/mapping.rs.html#10-12&#34;&gt;&lt;code&gt;serde_yaml::Mapping&lt;/code&gt;&lt;/a&gt; allows keys of any variant of &lt;a href=&#34;https://docs.rs/serde_yaml/0.8.11/serde_yaml/enum.Value.html&#34;&gt;&lt;code&gt;Value&lt;/code&gt;&lt;/a&gt;,
 however &lt;a href=&#34;https://docs.serde.rs/serde_json/map/struct.Map.html&#34;&gt;&lt;code&gt;serde_json:🗺:Map&lt;/code&gt;&lt;/a&gt; is only implemented with &lt;code&gt;String&lt;/code&gt; as a key
 type:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; some_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; some_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; r&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&amp;#34;&lt;/span&gt;
     [&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;]: &lt;span style=&#34;color:#a6e22e&#34;&gt;true&lt;/span&gt;
-    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;;
+    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#34;#&lt;/span&gt;;
 
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; try_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_yaml::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(some_yaml);
 &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; try_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;serde_json::Value&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(some_yaml);

@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Re-Learning Haskell with Advent of Code - Part 2"/>
 <meta name="twitter:description" content="In Part 1, I skipped the day 2, 5, &amp; 7 problems that get you to build and use a Intcode computer. Each problem provides an Intcode program to run: A series of integers that can each either represent an instruction or data, and can mutate itself."/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -523,7 +523,7 @@ and for the State Monad we can use the <a href="https://hackage.haskell.org/pack
   <span style="color:#75715e">--</span>
   <span style="color:#66d9ef">let</span> grid <span style="color:#f92672">=</span> gridDisplay <span style="color:#f92672">$</span> gameDisplay game
   <span style="color:#66d9ef">_</span> <span style="color:#f92672">&lt;-</span> liftIO <span style="color:#f92672">$</span> mapM print grid
-  liftIO <span style="color:#f92672">.</span> print <span style="color:#f92672">$</span> (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Your score: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> show (sc liveData))
+  liftIO <span style="color:#f92672">.</span> print <span style="color:#f92672">$</span> (<span style="color:#e6db74">&#34;Your score: &#34;</span> <span style="color:#f92672">++</span> show (sc liveData))
   liftIO <span style="color:#f92672">.</span> cursorUp <span style="color:#f92672">$</span> (length grid) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
 
   <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">IC</span><span style="color:#f92672">.</span>progState (gameProg game) <span style="color:#66d9ef">of</span>
@@ -634,7 +634,7 @@ both are instances of <code>MonadFail</code> we can redefine <code>maybePos</cod
 over <code>MonadFail</code> and cut out the conversion between failure representations.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell"><span style="color:#a6e22e">maybePosM</span> <span style="color:#f92672">::</span>  <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> m <span style="color:#66d9ef">Int</span>
 <span style="color:#a6e22e">maybePosM</span> x
-  <span style="color:#f92672">|</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">woops</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">|</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#e6db74">&#34;woops&#34;</span>
   <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> return x
 
 <span style="color:#a6e22e">thing&#39;</span> <span style="color:#f92672">::</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> [<span style="color:#66d9ef">Int</span>]
@@ -726,7 +726,7 @@ the end of the list, <code>(!!!)</code> went from:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-haskell" data-lang="haskell">(<span style="color:#f92672">!!!</span>) <span style="color:#f92672">::</span> <span style="color:#66d9ef">Integral</span> a <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">MonadFail</span> m <span style="color:#f92672">=&gt;</span> [a] <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">Int</span> <span style="color:#f92672">-&gt;</span> m a
 <span style="color:#66d9ef">infixl</span> <span style="color:#ae81ff">9</span> <span style="color:#f92672">!!!</span>
 <span style="color:#a6e22e">xs</span> <span style="color:#f92672">!!!</span> i
-  <span style="color:#f92672">|</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">index </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">++</span> show i <span style="color:#f92672">++</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> less that zero</span><span style="color:#e6db74">&#34;</span>
+  <span style="color:#f92672">|</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> fail <span style="color:#f92672">$</span> <span style="color:#e6db74">&#34;index &#34;</span> <span style="color:#f92672">++</span> show i <span style="color:#f92672">++</span> <span style="color:#e6db74">&#34; less that zero&#34;</span>
   <span style="color:#f92672">|</span> i <span style="color:#f92672">&gt;=</span> length xs <span style="color:#f92672">=</span> return <span style="color:#ae81ff">0</span>
   <span style="color:#f92672">|</span> otherwise <span style="color:#f92672">=</span> return <span style="color:#f92672">$</span> xs <span style="color:#f92672">!!</span> i
 </code></pre></div><p>I was then able to strip out all of the <code>case</code> statements that were matching

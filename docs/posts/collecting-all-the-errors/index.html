@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Collecting All the Errors - Rust"/>
 <meta name="twitter:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:"/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -105,7 +105,7 @@ use <code>collect()</code> to collect an iterator of results into a result.  To 
 <span style="color:#66d9ef">let</span> numbers: Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> string
     .into_iter()
     .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
-    .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>();
+    .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;&gt;</span>();
 </code></pre></div><p>You only need either the type hint on <code>numbers</code> or the turbofish on <code>collect</code>
 to coerce the iterator of results into a result.  I prefer the turbofish on
 <code>collect</code> as I feel it makes the code flow better when reading, and is what you
@@ -182,7 +182,7 @@ collection of results on a new line in the error message.</p>
 <span style="color:#66d9ef">let</span> numbers <span style="color:#f92672">=</span> string
     .into_iter()
     .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
-    .bcollect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>()<span style="color:#f92672">?</span>;
+    .bcollect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;</span>()<span style="color:#f92672">?</span>;
 </code></pre></div><p>Errors with chains of causes, have their causal chains retained by being
 formatted with the <a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations">inline representation</a> where causes are separated
 by <code>:</code>.</p>
@@ -199,7 +199,7 @@ level.</p>
     input_file <span style="color:#f92672">=</span> ...;
 
     some_data <span style="color:#f92672">=</span> process_input(input_file)
-        .with_context(<span style="color:#f92672">|</span><span style="color:#f92672">|</span> format<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Errors found while processing {}&#34;</span>, input_file))<span style="color:#f92672">?</span>;
+        .with_context(<span style="color:#f92672">||</span> format<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Errors found while processing {}&#34;</span>, input_file))<span style="color:#f92672">?</span>;
 
     run_application(some_data)
 }

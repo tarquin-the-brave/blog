@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Why I Scatter Use Statements Throughout My Rust"/>
 <meta name="twitter:description" content="A standard pattern across pretty much every language I&rsquo;ve worked with at least, is to stick statements that import modules and libraries at the top of the page. Some languages make you do this."/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -118,13 +118,13 @@ to echo some data or give you a JSON Schema, in a variety of formats:</p>
 <span style="color:#66d9ef">use</span> std::io::{stdin, stdout, Write};
 <span style="color:#66d9ef">use</span> structopt::StructOpt;
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(Debug, StructOpt)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(Debug, StructOpt)]</span>
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
     output: String,
     format: String,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(Deserialize, Serialize, JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(Deserialize, Serialize, JsonSchema)]</span>
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Data</span> {
     name: String,
     data: <span style="color:#a6e22e">Value</span>,
@@ -136,9 +136,9 @@ to echo some data or give you a JSON Schema, in a variety of formats:</p>
 
     <span style="color:#66d9ef">let</span> input: <span style="color:#a6e22e">Data</span> <span style="color:#f92672">=</span> from_reader(stdin()).context(<span style="color:#e6db74">&#34;couldn&#39;t read stdin&#34;</span>)<span style="color:#f92672">?</span>;
 
-    <span style="color:#66d9ef">let</span> output <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;data&#34;</span> {
+    <span style="color:#66d9ef">let</span> output <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;data&#34;</span> {
         val_to_vec(input.data, <span style="color:#f92672">&amp;</span>args.format)<span style="color:#f92672">?</span>
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;schema&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;schema&#34;</span> {
         <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> schema <span style="color:#f92672">=</span> schema_for<span style="color:#f92672">!</span>(Data);
         schema.schema.metadata().description <span style="color:#f92672">=</span> Some(format<span style="color:#f92672">!</span>(
             <span style="color:#e6db74">&#34;aliases can be {}&#34;</span>,
@@ -155,12 +155,12 @@ to echo some data or give you a JSON Schema, in a variety of formats:</p>
     Ok(())
 }
 
-<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">val_to_vec</span>(value: <span style="color:#a6e22e">Value</span>, form: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> {
-    <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yaml&#34;</span> {
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">val_to_vec</span>(value: <span style="color:#a6e22e">Value</span>, form: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;&gt;</span> {
+    <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;yaml&#34;</span> {
         to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;json&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;json&#34;</span> {
         serde_json::to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;toml&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;toml&#34;</span> {
         toml::to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
     } <span style="color:#66d9ef">else</span> {
         Err(anyhow<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Unknown output format&#34;</span>))
@@ -174,13 +174,13 @@ types you&rsquo;re not familiar with.  Next you see a method call you&rsquo;re n
 with on a type that you are.  You go to the type&rsquo;s documentation and the method
 is nowhere to be seen.</p>
 <p>Suppose I re-wrote this code to:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(Debug, structopt::StructOpt)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Debug, structopt::StructOpt)]</span>
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
     output: String,
     format: String,
 }
 
-<span style="color:#75715e">#[</span><span style="color:#75715e">derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#[derive(serde::Deserialize, serde::Serialize, schemars::JsonSchema)]</span>
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Data</span> {
     name: String,
     data: <span style="color:#a6e22e">serde_json</span>::Value,
@@ -198,9 +198,9 @@ is nowhere to be seen.</p>
         serde_yaml::from_reader(std::io::stdin()).context(<span style="color:#e6db74">&#34;couldn&#39;t read stdin&#34;</span>)<span style="color:#f92672">?</span>
     };
 
-    <span style="color:#66d9ef">let</span> output <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;data&#34;</span> {
+    <span style="color:#66d9ef">let</span> output <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;data&#34;</span> {
         val_to_vec(input.data, <span style="color:#f92672">&amp;</span>args.format)<span style="color:#f92672">?</span>
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;schema&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> args.output <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;schema&#34;</span> {
         <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> schema <span style="color:#f92672">=</span> schemars::schema_for<span style="color:#f92672">!</span>(Data);
 
         schema.schema.metadata().description <span style="color:#f92672">=</span> Some({
@@ -221,12 +221,12 @@ is nowhere to be seen.</p>
     Ok(())
 }
 
-<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">val_to_vec</span>(value: <span style="color:#a6e22e">serde_json</span>::Value, form: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> {
-    <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yaml&#34;</span> {
+<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">val_to_vec</span>(value: <span style="color:#a6e22e">serde_json</span>::Value, form: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span>) -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;&gt;</span> {
+    <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;yaml&#34;</span> {
         serde_yaml::to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;json&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;json&#34;</span> {
         serde_json::to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
-    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;toml&#34;</span> {
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> form <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;toml&#34;</span> {
         toml::to_vec(<span style="color:#f92672">&amp;</span>value).map_err(Into::into)
     } <span style="color:#66d9ef">else</span> {
         Err(anyhow::anyhow<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Unknown output format&#34;</span>))

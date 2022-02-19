@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="A Thought on CLI Design"/>
 <meta name="twitter:description" content="Recently I was using a wrapper around a CLI tool. It does what you might expect a CLI wrapper to do: set up some peripheral things, environment variables and such like, then runs the underlying CLI tool with some CLI parameters set and passes argument given to the wrapper down to provide extra parameters."/>
 
-<meta name="generator" content="Hugo 0.64.1" />
+<meta name="generator" content="Hugo 0.68.3" />
     
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
@@ -157,12 +157,12 @@ wrappers around it.  I suspect in many cases the latter isn&rsquo;t considered.<
 do the heavy lifting, rather than hand rolling it yourself.</p>
 <p>Let&rsquo;s have a look at a couple (using the basic mainline usage).</p>
 <p>Rust&rsquo;s <a href="https://docs.rs/structopt/0.3.21/structopt/"><code>structopt</code></a> (<a href="https://docs.rs/clap/2.33.3/clap/index.html"><code>clap</code></a> under the covers):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(Debug, structopt::StructOpt)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Debug, structopt::StructOpt)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(long)]</span>
     foo: String,
 
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(long)]</span>
     bar: String,
 }
 
@@ -186,12 +186,12 @@ $
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> click
 
 <span style="color:#a6e22e">@click.command</span>()
-<span style="color:#a6e22e">@click.option</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">--foo</span><span style="color:#e6db74">&#39;</span>, required<span style="color:#f92672">=</span>True)
-<span style="color:#a6e22e">@click.option</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">--bar</span><span style="color:#e6db74">&#39;</span>, required<span style="color:#f92672">=</span>True)
+<span style="color:#a6e22e">@click.option</span>(<span style="color:#e6db74">&#39;--foo&#39;</span>, required<span style="color:#f92672">=</span>True)
+<span style="color:#a6e22e">@click.option</span>(<span style="color:#e6db74">&#39;--bar&#39;</span>, required<span style="color:#f92672">=</span>True)
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello</span>(foo, bar):
-    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Got: foo={foo}, bar={bar}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Got: foo={foo}, bar={bar}&#34;</span>)
 
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">__main__</span><span style="color:#e6db74">&#39;</span>:
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
     hello()
 </code></pre></div><pre><code>$ python3 some-tool.py --foo foo --bar bar
 Got: foo=foo, bar=bar
@@ -200,12 +200,12 @@ Got: foo=foo2, bar=bar
 $
 </code></pre><p>Reading the docs for <a href="https://docs.rs/clap/2.33.3/clap/index.html"><code>clap</code></a> I can get it to allow this overriding
 behaviour:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[</span><span style="color:#75715e">derive(Debug, structopt::StructOpt)</span><span style="color:#75715e">]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Debug, structopt::StructOpt)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Cli</span> {
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long, multiple = true, required = true)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(long, multiple = true, required = true)]</span>
     foo: Vec<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
 
-    <span style="color:#75715e">#[</span><span style="color:#75715e">structopt(long)</span><span style="color:#75715e">]</span>
+    <span style="color:#75715e">#[structopt(long)]</span>
     bar: String,
 }
 
@@ -300,6 +300,10 @@ it is to write wrappers around them?</p>
             <a href="https://tarquin-the-brave.github.io/blog/posts/generating-config-reference-rust-cli/"><i class="fa fa-chevron-circle-left"></i> Generating a Config File Reference for a CLI Tool in Rust</a>
         </li>
         
+        
+        <li>
+            <a href="https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/">Why I Found Microsoft Office So Jarring <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
         
     </ul>
 </section>

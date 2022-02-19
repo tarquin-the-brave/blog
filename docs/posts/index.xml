@@ -1,4 +1,63 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/posts/</link><description>Recent content in Posts on tarquin-the-brave</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Sat, 19 Feb 2022 12:54:00 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Why I Found Microsoft Office So Jarring</title><link>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</link><pubDate>Sat, 19 Feb 2022 12:54:00 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</guid><description>&lt;p>Like a lot of people. I was brought up on Microsoft Office: Word, Powerpoint,
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/posts/</link><description>Recent content in Posts on tarquin-the-brave</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Sat, 19 Feb 2022 15:00:48 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>yes, please clear my terminal</title><link>https://tarquin-the-brave.github.io/blog/posts/yes-please-clear-my-terminal/</link><pubDate>Sat, 19 Feb 2022 15:00:48 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/yes-please-clear-my-terminal/</guid><description>&lt;p>We&amp;rsquo;ve all been there. You&amp;rsquo;ve been running some commands. You switch focus
+away from your terminal. You come back. And your terminal is full of crap
+you&amp;rsquo;re not interested in anymore. “Get this out of my sight”, you think.
+&lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> you type.&lt;/p>
+&lt;p>Problem solved. Blog post over. Oh but wait! This doesn&amp;rsquo;t solve all my woes.&lt;/p>
+&lt;p>There&amp;rsquo;s another time when the ghosts of a command past can muddy your view.
+Say you&amp;rsquo;ve run some tests. There&amp;rsquo;s lots of output that you&amp;rsquo;ll need to scroll
+back through in case of a failure. You find the failure. You make a fix. You
+run the tests again. There&amp;rsquo;s another failure. So you scroll up, &lt;code>Ctrl A, [, PgUp&lt;/code> or however you do it. This second time it&amp;rsquo;s easy to miss where your most
+recent test output starts and where the old one ends.&lt;/p>
+&lt;p>I found &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> doesn&amp;rsquo;t work for me this time. Running &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a>, then scrolling
+up, I see no gap between the previous output and my prompt. Looking into &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">the
+man pages&lt;/a>, it says “clears
+your screen if this is possible, including its scrollback buffer (if the
+extended “E3” capability is defined).”. OK so this is probably a &lt;code>tmux&lt;/code> issue.
+Exiting &lt;code>tmux&lt;/code> I find that &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> does in fact clear the scroll history too.
+Outside of &lt;code>tmux&lt;/code> , passing the &lt;code>-x&lt;/code> parameter to &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> (to stop it clearing
+scrollback buffer) give me the same effect as I saw in &lt;code>tmux&lt;/code> .&lt;/p>
+&lt;p>So at this point I should probably give up on this blog post and go and work
+out how to make &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> work the same in &lt;code>tmux&lt;/code>. But wait, there might still
+be a use case that &lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html">&lt;code>clear&lt;/code>&lt;/a> can&amp;rsquo;t fulfil here. Suppose I want to not throw away
+the old test output, but still have a clear point in the history where the old
+test output ended and a new one begins.&lt;/p>
+&lt;p>You could solve this problem by holding down the &lt;code>return&lt;/code> key for a few seconds
+so there was an obvious band in the terminal history of just the prompt. But
+there&amp;rsquo;s a slightly more inventive solution:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">yes &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span> | head -50
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>What&amp;rsquo;s going on here? &lt;a href="https://man7.org/linux/man-pages/man1/yes.1.html">&lt;code>yes&lt;/code>&lt;/a> is a
+command that will repeatedly
+output the string given (or &lt;code>y&lt;/code> if no string is given). So giving it the empty
+string will make it produce newlines to stdout.&lt;/p>
+&lt;p>The appearance of &lt;a href="https://man7.org/linux/man-pages/man1/yes.1.html">&lt;code>yes&lt;/code>&lt;/a> in script or a command line is almost always a sign
+that you&amp;rsquo;re doing something wrong. It can be used as a hack to automate
+interactive CLIs that you know you&amp;rsquo;re going to say “yes” to:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">yes | apt install foo
+yes | rm -ir some_directory/
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Or even if you know you&amp;rsquo;re going to say “no”:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">yes no | &amp;lt;command&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I know, right.&lt;/p>
+&lt;p>But CLI commands &lt;em>usually&lt;/em> have parameters that you can pass to achieve a
+non-interactive mode:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">apt install -y foo
+rm -rif some_directory/
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>It&amp;rsquo;s somewhat reminiscent of the &lt;a href="https://en.wikipedia.org/wiki/Cat_(Unix)#Useless_use_of_cat">“Useless Use of
+&lt;code>cat&lt;/code>&amp;rdquo;.&lt;/a>&lt;/p>
+&lt;p>Apart from my beautiful command above, I think I&amp;rsquo;ve only used &lt;a href="https://man7.org/linux/man-pages/man1/yes.1.html">&lt;code>yes&lt;/code>&lt;/a>
+”legitimately” once: doing a quick test of a TCP connection by piping &lt;a href="https://man7.org/linux/man-pages/man1/yes.1.html">&lt;code>yes&lt;/code>&lt;/a>
+into netcat&amp;hellip; maybe. What is “legitimate usage” anyway&amp;hellip;&lt;/p>
+&lt;p>&lt;code>head -50&lt;/code> will take the first 50 lines of this. The &lt;code>-50&lt;/code> parameter is
+&lt;em>actually an &lt;a href="https://man7.org/linux/man-pages/man1/head.1.html">undocumented&lt;/a>
+archaic use&lt;/em> of &lt;code>head&lt;/code> (and &lt;code>tail&lt;/code>) which apparently is only supported for back
+compatibility. It&amp;rsquo;s equivalent to &lt;code>-n 50&lt;/code>. You can change &lt;code>50&lt;/code> with any
+number. Some experimentation is needed with your terminal and the size of text
+you have.&lt;/p>
+&lt;p>So there we have it. A slightly convoluted way of getting something you
+probably don&amp;rsquo;t need, but seems to have always amused anyone I&amp;rsquo;m paring with
+when I do it.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">yes &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span> | head -50
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;em>I&amp;rsquo;m hoping someone chimes in with a “why don&amp;rsquo;t you just do X” so I can
+un-muscle-memory this one.&lt;/em>&lt;/p></description></item><item><title>Why I Found Microsoft Office So Jarring</title><link>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</link><pubDate>Sat, 19 Feb 2022 12:54:00 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/a_thought_on_office_products/</guid><description>&lt;p>Like a lot of people. I was brought up on Microsoft Office: Word, Powerpoint,
 etc. You did what you needed to do, save it to your computer, and if you wanted
 to take it elsewhere you copied it onto a pendrive or disc, and haphazardly
 left it on a train for a journalist to find. But throughout the process your

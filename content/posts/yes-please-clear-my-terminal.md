@@ -4,7 +4,7 @@ date = 2022-02-19T15:00:48Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 We've all been there.  You've been running some commands.  You switch focus

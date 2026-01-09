@@ -6,12 +6,18 @@ theme = "hugo-kiera"
 publishDir = "docs"
 staticDir = ["static"]
 
-paginate = 300
+[pagination]
+  pagerSize = 300
 
 summaryLength = 30
 enableEmoji = true
 pygmentsCodeFences = true
 googleAnalytics = "UA-161243400-1"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 # Note: to disable a social network icon delete or comment out the corresponding line
 [author]

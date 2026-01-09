@@ -1,10 +1,76 @@
-<!doctype html><html lang=en><head><title>Rust - Converting between file formats - JSON, YAML, & TOML - tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="The HTML5 Herald"><meta name=author content="Tom Steavenson"><meta property="og:title" content="Rust - Converting between file formats - JSON, YAML, & TOML"><meta property="og:description" content="Rust&rsquo;s serde library is a generic serialize-deserialize framework that has been implemented for many file formats. It&rsquo;s an incredibly powerful framework and well worth giving the documentation a read.
-It can deserialize a file format into a strongly typed rust data structure, so that the data in code has no affiliation to the data format it was read from, then can be serialized into another file format."><meta property="og:type" content="article"><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/rust-serde/"><meta property="article:published_time" content="2020-03-26T21:00:00+00:00"><meta property="article:modified_time" content="2020-03-26T21:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Rust - Converting between file formats - JSON, YAML, & TOML"><meta name=twitter:description content="Rust&rsquo;s serde library is a generic serialize-deserialize framework that has been implemented for many file formats. It&rsquo;s an incredibly powerful framework and well worth giving the documentation a read.
-It can deserialize a file format into a strongly typed rust data structure, so that the data in code has no affiliation to the data format it was read from, then can be serialized into another file format."><meta name=generator content="Hugo 0.68.3"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda"><link rel=stylesheet type=text/css href=https://tarquin-the-brave.github.io/blog/css/styles.css></head><body><div id=container><header><h1><a href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave</a></h1><ul id=social-media><li><a href=https://github.com/tarquin-the-brave title=GitHub><i class="fab fa-github fa-lg"></i></a></li><li><a href=https://stackoverflow.com/users/10132181/tom-steavenson title=StackOverflow><i class="fab fa-stack-overflow fa-lg"></i></a></li></ul><p><em><p>Some things I think.</p><p><a href=https://tarquin-the-brave.github.io/blog/posts/><strong>&mdash; All Posts &mdash;</strong></a></p></em></p></header><nav><ul></ul></nav><main><article><h1>Rust - Converting between file formats - JSON, YAML, & TOML</h1><aside><ul><li><time class=post-date datetime=2020-03-26T21:00:00Z>Mar 26, 2020</time></li><li>6 minutes read</li></ul></aside><div class=featured_image><a href=https://tarquin-the-brave.github.io/blog/posts/rust-serde/ title="Rust - Converting between file formats - JSON, YAML, & TOML"><img src></a></div><p>Rust&rsquo;s <a href=https://crates.io/crates/serde><code>serde</code> library</a> is a generic serialize-deserialize framework
+<!doctype html><html lang=en>
+<head>
+<title>Rust - Converting between file formats - JSON, YAML, & TOML - tarquin-the-brave</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="The HTML5 Herald">
+<meta name=author content="Tom Steavenson"><meta property="og:title" content="Rust - Converting between file formats - JSON, YAML, & TOML">
+<meta property="og:description" content="Rust&rsquo;s serde library is a generic serialize-deserialize framework that has been implemented for many file formats. It&rsquo;s an incredibly powerful framework and well worth giving the documentation a read.
+It can deserialize a file format into a strongly typed rust data structure, so that the data in code has no affiliation to the data format it was read from, then can be serialized into another file format.
+#![allow(unused_variables)] use serde_derive::{Deserialize, Serialize}; #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)] #[serde(rename_all = &#34;camelCase&#34;, deny_unknown_fields)] struct MyData { field_one: usize, field_two: String, field_three: bool, some_data: std::collections::HashMap<String, usize>, } fn main() -> anyhow::Result<()> { let my_data_yaml = r#&#34; fieldOne: 7 fieldTwo: &#34;lorem&#34; fieldThree: true someData: x: 1 y: 2 z: 3 &#34;#; let my_data_toml = r#&#34; fieldOne = 7 fieldTwo = &#34;lorem&#34; fieldThree = true [someData] x = 1 y = 2 z = 3 &#34;#; let my_data_json = r#&#34; { &#34;fieldOne&#34;: 7, &#34;fieldTwo&#34;: &#34;lorem&#34;, &#34;fieldThree&#34;: true, &#34;someData&#34;: { &#34;x&#34;: 1, &#34;y&#34;: 2, &#34;z&#34;: 3 } } &#34;#; let deserialized_yaml = serde_yaml::from_str::<MyData>(my_data_yaml); let deserialized_toml = toml::from_str::<MyData>(my_data_toml); let deserialized_json = serde_json::from_str::<MyData>(my_data_json); assert!">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/rust-serde/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-03-26T21:00:00+00:00">
+<meta property="article:modified_time" content="2020-03-26T21:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Rust - Converting between file formats - JSON, YAML, & TOML">
+<meta name=twitter:description content="Rust&rsquo;s serde library is a generic serialize-deserialize framework that has been implemented for many file formats. It&rsquo;s an incredibly powerful framework and well worth giving the documentation a read.
+It can deserialize a file format into a strongly typed rust data structure, so that the data in code has no affiliation to the data format it was read from, then can be serialized into another file format.
+#![allow(unused_variables)] use serde_derive::{Deserialize, Serialize}; #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)] #[serde(rename_all = &#34;camelCase&#34;, deny_unknown_fields)] struct MyData { field_one: usize, field_two: String, field_three: bool, some_data: std::collections::HashMap<String, usize>, } fn main() -> anyhow::Result<()> { let my_data_yaml = r#&#34; fieldOne: 7 fieldTwo: &#34;lorem&#34; fieldThree: true someData: x: 1 y: 2 z: 3 &#34;#; let my_data_toml = r#&#34; fieldOne = 7 fieldTwo = &#34;lorem&#34; fieldThree = true [someData] x = 1 y = 2 z = 3 &#34;#; let my_data_json = r#&#34; { &#34;fieldOne&#34;: 7, &#34;fieldTwo&#34;: &#34;lorem&#34;, &#34;fieldThree&#34;: true, &#34;someData&#34;: { &#34;x&#34;: 1, &#34;y&#34;: 2, &#34;z&#34;: 3 } } &#34;#; let deserialized_yaml = serde_yaml::from_str::<MyData>(my_data_yaml); let deserialized_toml = toml::from_str::<MyData>(my_data_toml); let deserialized_json = serde_json::from_str::<MyData>(my_data_json); assert!">
+<meta name=generator content="Hugo 0.92.2">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous>
+<link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda">
+<link rel=stylesheet type=text/css href=https://tarquin-the-brave.github.io/blog/css/styles.css></head>
+<body>
+<div id=container>
+<header>
+<h1>
+<a href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave</a>
+</h1>
+<ul id=social-media>
+<li>
+<a href=https://github.com/tarquin-the-brave title=GitHub>
+<i class="fab fa-github fa-lg"></i>
+</a>
+</li>
+<li>
+<a href=https://stackoverflow.com/users/10132181/tom-steavenson title=StackOverflow>
+<i class="fab fa-stack-overflow fa-lg"></i>
+</a>
+</li>
+</ul>
+<p><em><p>Some things I think.</p>
+<p><a href=https://tarquin-the-brave.github.io/blog/posts/><strong>&mdash; All Posts &mdash;</strong></a></p>
+</em></p>
+</header>
+<nav>
+<ul>
+</ul>
+</nav>
+<main>
+<article>
+<h1>Rust - Converting between file formats - JSON, YAML, & TOML</h1>
+<aside>
+<ul>
+<li>
+<time class=post-date datetime=2020-03-26T21:00:00Z>Mar 26, 2020</time>
+</li>
+<li>6 minutes read</li>
+</ul>
+</aside>
+<div class=featured_image>
+<a href=https://tarquin-the-brave.github.io/blog/posts/rust-serde/ title="Rust - Converting between file formats - JSON, YAML, & TOML">
+<img src>
+</a>
+</div>
+<p>Rust&rsquo;s <a href=https://crates.io/crates/serde><code>serde</code> library</a> is a generic serialize-deserialize framework
 that has been implemented for <a href=https://docs.serde.rs/serde/#data-formats>many file formats</a>. It&rsquo;s an incredibly
-powerful framework and well worth giving <a href=https://docs.serde.rs/serde/>the documentation</a> a read.</p><p>It can deserialize a file format into a strongly typed rust data structure, so
+powerful framework and well worth giving <a href=https://docs.serde.rs/serde/>the documentation</a> a read.</p>
+<p>It can deserialize a file format into a strongly typed rust data structure, so
 that the data in code has no affiliation to the data format it was read from,
-then can be serialized into another file format.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>#![allow(unused_variables)]</span>
+then can be serialized into another file format.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>#![allow(unused_variables)]</span>
 <span style=color:#66d9ef>use</span> serde_derive::{Deserialize, Serialize};
 
 <span style=color:#75715e>#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]</span>
@@ -17,85 +83,86 @@ then can be serialized into another file format.</p><div class=highlight><pre st
 }
 
 <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() -&gt; <span style=color:#a6e22e>anyhow</span>::Result<span style=color:#f92672>&lt;</span>()<span style=color:#f92672>&gt;</span> {
-    <span style=color:#66d9ef>let</span> my_data_yaml <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-        fieldOne: <span style=color:#ae81ff>7</span>
-        fieldTwo: <span style=color:#e6db74>&#34;lorem&#34;</span>
-        fieldThree: <span style=color:#a6e22e>true</span>
-        someData:
-            <span style=color:#a6e22e>x</span>: <span style=color:#ae81ff>1</span>
-            y: <span style=color:#ae81ff>2</span>
-            z: <span style=color:#ae81ff>3</span>
-        <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
+    <span style=color:#66d9ef>let</span> my_data_yaml <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>        fieldOne: 7
+</span><span style=color:#e6db74>        fieldTwo: &#34;lorem&#34;
+</span><span style=color:#e6db74>        fieldThree: true
+</span><span style=color:#e6db74>        someData:
+</span><span style=color:#e6db74>            x: 1
+</span><span style=color:#e6db74>            y: 2
+</span><span style=color:#e6db74>            z: 3
+</span><span style=color:#e6db74>        &#34;#</span>;
 
-    <span style=color:#66d9ef>let</span> my_data_toml <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-        fieldOne <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>
-        fieldTwo <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;lorem&#34;</span>
-        fieldThree <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>
+    <span style=color:#66d9ef>let</span> my_data_toml <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>        fieldOne = 7
+</span><span style=color:#e6db74>        fieldTwo = &#34;lorem&#34;
+</span><span style=color:#e6db74>        fieldThree = true
+</span><span style=color:#e6db74>
+</span><span style=color:#e6db74>        [someData]
+</span><span style=color:#e6db74>        x = 1
+</span><span style=color:#e6db74>        y = 2
+</span><span style=color:#e6db74>        z = 3
+</span><span style=color:#e6db74>        &#34;#</span>;
 
-        [someData]
-        x <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>
-        y <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>
-        z <span style=color:#f92672>=</span> <span style=color:#ae81ff>3</span>
-        <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
-
-    <span style=color:#66d9ef>let</span> my_data_json <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-        {
-          <span style=color:#e6db74>&#34;fieldOne&#34;</span>: <span style=color:#ae81ff>7</span>,
-          <span style=color:#e6db74>&#34;fieldTwo&#34;</span>: <span style=color:#e6db74>&#34;lorem&#34;</span>,
-          <span style=color:#e6db74>&#34;fieldThree&#34;</span>: <span style=color:#a6e22e>true</span>,
-          <span style=color:#e6db74>&#34;someData&#34;</span>: {
-            <span style=color:#e6db74>&#34;x&#34;</span>: <span style=color:#ae81ff>1</span>,
-            <span style=color:#e6db74>&#34;y&#34;</span>: <span style=color:#ae81ff>2</span>,
-            <span style=color:#e6db74>&#34;z&#34;</span>: <span style=color:#ae81ff>3</span>
-          }
-        }
-        <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
+    <span style=color:#66d9ef>let</span> my_data_json <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>        {
+</span><span style=color:#e6db74>          &#34;fieldOne&#34;: 7,
+</span><span style=color:#e6db74>          &#34;fieldTwo&#34;: &#34;lorem&#34;,
+</span><span style=color:#e6db74>          &#34;fieldThree&#34;: true,
+</span><span style=color:#e6db74>          &#34;someData&#34;: {
+</span><span style=color:#e6db74>            &#34;x&#34;: 1,
+</span><span style=color:#e6db74>            &#34;y&#34;: 2,
+</span><span style=color:#e6db74>            &#34;z&#34;: 3
+</span><span style=color:#e6db74>          }
+</span><span style=color:#e6db74>        }
+</span><span style=color:#e6db74>        &#34;#</span>;
 
     <span style=color:#66d9ef>let</span> deserialized_yaml <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>MyData<span style=color:#f92672>&gt;</span>(my_data_yaml);
     <span style=color:#66d9ef>let</span> deserialized_toml <span style=color:#f92672>=</span> toml::from_str::<span style=color:#f92672>&lt;</span>MyData<span style=color:#f92672>&gt;</span>(my_data_toml);
     <span style=color:#66d9ef>let</span> deserialized_json <span style=color:#f92672>=</span> serde_json::from_str::<span style=color:#f92672>&lt;</span>MyData<span style=color:#f92672>&gt;</span>(my_data_json);
 
-    assert<span style=color:#f92672>!</span>(deserialized_yaml.is_ok());
-    assert<span style=color:#f92672>!</span>(deserialized_toml.is_ok());
-    assert<span style=color:#f92672>!</span>(deserialized_json.is_ok());
+    assert!(deserialized_yaml.is_ok());
+    assert!(deserialized_toml.is_ok());
+    assert!(deserialized_json.is_ok());
 
     <span style=color:#66d9ef>let</span> deserialized_toml_copy <span style=color:#f92672>=</span> deserialized_toml.clone();
 
-    assert_eq<span style=color:#f92672>!</span>(deserialized_yaml<span style=color:#f92672>?</span>, deserialized_toml<span style=color:#f92672>?</span>);
-    assert_eq<span style=color:#f92672>!</span>(deserialized_toml_copy<span style=color:#f92672>?</span>, deserialized_json<span style=color:#f92672>?</span>);
+    assert_eq!(deserialized_yaml<span style=color:#f92672>?</span>, deserialized_toml<span style=color:#f92672>?</span>);
+    assert_eq!(deserialized_toml_copy<span style=color:#f92672>?</span>, deserialized_json<span style=color:#f92672>?</span>);
 
-    <span style=color:#66d9ef>let</span> my_data_yaml_missing_field <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-        fieldOne: <span style=color:#ae81ff>7</span>
-        fieldTwo: <span style=color:#e6db74>&#34;lorem&#34;</span>
-        someData:
-            <span style=color:#a6e22e>x</span>: <span style=color:#ae81ff>1</span>
-            y: <span style=color:#ae81ff>2</span>
-            z: <span style=color:#ae81ff>3</span>
-        <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
+    <span style=color:#66d9ef>let</span> my_data_yaml_missing_field <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>        fieldOne: 7
+</span><span style=color:#e6db74>        fieldTwo: &#34;lorem&#34;
+</span><span style=color:#e6db74>        someData:
+</span><span style=color:#e6db74>            x: 1
+</span><span style=color:#e6db74>            y: 2
+</span><span style=color:#e6db74>            z: 3
+</span><span style=color:#e6db74>        &#34;#</span>;
 
-    <span style=color:#66d9ef>let</span> my_data_yaml_extra_field <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-        fieldOne: <span style=color:#ae81ff>7</span>
-        fieldTwo: <span style=color:#e6db74>&#34;lorem&#34;</span>
-        fieldThree: <span style=color:#a6e22e>true</span>
-        someData:
-            <span style=color:#a6e22e>x</span>: <span style=color:#ae81ff>1</span>
-            y: <span style=color:#ae81ff>2</span>
-            z: <span style=color:#ae81ff>3</span>
-        out_of_schema_data: <span style=color:#ae81ff>42</span>
-        <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
+    <span style=color:#66d9ef>let</span> my_data_yaml_extra_field <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>        fieldOne: 7
+</span><span style=color:#e6db74>        fieldTwo: &#34;lorem&#34;
+</span><span style=color:#e6db74>        fieldThree: true
+</span><span style=color:#e6db74>        someData:
+</span><span style=color:#e6db74>            x: 1
+</span><span style=color:#e6db74>            y: 2
+</span><span style=color:#e6db74>            z: 3
+</span><span style=color:#e6db74>        out_of_schema_data: 42
+</span><span style=color:#e6db74>        &#34;#</span>;
 
     <span style=color:#66d9ef>let</span> data_missing_field <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>MyData<span style=color:#f92672>&gt;</span>(my_data_yaml_missing_field);
     <span style=color:#66d9ef>let</span> data_extra_field <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>MyData<span style=color:#f92672>&gt;</span>(my_data_yaml_extra_field);
 
-    assert<span style=color:#f92672>!</span>(data_missing_field.is_err());
+    assert!(data_missing_field.is_err());
     <span style=color:#75715e>// Because MyData is decorated with `deny_unknown_fields`, adding extra fields
 </span><span style=color:#75715e></span>    <span style=color:#75715e>// will cause parsing to fail.
-</span><span style=color:#75715e></span>    assert<span style=color:#f92672>!</span>(data_extra_field.is_err());
+</span><span style=color:#75715e></span>    assert!(data_extra_field.is_err());
 
     Ok(())
 }
 </code></pre></div><p>You can also read data into a type that can represent any data in a particular
-format, if you don&rsquo;t want to or can&rsquo;t strongly define the contents:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> yaml_data <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>serde_yaml::Value<span style=color:#f92672>&gt;</span>(my_data_yaml)<span style=color:#f92672>?</span>;
+format, if you don&rsquo;t want to or can&rsquo;t strongly define the contents:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> yaml_data <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>serde_yaml::Value<span style=color:#f92672>&gt;</span>(my_data_yaml)<span style=color:#f92672>?</span>;
 <span style=color:#66d9ef>let</span> toml_data <span style=color:#f92672>=</span> toml::from_str::<span style=color:#f92672>&lt;</span>toml::Value<span style=color:#f92672>&gt;</span>(my_data_toml)<span style=color:#f92672>?</span>;
 <span style=color:#66d9ef>let</span> json_data <span style=color:#f92672>=</span> serde_json::from_str::<span style=color:#f92672>&lt;</span>serde_json::Value<span style=color:#f92672>&gt;</span>(my_data_json)<span style=color:#f92672>?</span>;
 </code></pre></div><p>Recently I&rsquo;ve found that it&rsquo;s even able to deserialize a type that&rsquo;s supposed
@@ -105,20 +172,22 @@ are the types <a href=https://docs.serde.rs/serde_json/enum.Value.html><code>ser
 <a href=https://docs.rs/toml/0.5.6/toml/value/enum.Value.html><code>toml::Value</code></a> which represent any data in their respective formats and
 can used to deserialize data when we can&rsquo;t or don&rsquo;t want to define the precise
 structure of the data. It turns out you can read a file format straight into
-one of these other types.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> toml_from_yaml <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>toml::Value<span style=color:#f92672>&gt;</span>(my_data_yaml)<span style=color:#f92672>?</span>;
+one of these other types.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> toml_from_yaml <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>toml::Value<span style=color:#f92672>&gt;</span>(my_data_yaml)<span style=color:#f92672>?</span>;
 </code></pre></div><p>It might be that this conversion fails and the data is not readable into the
 other format&rsquo;s <code>Value</code>, and you&rsquo;ll get a <code>Err</code>. E.g:
 <a href=https://docs.rs/serde_yaml/0.8.11/src/serde_yaml/mapping.rs.html#10-12><code>serde_yaml::Mapping</code></a> allows keys of any variant of <a href=https://docs.rs/serde_yaml/0.8.11/serde_yaml/enum.Value.html><code>Value</code></a>,
-however <a href=https://docs.serde.rs/serde_json/map/struct.Map.html><code>serde_json:🗺:Map</code></a> is only implemented with <code>String</code> as a key
-type:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> some_yaml <span style=color:#f92672>=</span> r<span style=color:#960050;background-color:#1e0010>#&#34;</span>
-    [<span style=color:#ae81ff>5</span>,<span style=color:#ae81ff>6</span>]: <span style=color:#a6e22e>true</span>
-    <span style=color:#960050;background-color:#1e0010>&#34;#</span>;
+however <a href=https://docs.serde.rs/serde_json/map/struct.Map.html><code>serde_json::map::Map</code></a> is only implemented with <code>String</code> as a key
+type:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> some_yaml <span style=color:#f92672>=</span> <span style=color:#e6db74>r#&#34;
+</span><span style=color:#e6db74>    [5,6]: true
+</span><span style=color:#e6db74>    &#34;#</span>;
 
 <span style=color:#66d9ef>let</span> try_yaml <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>serde_yaml::Value<span style=color:#f92672>&gt;</span>(some_yaml);
 <span style=color:#66d9ef>let</span> try_json <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>serde_json::Value<span style=color:#f92672>&gt;</span>(some_yaml);
 
-assert<span style=color:#f92672>!</span>(try_yaml.is_ok());
-assert<span style=color:#f92672>!</span>(try_json.is_err());
+assert!(try_yaml.is_ok());
+assert!(try_json.is_err());
 </code></pre></div><p>This actually has real practical implication. JSON, for example, is far less
 human friendly than either YAML or TOML. There are libraries, packed with
 useful functionality that intend to receive data in a certain format. Serde&rsquo;s
@@ -126,7 +195,8 @@ design decouples this. <a href=https://json-schema.org/>JSON Schema</a> is an ex
 featured schema implementation. But usually you have to write your schemas in
 JSON. <a href=https://jsonschema.net/home>JSON Schema Tool</a> is an online tool that will generate a inferred
 schema from some example JSON. Using the example given when you visit the
-page: this JSON:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+page: this JSON:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;checked&#34;</span>: <span style=color:#66d9ef>false</span>,
     <span style=color:#f92672>&#34;dimensions&#34;</span>: {
         <span style=color:#f92672>&#34;width&#34;</span>: <span style=color:#ae81ff>5</span>,
@@ -140,7 +210,8 @@ page: this JSON:</p><div class=highlight><pre style=color:#f8f8f2;background-col
         <span style=color:#e6db74>&#34;green&#34;</span>
     ]
 }
-</code></pre></div><p>, generates this schema:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>, generates this schema:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;$schema&#34;</span>: <span style=color:#e6db74>&#34;http://json-schema.org/draft-07/schema&#34;</span>,
     <span style=color:#f92672>&#34;$id&#34;</span>: <span style=color:#e6db74>&#34;http://example.com/root.json&#34;</span>,
     <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;object&#34;</span>,
@@ -262,112 +333,137 @@ page: this JSON:</p><div class=highlight><pre style=color:#f8f8f2;background-col
     }
 }
 </code></pre></div><p>You could imagine that you might want to expand that schema even further with
-defauts, examples and other rules constraining the values of some fields.</p><p>Rust has a library <a href=https://docs.rs/schemars/0.7.0/schemars/><code>schemars</code></a> that implements JSON Schema. While the
+defauts, examples and other rules constraining the values of some fields.</p>
+<p>Rust has a library <a href=https://docs.rs/schemars/0.7.0/schemars/><code>schemars</code></a> that implements JSON Schema. While the
 documentation goes through examples of <a href=https://docs.rs/schemars/0.7.0/schemars/#serde-compatibility>defining schemas in code</a>, and
 serializing with <code>serde_json</code>, you can read a <a href=https://docs.rs/schemars/0.7.0/schemars/schema/struct.SchemaObject.html><code>SchemaObject</code></a> straight
 from YAML, or TOML. So your application can leverage the functionality of the
 <code>SchemaObject</code> and the <code>schemars</code> library while getting users write schemas in
-a more human readable form.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> json_schema <span style=color:#f92672>=</span> serde_json::from_str::<span style=color:#f92672>&lt;</span>schemars::schema::RootSchema<span style=color:#f92672>&gt;</span>(
+a more human readable form.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>let</span> json_schema <span style=color:#f92672>=</span> serde_json::from_str::<span style=color:#f92672>&lt;</span>schemars::schema::RootSchema<span style=color:#f92672>&gt;</span>(
     <span style=color:#f92672>&amp;</span>std::fs::read_to_string(<span style=color:#e6db74>&#34;example.schema.json&#34;</span>)<span style=color:#f92672>?</span>,
 )<span style=color:#f92672>?</span>;
 
 <span style=color:#66d9ef>let</span> json_schema_from_yaml <span style=color:#f92672>=</span> serde_yaml::from_str::<span style=color:#f92672>&lt;</span>schemars::schema::RootSchema<span style=color:#f92672>&gt;</span>(
     <span style=color:#f92672>&amp;</span>std::fs::read_to_string(<span style=color:#e6db74>&#34;example.schema.yaml&#34;</span>)<span style=color:#f92672>?</span>,
 )<span style=color:#f92672>?</span>;
-</code></pre></div><p>The same JSON Schema from above is much more readable when written in YAML:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#66d9ef>$schema</span>: http://json-schema.org/draft<span style=color:#ae81ff>-07</span>/schema
-<span style=color:#66d9ef>$id</span>: http://example.com/root.json
-<span style=color:#66d9ef>type</span>: object
-<span style=color:#66d9ef>title</span>: The Root Schema
-<span style=color:#66d9ef>description</span>: The root schema is the schema that comprises the entire JSON document.
-<span style=color:#66d9ef>default</span>: {}
-<span style=color:#66d9ef>required</span>:
-  - checked
-  - dimensions
-  - id
-  - name
-  - price
-  - tags
-<span style=color:#66d9ef>properties</span>:
-  <span style=color:#66d9ef>checked</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/checked&#39;</span>
-    <span style=color:#66d9ef>type</span>: boolean
-    <span style=color:#66d9ef>title</span>: The Checked Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: <span style=color:#66d9ef>false</span>
-    <span style=color:#66d9ef>examples</span>:
+</code></pre></div><p>The same JSON Schema from above is much more readable when written in YAML:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>$schema</span>: <span style=color:#ae81ff>http://json-schema.org/draft-07/schema</span>
+<span style=color:#f92672>$id</span>: <span style=color:#ae81ff>http://example.com/root.json</span>
+<span style=color:#f92672>type</span>: <span style=color:#ae81ff>object</span>
+<span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Root Schema</span>
+<span style=color:#f92672>description</span>: <span style=color:#ae81ff>The root schema is the schema that comprises the entire JSON document.</span>
+<span style=color:#f92672>default</span>: {}
+<span style=color:#f92672>required</span>:
+  - <span style=color:#ae81ff>checked</span>
+  - <span style=color:#ae81ff>dimensions</span>
+  - <span style=color:#ae81ff>id</span>
+  - <span style=color:#ae81ff>name</span>
+  - <span style=color:#ae81ff>price</span>
+  - <span style=color:#ae81ff>tags</span>
+<span style=color:#f92672>properties</span>:
+  <span style=color:#f92672>checked</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/checked&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>boolean</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Checked Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: <span style=color:#66d9ef>false</span>
+    <span style=color:#f92672>examples</span>:
       - <span style=color:#66d9ef>false</span>
-  <span style=color:#66d9ef>dimensions</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions&#39;</span>
-    <span style=color:#66d9ef>type</span>: object
-    <span style=color:#66d9ef>title</span>: The Dimensions Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: {}
-    <span style=color:#66d9ef>examples</span>:
-      - <span style=color:#66d9ef>height</span>: <span style=color:#ae81ff>10</span>
-        <span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>5</span>
-    <span style=color:#66d9ef>required</span>:
-      - width
-      - height
-    <span style=color:#66d9ef>properties</span>:
-      <span style=color:#66d9ef>width</span>:
-        <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions/properties/width&#39;</span>
-        <span style=color:#66d9ef>type</span>: integer
-        <span style=color:#66d9ef>title</span>: The Width Schema
-        <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-        <span style=color:#66d9ef>default</span>: <span style=color:#ae81ff>0</span>
-        <span style=color:#66d9ef>examples</span>:
+  <span style=color:#f92672>dimensions</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>object</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Dimensions Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: {}
+    <span style=color:#f92672>examples</span>:
+      - <span style=color:#f92672>height</span>: <span style=color:#ae81ff>10</span>
+        <span style=color:#f92672>width</span>: <span style=color:#ae81ff>5</span>
+    <span style=color:#f92672>required</span>:
+      - <span style=color:#ae81ff>width</span>
+      - <span style=color:#ae81ff>height</span>
+    <span style=color:#f92672>properties</span>:
+      <span style=color:#f92672>width</span>:
+        <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions/properties/width&#39;</span>
+        <span style=color:#f92672>type</span>: <span style=color:#ae81ff>integer</span>
+        <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Width Schema</span>
+        <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+        <span style=color:#f92672>default</span>: <span style=color:#ae81ff>0</span>
+        <span style=color:#f92672>examples</span>:
           - <span style=color:#ae81ff>5</span>
-      <span style=color:#66d9ef>height</span>:
-        <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions/properties/height&#39;</span>
-        <span style=color:#66d9ef>type</span>: integer
-        <span style=color:#66d9ef>title</span>: The Height Schema
-        <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-        <span style=color:#66d9ef>default</span>: <span style=color:#ae81ff>0</span>
-        <span style=color:#66d9ef>examples</span>:
+      <span style=color:#f92672>height</span>:
+        <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/dimensions/properties/height&#39;</span>
+        <span style=color:#f92672>type</span>: <span style=color:#ae81ff>integer</span>
+        <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Height Schema</span>
+        <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+        <span style=color:#f92672>default</span>: <span style=color:#ae81ff>0</span>
+        <span style=color:#f92672>examples</span>:
           - <span style=color:#ae81ff>10</span>
-  <span style=color:#66d9ef>id</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/id&#39;</span>
-    <span style=color:#66d9ef>type</span>: integer
-    <span style=color:#66d9ef>title</span>: The Id Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: <span style=color:#ae81ff>0</span>
-    <span style=color:#66d9ef>examples</span>:
+  <span style=color:#f92672>id</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/id&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>integer</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Id Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: <span style=color:#ae81ff>0</span>
+    <span style=color:#f92672>examples</span>:
       - <span style=color:#ae81ff>1</span>
-  <span style=color:#66d9ef>name</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/name&#39;</span>
-    <span style=color:#66d9ef>type</span>: string
-    <span style=color:#66d9ef>title</span>: The Name Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: <span style=color:#e6db74>&#39;&#39;</span>
-    <span style=color:#66d9ef>examples</span>:
-      - A green door
-  <span style=color:#66d9ef>price</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/price&#39;</span>
-    <span style=color:#66d9ef>type</span>: number
-    <span style=color:#66d9ef>title</span>: The Price Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: <span style=color:#ae81ff>0</span>
-    <span style=color:#66d9ef>examples</span>:
+  <span style=color:#f92672>name</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/name&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>string</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Name Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: <span style=color:#e6db74>&#39;&#39;</span>
+    <span style=color:#f92672>examples</span>:
+      - <span style=color:#ae81ff>A green door</span>
+  <span style=color:#f92672>price</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/price&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>number</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Price Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: <span style=color:#ae81ff>0</span>
+    <span style=color:#f92672>examples</span>:
       - <span style=color:#ae81ff>12.5</span>
-  <span style=color:#66d9ef>tags</span>:
-    <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/tags&#39;</span>
-    <span style=color:#66d9ef>type</span>: array
-    <span style=color:#66d9ef>title</span>: The Tags Schema
-    <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-    <span style=color:#66d9ef>default</span>: []
-    <span style=color:#66d9ef>examples</span>:
-      - - home
-        - green
-    <span style=color:#66d9ef>items</span>:
-      <span style=color:#66d9ef>$id</span>: <span style=color:#e6db74>&#39;#/properties/tags/items&#39;</span>
-      <span style=color:#66d9ef>type</span>: string
-      <span style=color:#66d9ef>title</span>: The Items Schema
-      <span style=color:#66d9ef>description</span>: An explanation about the purpose of this instance.
-      <span style=color:#66d9ef>default</span>: <span style=color:#e6db74>&#39;&#39;</span>
-      <span style=color:#66d9ef>examples</span>:
-        - home
-        - green
+  <span style=color:#f92672>tags</span>:
+    <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/tags&#39;</span>
+    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>array</span>
+    <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Tags Schema</span>
+    <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+    <span style=color:#f92672>default</span>: []
+    <span style=color:#f92672>examples</span>:
+      - - <span style=color:#ae81ff>home</span>
+        - <span style=color:#ae81ff>green</span>
+    <span style=color:#f92672>items</span>:
+      <span style=color:#f92672>$id</span>: <span style=color:#e6db74>&#39;#/properties/tags/items&#39;</span>
+      <span style=color:#f92672>type</span>: <span style=color:#ae81ff>string</span>
+      <span style=color:#f92672>title</span>: <span style=color:#ae81ff>The Items Schema</span>
+      <span style=color:#f92672>description</span>: <span style=color:#ae81ff>An explanation about the purpose of this instance.</span>
+      <span style=color:#f92672>default</span>: <span style=color:#e6db74>&#39;&#39;</span>
+      <span style=color:#f92672>examples</span>:
+        - <span style=color:#ae81ff>home</span>
+        - <span style=color:#ae81ff>green</span>
 </code></pre></div><p>I learned that <a href=https://crates.io/crates/serde>serde</a> could do this cross-format parsing by reading the
-source code of the <a href=https://github.com/yoshihitoh/refmt>refmt</a> project.</p><p>Examples from this post are <a href=https://github.com/tarquin-the-brave/serde-cross-format>mastered in github</a>.</p></article><section class=post-nav><ul><li><a href=https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/><i class="fa fa-chevron-circle-left"></i>Language Servers Are Cool</a></li><li><a href=https://tarquin-the-brave.github.io/blog/posts/iterttools/>Itertools - A Force for Good? <i class="fa fa-chevron-circle-right"></i></a></li></ul></section><section id=utterances></section><script>if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){let s=document.createElement("script");s.setAttribute("repo","tarquin-the-brave\/blog");s.src="https://utteranc.es/client.js";s.setAttribute("issue-term","pathname");document.getElementById("utterances").innerHTML="";document.getElementById("utterances").appendChild(s);}else{let s=document.createElement("script");s.setAttribute("repo","tarquin-the-brave\/blog");s.src="https://utteranc.es/client.js";s.setAttribute("issue-term","pathname");document.getElementById("utterances").innerHTML="";document.getElementById("utterances").appendChild(s);}</script></main><footer><h6>Copyright © 2020 - Tom Steavenson |
+source code of the <a href=https://github.com/yoshihitoh/refmt>refmt</a> project.</p>
+<p>Examples from this post are <a href=https://github.com/tarquin-the-brave/serde-cross-format>mastered in github</a>.</p>
+</article>
+<section class=post-nav>
+<ul>
+<li>
+<a href=https://tarquin-the-brave.github.io/blog/posts/language-servers-are-cool/><i class="fa fa-chevron-circle-left"></i> Language Servers Are Cool</a>
+</li>
+<li>
+<a href=https://tarquin-the-brave.github.io/blog/posts/iterttools/>Itertools - A Force for Good? <i class="fa fa-chevron-circle-right"></i> </a>
+</li>
+</ul>
+</section>
+<section id=utterances></section>
+<script>if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){let a=document.createElement("script");a.setAttribute("repo","tarquin-the-brave/blog"),a.src="https://utteranc.es/client.js",a.setAttribute("issue-term","pathname"),document.getElementById("utterances").innerHTML="",document.getElementById("utterances").appendChild(a)}else{let a=document.createElement("script");a.setAttribute("repo","tarquin-the-brave/blog"),a.src="https://utteranc.es/client.js",a.setAttribute("issue-term","pathname"),document.getElementById("utterances").innerHTML="",document.getElementById("utterances").appendChild(a)}</script>
+</main>
+<footer>
+<h6>Copyright © 2020 - Tom Steavenson |
 Rendered by <a href=https://gohugo.io title=Hugo>Hugo</a> |
-<a href=https://tarquin-the-brave.github.io/blog/index.xml>Subscribe</a></h6></footer></div><script src=https://tarquin-the-brave.github.io/blog/js/scripts.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-161243400-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
+<a href=https://tarquin-the-brave.github.io/blog/index.xml>Subscribe </a></h6>
+</footer>
+</div>
+<script src=https://tarquin-the-brave.github.io/blog/js/scripts.js></script>
+</body>
+</html>

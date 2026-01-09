@@ -1,0 +1,255 @@
+<!doctype html><html lang=en>
+<head>
+<title>There's No Such Thing as an Error in Rust - tarquin-the-brave</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="The HTML5 Herald">
+<meta name=author content="Tom Steavenson"><meta property="og:title" content="There's No Such Thing as an Error in Rust">
+<meta property="og:description" content="Colleagues have heard me say this. Usually when we&rsquo;re debugging something, or discussing error handling approaches, I&rsquo;ll pipe up with:
+ &ldquo;Well, there&rsquo;s no such thing as an error in Rust.&rdquo;
+ It tends to get a raised eyebrow or two. So I&rsquo;ll explain.
+ How Rust Handles Errors If you&rsquo;re not familiar with Rust, here&rsquo;s the quick version: Rust doesn&rsquo;t have exceptions. Instead, operations that can fail return a Result type.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/no_errors_in_rust/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2026-01-08T20:08:21+00:00">
+<meta property="article:modified_time" content="2026-01-08T20:08:21+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="There's No Such Thing as an Error in Rust">
+<meta name=twitter:description content="Colleagues have heard me say this. Usually when we&rsquo;re debugging something, or discussing error handling approaches, I&rsquo;ll pipe up with:
+ &ldquo;Well, there&rsquo;s no such thing as an error in Rust.&rdquo;
+ It tends to get a raised eyebrow or two. So I&rsquo;ll explain.
+ How Rust Handles Errors If you&rsquo;re not familiar with Rust, here&rsquo;s the quick version: Rust doesn&rsquo;t have exceptions. Instead, operations that can fail return a Result type.">
+<meta name=generator content="Hugo 0.92.2">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous>
+<link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/fontawesome/css/all.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda">
+<link rel=stylesheet type=text/css href=https://tarquin-the-brave.github.io/blog/css/styles.css></head>
+<body>
+<div id=container>
+<header>
+<h1>
+<a href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave</a>
+</h1>
+<ul id=social-media>
+<li>
+<a href=https://github.com/tarquin-the-brave title=GitHub>
+<i class="fab fa-github fa-lg"></i>
+</a>
+</li>
+<li>
+<a href=https://stackoverflow.com/users/10132181/tom-steavenson title=StackOverflow>
+<i class="fab fa-stack-overflow fa-lg"></i>
+</a>
+</li>
+</ul>
+<p><em><p>Some things I think.</p>
+<p><a href=https://tarquin-the-brave.github.io/blog/posts/><strong>&mdash; All Posts &mdash;</strong></a></p>
+</em></p>
+</header>
+<nav>
+<ul>
+</ul>
+</nav>
+<main>
+<article>
+<h1>There's No Such Thing as an Error in Rust</h1>
+<aside>
+<ul>
+<li>
+<time class=post-date datetime=2026-01-08T20:08:21Z>Jan 8, 2026</time>
+</li>
+<li>
+<em>
+<a href=https://tarquin-the-brave.github.io/blog/tags/rust>#rust</a>
+</em>
+</li>
+<li>7 minutes read</li>
+</ul>
+</aside>
+<div class=featured_image>
+<a href=https://tarquin-the-brave.github.io/blog/posts/no_errors_in_rust/ title="There's No Such Thing as an Error in Rust">
+<img src>
+</a>
+</div>
+<p>Colleagues have heard me say this. Usually when we&rsquo;re debugging something, or
+discussing error handling approaches, I&rsquo;ll pipe up with:</p>
+<blockquote>
+<p>&ldquo;Well, there&rsquo;s no such thing as an error in Rust.&rdquo;</p>
+</blockquote>
+<p>It tends to get a raised eyebrow or two. So I&rsquo;ll explain.</p>
+<hr>
+<h2 id=how-rust-handles-errors>How Rust Handles Errors</h2>
+<p>If you&rsquo;re not familiar with Rust, here&rsquo;s the quick version: Rust doesn&rsquo;t have
+exceptions. Instead, operations that can fail return a <code>Result</code> type.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>enum</span> Result<span style=color:#f92672>&lt;</span>T, E<span style=color:#f92672>&gt;</span> {
+    Ok(T),
+    Err(E),
+}
+</code></pre></div><p>When you call a function that might fail, you get back either <code>Ok</code> containing
+your value, or <code>Err</code> containing some error information. You then have to
+handle both cases.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>read_config</span>() -&gt; Result<span style=color:#f92672>&lt;</span>Config, ConfigError<span style=color:#f92672>&gt;</span> {
+    <span style=color:#75715e>// ...
+</span><span style=color:#75715e></span>}
+
+<span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>match</span> read_config() {
+        Ok(config) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Got config: {:?}&#34;</span>, config),
+        Err(e) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Failed to read config: {:?}&#34;</span>, e),
+    }
+}
+</code></pre></div><p>The <code>Result</code> type is what&rsquo;s called an &ldquo;algebraic data type&rdquo;. It&rsquo;s a type
+that can be one of several variants, each potentially carrying different data.</p>
+<p>While I&rsquo;m here, I take issue with Rust calling these &ldquo;enums&rdquo;. They&rsquo;re not
+enums in the traditional sense. In most languages, an enum is just a set of
+named constants: <code>enum Colour { Red, Green, Blue }</code>. What Rust has are &ldquo;sum
+types&rdquo; - each variant can hold different data. Haskell gets this right by
+calling them &ldquo;data types&rdquo;. But I digress.</p>
+<hr>
+<h2 id=errors-are-just-data>Errors Are Just Data</h2>
+<p>To Rust, there&rsquo;s nothing special about that <code>Err</code> variant.
+It&rsquo;s just data. The compiler doesn&rsquo;t treat it differently. There&rsquo;s no hidden
+machinery. It&rsquo;s the same as any other value you might pass around your
+program.</p>
+<p>Contrast this with Python. When the code encounters data it doens&rsquo;t expect or
+know how to handle an exception is raised, and then the code execution and data
+flow disappears from the page and is maybe picked up somewhere else in the
+codebase, up the call stack, if that type of exception is <code>except</code>&rsquo;d'. It&rsquo;s
+like the data gets thrown into this hidden subway running underneath the code.<br>
+There&rsquo;s nothing explicit in the code that might raise the exception whether it
+would, or what it might raise.</p>
+<p>And when you&rsquo;re writing code, you might forget to catch the right exception.
+Or any exception at all. By default, exceptions propagate silently up the
+call stack until they hit something that catches them - or they don&rsquo;t, and
+your program crashes. You&rsquo;re not being made to handle error data, you have to
+opt into doing it.</p>
+<p>In Rust, everything is explicit. The function signature tells you it returns
+a <code>Result</code>. You have to acknowledge the possibility of failure to get at the
+success value. You&rsquo;re exposed to the full complexity of what you&rsquo;re doing,
+always. Even when you don&rsquo;t really care about the details and it&rsquo;s
+excruciatingly painful to do so&mldr;</p>
+<hr>
+<h2 id=result-is-just-a-convention>Result Is Just a Convention</h2>
+<p>The <code>Result</code> type is arbitrary. It&rsquo;s just
+a convention that the standard library and ecosystem have agreed upon. Other
+than the <code>?</code> operator (which I&rsquo;ll get to), there&rsquo;s nothing special about it.</p>
+<p>You could define your own:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Either</span><span style=color:#f92672>&lt;</span>L, R<span style=color:#f92672>&gt;</span> {
+    Left(L),
+    Right(R),
+}
+</code></pre></div><p>And decide that <code>Left</code> is where you put your error information. The compiler
+wouldn&rsquo;t care. Your code would work just fine. You&rsquo;d lose the <code>?</code> operator
+and interop with the standard library, but structurally there&rsquo;s nothing
+magical about <code>Result</code>.</p>
+<p>The <code>?</code> operator is syntactic sugar that makes working with <code>Result</code> more
+ergonomic:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>do_stuff</span>() -&gt; Result<span style=color:#f92672>&lt;</span>Value, Error<span style=color:#f92672>&gt;</span> {
+    <span style=color:#66d9ef>let</span> config <span style=color:#f92672>=</span> read_config()<span style=color:#f92672>?</span>;  <span style=color:#75715e>// Returns early if Err
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> data <span style=color:#f92672>=</span> fetch_data(<span style=color:#f92672>&amp;</span>config)<span style=color:#f92672>?</span>;
+    Ok(process(data))
+}
+</code></pre></div><p>But even <code>?</code> is just desugaring to a match expression. It&rsquo;s not some deep
+language primitive for error handling. Rust doesn&rsquo;t have a concept of
+&ldquo;errors&rdquo; built in. It has sum types, and one of them is conventionally used
+for representing fallible operations.</p>
+<hr>
+<h2 id=errors-are-just-data-1>Errors Are Just Data</h2>
+<p>I keep coming back to this phrase: &ldquo;errors are just data&rdquo;. And here&rsquo;s the
+philosophical bit.</p>
+<p>It&rsquo;s not just in Rust that errors are just data. To computers, <em>errors are
+just data</em>. Always have been. The whole concept of an &ldquo;error&rdquo; is a human one
+that we&rsquo;ve imposed over patterns of bits. The computer just sees ones and
+zeros. It doesn&rsquo;t know that this particular combination means &ldquo;file not
+found&rdquo; and should make the human sad. We decided that&mldr;</p>
+<p>The difference is that Rust surfaces this reality to us, while other languages
+try to hide it behind special mechanisms.</p>
+<hr>
+<h2 id=spare-a-thought-for-your-error-data>Spare a Thought for Your Error Data</h2>
+<p>Given that our errors are data, and Rust makes us handle that data explicitly,
+perhaps we should care about it - really care about it - and put just as much
+thought and attention into how error information flows through our system as
+we do for the happy path data.</p>
+<p>Look after your error data&mldr; it&rsquo;ll look after you.</p>
+<hr>
+<details>
+<summary><i>A note on how this post was written</i></summary>
+<p><em>Disclaimer: I hadn&rsquo;t posted in this blog for many years mostly because I didn&rsquo;t
+get round to it. I had ideas for blog posts, but didn&rsquo;t find the time to write
+them out. For a while I also was doing technical blogging on the website
+for the company I worked for, so got my &ldquo;technical writing fix&rdquo; from that. Despite
+that, I&rsquo;ve had years at a time where I didn&rsquo;t write any technical blog, which
+I regret, as I think it is good for the mind and good for the soul. To kickstart
+me getting some of my thoughts down on paper again, I&rsquo;m experimenting with using
+Claude code to assist me. I&rsquo;ve tried developing a &ldquo;skill&rdquo; by getting it to process
+all my previous blog and all my writings in Slack to try to capture my &ldquo;voice&rdquo;.
+I&rsquo;m giving it a stream of conciousness notes and asking it to write that into prose
+in my voice. So these posts are &ldquo;written by AI&rdquo;, but only with ideas I&rsquo;ve told it
+to write, and hopefully in my voice.</em></p>
+<p><strong>Raw notes this post was derived from:</strong></p>
+<pre tabindex=0><code># &quot;There's No Such Things as an Error in Rust&quot;
+
+colleagues have heard me say this so I'll explain.
+
+start with a brief explainer on how errors are handled in rust, summarising
+that they are done so through an algebraic data type.
+
+Go off on a tagent about how rust calls them &quot;enums&quot; when they are not
+actually enums but instead &quot;sum types&quot;.
+
+point out that to rust the &quot;error&quot; is &quot;just data&quot;.
+
+contrast to languages like java and python that have &quot;execptions&quot; that need
+to be caught.  Describe this as a hidden subsystem / subway of information
+flow that you can't see on the page in front of you when you read the code.
+
+whereas in rust everything is explicit, things aren't hidden from you.  you
+are exposed to the full complexity of what you're doing, always... even when
+that really hurts...
+
+revisit the point that in rust your error is &quot;just data&quot;, and expand to point
+out how the `Result` enum is arbitrary and &quot;just a convention&quot;.  Other than
+the `?` operator there's nothing special about it.  you could define your own
+
+enum Either&lt;L, R&gt; {
+    Left(L),
+    Right(R),
+}
+
+and choose a convention that &quot;left&quot; is where you put your error information.
+
+ultimately error data is almost a first class citizen.
+
+the point I'm trying to make with &quot;in rust errors are just data&quot; is that it's
+not just in rust... to computers &quot;errors are just data&quot;... &quot;errors are just data&quot;.
+The whole concept of an error is a human one that we've imposed over data, the
+computer just sees 1s and 0s.
+
+(as a final remark) given that our errors are data, and rust surfaces that to
+us and makes us handle it and its flow through our application, perhaps we should
+care about that data, and put just as much care an attention into how it flows
+through our system as the &quot;Ok&quot; variant data.  Look after your error data.
+</code></pre></details>
+</article>
+<section class=post-nav>
+<ul>
+<li>
+<a href=https://tarquin-the-brave.github.io/blog/posts/yes-please-clear-my-terminal/><i class="fa fa-chevron-circle-left"></i> yes, please clear my terminal</a>
+</li>
+<li>
+<a href=https://tarquin-the-brave.github.io/blog/posts/multi-repo-of-madness/>The Multi-Repo of Madness <i class="fa fa-chevron-circle-right"></i> </a>
+</li>
+</ul>
+</section>
+<section id=utterances></section>
+<script>if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){let a=document.createElement("script");a.setAttribute("repo","tarquin-the-brave/blog"),a.src="https://utteranc.es/client.js",a.setAttribute("issue-term","pathname"),document.getElementById("utterances").innerHTML="",document.getElementById("utterances").appendChild(a)}else{let a=document.createElement("script");a.setAttribute("repo","tarquin-the-brave/blog"),a.src="https://utteranc.es/client.js",a.setAttribute("issue-term","pathname"),document.getElementById("utterances").innerHTML="",document.getElementById("utterances").appendChild(a)}</script>
+</main>
+<footer>
+<h6>Copyright © 2020 - Tom Steavenson |
+Rendered by <a href=https://gohugo.io title=Hugo>Hugo</a> |
+<a href=https://tarquin-the-brave.github.io/blog/index.xml>Subscribe </a></h6>
+</footer>
+</div>
+<script src=https://tarquin-the-brave.github.io/blog/js/scripts.js></script>
+</body>
+</html>

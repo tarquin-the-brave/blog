@@ -1,0 +1,55 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart TB
+    subgraph libs["Rust Libraries"]
+        lib1["library1"]
+        lib2["library2"]
+        lib3["library3"]
+    end
+
+    subgraph services["Microservices"]
+        svc1["service1"]
+        svc2["service2"]
+        svc3["service3"]
+        svc4["service4"]
+        svc5["service5"]
+    end
+
+    subgraph infra["Infrastructure Services"]
+        infra1["infra1"]
+        infra2["infra2"]
+    end
+
+    subgraph vms["VM Images"]
+        basevm["base-vm-image"]
+        groupvm["product-group-vm-image"]
+        productvm["product-vm"]
+    end
+
+    %% Libraries flow into services
+    lib1 --> svc1
+    lib3 --> svc1
+    lib2 --> svc2
+    lib1 --> svc2
+    lib3 --> svc3
+    lib2 --> svc3
+    lib1 --> svc4
+    lib2 --> svc5
+
+    %% Services flow into product VM
+    svc1 --> productvm
+    svc2 --> productvm
+    svc3 --> productvm
+
+    %% Service4 flows into base VM
+    svc4 --> basevm
+
+    %% Service5 flows into group VM
+    svc5 --> groupvm
+
+    %% Base VM flows into group VM flows into product VM
+    basevm --> groupvm
+    groupvm --> productvm
+
+    %% Infrastructure flows into base VM
+    infra1 --> basevm
+    infra2 --> basevm

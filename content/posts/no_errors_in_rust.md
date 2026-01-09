@@ -48,11 +48,8 @@ fn main() {
 The `Result` type is what's called an "algebraic data type".  It's a type
 that can be one of several variants, each potentially carrying different data.
 
-While I'm here, I take issue with Rust calling these "enums".  They're not
-enums in the traditional sense.  In most languages, an enum is just a set of
-named constants: `enum Colour { Red, Green, Blue }`.  What Rust has are "sum
-types" - each variant can hold different data.  Haskell gets this right by
-calling them "data types".  But I digress.
+Rust calls these `enum`s which is a bit annoying as they're not "enums", they're
+sum types that contain data.  But I guess it's too late for that to change...
 
 ---
 

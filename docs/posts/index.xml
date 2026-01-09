@@ -426,11 +426,8 @@ Err(e) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> println!(&lt;span styl
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>Result&lt;/code> type is what&amp;rsquo;s called an &amp;ldquo;algebraic data type&amp;rdquo;. It&amp;rsquo;s a type
 that can be one of several variants, each potentially carrying different data.&lt;/p>
-&lt;p>While I&amp;rsquo;m here, I take issue with Rust calling these &amp;ldquo;enums&amp;rdquo;. They&amp;rsquo;re not
-enums in the traditional sense. In most languages, an enum is just a set of
-named constants: &lt;code>enum Colour { Red, Green, Blue }&lt;/code>. What Rust has are &amp;ldquo;sum
-types&amp;rdquo; - each variant can hold different data. Haskell gets this right by
-calling them &amp;ldquo;data types&amp;rdquo;. But I digress.&lt;/p>
+&lt;p>Rust calls these &lt;code>enum&lt;/code>s which is a bit annoying as they&amp;rsquo;re not &amp;ldquo;enums&amp;rdquo;, they&amp;rsquo;re
+sum types that contain data. But I guess it&amp;rsquo;s too late for that to change&amp;hellip;&lt;/p>
 &lt;hr>
 &lt;h2 id="errors-are-just-data">Errors Are Just Data&lt;/h2>
 &lt;p>To Rust, there&amp;rsquo;s nothing special about that &lt;code>Err&lt;/code> variant.

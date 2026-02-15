@@ -1,4 +1,631 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>devops on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/tags/devops/</link><description>Recent content in devops on tarquin-the-brave</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Thu, 08 Jan 2026 20:41:06 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>An Underrated Engineering Skill</title><link>https://tarquin-the-brave.github.io/blog/posts/an_underrated_engineering_skill/</link><pubDate>Fri, 09 Jan 2026 12:06:50 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/an_underrated_engineering_skill/</guid><description>&lt;p>Spoilers:&lt;/p>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>devops on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/tags/devops/</link><description>Recent content in devops on tarquin-the-brave</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Thu, 08 Jan 2026 20:41:06 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Learning From Your Claude History</title><link>https://tarquin-the-brave.github.io/blog/posts/learning-from-claude-history/</link><pubDate>Sun, 15 Feb 2026 16:19:40 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/learning-from-claude-history/</guid><description>&lt;p>I read this article from Anthropic: &lt;a href="https://www.anthropic.com/research/AI-assistance-coding-skills">&amp;ldquo;How AI assistance impacts the formation
+of coding skills&amp;rdquo;&lt;/a>.
+It got me a bit concerned. Are we heading towards a crisis of understanding?&lt;/p>
+&lt;p>But then I thought about conversations I&amp;rsquo;ve had with colleagues recently. Especially
+around &amp;ldquo;is this the end for Junior Engineers?&amp;rdquo;. I don&amp;rsquo;t think it is. Mostly because
+I don&amp;rsquo;t think the arrival of AI assistance, Agents, into our engineering toolkit has
+represented any &lt;em>fundamental&lt;/em> change, but instead a large leap forward in a direction
+we were already heading.&lt;/p>
+&lt;hr>
+&lt;p>Since the dawn of computers, we engineers have steadily climbed the level of abstraction
+that we work at day to day. Over time the opportunity to work at higher levels of
+abstraction has presented itself, and generally made programming computers more accessible
+to the uninitiated and more productive for those who already can. Think of the progression
+of: Assembly, C, garbage-collected languages, languages that don&amp;rsquo;t need compiling and linking,
+finishing this chain at something like Python - a very accessible high level language in
+which you can achieve things quickly.&lt;/p>
+&lt;p>Say you&amp;rsquo;ve got a team of some &amp;ldquo;Python engineers&amp;rdquo; - your product&amp;rsquo;s mostly in Python, your
+engineers mostly work in Python. Who&amp;rsquo;s the most valuable engineer on that team? It&amp;rsquo;s the
+engineer you call upon when things get difficult: there&amp;rsquo;s an issue with memory growth, the
+service is not fast enough, there&amp;rsquo;s a bug in asynchronous code that stops showing up
+when you try to debug it. And how are they able to tackle those difficult problems? By having
+an understanding of what&amp;rsquo;s happening below the level of abstraction that they work at most of
+the time.&lt;/p>
+&lt;p>The rise of coding agents that we&amp;rsquo;re seeing right now, I see as a continuation of this trend.
+Over the last few weeks I&amp;rsquo;ve been progressively trying to use AI tooling more. And I&amp;rsquo;ve been asked
+&amp;ldquo;how does it feel to not be writing code?&amp;rdquo;. But I feel like I am still writing code. Sure, I&amp;rsquo;m
+not typing out every character of it. But I wasn&amp;rsquo;t doing that before. For nearly the last decade,
+I and most other engineers from what I can gather, have been using LSP-powered auto-complete. To
+the extent that without it I struggle to one-shot typing valid syntax - embarrassingly so. So
+one could argue that we&amp;rsquo;ve already been working &amp;ldquo;abstracted away from syntax&amp;rdquo;, to a certain extent,
+before AI and Agents came along. But there certainly is a further level of abstraction that
+AI and Agents take you to working at, one that&amp;rsquo;s a big jump of abstraction compared to what we
+were working at before.&lt;/p>
+&lt;p>We&amp;rsquo;ve moved the level of abstraction which we work with to one of natural language.&lt;/p>
+&lt;p>And the opportunity for producing and delivering stuff that I don&amp;rsquo;t really understand is
+a lot higher.&lt;/p>
+&lt;hr>
+&lt;p>There&amp;rsquo;s a lot of predictions of the future that I hear and read going around. A lot of them are
+around who&amp;rsquo;s going to be put out of a job in X months, and who&amp;rsquo;s going to be the most valuable
+engineers to an organisation. I see a theme of arguments that revolve around proficiency with using
+AI tooling being the key factor.&lt;/p>
+&lt;p>And I can see where that is coming from. I&amp;rsquo;m pretty new to all this stuff, but I can see that you
+don&amp;rsquo;t immediately get great results using it out of the box without some effort learning how it
+needs to be tuned and orchestrated. Just opening up Claude Code and asking it to do your work for
+you doesn&amp;rsquo;t get you very far.&lt;/p>
+&lt;p>But I think the incentives are sufficient for that not to be the case for very long. If one
+companies Agent requires an endless list of heuristics and tricks, with layers of &amp;ldquo;scaffolding&amp;rdquo;
+written in markdown and even whole applications to orchestrate it and coerce good results out of it,
+where alternatively another company&amp;rsquo;s Agent gives you pretty good results out of the box - I think
+it&amp;rsquo;s clear where you&amp;rsquo;re going to spend your money. And we&amp;rsquo;re already seeing this happen. In the
+very short period of time that I&amp;rsquo;ve been using Claude Code, the direct / native experience of using
+it has greatly improved. I&amp;rsquo;ve found myself getting rid of some of the layers I had tried using
+over the top. E.g: with recent improvements to &amp;ldquo;plan mode&amp;rdquo; I found myself uninstalling the &amp;ldquo;GSD&amp;rdquo;
+framework.&lt;/p>
+&lt;p>What I mean by this is that I don&amp;rsquo;t think the current apparent gap in productivity between those who
+are well versed in all the AI tooling and those who are new to using it is going to be as big in the
+near future, as getting good results out of the tooling is going to get easier.&lt;/p>
+&lt;hr>
+&lt;p>So coming back to the point here: why was I a bit worried by
+&lt;a href="https://www.anthropic.com/research/AI-assistance-coding-skills">Anthropic&amp;rsquo;s article&lt;/a>, then why did I
+decide that I actually wasn&amp;rsquo;t that worried?&lt;/p>
+&lt;p>How we&amp;rsquo;re working as engineers is changing in a big way. I don&amp;rsquo;t think it&amp;rsquo;s changing in a &lt;em>fundamental&lt;/em>
+way, as this is the same pattern that has happened before: &amp;ldquo;we&amp;rsquo;re moving to work at a higher level of
+abstraction&amp;rdquo;, and what makes an engineer highly skilled and valuable is also staying the same: &amp;ldquo;how do
+things work underneath the level of abstraction that you interact with them at?&amp;rdquo;.&lt;/p>
+&lt;p>But this is quite a large change, and us engineers need to be deliberate in our approach. I think
+we need to be more conscious and intentional about learning how things actually work. As we&amp;rsquo;re abstracting
+ourselves further from it the opportunity to learn it &amp;ldquo;by osmosis&amp;rdquo; is diminishing. I don&amp;rsquo;t think that
+it&amp;rsquo;s game over for Junior Engineers, but compared with my generation I think they need to take a different
+path to gaining expertise. Now that we can build stuff while working at a level so far abstracted from
+&amp;ldquo;how things work&amp;rdquo;, a more deliberate approach to learning is called for - it&amp;rsquo;s less &amp;ldquo;on the job&amp;rdquo; than it
+was before.&lt;/p>
+&lt;p>In these past few weeks, with the assistance of Claude Code I&amp;rsquo;ve been able to independently push deeper
+into very unfamiliar territories. I&amp;rsquo;ve written frontend code for the first time, and done some stuff
+with databases that was far beyond my previous understanding of them. But after getting something
+working I&amp;rsquo;ll admit I didn&amp;rsquo;t really understand how they worked.&lt;/p>
+&lt;p>I came across the &lt;code>/insights&lt;/code> command in Claude Code. It essentially opens up an HTML formatted report
+in your browser of all the recent activity you&amp;rsquo;ve had and recommendations for how you could improve
+your usage. This made me realise that there is the wealth of information sitting there in Claude -
+all the things you&amp;rsquo;ve built with it, conversations you&amp;rsquo;ve had etc.&lt;/p>
+&lt;p>Where I&amp;rsquo;ve been concerned that using AI is &amp;ldquo;taking the learning away&amp;rdquo;, the AI has the information on
+all the technical areas you&amp;rsquo;ve worked on which can be used to help you learn.&lt;/p>
+&lt;p>I had a quick look around on the interwebs for &amp;ldquo;is there something that can pull technical learnings
+out of Claude chat history?&amp;rdquo;. From that quick cursory search I couldn&amp;rsquo;t find anything that I could
+just grab and use.&lt;/p>
+&lt;p>So I worked with Claude to develop this Skill for exactly that: look at recent conversations and
+either write a summary of the technical areas or start an interactive conversation with the user to
+dive into specific topics. This took some iterations to get right, it didn&amp;rsquo;t work that well to begin
+with, but eventually I got something I was happy with. I made it infer the level of expertise I had
+on a topic based on the questions I was asking in the conversations.&lt;/p>
+&lt;p>This &lt;code>/learn&lt;/code> command will let you choose how far back in time you want to take conversations from
+and whether you drop into an interactive discussion or just get a summary written to file.&lt;/p>
+&lt;p>I had quite a good conversation with it on Friday and felt it helped give me a bit more of an
+understanding of the things I had built in the past few weeks.&lt;/p>
+&lt;hr>
+&lt;p>If you use Claude Code, and want to give this a try, place the following two files into:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>~/.claude/skills/learn/SKILL.md&lt;/code>&lt;/li>
+&lt;li>&lt;code>~/.claude/skills/learn/scripts/extract-sessions.py&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">---
+name: learn
+description: &amp;gt;
+Generate a personalised learning document from recent
+Claude Code sessions, or interactively explore topics
+covered in past work.
+disable-model-invocation: true
+argument-hint: &amp;#34;[summary|explore] [days|topic]&amp;#34;
+---
+# /learn Skill
+You are generating educational content from the user&amp;#39;s
+recent Claude Code sessions. The extraction script has
+already been run and its output is included below.
+&lt;span style="color:#75715e">## Session Data
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+!`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 7`
+&lt;span style="color:#75715e">## Determine Mode from Arguments
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+The user invoked &lt;span style="color:#e6db74">`/learn`&lt;/span> with these arguments: $ARGUMENTS
+Parse them as follows:
+&lt;span style="color:#66d9ef">-&lt;/span> **No arguments** → ask the user which mode they want
+(summary or explore) and how many days back to look
+(suggest 7, 14, or 30). Then follow the corresponding
+mode instructions below. If the user picks a different
+timeframe than 7 days, re-run the extraction script
+with the chosen value by executing:
+&lt;span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`&lt;/span>
+and use that output instead.
+&lt;span style="color:#66d9ef">-&lt;/span> **`summary`** → Summary Mode, default 7 days
+&lt;span style="color:#66d9ef">-&lt;/span> **`summary N`** (where N is a number) → Summary Mode,
+N days. Re-run the extraction script:
+&lt;span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`&lt;/span>
+&lt;span style="color:#66d9ef">-&lt;/span> **`explore`** → Explore Mode, no topic filter
+&lt;span style="color:#66d9ef">-&lt;/span> **`explore TOPIC`** → Explore Mode, filtered to TOPIC.
+Re-run the extraction script:
+&lt;span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 30 --topic TOPIC`&lt;/span>
+&lt;span style="color:#75715e">## Knowledge-Level Inference
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+Before generating any content, analyse the user&amp;#39;s messages
+in the session data to infer their knowledge level for each
+technology or concept area. Use these signals:
+&lt;span style="font-weight:bold">**Expert signals:**&lt;/span>
+&lt;span style="color:#66d9ef">-&lt;/span> Precise implementation directives (&amp;#34;use a B-tree index&amp;#34;,
+&amp;#34;implement with zero-copy deserialization&amp;#34;)
+&lt;span style="color:#66d9ef">-&lt;/span> Correct, specific terminology
+&lt;span style="color:#66d9ef">-&lt;/span> Architectural opinions and trade-off reasoning
+&lt;span style="color:#66d9ef">-&lt;/span> Telling Claude exactly what to do, not asking how
+&lt;span style="font-weight:bold">**Intermediate signals:**&lt;/span>
+&lt;span style="color:#66d9ef">-&lt;/span> States technical requirements but delegates
+implementation details to Claude
+&lt;span style="color:#66d9ef">-&lt;/span> Asks specific, targeted questions
+&lt;span style="color:#66d9ef">-&lt;/span> Uses correct terminology but seeks confirmation
+&lt;span style="font-weight:bold">**Beginner signals:**&lt;/span>
+&lt;span style="color:#66d9ef">-&lt;/span> Vague or high-level requests (&amp;#34;make it faster&amp;#34;,
+&amp;#34;add a database&amp;#34;)
+&lt;span style="color:#66d9ef">-&lt;/span> Describes desired outcome without technical detail
+&lt;span style="color:#66d9ef">-&lt;/span> Asks &amp;#34;what is X&amp;#34; or &amp;#34;how does X work&amp;#34; style questions
+&lt;span style="color:#66d9ef">-&lt;/span> Defers entirely to Claude&amp;#39;s suggestions
+Calibrate your explanations to the inferred level. Do
+not over-explain things the user clearly already knows.
+Do not under-explain things where they showed uncertainty.
+&lt;span style="color:#75715e">## Summary Mode
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+Generate a structured learning document. Follow these
+steps:
+&lt;span style="color:#66d9ef">1.&lt;/span> Enumerate &lt;span style="font-weight:bold">**every**&lt;/span> distinct technology, library,
+pattern, and concept area from the session data.
+Include all of them — do not filter, rank, or pick
+a &amp;#34;top N&amp;#34;. If the user touched it in a session,
+it gets a section. Group closely related work into
+one topic (e.g. two sessions on the same NATS
+pattern = one topic), but do not merge unrelated
+areas just to reduce the count.
+&lt;span style="color:#66d9ef">2.&lt;/span> For each concept area, infer the user&amp;#39;s knowledge
+level.
+&lt;span style="color:#66d9ef">3.&lt;/span> Generate a document organised &lt;span style="font-weight:bold">**by topic**&lt;/span> (not
+chronologically) with the following structure for
+each:
+&lt;span style="color:#66d9ef">-&lt;/span> **What was built/done** — brief summary referencing
+the specific session work
+&lt;span style="color:#66d9ef">-&lt;/span> **Key concepts** — explained at the inferred
+knowledge level
+&lt;span style="color:#66d9ef">-&lt;/span> **Patterns and gotchas** — practical lessons from
+the sessions
+&lt;span style="color:#66d9ef">-&lt;/span> **Connections** — how this topic relates to other
+topics covered
+&lt;span style="color:#66d9ef">-&lt;/span> **Go deeper** — pointers for further learning
+(documentation links, concepts to explore next)
+&lt;span style="color:#66d9ef">4.&lt;/span> Print a concise summary in the conversation showing
+the topics covered and a one-liner for each.
+&lt;span style="color:#66d9ef">5.&lt;/span> Save the full document to a file. Use &lt;span style="color:#e6db74">`mkdir -p`&lt;/span>
+to create &lt;span style="color:#e6db74">`~/learning/`&lt;/span> if it does not exist, then
+write the document to:
+&lt;span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary.md`&lt;/span>
+where the date is today&amp;#39;s date. If that file already
+exists, append a sequence number:
+&lt;span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary-2.md`&lt;/span>,
+&lt;span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary-3.md`&lt;/span>, etc.
+Keep the document practical and grounded in the user&amp;#39;s
+actual work — not generic textbook material.
+&lt;span style="color:#75715e">## Explore Mode
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+Enter an interactive topic exploration loop:
+&lt;span style="color:#66d9ef">1.&lt;/span> From the session data, identify distinct
+technology/concept areas.
+&lt;span style="color:#66d9ef">2.&lt;/span> Present a &lt;span style="font-weight:bold">**numbered list**&lt;/span> of topics with a one-line
+description of what was done in each.
+&lt;span style="color:#66d9ef">3.&lt;/span> If a topic was provided in the arguments, skip the
+list and jump straight to step 4 for that topic.
+&lt;span style="color:#66d9ef">4.&lt;/span> When the user picks a topic (by number or name):
+&lt;span style="color:#66d9ef">-&lt;/span> Give a calibrated explanation of the core concepts,
+referencing specific things from their sessions
+&lt;span style="color:#66d9ef">-&lt;/span> Highlight what they did well and areas that could
+be explored further
+&lt;span style="color:#66d9ef">-&lt;/span> Invite follow-up questions
+&lt;span style="color:#66d9ef">5.&lt;/span> Continue the Q&lt;span style="color:#960050;background-color:#1e0010">&amp;amp;&lt;/span>A naturally. The user can ask about
+the current topic, switch topics, or end the session.
+&lt;span style="color:#75715e">## Style Guidelines
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+&lt;span style="color:#66d9ef">-&lt;/span> Use the Oxford comma, and put a double space after
+full stops.
+&lt;span style="color:#66d9ef">-&lt;/span> Keep markdown line length to 80 characters or less
+(except code blocks).
+&lt;span style="color:#66d9ef">-&lt;/span> Be direct and practical. Avoid filler phrases.
+&lt;span style="color:#66d9ef">-&lt;/span> Reference the user&amp;#39;s actual code and sessions, not
+generic examples.
+&lt;span style="color:#66d9ef">-&lt;/span> When the user is expert-level in a topic, focus on
+nuances, edge cases, and advanced patterns rather
+than basics.
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Extract recent Claude Code session data into compact markdown.
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74">Scans ~/.claude/projects/*/*.jsonl for session files modified within
+&lt;/span>&lt;span style="color:#e6db74">the last N days, parses user/assistant exchanges, and outputs
+&lt;/span>&lt;span style="color:#e6db74">structured markdown suitable for learning review.
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74">No external dependencies — stdlib only.
+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> argparse
+&lt;span style="color:#f92672">import&lt;/span> json
+&lt;span style="color:#f92672">import&lt;/span> sys
+&lt;span style="color:#f92672">from&lt;/span> datetime &lt;span style="color:#f92672">import&lt;/span> datetime, timedelta, timezone
+&lt;span style="color:#f92672">from&lt;/span> pathlib &lt;span style="color:#f92672">import&lt;/span> Path
+CLAUDE_DIR &lt;span style="color:#f92672">=&lt;/span> Path&lt;span style="color:#f92672">.&lt;/span>home() &lt;span style="color:#f92672">/&lt;/span> &lt;span style="color:#e6db74">&amp;#34;.claude&amp;#34;&lt;/span>
+PROJECTS_DIR &lt;span style="color:#f92672">=&lt;/span> CLAUDE_DIR &lt;span style="color:#f92672">/&lt;/span> &lt;span style="color:#e6db74">&amp;#34;projects&amp;#34;&lt;/span>
+HISTORY_FILE &lt;span style="color:#f92672">=&lt;/span> CLAUDE_DIR &lt;span style="color:#f92672">/&lt;/span> &lt;span style="color:#e6db74">&amp;#34;history.jsonl&amp;#34;&lt;/span>
+MAX_USER_MSG &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1000&lt;/span>
+MAX_ASSISTANT_MSG &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">500&lt;/span>
+MAX_EXCHANGES_PER_SESSION &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span>
+MAX_SESSIONS_PER_PROJECT &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">15&lt;/span>
+MAX_OUTPUT_BYTES &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">50_000&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">parse_args&lt;/span>():
+parser &lt;span style="color:#f92672">=&lt;/span> argparse&lt;span style="color:#f92672">.&lt;/span>ArgumentParser(
+description&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Extract recent Claude Code sessions as markdown&amp;#34;&lt;/span>
+)
+parser&lt;span style="color:#f92672">.&lt;/span>add_argument(
+&lt;span style="color:#e6db74">&amp;#34;--days&amp;#34;&lt;/span>,
+type&lt;span style="color:#f92672">=&lt;/span>int,
+default&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">7&lt;/span>,
+help&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;How far back to look (default: 7)&amp;#34;&lt;/span>,
+)
+parser&lt;span style="color:#f92672">.&lt;/span>add_argument(
+&lt;span style="color:#e6db74">&amp;#34;--topic&amp;#34;&lt;/span>,
+type&lt;span style="color:#f92672">=&lt;/span>str,
+default&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">None&lt;/span>,
+help&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Filter sessions to those mentioning this keyword&amp;#34;&lt;/span>,
+)
+&lt;span style="color:#66d9ef">return&lt;/span> parser&lt;span style="color:#f92672">.&lt;/span>parse_args()
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">load_history_summaries&lt;/span>():
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Load session summaries from history.jsonl keyed by sessionId.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+summaries &lt;span style="color:#f92672">=&lt;/span> {}
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> HISTORY_FILE&lt;span style="color:#f92672">.&lt;/span>exists():
+&lt;span style="color:#66d9ef">return&lt;/span> summaries
+&lt;span style="color:#66d9ef">with&lt;/span> open(HISTORY_FILE, &lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> f:
+line &lt;span style="color:#f92672">=&lt;/span> line&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> line:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">try&lt;/span>:
+entry &lt;span style="color:#f92672">=&lt;/span> json&lt;span style="color:#f92672">.&lt;/span>loads(line)
+&lt;span style="color:#66d9ef">except&lt;/span> json&lt;span style="color:#f92672">.&lt;/span>JSONDecodeError:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+sid &lt;span style="color:#f92672">=&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;sessionId&amp;#34;&lt;/span>)
+display &lt;span style="color:#f92672">=&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;display&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> sid &lt;span style="color:#f92672">and&lt;/span> display:
+summaries[sid] &lt;span style="color:#f92672">=&lt;/span> display
+&lt;span style="color:#66d9ef">return&lt;/span> summaries
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">find_session_files&lt;/span>(cutoff):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Find .jsonl session files modified after cutoff datetime.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> PROJECTS_DIR&lt;span style="color:#f92672">.&lt;/span>exists():
+&lt;span style="color:#66d9ef">return&lt;/span> []
+files &lt;span style="color:#f92672">=&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> jsonl &lt;span style="color:#f92672">in&lt;/span> PROJECTS_DIR&lt;span style="color:#f92672">.&lt;/span>glob(&lt;span style="color:#e6db74">&amp;#34;*/*.jsonl&amp;#34;&lt;/span>):
+&lt;span style="color:#66d9ef">try&lt;/span>:
+mtime &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>fromtimestamp(
+jsonl&lt;span style="color:#f92672">.&lt;/span>stat()&lt;span style="color:#f92672">.&lt;/span>st_mtime, tz&lt;span style="color:#f92672">=&lt;/span>timezone&lt;span style="color:#f92672">.&lt;/span>utc
+)
+&lt;span style="color:#66d9ef">except&lt;/span> &lt;span style="color:#a6e22e">OSError&lt;/span>:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> mtime &lt;span style="color:#f92672">&amp;gt;=&lt;/span> cutoff:
+files&lt;span style="color:#f92672">.&lt;/span>append(jsonl)
+&lt;span style="color:#66d9ef">return&lt;/span> files
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">extract_text_from_content&lt;/span>(content):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Pull plain text from a message content field.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(content, str):
+&lt;span style="color:#66d9ef">return&lt;/span> content
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(content, list):
+parts &lt;span style="color:#f92672">=&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> block &lt;span style="color:#f92672">in&lt;/span> content:
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(block, str):
+parts&lt;span style="color:#f92672">.&lt;/span>append(block)
+&lt;span style="color:#66d9ef">elif&lt;/span> isinstance(block, dict) &lt;span style="color:#f92672">and&lt;/span> block&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;type&amp;#34;&lt;/span>) &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>:
+parts&lt;span style="color:#f92672">.&lt;/span>append(block&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>))
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(parts)
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">has_tool_use&lt;/span>(content):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Check if content contains a tool_use block.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(content, list):
+&lt;span style="color:#66d9ef">for&lt;/span> block &lt;span style="color:#f92672">in&lt;/span> content:
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(block, dict) &lt;span style="color:#f92672">and&lt;/span> block&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;type&amp;#34;&lt;/span>) &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;tool_use&amp;#34;&lt;/span>:
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">False&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">parse_session&lt;/span>(filepath):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Parse a session JSONL file into structured data.
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> Returns a dict with metadata and a list of exchanges, or None
+&lt;/span>&lt;span style="color:#e6db74"> if the file has no usable content.
+&lt;/span>&lt;span style="color:#e6db74"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+session_id &lt;span style="color:#f92672">=&lt;/span> filepath&lt;span style="color:#f92672">.&lt;/span>stem
+project_dir &lt;span style="color:#f92672">=&lt;/span> filepath&lt;span style="color:#f92672">.&lt;/span>parent&lt;span style="color:#f92672">.&lt;/span>name
+cwd &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
+git_branch &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
+timestamp &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
+exchanges &lt;span style="color:#f92672">=&lt;/span> []
+&lt;span style="color:#66d9ef">with&lt;/span> open(filepath, &lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> f:
+line &lt;span style="color:#f92672">=&lt;/span> line&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> line:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">try&lt;/span>:
+entry &lt;span style="color:#f92672">=&lt;/span> json&lt;span style="color:#f92672">.&lt;/span>loads(line)
+&lt;span style="color:#66d9ef">except&lt;/span> json&lt;span style="color:#f92672">.&lt;/span>JSONDecodeError:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#75715e"># Grab metadata from system entries&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;type&amp;#34;&lt;/span>) &lt;span style="color:#f92672">in&lt;/span> (&lt;span style="color:#e6db74">&amp;#34;system&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;user&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;assistant&amp;#34;&lt;/span>):
+&lt;span style="color:#66d9ef">if&lt;/span> cwd &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span> &lt;span style="color:#f92672">and&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;cwd&amp;#34;&lt;/span>):
+cwd &lt;span style="color:#f92672">=&lt;/span> entry[&lt;span style="color:#e6db74">&amp;#34;cwd&amp;#34;&lt;/span>]
+&lt;span style="color:#66d9ef">if&lt;/span> git_branch &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span> &lt;span style="color:#f92672">and&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;gitBranch&amp;#34;&lt;/span>):
+git_branch &lt;span style="color:#f92672">=&lt;/span> entry[&lt;span style="color:#e6db74">&amp;#34;gitBranch&amp;#34;&lt;/span>]
+&lt;span style="color:#66d9ef">if&lt;/span> timestamp &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span> &lt;span style="color:#f92672">and&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>):
+timestamp &lt;span style="color:#f92672">=&lt;/span> entry[&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>]
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#e6db74">&amp;#34;message&amp;#34;&lt;/span> &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> entry:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+msg &lt;span style="color:#f92672">=&lt;/span> entry[&lt;span style="color:#e6db74">&amp;#34;message&amp;#34;&lt;/span>]
+role &lt;span style="color:#f92672">=&lt;/span> msg&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;role&amp;#34;&lt;/span>)
+content &lt;span style="color:#f92672">=&lt;/span> msg&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;content&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> role &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;user&amp;#34;&lt;/span>:
+&lt;span style="color:#75715e"># Skip tool_result messages&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> isinstance(content, list):
+is_tool_result &lt;span style="color:#f92672">=&lt;/span> any(
+isinstance(b, dict) &lt;span style="color:#f92672">and&lt;/span> b&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;type&amp;#34;&lt;/span>) &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;tool_result&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> content
+)
+&lt;span style="color:#66d9ef">if&lt;/span> is_tool_result:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+text &lt;span style="color:#f92672">=&lt;/span> extract_text_from_content(content)
+text &lt;span style="color:#f92672">=&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#75715e"># Skip system/command messages&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#34;&amp;lt;local-command&amp;#34;&lt;/span>) &lt;span style="color:#f92672">or&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>startswith(
+&lt;span style="color:#e6db74">&amp;#34;&amp;lt;command-name&amp;#34;&lt;/span>
+):
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> text:
+exchanges&lt;span style="color:#f92672">.&lt;/span>append((&lt;span style="color:#e6db74">&amp;#34;user&amp;#34;&lt;/span>, text[:MAX_USER_MSG]))
+&lt;span style="color:#66d9ef">elif&lt;/span> role &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;assistant&amp;#34;&lt;/span>:
+&lt;span style="color:#75715e"># Skip messages that are only tool_use&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> has_tool_use(content):
+text &lt;span style="color:#f92672">=&lt;/span> extract_text_from_content(content)
+text &lt;span style="color:#f92672">=&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> text:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+text &lt;span style="color:#f92672">=&lt;/span> extract_text_from_content(content)
+text &lt;span style="color:#f92672">=&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">if&lt;/span> text:
+exchanges&lt;span style="color:#f92672">.&lt;/span>append(
+(&lt;span style="color:#e6db74">&amp;#34;assistant&amp;#34;&lt;/span>, text[:MAX_ASSISTANT_MSG])
+)
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> exchanges:
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> {
+&lt;span style="color:#e6db74">&amp;#34;session_id&amp;#34;&lt;/span>: session_id,
+&lt;span style="color:#e6db74">&amp;#34;project_dir&amp;#34;&lt;/span>: project_dir,
+&lt;span style="color:#e6db74">&amp;#34;cwd&amp;#34;&lt;/span>: cwd,
+&lt;span style="color:#e6db74">&amp;#34;git_branch&amp;#34;&lt;/span>: git_branch,
+&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>: timestamp,
+&lt;span style="color:#e6db74">&amp;#34;exchanges&amp;#34;&lt;/span>: exchanges,
+}
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">matches_topic&lt;/span>(session, topic):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Check if any exchange in the session mentions the topic.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+topic_lower &lt;span style="color:#f92672">=&lt;/span> topic&lt;span style="color:#f92672">.&lt;/span>lower()
+&lt;span style="color:#66d9ef">for&lt;/span> _, text &lt;span style="color:#f92672">in&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;exchanges&amp;#34;&lt;/span>]:
+&lt;span style="color:#66d9ef">if&lt;/span> topic_lower &lt;span style="color:#f92672">in&lt;/span> text&lt;span style="color:#f92672">.&lt;/span>lower():
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">False&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">project_label&lt;/span>(project_dir):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Convert a project dir name to a human-readable label.
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> e.g. &amp;#39;-home-tom-code-bonkbot-pum3&amp;#39; -&amp;gt; &amp;#39;bonkbot/pum3&amp;#39;
+&lt;/span>&lt;span style="color:#e6db74"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+parts &lt;span style="color:#f92672">=&lt;/span> project_dir&lt;span style="color:#f92672">.&lt;/span>strip(&lt;span style="color:#e6db74">&amp;#34;-&amp;#34;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#34;-&amp;#34;&lt;/span>)
+&lt;span style="color:#75715e"># Drop the home/user prefix&lt;/span>
+&lt;span style="color:#66d9ef">try&lt;/span>:
+home_idx &lt;span style="color:#f92672">=&lt;/span> parts&lt;span style="color:#f92672">.&lt;/span>index(&lt;span style="color:#e6db74">&amp;#34;home&amp;#34;&lt;/span>)
+&lt;span style="color:#75715e"># Skip home, username, and &amp;#39;code&amp;#39; if present&lt;/span>
+start &lt;span style="color:#f92672">=&lt;/span> home_idx &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> start &lt;span style="color:#f92672">&amp;lt;&lt;/span> len(parts) &lt;span style="color:#f92672">and&lt;/span> parts[start] &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;code&amp;#34;&lt;/span>:
+start &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+parts &lt;span style="color:#f92672">=&lt;/span> parts[start:]
+&lt;span style="color:#66d9ef">except&lt;/span> &lt;span style="color:#a6e22e">ValueError&lt;/span>:
+&lt;span style="color:#66d9ef">pass&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(parts) &lt;span style="color:#66d9ef">if&lt;/span> parts &lt;span style="color:#66d9ef">else&lt;/span> project_dir
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">format_date&lt;/span>(ts_str):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Extract a YYYY-MM-DD date from an ISO timestamp string.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> ts_str:
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;unknown date&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">try&lt;/span>:
+dt &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>fromisoformat(ts_str&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#34;Z&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;+00:00&amp;#34;&lt;/span>))
+&lt;span style="color:#66d9ef">return&lt;/span> dt&lt;span style="color:#f92672">.&lt;/span>strftime(&lt;span style="color:#e6db74">&amp;#34;%Y-%m-&lt;/span>&lt;span style="color:#e6db74">%d&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">except&lt;/span> (&lt;span style="color:#a6e22e">ValueError&lt;/span>, &lt;span style="color:#a6e22e">AttributeError&lt;/span>):
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;unknown date&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">sort_projects&lt;/span>(sessions_by_project):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Sort projects by most recent session timestamp, descending.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span>(item):
+_dir, sessions &lt;span style="color:#f92672">=&lt;/span> item
+&lt;span style="color:#66d9ef">return&lt;/span> sessions[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>) &lt;span style="color:#f92672">or&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> sorted(
+sessions_by_project&lt;span style="color:#f92672">.&lt;/span>items(), key&lt;span style="color:#f92672">=&lt;/span>key, reverse&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">True&lt;/span>
+)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">render_session_header&lt;/span>(session, history_summaries):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Render a compact session header (no exchanges).&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+date &lt;span style="color:#f92672">=&lt;/span> format_date(session[&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>])
+sid &lt;span style="color:#f92672">=&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;session_id&amp;#34;&lt;/span>]
+summary &lt;span style="color:#f92672">=&lt;/span> history_summaries&lt;span style="color:#f92672">.&lt;/span>get(sid, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+branch &lt;span style="color:#f92672">=&lt;/span> session&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;git_branch&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+first_user &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> role, text &lt;span style="color:#f92672">in&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;exchanges&amp;#34;&lt;/span>]:
+&lt;span style="color:#66d9ef">if&lt;/span> role &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;user&amp;#34;&lt;/span>:
+first_user &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34; &amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(text&lt;span style="color:#f92672">.&lt;/span>split())[:&lt;span style="color:#ae81ff">300&lt;/span>]
+&lt;span style="color:#66d9ef">break&lt;/span>
+lines &lt;span style="color:#f92672">=&lt;/span> []
+header &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;### Session: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>date&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> (&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>sid[:&lt;span style="color:#ae81ff">8&lt;/span>]&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">)&amp;#34;&lt;/span>
+lines&lt;span style="color:#f92672">.&lt;/span>append(header)
+&lt;span style="color:#66d9ef">if&lt;/span> summary:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Summary: &amp;#34;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>summary&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> branch:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Branch: `&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>branch&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">`&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> first_user:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;**User:** &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>first_user&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;---&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(lines)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">render_session_full&lt;/span>(session, history_summaries):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Render a session with exchanges.&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+date &lt;span style="color:#f92672">=&lt;/span> format_date(session[&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>])
+sid &lt;span style="color:#f92672">=&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;session_id&amp;#34;&lt;/span>]
+summary &lt;span style="color:#f92672">=&lt;/span> history_summaries&lt;span style="color:#f92672">.&lt;/span>get(sid, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+branch &lt;span style="color:#f92672">=&lt;/span> session&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;git_branch&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+lines &lt;span style="color:#f92672">=&lt;/span> []
+header &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;### Session: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>date&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> (&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>sid[:&lt;span style="color:#ae81ff">8&lt;/span>]&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">)&amp;#34;&lt;/span>
+lines&lt;span style="color:#f92672">.&lt;/span>append(header)
+&lt;span style="color:#66d9ef">if&lt;/span> summary:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Summary: &amp;#34;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>summary&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> branch:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Branch: `&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>branch&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">`&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+exchanges &lt;span style="color:#f92672">=&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;exchanges&amp;#34;&lt;/span>]
+&lt;span style="color:#66d9ef">for&lt;/span> role, text &lt;span style="color:#f92672">in&lt;/span> exchanges[:MAX_EXCHANGES_PER_SESSION]:
+compact &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34; &amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(text&lt;span style="color:#f92672">.&lt;/span>split())
+&lt;span style="color:#66d9ef">if&lt;/span> role &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;user&amp;#34;&lt;/span>:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;**User:** &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>compact&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">else&lt;/span>:
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;**Assistant:** &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>compact&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> len(exchanges) &lt;span style="color:#f92672">&amp;gt;&lt;/span> MAX_EXCHANGES_PER_SESSION:
+omitted &lt;span style="color:#f92672">=&lt;/span> len(exchanges) &lt;span style="color:#f92672">-&lt;/span> MAX_EXCHANGES_PER_SESSION
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;*(&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>omitted&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> more exchanges omitted)*&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;---&amp;#34;&lt;/span>)
+lines&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(lines)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">render_markdown&lt;/span>(sessions_by_project, history_summaries, days):
+&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Render sessions as structured markdown.
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> Uses a two-pass approach to guarantee every project and
+&lt;/span>&lt;span style="color:#e6db74"> session appears in the output:
+&lt;/span>&lt;span style="color:#e6db74"> Pass 1 — compact headers (project + session summaries)
+&lt;/span>&lt;span style="color:#e6db74"> Pass 2 — fill in exchange detail per project budget
+&lt;/span>&lt;span style="color:#e6db74"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
+now &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>now(timezone&lt;span style="color:#f92672">.&lt;/span>utc)
+start &lt;span style="color:#f92672">=&lt;/span> now &lt;span style="color:#f92672">-&lt;/span> timedelta(days&lt;span style="color:#f92672">=&lt;/span>days)
+doc_header &lt;span style="color:#f92672">=&lt;/span> (
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;# Session History: &amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>start&lt;span style="color:#f92672">.&lt;/span>strftime(&lt;span style="color:#e6db74">&amp;#39;%Y-%m-&lt;/span>&lt;span style="color:#e6db74">%d&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> — &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>now&lt;span style="color:#f92672">.&lt;/span>strftime(&lt;span style="color:#e6db74">&amp;#39;%Y-%m-&lt;/span>&lt;span style="color:#e6db74">%d&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+)
+sorted_projects &lt;span style="color:#f92672">=&lt;/span> sort_projects(sessions_by_project)
+&lt;span style="color:#75715e"># Pass 1: render compact headers for ALL projects/sessions.&lt;/span>
+&lt;span style="color:#75715e"># This guarantees every project is visible to the LLM.&lt;/span>
+pass1_parts &lt;span style="color:#f92672">=&lt;/span> [doc_header]
+&lt;span style="color:#66d9ef">for&lt;/span> project_dir, sessions &lt;span style="color:#f92672">in&lt;/span> sorted_projects:
+label &lt;span style="color:#f92672">=&lt;/span> project_label(project_dir)
+cwd &lt;span style="color:#f92672">=&lt;/span> sessions[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;cwd&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+proj_header &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;## Project: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>label&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> cwd:
+proj_header &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Path: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>cwd&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+proj_header &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+pass1_parts&lt;span style="color:#f92672">.&lt;/span>append(proj_header)
+&lt;span style="color:#66d9ef">for&lt;/span> session &lt;span style="color:#f92672">in&lt;/span> sessions:
+pass1_parts&lt;span style="color:#f92672">.&lt;/span>append(
+render_session_header(session, history_summaries)
+)
+pass1_output &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(pass1_parts)
+pass1_size &lt;span style="color:#f92672">=&lt;/span> len(pass1_output&lt;span style="color:#f92672">.&lt;/span>encode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>))
+&lt;span style="color:#75715e"># If headers alone exceed the budget, return them truncated.&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> pass1_size &lt;span style="color:#f92672">&amp;gt;=&lt;/span> MAX_OUTPUT_BYTES:
+&lt;span style="color:#66d9ef">return&lt;/span> pass1_output
+&lt;span style="color:#75715e"># Pass 2: replace compact headers with full exchanges,&lt;/span>
+&lt;span style="color:#75715e"># distributing remaining budget fairly across projects.&lt;/span>
+remaining &lt;span style="color:#f92672">=&lt;/span> MAX_OUTPUT_BYTES &lt;span style="color:#f92672">-&lt;/span> pass1_size
+n_projects &lt;span style="color:#f92672">=&lt;/span> len(sorted_projects)
+per_project_budget &lt;span style="color:#f92672">=&lt;/span> remaining &lt;span style="color:#f92672">//&lt;/span> max(n_projects, &lt;span style="color:#ae81ff">1&lt;/span>)
+output_parts &lt;span style="color:#f92672">=&lt;/span> [doc_header]
+surplus &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> project_dir, sessions &lt;span style="color:#f92672">in&lt;/span> sorted_projects:
+label &lt;span style="color:#f92672">=&lt;/span> project_label(project_dir)
+cwd &lt;span style="color:#f92672">=&lt;/span> sessions[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;cwd&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>)
+proj_header &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;## Project: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>label&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> cwd:
+proj_header &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Path: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>cwd&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+proj_header &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+allowance &lt;span style="color:#f92672">=&lt;/span> per_project_budget &lt;span style="color:#f92672">+&lt;/span> surplus
+project_detail &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> session &lt;span style="color:#f92672">in&lt;/span> sessions:
+full &lt;span style="color:#f92672">=&lt;/span> render_session_full(session, history_summaries)
+compact &lt;span style="color:#f92672">=&lt;/span> render_session_header(
+session, history_summaries
+)
+&lt;span style="color:#75715e"># Cost of upgrading this session from compact to full&lt;/span>
+extra &lt;span style="color:#f92672">=&lt;/span> (
+len(full&lt;span style="color:#f92672">.&lt;/span>encode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>))
+&lt;span style="color:#f92672">-&lt;/span> len(compact&lt;span style="color:#f92672">.&lt;/span>encode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>))
+)
+&lt;span style="color:#66d9ef">if&lt;/span> extra &lt;span style="color:#f92672">&amp;lt;=&lt;/span> allowance:
+project_detail &lt;span style="color:#f92672">+=&lt;/span> full
+allowance &lt;span style="color:#f92672">-=&lt;/span> extra
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#75715e"># Budget exhausted — render remaining as compact&lt;/span>
+project_detail &lt;span style="color:#f92672">+=&lt;/span> compact
+output_parts&lt;span style="color:#f92672">.&lt;/span>append(proj_header &lt;span style="color:#f92672">+&lt;/span> project_detail)
+surplus &lt;span style="color:#f92672">=&lt;/span> max(allowance, &lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(output_parts)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+args &lt;span style="color:#f92672">=&lt;/span> parse_args()
+cutoff &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>now(timezone&lt;span style="color:#f92672">.&lt;/span>utc) &lt;span style="color:#f92672">-&lt;/span> timedelta(days&lt;span style="color:#f92672">=&lt;/span>args&lt;span style="color:#f92672">.&lt;/span>days)
+history_summaries &lt;span style="color:#f92672">=&lt;/span> load_history_summaries()
+session_files &lt;span style="color:#f92672">=&lt;/span> find_session_files(cutoff)
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> session_files:
+print(
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;No sessions found in the last &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>args&lt;span style="color:#f92672">.&lt;/span>days&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> day(s).&amp;#34;&lt;/span>,
+file&lt;span style="color:#f92672">=&lt;/span>sys&lt;span style="color:#f92672">.&lt;/span>stderr,
+)
+sys&lt;span style="color:#f92672">.&lt;/span>exit(&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;span style="color:#75715e"># NOTE: Only include sessions that appear in history.jsonl.&lt;/span>
+&lt;span style="color:#75715e"># This filters out subagent sessions which are noise.&lt;/span>
+history_session_ids &lt;span style="color:#f92672">=&lt;/span> set(history_summaries&lt;span style="color:#f92672">.&lt;/span>keys())
+sessions_by_project &lt;span style="color:#f92672">=&lt;/span> {}
+&lt;span style="color:#66d9ef">for&lt;/span> sf &lt;span style="color:#f92672">in&lt;/span> session_files:
+&lt;span style="color:#75715e"># Skip files whose session ID isn&amp;#39;t in history&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> sf&lt;span style="color:#f92672">.&lt;/span>stem &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> history_session_ids:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+session &lt;span style="color:#f92672">=&lt;/span> parse_session(sf)
+&lt;span style="color:#66d9ef">if&lt;/span> session &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>:
+&lt;span style="color:#66d9ef">continue&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>topic &lt;span style="color:#f92672">and&lt;/span> &lt;span style="color:#f92672">not&lt;/span> matches_topic(session, args&lt;span style="color:#f92672">.&lt;/span>topic):
+&lt;span style="color:#66d9ef">continue&lt;/span>
+project &lt;span style="color:#f92672">=&lt;/span> session[&lt;span style="color:#e6db74">&amp;#34;project_dir&amp;#34;&lt;/span>]
+sessions_by_project&lt;span style="color:#f92672">.&lt;/span>setdefault(project, [])&lt;span style="color:#f92672">.&lt;/span>append(session)
+&lt;span style="color:#75715e"># Sort sessions within each project by timestamp (most recent&lt;/span>
+&lt;span style="color:#75715e"># first), then cap to MAX_SESSIONS_PER_PROJECT.&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> project &lt;span style="color:#f92672">in&lt;/span> sessions_by_project:
+sessions_by_project[project]&lt;span style="color:#f92672">.&lt;/span>sort(
+key&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">lambda&lt;/span> s: s&lt;span style="color:#f92672">.&lt;/span>get(&lt;span style="color:#e6db74">&amp;#34;timestamp&amp;#34;&lt;/span>) &lt;span style="color:#f92672">or&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>, reverse&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">True&lt;/span>
+)
+sessions_by_project[project] &lt;span style="color:#f92672">=&lt;/span> (
+sessions_by_project[project][:MAX_SESSIONS_PER_PROJECT]
+)
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> sessions_by_project:
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>topic:
+print(
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;No sessions mentioning &amp;#39;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>args&lt;span style="color:#f92672">.&lt;/span>topic&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#39; &amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;in the last &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>args&lt;span style="color:#f92672">.&lt;/span>days&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> day(s).&amp;#34;&lt;/span>,
+file&lt;span style="color:#f92672">=&lt;/span>sys&lt;span style="color:#f92672">.&lt;/span>stderr,
+)
+&lt;span style="color:#66d9ef">else&lt;/span>:
+print(
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;No sessions with extractable content &amp;#34;&lt;/span>
+&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#34;in the last &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>args&lt;span style="color:#f92672">.&lt;/span>days&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> day(s).&amp;#34;&lt;/span>,
+file&lt;span style="color:#f92672">=&lt;/span>sys&lt;span style="color:#f92672">.&lt;/span>stderr,
+)
+sys&lt;span style="color:#f92672">.&lt;/span>exit(&lt;span style="color:#ae81ff">0&lt;/span>)
+output &lt;span style="color:#f92672">=&lt;/span> render_markdown(
+sessions_by_project, history_summaries, args&lt;span style="color:#f92672">.&lt;/span>days
+)
+&lt;span style="color:#75715e"># Enforce size cap&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> len(output&lt;span style="color:#f92672">.&lt;/span>encode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>)) &lt;span style="color:#f92672">&amp;gt;&lt;/span> MAX_OUTPUT_BYTES:
+encoded &lt;span style="color:#f92672">=&lt;/span> output&lt;span style="color:#f92672">.&lt;/span>encode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>)[:MAX_OUTPUT_BYTES]
+output &lt;span style="color:#f92672">=&lt;/span> encoded&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#34;utf-8&amp;#34;&lt;/span>, errors&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>)
+&lt;span style="color:#75715e"># Trim to last complete line&lt;/span>
+last_nl &lt;span style="color:#f92672">=&lt;/span> output&lt;span style="color:#f92672">.&lt;/span>rfind(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">if&lt;/span> last_nl &lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>:
+output &lt;span style="color:#f92672">=&lt;/span> output[:last_nl]
+output &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n\n&lt;/span>&lt;span style="color:#e6db74">*(output truncated to ~50KB)*&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+print(output)
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+main()
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>An Underrated Engineering Skill</title><link>https://tarquin-the-brave.github.io/blog/posts/an_underrated_engineering_skill/</link><pubDate>Fri, 09 Jan 2026 12:06:50 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/an_underrated_engineering_skill/</guid><description>&lt;p>Spoilers:&lt;/p>
 &lt;blockquote>
 &lt;p>How well you build on top of other people&amp;rsquo;s work.&lt;/p>
 &lt;/blockquote>

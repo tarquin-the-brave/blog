@@ -46,6 +46,25 @@
 <section id=home>
 <ul>
 <li class=first>
+<h1><a href=https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/ title="Collecting All the Errors - Rust">Collecting All the Errors - Rust</a></h1>
+<aside>
+<ul>
+<li>
+<time class=post-date datetime=2020-05-09T19:00:00+01:00>May 9, 2020</time>
+</li>
+<li>6 minutes read</li>
+</ul>
+</aside>
+<div class=featured_image>
+<a href=https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/ title="Collecting All the Errors - Rust">
+<img src>
+</a>
+</div>
+<p>A common way to handle iterating over results, Result&lt;T, E>, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:
+let strings = vec!["7", "42", "one"]; let numbers: Result&lt;Vec&lt;_>,_> = string .into_iter() .map(|s| s.parse::&lt;i32>()) .collect::&lt;Result&lt;Vec&lt;_>,_>>(); You only need either the type hint on numbers or the turbofish on collect to coerce the iterator of results into a result.</p>
+<a href=https://tarquin-the-brave.github.io/blog/posts/collecting-all-the-errors/>Read more…</a>
+</li>
+<li>
 <h1><a href=https://tarquin-the-brave.github.io/blog/posts/we-all-write-monads/ title="We All Write Monads, Whether We Know It or Not">We All Write Monads, Whether We Know It or Not</a></h1>
 <aside>
 <ul>

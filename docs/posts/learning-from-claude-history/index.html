@@ -517,19 +517,20 @@ MAX_OUTPUT_BYTES <span style=color:#f92672>=</span> <span style=color:#ae81ff>50
 <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>project_label</span>(project_dir):
     <span style=color:#e6db74>&#34;&#34;&#34;Convert a project dir name to a human-readable label.
 </span><span style=color:#e6db74>
-</span><span style=color:#e6db74>    e.g. &#39;-home-tom-code-bonkbot-pum3&#39; -&gt; &#39;bonkbot/pum3&#39;
+</span><span style=color:#e6db74>    Handles both Linux (/home/user/...) and macOS
+</span><span style=color:#e6db74>    (/Users/user/...) path encodings.
 </span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
     parts <span style=color:#f92672>=</span> project_dir<span style=color:#f92672>.</span>strip(<span style=color:#e6db74>&#34;-&#34;</span>)<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;-&#34;</span>)
-    <span style=color:#75715e># Drop the home/user prefix</span>
-    <span style=color:#66d9ef>try</span>:
-        home_idx <span style=color:#f92672>=</span> parts<span style=color:#f92672>.</span>index(<span style=color:#e6db74>&#34;home&#34;</span>)
-        <span style=color:#75715e># Skip home, username, and &#39;code&#39; if present</span>
-        start <span style=color:#f92672>=</span> home_idx <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>
-        <span style=color:#66d9ef>if</span> start <span style=color:#f92672>&lt;</span> len(parts) <span style=color:#f92672>and</span> parts[start] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;code&#34;</span>:
-            start <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
-        parts <span style=color:#f92672>=</span> parts[start:]
-    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>ValueError</span>:
-        <span style=color:#66d9ef>pass</span>
+    <span style=color:#66d9ef>for</span> prefix <span style=color:#f92672>in</span> (<span style=color:#e6db74>&#34;home&#34;</span>, <span style=color:#e6db74>&#34;Users&#34;</span>):
+        <span style=color:#66d9ef>try</span>:
+            idx <span style=color:#f92672>=</span> parts<span style=color:#f92672>.</span>index(prefix)
+            start <span style=color:#f92672>=</span> idx <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>
+            <span style=color:#66d9ef>if</span> start <span style=color:#f92672>&lt;</span> len(parts) <span style=color:#f92672>and</span> parts[start] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;code&#34;</span>:
+                start <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+            parts <span style=color:#f92672>=</span> parts[start:]
+            <span style=color:#66d9ef>break</span>
+        <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>ValueError</span>:
+            <span style=color:#66d9ef>continue</span>
     <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;/&#34;</span><span style=color:#f92672>.</span>join(parts) <span style=color:#66d9ef>if</span> parts <span style=color:#66d9ef>else</span> project_dir
 
 

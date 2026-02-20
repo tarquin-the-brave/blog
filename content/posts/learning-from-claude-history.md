@@ -491,19 +491,20 @@ def matches_topic(session, topic):
 def project_label(project_dir):
     """Convert a project dir name to a human-readable label.
 
-    e.g. '-home-tom-code-bonkbot-pum3' -> 'bonkbot/pum3'
+    Handles both Linux (/home/user/...) and macOS
+    (/Users/user/...) path encodings.
     """
     parts = project_dir.strip("-").split("-")
-    # Drop the home/user prefix
-    try:
-        home_idx = parts.index("home")
-        # Skip home, username, and 'code' if present
-        start = home_idx + 2
-        if start < len(parts) and parts[start] == "code":
-            start += 1
-        parts = parts[start:]
-    except ValueError:
-        pass
+    for prefix in ("home", "Users"):
+        try:
+            idx = parts.index(prefix)
+            start = idx + 2
+            if start < len(parts) and parts[start] == "code":
+                start += 1
+            parts = parts[start:]
+            break
+        except ValueError:
+            continue
     return "/".join(parts) if parts else project_dir
 
 

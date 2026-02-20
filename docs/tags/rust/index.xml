@@ -406,19 +406,20 @@ topic_lower &lt;span style="color:#f92672">=&lt;/span> topic&lt;span style="colo
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">project_label&lt;/span>(project_dir):
 &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Convert a project dir name to a human-readable label.
 &lt;/span>&lt;span style="color:#e6db74">
-&lt;/span>&lt;span style="color:#e6db74"> e.g. &amp;#39;-home-tom-code-bonkbot-pum3&amp;#39; -&amp;gt; &amp;#39;bonkbot/pum3&amp;#39;
+&lt;/span>&lt;span style="color:#e6db74"> Handles both Linux (/home/user/...) and macOS
+&lt;/span>&lt;span style="color:#e6db74"> (/Users/user/...) path encodings.
 &lt;/span>&lt;span style="color:#e6db74"> &amp;#34;&amp;#34;&amp;#34;&lt;/span>
 parts &lt;span style="color:#f92672">=&lt;/span> project_dir&lt;span style="color:#f92672">.&lt;/span>strip(&lt;span style="color:#e6db74">&amp;#34;-&amp;#34;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#34;-&amp;#34;&lt;/span>)
-&lt;span style="color:#75715e"># Drop the home/user prefix&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> prefix &lt;span style="color:#f92672">in&lt;/span> (&lt;span style="color:#e6db74">&amp;#34;home&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Users&amp;#34;&lt;/span>):
 &lt;span style="color:#66d9ef">try&lt;/span>:
-home_idx &lt;span style="color:#f92672">=&lt;/span> parts&lt;span style="color:#f92672">.&lt;/span>index(&lt;span style="color:#e6db74">&amp;#34;home&amp;#34;&lt;/span>)
-&lt;span style="color:#75715e"># Skip home, username, and &amp;#39;code&amp;#39; if present&lt;/span>
-start &lt;span style="color:#f92672">=&lt;/span> home_idx &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+idx &lt;span style="color:#f92672">=&lt;/span> parts&lt;span style="color:#f92672">.&lt;/span>index(prefix)
+start &lt;span style="color:#f92672">=&lt;/span> idx &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
 &lt;span style="color:#66d9ef">if&lt;/span> start &lt;span style="color:#f92672">&amp;lt;&lt;/span> len(parts) &lt;span style="color:#f92672">and&lt;/span> parts[start] &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;code&amp;#34;&lt;/span>:
 start &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
 parts &lt;span style="color:#f92672">=&lt;/span> parts[start:]
+&lt;span style="color:#66d9ef">break&lt;/span>
 &lt;span style="color:#66d9ef">except&lt;/span> &lt;span style="color:#a6e22e">ValueError&lt;/span>:
-&lt;span style="color:#66d9ef">pass&lt;/span>
+&lt;span style="color:#66d9ef">continue&lt;/span>
 &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(parts) &lt;span style="color:#66d9ef">if&lt;/span> parts &lt;span style="color:#66d9ef">else&lt;/span> project_dir
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">format_date&lt;/span>(ts_str):
 &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;Extract a YYYY-MM-DD date from an ISO timestamp string.&amp;#34;&amp;#34;&amp;#34;&lt;/span>

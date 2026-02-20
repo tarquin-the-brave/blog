@@ -498,10 +498,8 @@ def project_label(project_dir):
     for prefix in ("home", "Users"):
         try:
             idx = parts.index(prefix)
-            start = idx + 2
-            if start < len(parts) and parts[start] == "code":
-                start += 1
-            parts = parts[start:]
+            # WARN: assumes idx+1 is the username component
+            parts = parts[idx + 2:]
             break
         except ValueError:
             continue

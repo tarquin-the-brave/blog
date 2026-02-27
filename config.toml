@@ -30,6 +30,8 @@ googleAnalytics = "UA-161243400-1"
   description = ""
   info = ["Some things I think."]
   colorScheme = "auto"
+  customJS  = ["js/copy-code.js"]
+  customCSS = ["css/copy-code.css"]
 
   [params.utterances]
     repo = "tarquin-the-brave/blog"

@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
+  <title>
+  Adversarial Agent Teams · tarquin-the-brave
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Tom Steavenson">
+<meta name="description" content="I had the situation recently when I was working directly in Claude Code.  I&rsquo;d
+got some feedback points for minor tweaks to make to a frontend implementation
+I was working on, so thinking these were each pretty small and simple things
+to resolve, I pasted the list of them into Claude Code and asked it to deal with
+it.
+This didn&rsquo;t go very well&hellip; It fixed the first point.  Then ignored the rest
+and said it was done.  I had to then hand-hold it through each point.  It
+kept claiming things were fixed when they weren&rsquo;t.  It took a lot of iterations
+to apply the changes - which were all cosmetic changes.">
+<meta name="keywords" content="">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Adversarial Agent Teams">
+  <meta name="twitter:description" content="I had the situation recently when I was working directly in Claude Code. I’d got some feedback points for minor tweaks to make to a frontend implementation I was working on, so thinking these were each pretty small and simple things to resolve, I pasted the list of them into Claude Code and asked it to deal with it.
+This didn’t go very well… It fixed the first point. Then ignored the rest and said it was done. I had to then hand-hold it through each point. It kept claiming things were fixed when they weren’t. It took a lot of iterations to apply the changes - which were all cosmetic changes.">
+
+<meta property="og:url" content="http://localhost:1313/blog/posts/2026-02-27-adversarial-agent-teams/">
+  <meta property="og:site_name" content="tarquin-the-brave">
+  <meta property="og:title" content="Adversarial Agent Teams">
+  <meta property="og:description" content="I had the situation recently when I was working directly in Claude Code. I’d got some feedback points for minor tweaks to make to a frontend implementation I was working on, so thinking these were each pretty small and simple things to resolve, I pasted the list of them into Claude Code and asked it to deal with it.
+This didn’t go very well… It fixed the first point. Then ignored the rest and said it was done. I had to then hand-hold it through each point. It kept claiming things were fixed when they weren’t. It took a lot of iterations to apply the changes - which were all cosmetic changes.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-02-27T14:07:37+00:00">
+    <meta property="article:modified_time" content="2026-02-27T14:07:37+00:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/blog/posts/2026-02-27-adversarial-agent-teams/">
+
+
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+  
+    
+    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
+  
+
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
+
+<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
+<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+
+  
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/blog/">
+      tarquin-the-brave
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/blog/posts/2026-02-27-adversarial-agent-teams/">
+              Adversarial Agent Teams
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2026-02-27T14:07:37Z">
+                February 27, 2026
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              34-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      
+
+
+      <div class="post-content">
+        
+        <p>I had the situation recently when I was working directly in Claude Code.  I&rsquo;d
+got some feedback points for minor tweaks to make to a frontend implementation
+I was working on, so thinking these were each pretty small and simple things
+to resolve, I pasted the list of them into Claude Code and asked it to deal with
+it.</p>
+<p>This didn&rsquo;t go very well&hellip; It fixed the first point.  Then ignored the rest
+and said it was done.  I had to then hand-hold it through each point.  It
+kept claiming things were fixed when they weren&rsquo;t.  It took a lot of iterations
+to apply the changes - which were all cosmetic changes.</p>
+<p>But, as every cloud has a silver lining, this did provide a decent test case
+for a different approach to orchestrating and corralling agents.  I could
+wind back to the commit before these fixes were made, and enter the same list
+of feedback points as requirements.</p>
+<hr>
+<p>Since adopting Claude Code this year, most of my &ldquo;building stuff with it&rdquo;,
+and certainly all of what has gone into production, has been me working with
+it interactively.</p>
+<p>It&rsquo;s been great for pushing into areas that I was unfamiliar with.  Researching
+technical options, validating ideas, and writing code has been a lot quicker.
+Writing code in areas that I wasn&rsquo;t so familiar with has been <em>way</em> quicker.
+When working with a language and a domain I&rsquo;m less familiar with, I still feel
+like I&rsquo;m coding, but working at a higher level of abstraction.  Rather than
+scrutinising the code it&rsquo;s proposing to write, I&rsquo;m scrutinising the logic
+and where the data is going - as I don&rsquo;t necessarily know exactly what code
+primitives are right in that language.</p>
+<p>While there&rsquo;s those certain areas that feel loads faster, I&rsquo;ve been wondering
+really how much is using coding agents accelerating me.  There&rsquo;s other things
+that take longer, or don&rsquo;t exist when coding manually.  There&rsquo;s a considerable
+time spent discussing things with the agent to an extent that you&rsquo;re satisfied
+the code and solution is sound.  When there&rsquo;s an issue with some of the work that
+you&rsquo;ve done with Claude in an area you&rsquo;re not so familiar with, it takes longer
+to dig into that.</p>
+<p>I think that if the extent of my usage of AI agents is &ldquo;interactive&rdquo; then
+there&rsquo;s a limit to how much it&rsquo;s going to accelerate me - I don&rsquo;t see whole
+number multiples of productivity coming from it.  To work with an agent
+interactively: what is that really giving me?  I can work with things that
+I don&rsquo;t understand and type code fast.  Why don&rsquo;t I put the effort in to learn
+about the things I don&rsquo;t know about and learn to type faster - a few touch
+typing tutorials and getting better with vim keybindings and macros should
+do the trick.  Then I don&rsquo;t get the productivity hit of debugging and refining
+code that I didn&rsquo;t write or fully understand.  I&rsquo;m not being entirely serious
+here.  In reality getting fluid with any programming language takes ages, and
+so agent-assisted coding in languages you&rsquo;re not fluent in is going to be
+quicker despite the time to interrogate the agent on why the code will work.
+And you can always <a href="https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/"  class="external-link" target="_blank" rel="noopener">learn from the work that you do with the agent as you go</a>.</p>
+<p>My point is that without having agents execute non-trivial work autonomously,
+where we can set and forget it, we won&rsquo;t see a huge multiple in productivity.
+My vision of what my working day would look like when I&rsquo;ve got where I want to
+with this AI tooling is one of: Agents working autonomously on a collection
+of easier tasks, or tasks that take a long time but aren&rsquo;t hard, or tasks which
+are not high leverage critical tasks, the boring bits, while I focus on the
+hardest problem of the day interactively with an agent, and only very occasionally
+checking up or reviewing what the autonomously working agents are doing.</p>
+<p>Autonomous agents is where the big productivity unlock is in my view.</p>
+<hr>
+<p>I&rsquo;d been wanting to give the new &ldquo;<a href="https://code.claude.com/docs/en/agent-teams"  class="external-link" target="_blank" rel="noopener">Agent Teams</a>&rdquo; a go in Claude Code.  What
+stuck out to me as a potential benefit of this is to have agents scrutinise each
+other&rsquo;s work without them each biasing their judgement.  Something I&rsquo;d found
+with sub-agents is the main agent &ldquo;leading them&rdquo; to a decision.  I&rsquo;d tried a
+skill I found somewhere to &ldquo;hand over to Codex&rdquo; for a given problem.  When I
+tested this out on something I was going round in circles with Claude on, it
+didn&rsquo;t work very well.  And when I looked into the &ldquo;handover doc&rdquo; it created
+for Codex it fully misled Codex on what the problem was.  After I prompted
+Claude to try again and specifically not to mislead Codex in that way, it worked,
+Codex solved the problem and explained it in a way that made sense to me.</p>
+<p>Setting the necessary &ldquo;experimental&rdquo; feature flag in Claude Code config I
+started poking around with Agent Teams.  What seemed quite immediately obvious
+was that to use these directly in Claude Code, you need to put a fair
+amount of description into your prompt about what the team members are and
+what their purpose is, and how and when they should interact.  In the first
+couple of examples I tried, most of my prompt was in instructing the team
+orchestration, and only a small part was actually what I wanted to do.</p>
+<p>And what do we do when we find ourselves prompting the same thing over and
+over again&hellip; we reach for a skill.</p>
+<p>So I went looking for a skill that would orchestrate a team of agents for me.
+Specifically I was interested in the team of agents being &ldquo;adversarial&rdquo; where
+&ldquo;teammates&rdquo; (if that&rsquo;s what we&rsquo;re calling them) will mistrust and scrutinise
+each other&rsquo;s work, and be as independent as possible.</p>
+<p>I had a look around on the internet for something that would do this.  At the
+time I couldn&rsquo;t find anything that was specifically aiming to orchestrate
+&ldquo;adversarial teams&rdquo;, but that was a week ago, so there&rsquo;s probably hundreds of
+them now.  But, as I made the point in <a href="https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/"  class="external-link" target="_blank" rel="noopener">my last post</a>, there&rsquo;s a lot of
+benefit to rolling your own skills and frameworks.  So I gave it a go, working
+with Claude Code to build a skill to orchestrate an &ldquo;adversarial team&rdquo;.</p>
+<p>I&rsquo;ll admit, I didn&rsquo;t completely start from scratch.  Going against the point
+from <a href="https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/"  class="external-link" target="_blank" rel="noopener">my last post</a>, I built on top of skills taken from the <a href="https://cek.neolab.finance/"  class="external-link" target="_blank" rel="noopener">Context
+Engineering Kit</a>, for each team member agent to leverage for its role.
+But I did define the team structure and roles myself.</p>
+<p>I wanted an interface where I only provide the requirements, then the team:</p>
+<ul>
+<li>work out how fulfilling those requirements breaks down into tasks,</li>
+<li>plans for implementation of each task,</li>
+<li>implements the tasks,
+without my involvement.</li>
+</ul>
+<p>Each of these stages has an &ldquo;adversarial review&rdquo; where a new agent is only
+given the requirements and the output of another agent and asked to determine
+if what&rsquo;s been done is right.</p>
+<p>For the tasks breakdown, parallel agents are asked to each break down all the
+requirements into tasks, then another agent acts as an arbitrator to resolve
+conflicting breakdowns or asking them to try again if there&rsquo;s too much conflict.</p>
+<p>The implementation planning has reviewers for each task&rsquo;s proposed implementation,
+and a reviewer to assess consistency between the individual task plans.</p>
+<p>For each point of review, if the reviewing agent isn&rsquo;t satisfied, the agent that
+produced the work tries again and resubmits for review.</p>
+<hr>
+<p>So did this work?</p>
+<p>Once I had this built and did some testing and tweaking on what it reports and how
+the agents interact, I turned it towards the issue that triggered this whole
+exploration: a list of feedback points for some frontend work.</p>
+<p>I rolled back to the same git commit I&rsquo;d been at before, pasted in the list of
+feedback points, much the same way I did when using Claude directly, and left
+it to it to see what it could do in one shot.</p>
+<p>It did a lot better.  7 out of 8 of the feedback points it fixed up as expected.
+The one it couldn&rsquo;t do, no matter how hard I tried tweaking this and that in the
+skill, was putting text that was spread across two lines onto just one line.
+I don&rsquo;t know why, but it just couldn&rsquo;t manage this.</p>
+<p>I&rsquo;m going to keep using this, and trying it for different types of tasks.  This
+will likely end up with me changing how this skill works.  But I&rsquo;ll share the
+current version below.</p>
+<hr>
+<p>Where&rsquo;s all this going?</p>
+<p>Like I mentioned in <a href="https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/"  class="external-link" target="_blank" rel="noopener">my last post</a>, my hope for this technology is that
+agents get good enough at doing the right thing and managing their own context
+in a way that fits your given use case sufficiently that all these layers of
+skills and hooks and orchestration that we&rsquo;re adding is rendered redundant.</p>
+<p>But while I&rsquo;m building stuff to play around with I want to try to push the
+interface to me, the engineer, to as high a level as possible.  I think about
+when a lot of engineers are happiest - sitting round a whiteboard discussing
+things.  What if my technical work could look like that most of the time?
+Could I be hand-drawing diagrams and talking and have agents implement
+everything for me?</p>
+<p>I&rsquo;m going to try and find out.  Next on my backlog of things to play with is
+to see if I can take this &ldquo;adversarial team&rdquo;, but change my interface into it
+to one of where I record myself talking while drawing on a whiteboard and
+give it that.  I can see this one being a total car crash&hellip; we&rsquo;ll find out.
+Stay tuned&hellip;</p>
+<hr>
+<p>To use &ldquo;Agent Teams&rdquo; in Claude Code, you need to enable it in <code>~/.claude/settings.json</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;env&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The agents in this skill use skills from the <code>sadd</code>, <code>reflexion</code>, and <code>kaizen</code>
+plugins from the <a href="https://cek.neolab.finance/"  class="external-link" target="_blank" rel="noopener">Context Engineering Kit</a>.  To use it you&rsquo;ll need them
+installed.</p>
+<p>&ldquo;Adversarial Team&rdquo; skill.  Here&rsquo;s my current version of the adversarial team
+<code>SKILL.md</code>.  Pop it in <code>~/.claude/skills/adversarial-team/</code>.</p>
+<p>By all means try it, play with it, adapt it.  But also, I&rsquo;d encourage
+that you <a href="https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/"  class="external-link" target="_blank" rel="noopener">build your own</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: adversarial-team
+</span></span><span style="display:flex;"><span>description: &gt;
+</span></span><span style="display:flex;"><span>  Spin up an adversarial agent team from a list of requirements.
+</span></span><span style="display:flex;"><span>  Two planners independently analyse the codebase, an arbitrator
+</span></span><span style="display:flex;"><span>  resolves disagreements, per-task designers produce verified
+</span></span><span style="display:flex;"><span>  implementation designs, implementers execute with self-checking,
+</span></span><span style="display:flex;"><span>  and a reviewer adversarially verifies every result.
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Adversarial Agent Team
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You are an orchestrator.  You create an agent team where the task
+</span></span><span style="display:flex;"><span>breakdown itself is adversarially scrutinised, implementers
+</span></span><span style="display:flex;"><span>self-check with <span style="color:#e6db74">`/do-and-judge`</span>, and a dedicated reviewer tears
+</span></span><span style="display:flex;"><span>apart every result with <span style="color:#e6db74">`/critique`</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>There are no shortcuts — even single-task projects get full
+</span></span><span style="display:flex;"><span>adversarial treatment.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Input Format
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>The user provides a list of requirements (numbered or bulleted).
+</span></span><span style="display:flex;"><span>The URL for visual verification is requested later if frontend
+</span></span><span style="display:flex;"><span>work is detected.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Example:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>/adversarial-team
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1. Add auth middleware
+</span></span><span style="display:flex;"><span>2. Create user settings page
+</span></span><span style="display:flex;"><span>3. Wire up protected routes
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Procedure
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 0: Pre-flight Check
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>Before doing any work, verify that all required skills are
+</span></span><span style="display:flex;"><span>available.  The following skills must be installed:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`/do-and-judge`</span> (sadd plugin — implementer self-check)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`/critique`</span> (reflexion plugin — reviewer multi-judge)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`/cause-and-effect`</span> (kaizen plugin — arbitrator fishbone)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`/analyse`</span> (kaizen plugin — arbitrator waste/flow)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`/why`</span> (kaizen plugin — arbitrator root cause)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Check: scan the available skills listed in the system
+</span></span><span style="display:flex;"><span>prompt.  For each required skill, confirm it appears in the
+</span></span><span style="display:flex;"><span>skills list.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>If any are missing, stop immediately and print:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Pre-flight check FAILED.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Missing required skill(s):
+</span></span><span style="display:flex;"><span>- {skill name} ({plugin} plugin)
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Install the missing plugin(s) and retry.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do not proceed to Phase 1.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 1: Parse Input
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> Extract the numbered/bulleted requirements into a list (store
+</span></span><span style="display:flex;"><span>   as <span style="color:#e6db74">`{REQUIREMENTS}`</span>).
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Capture the current working directory as <span style="color:#e6db74">`{PROJECT}`</span>.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> If the user&#39;s message includes images (screenshots, mockups,
+</span></span><span style="display:flex;"><span>   designs), save each image to <span style="color:#e6db74">`{PROJECT}/.adversarial-review/`</span>
+</span></span><span style="display:flex;"><span>   using the <span style="color:#e6db74">`Write`</span> tool (or <span style="color:#e6db74">`Bash`</span> with <span style="color:#e6db74">`cp`</span>).  Store the
+</span></span><span style="display:flex;"><span>   file paths as <span style="color:#e6db74">`{REFERENCE_IMAGES}`</span> (list).  If no images,
+</span></span><span style="display:flex;"><span>   set <span style="color:#e6db74">`{REFERENCE_IMAGES}`</span> to an empty list.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Print status:
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Parsed {N} requirements.  Project: {PROJECT}
+</span></span><span style="display:flex;"><span>{If REFERENCE_IMAGES: &#34;Saved {count} reference image(s) to
+</span></span><span style="display:flex;"><span>{PROJECT}/.adversarial-review/&#34;}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 2: Detect Frontend Work
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>Scan <span style="color:#e6db74">`{REQUIREMENTS}`</span> for frontend signals: CSS, layout, font,
+</span></span><span style="display:flex;"><span>animation, responsive, visual, colour, color, spacing, hover,
+</span></span><span style="display:flex;"><span>border, margin, padding, width, height, opacity, transition,
+</span></span><span style="display:flex;"><span>gradient, shadow, z-index, viewport, breakpoint, media query,
+</span></span><span style="display:flex;"><span>component styling, theme.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Also check <span style="color:#e6db74">`{PROJECT}`</span> for frontend indicators:
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#e6db74">`package.json`</span> containing react, vue, svelte, next, nuxt,
+</span></span><span style="display:flex;"><span>  angular, or similar
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Presence of <span style="color:#e6db74">`.css`</span>, <span style="color:#e6db74">`.scss`</span>, <span style="color:#e6db74">`.sass`</span>, <span style="color:#e6db74">`.less`</span>, or <span style="color:#e6db74">`.styled.ts`</span>
+</span></span><span style="display:flex;"><span>  files
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Tailwind config, PostCSS config, etc.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>If frontend work is detected, use <span style="color:#e6db74">`AskUserQuestion`</span> to ask the
+</span></span><span style="display:flex;"><span>user for a verification URL:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Frontend changes detected.  Do you have a local dev server URL
+</span></span><span style="display:flex;"><span>for visual verification?  (e.g. http://localhost:3000)
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Options:
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> &#34;Yes, here&#39;s the URL&#34; (user provides it)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> &#34;No, skip visual verification&#34;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Store the result as <span style="color:#e6db74">`{URL}`</span> (empty string if user declines).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Print status:
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Frontend detection: {detected|not detected}
+</span></span><span style="display:flex;"><span>{If detected and URL provided: &#34;Visual verification URL: {URL}&#34;}
+</span></span><span style="display:flex;"><span>{If detected and declined: &#34;Visual verification: skipped&#34;}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 3: Adversarial Task Breakdown
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>This is the key phase.  Two independent agents analyse the
+</span></span><span style="display:flex;"><span>requirements and propose task breakdowns, then a third agent
+</span></span><span style="display:flex;"><span>arbitrates.  If the arbitrator&#39;s confidence is low, the planners
+</span></span><span style="display:flex;"><span>revise and the arbitrator re-evaluates — up to 3 total rounds.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 1 — Spawn two Planner agents in parallel**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Print status:
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Spawning 2 independent planners to analyse the codebase...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Use the <span style="color:#e6db74">`Task`</span> tool twice in a single message, both with
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">`subagent_type: &#34;general-purpose&#34;`</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>While waiting for planners to return, poll <span style="color:#e6db74">`TaskList`</span> every
+</span></span><span style="display:flex;"><span>~60 seconds and print a brief status line so the user sees
+</span></span><span style="display:flex;"><span>progress (e.g. &#34;Waiting for planners... 1m elapsed&#34;).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Each planner&#39;s prompt:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are a task-breakdown planner.  Your job is to analyse a set
+</span></span><span style="display:flex;"><span>of requirements against an actual codebase and propose how to
+</span></span><span style="display:flex;"><span>split the work across parallel implementers.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>Requirements:
+</span></span><span style="display:flex;"><span>{REQUIREMENTS}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>1. Read the codebase at {PROJECT} — specifically the files likely
+</span></span><span style="display:flex;"><span>   affected by these requirements.  Use Glob and Grep to find
+</span></span><span style="display:flex;"><span>   relevant files, then Read them.
+</span></span><span style="display:flex;"><span>2. Assess which requirements are independent and which are
+</span></span><span style="display:flex;"><span>   coupled.  Justify every coupling or independence decision by
+</span></span><span style="display:flex;"><span>   referencing actual code (file paths, shared state, component
+</span></span><span style="display:flex;"><span>   dependencies).
+</span></span><span style="display:flex;"><span>3. Determine how many implementers are needed (ceil(N/2) is a
+</span></span><span style="display:flex;"><span>   starting point, adjust based on coupling).
+</span></span><span style="display:flex;"><span>4. Propose task groupings and execution order.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Output this exact structure:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TASKS:
+</span></span><span style="display:flex;"><span>- Task 1: [description] → implementer-1
+</span></span><span style="display:flex;"><span>  Files: [list of affected files]
+</span></span><span style="display:flex;"><span>  Independent: yes/no (reason citing code)
+</span></span><span style="display:flex;"><span>- Task 2: [description] → implementer-2
+</span></span><span style="display:flex;"><span>  Files: [list of affected files]
+</span></span><span style="display:flex;"><span>  Independent: yes/no (reason citing code)
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PARALLEL GROUPS: [[task numbers that can run simultaneously]]
+</span></span><span style="display:flex;"><span>SEQUENTIAL CHAINS: [task A → task B where B depends on A]
+</span></span><span style="display:flex;"><span>IMPLEMENTER COUNT: [number]
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>When both planners return, print:
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Both planners returned.  Spawning arbitrator...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 2 — Spawn Arbitrator agent**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>After both planners return, spawn a single agent with
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">`subagent_type: &#34;general-purpose&#34;`</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>The arbitrator&#39;s prompt:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are an arbitrator.  Two independent planners have analysed
+</span></span><span style="display:flex;"><span>the same requirements against the same codebase and produced task
+</span></span><span style="display:flex;"><span>breakdowns.  Your job is to produce the definitive breakdown
+</span></span><span style="display:flex;"><span>using structured analysis — not ad-hoc reasoning.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Planner A&#39;s breakdown:
+</span></span><span style="display:flex;"><span>{PLANNER_A_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Planner B&#39;s breakdown:
+</span></span><span style="display:flex;"><span>{PLANNER_B_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1. IDENTIFY DISAGREEMENTS
+</span></span><span style="display:flex;"><span>   Compare the two breakdowns.  Note every difference: groupings,
+</span></span><span style="display:flex;"><span>   coupling assessments, file lists, implementer counts.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2. FISHBONE ANALYSIS
+</span></span><span style="display:flex;"><span>   Run /cause-and-effect with the problem statement: &#34;The task
+</span></span><span style="display:flex;"><span>   breakdown for these requirements may have structural flaws.&#34;
+</span></span><span style="display:flex;"><span>   Provide both planners&#39; breakdowns as context.  The six
+</span></span><span style="display:flex;"><span>   categories to examine:
+</span></span><span style="display:flex;"><span>   - People: ownership clarity, skill matching
+</span></span><span style="display:flex;"><span>   - Process: decomposition methodology
+</span></span><span style="display:flex;"><span>   - Technology: hidden coupling in the codebase
+</span></span><span style="display:flex;"><span>   - Methods: slicing strategy appropriateness
+</span></span><span style="display:flex;"><span>   - Environment: external/team dependencies
+</span></span><span style="display:flex;"><span>   - Materials: shared APIs, models, specs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>3. WASTE AND FLOW ANALYSIS
+</span></span><span style="display:flex;"><span>   Run /analyse on the merged task list, treating tasks as
+</span></span><span style="display:flex;"><span>   workflow stages.  Look for:
+</span></span><span style="display:flex;"><span>   - Blocking dependencies that create waiting
+</span></span><span style="display:flex;"><span>   - Speculative tasks (overproduction)
+</span></span><span style="display:flex;"><span>   - Vague acceptance criteria (defect risk)
+</span></span><span style="display:flex;"><span>   - Handoff bottlenecks between implementers
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>4. ROOT CAUSE DRILLING (if needed)
+</span></span><span style="display:flex;"><span>   If steps 2-3 surface suspicious dependencies or coupling
+</span></span><span style="display:flex;"><span>   decisions, run /why on each one to drill to the root cause.
+</span></span><span style="display:flex;"><span>   Only do this for specific, concrete suspicions — not
+</span></span><span style="display:flex;"><span>   speculatively.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>5. CODE VERIFICATION
+</span></span><span style="display:flex;"><span>   For each disagreement and each issue surfaced by the kaizen
+</span></span><span style="display:flex;"><span>   analyses, read the contested code sections yourself.  Do not
+</span></span><span style="display:flex;"><span>   trust either planner&#39;s claims without verification.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>6. PRODUCE FINAL BREAKDOWN
+</span></span><span style="display:flex;"><span>   Synthesise all findings into the definitive breakdown:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FINAL BREAKDOWN:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DISAGREEMENTS:
+</span></span><span style="display:flex;"><span>- [description]
+</span></span><span style="display:flex;"><span>  Planner A said: [summary]
+</span></span><span style="display:flex;"><span>  Planner B said: [summary]
+</span></span><span style="display:flex;"><span>  My judgement: [decision with code-based reason]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>KAIZEN FINDINGS:
+</span></span><span style="display:flex;"><span>- Fishbone: [key findings from /cause-and-effect]
+</span></span><span style="display:flex;"><span>- Flow/Waste: [key findings from /analyse]
+</span></span><span style="display:flex;"><span>- Root causes: [from /why, if run]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TASKS:
+</span></span><span style="display:flex;"><span>- Task 1: [description] → implementer-N
+</span></span><span style="display:flex;"><span>  Files: [list]
+</span></span><span style="display:flex;"><span>- Task 2: ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PARALLEL GROUPS: [[task numbers]]
+</span></span><span style="display:flex;"><span>SEQUENTIAL CHAINS: [chains]
+</span></span><span style="display:flex;"><span>IMPLEMENTER COUNT: [number]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CONFIDENCE: [1-5]
+</span></span><span style="display:flex;"><span>  1 = major uncertainty, user should review
+</span></span><span style="display:flex;"><span>  2 = some concerns
+</span></span><span style="display:flex;"><span>  3 = reasonable but debatable
+</span></span><span style="display:flex;"><span>  4 = high confidence
+</span></span><span style="display:flex;"><span>  5 = trivial / obvious split
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CONFIDENCE NOTES: [explain if &lt; 4]
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>While waiting for the arbitrator to return, poll <span style="color:#e6db74">`TaskList`</span>
+</span></span><span style="display:flex;"><span>every ~60 seconds and print a brief status line (e.g.
+</span></span><span style="display:flex;"><span>&#34;Waiting for arbitrator... 2m elapsed&#34;).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>When the arbitrator returns, print:
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Arbitration round 1 complete.  Confidence: {score}/5.
+</span></span><span style="display:flex;"><span>{If &gt;= 4: &#34;Breakdown accepted.&#34;}
+</span></span><span style="display:flex;"><span>{If &lt; 4: &#34;Confidence below threshold — sending feedback
+</span></span><span style="display:flex;"><span>to planners for revision...&#34;}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 2a — Revision loop (max 2 retries)**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>If the arbitrator&#39;s CONFIDENCE is &lt; <span style="color:#f92672">4</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">loop</span> <span style="color:#a6e22e">up</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">2</span> <span style="color:#a6e22e">more</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">times</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">3</span> <span style="color:#a6e22e">total</span> <span style="color:#a6e22e">rounds</span><span style="color:#960050;background-color:#1e0010">).</span>  <span style="color:#a6e22e">Track</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">round</span> <span style="color:#a6e22e">number</span> <span style="color:#a6e22e">starting</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">from</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">For</span> <span style="color:#a6e22e">each</span> <span style="color:#a6e22e">retry:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print</span> <span style="color:#a6e22e">status:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Re-arbitration round {N}: planners revising...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> <span style="color:#a6e22e">Spawn</span> <span style="color:#a6e22e">both</span> <span style="color:#a6e22e">planners</span> <span style="color:#a6e22e">again</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">parallel</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">but</span> <span style="color:#a6e22e">this</span> <span style="color:#a6e22e">time</span> <span style="color:#a6e22e">their</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">prompt</span> <span style="color:#a6e22e">includes</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">arbitrator</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">full</span> <span style="color:#a6e22e">output</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">feedback:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are a task-breakdown planner.  You previously proposed
+</span></span><span style="display:flex;"><span>a breakdown that was arbitrated and found to have issues.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>Requirements:
+</span></span><span style="display:flex;"><span>{REQUIREMENTS}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Your previous breakdown:
+</span></span><span style="display:flex;"><span>{PLANNER_N_PREVIOUS_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Arbitrator&#39;s findings:
+</span></span><span style="display:flex;"><span>{ARBITRATOR_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>1. Read the arbitrator&#39;s DISAGREEMENTS, KAIZEN FINDINGS,
+</span></span><span style="display:flex;"><span>   and CONFIDENCE NOTES carefully.
+</span></span><span style="display:flex;"><span>2. Address every issue the arbitrator raised.  If you
+</span></span><span style="display:flex;"><span>   disagree with the arbitrator on a specific point, you
+</span></span><span style="display:flex;"><span>   must provide new code evidence (file paths, line
+</span></span><span style="display:flex;"><span>   numbers) — do not simply reassert your previous
+</span></span><span style="display:flex;"><span>   position.
+</span></span><span style="display:flex;"><span>3. Re-read any code sections the arbitrator flagged.
+</span></span><span style="display:flex;"><span>4. Produce a revised breakdown in the same format as
+</span></span><span style="display:flex;"><span>   before.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Output this exact structure:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>REVISION NOTES:
+</span></span><span style="display:flex;"><span>- [what you changed and why, referencing arbitrator&#39;s
+</span></span><span style="display:flex;"><span>  findings]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TASKS:
+</span></span><span style="display:flex;"><span>- Task 1: [description] → implementer-1
+</span></span><span style="display:flex;"><span>  Files: [list of affected files]
+</span></span><span style="display:flex;"><span>  Independent: yes/no (reason citing code)
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PARALLEL GROUPS: [[task numbers that can run
+</span></span><span style="display:flex;"><span>simultaneously]]
+</span></span><span style="display:flex;"><span>SEQUENTIAL CHAINS: [task A → task B where B depends on A]
+</span></span><span style="display:flex;"><span>IMPLEMENTER COUNT: [number]
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">When</span> <span style="color:#a6e22e">planners</span> <span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Planners revised.  Re-arbitrating...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> <span style="color:#a6e22e">Spawn</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">arbitrator</span> <span style="color:#a6e22e">again</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">arbitrator</span> <span style="color:#a6e22e">prompt</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">the</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">same</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">Step</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">but</span> <span style="color:#a6e22e">with</span> <span style="color:#a6e22e">an</span> <span style="color:#a6e22e">additional</span> <span style="color:#a6e22e">preamble</span> <span style="color:#a6e22e">prepended:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>This is re-arbitration round {N}.  The previous round
+</span></span><span style="display:flex;"><span>scored CONFIDENCE {score}.  The planners have revised
+</span></span><span style="display:flex;"><span>their breakdowns based on your feedback.  Hold them to
+</span></span><span style="display:flex;"><span>account — verify they actually addressed your findings,
+</span></span><span style="display:flex;"><span>not just rephrased them.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Previous arbitration output:
+</span></span><span style="display:flex;"><span>{PREVIOUS_ARBITRATOR_OUTPUT}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">When</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">arbitrator</span> <span style="color:#a6e22e">returns</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Re-arbitration round {N} complete.  Confidence: {score}/5.
+</span></span><span style="display:flex;"><span>{If &gt;= 4: &#34;Breakdown accepted after {N} round(s).&#34;}
+</span></span><span style="display:flex;"><span>{If &lt; 4 and retries remain: &#34;Still below threshold —
+</span></span><span style="display:flex;"><span>retrying...&#34;}
+</span></span><span style="display:flex;"><span>{If &lt; 4 and no retries remain: &#34;Max rounds reached.
+</span></span><span style="display:flex;"><span>Proceeding with best available breakdown.&#34;}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> <span style="color:#a6e22e">If</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">new</span> <span style="color:#a6e22e">CONFIDENCE</span> <span style="color:#a6e22e">is</span> &gt;= 4, exit the loop.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> If still &lt; <span style="color:#f92672">4</span> <span style="color:#a6e22e">after</span> <span style="color:#a6e22e">2</span> <span style="color:#a6e22e">retries</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">3</span> <span style="color:#a6e22e">total</span> <span style="color:#a6e22e">rounds</span><span style="color:#960050;background-color:#1e0010">),</span> <span style="color:#a6e22e">exit</span> <span style="color:#a6e22e">the</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">loop</span> <span style="color:#a6e22e">anyway</span> <span style="color:#960050;background-color:#1e0010">—</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">breakdown</span> <span style="color:#a6e22e">proceeds</span> <span style="color:#a6e22e">with</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">best</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">available</span> <span style="color:#a6e22e">result</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">low</span> <span style="color:#a6e22e">confidence</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">surfaced</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 3 — Print breakdown**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">full</span> <span style="color:#a6e22e">breakdown</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">plain</span> <span style="color:#a6e22e">output</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">no</span> <span style="color:#a6e22e">interaction</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">required</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">proceed</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">team</span> <span style="color:#a6e22e">creation:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Task breakdown (arbitrated from 2 independent analyses,
+</span></span><span style="display:flex;"><span>{N} round(s)):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Requirements:
+</span></span><span style="display:flex;"><span>1. {original requirement text}
+</span></span><span style="display:flex;"><span>2. {original requirement text}
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Tasks:
+</span></span><span style="display:flex;"><span>- Task 1: {description}
+</span></span><span style="display:flex;"><span>  Fulfils: Requirement(s) {N, M}
+</span></span><span style="display:flex;"><span>  Files: {file list}
+</span></span><span style="display:flex;"><span>  Rationale: {why this grouping meets the requirements}
+</span></span><span style="display:flex;"><span>  Assigned to: implementer-{N}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- Task 2: {description}
+</span></span><span style="display:flex;"><span>  Fulfils: Requirement(s) {N}
+</span></span><span style="display:flex;"><span>  Files: {file list}
+</span></span><span style="display:flex;"><span>  Rationale: {why this grouping meets the requirements}
+</span></span><span style="display:flex;"><span>  Assigned to: implementer-{N}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Execution plan:
+</span></span><span style="display:flex;"><span>  Group A (parallel): Tasks 1, 2
+</span></span><span style="display:flex;"><span>  Group B (sequential, after A): Task 3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Reviewer: 1 adversarial reviewer (spawned fresh per task)
+</span></span><span style="display:flex;"><span>Visual verification: {URL or &#34;none&#34;}
+</span></span><span style="display:flex;"><span>{If re-arbitration occurred: &#34;Re-arbitrated {N-1} time(s).
+</span></span><span style="display:flex;"><span>Issues resolved: [summary]&#34;}
+</span></span><span style="display:flex;"><span>{If kaizen analyses found issues:
+</span></span><span style="display:flex;"><span>&#34;Kaizen analysis found: [brief summary]&#34;}
+</span></span><span style="display:flex;"><span>{If confidence &lt; 4: &#34;⚠ Arbitrator flagged concerns:
+</span></span><span style="display:flex;"><span>[notes].  Will escalate if issues surface during
+</span></span><span style="display:flex;"><span>implementation.&#34;}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Confidence: {score}/5
+</span></span><span style="display:flex;"><span>Proceeding to implementation design.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 4: Implementation Design
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">This</span> <span style="color:#a6e22e">phase</span> <span style="color:#a6e22e">catches</span> <span style="color:#a6e22e">architectural</span> <span style="color:#a6e22e">inconsistencies</span> <span style="font-style:italic">*before*</span> <span style="color:#a6e22e">code</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">is</span> <span style="color:#a6e22e">written</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Per-task</span> <span style="color:#a6e22e">designers</span> <span style="color:#a6e22e">produce</span> <span style="color:#a6e22e">structured</span> <span style="color:#a6e22e">designs</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">then</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">two</span> <span style="color:#a6e22e">independent</span> <span style="color:#a6e22e">review</span> <span style="color:#a6e22e">layers</span> <span style="color:#960050;background-color:#1e0010">—</span> <span style="color:#a6e22e">requirements</span> <span style="color:#a6e22e">validation</span> <span style="color:#a6e22e">and</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">cross-task</span> <span style="color:#a6e22e">consistency</span> <span style="color:#960050;background-color:#1e0010">—</span> <span style="color:#a6e22e">verify</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">designs</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">parallel</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 1 — Skip heuristic**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Not</span> <span style="color:#a6e22e">every</span> <span style="color:#a6e22e">task</span> <span style="color:#a6e22e">needs</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">design</span> <span style="color:#a6e22e">agent</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Skip</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">task</span> <span style="color:#a6e22e">if</span> <span style="color:#a6e22e">ALL</span> <span style="color:#a6e22e">of:</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#a6e22e">It</span> <span style="color:#a6e22e">touches</span> <span style="color:#a6e22e">exactly</span> <span style="color:#a6e22e">1</span> <span style="color:#a6e22e">file</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">AND</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#a6e22e">That</span> <span style="color:#a6e22e">file</span> <span style="color:#a6e22e">appears</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">no</span> <span style="color:#a6e22e">other</span> <span style="color:#a6e22e">task</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">file</span> <span style="color:#a6e22e">list</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">AND</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">task</span> <span style="color:#a6e22e">is</span> <span style="color:#e6db74">`Independent: yes`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">If</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">tasks</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">skipped</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">skip</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">entire</span> <span style="color:#a6e22e">phase</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Phase 4: All tasks trivial — skipping implementation design.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">For</span> <span style="color:#a6e22e">tasks</span> <span style="color:#a6e22e">that</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">skipped</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Phase 4: Spawning {N} designer agent(s) for non-trivial
+</span></span><span style="display:flex;"><span>tasks...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 2 — Spawn designer agents in parallel**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Use</span> <span style="color:#a6e22e">the</span> <span style="color:#e6db74">`Task`</span> <span style="color:#a6e22e">tool</span> <span style="color:#a6e22e">once</span> <span style="color:#a6e22e">per</span> <span style="color:#a6e22e">non-trivial</span> <span style="color:#a6e22e">task</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">single</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">message</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">each</span> <span style="color:#a6e22e">with</span> <span style="color:#e6db74">`subagent_type: &#34;general-purpose&#34;`</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Each</span> <span style="color:#a6e22e">designer</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">prompt:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are an implementation designer.  Your job is to read the
+</span></span><span style="display:flex;"><span>codebase and produce a structured design for a single task,
+</span></span><span style="display:flex;"><span>so the implementer can execute without guesswork and without
+</span></span><span style="display:flex;"><span>conflicting with other parallel implementers.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Full arbitrated breakdown (all tasks, for cross-task context):
+</span></span><span style="display:flex;"><span>{FULL_BREAKDOWN}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Your specific task:
+</span></span><span style="display:flex;"><span>{TASK_N_DESCRIPTION}
+</span></span><span style="display:flex;"><span>Affected files: {TASK_N_FILES}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>1. Read the affected files and their immediate dependencies
+</span></span><span style="display:flex;"><span>   at {PROJECT}.
+</span></span><span style="display:flex;"><span>2. Read files shared with other tasks (see TOUCH POINTS).
+</span></span><span style="display:flex;"><span>3. Produce a design covering ONLY these sections — no other
+</span></span><span style="display:flex;"><span>   sections, no prose outside these headings:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>REUSE:
+</span></span><span style="display:flex;"><span>- {file_path}: {function/type/pattern} — {what it does, why
+</span></span><span style="display:flex;"><span>  reuse it}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CREATE:
+</span></span><span style="display:flex;"><span>- {entity_name}: {exact signature or type shape} — {purpose}
+</span></span><span style="display:flex;"><span>  (no implementation bodies)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MODIFY:
+</span></span><span style="display:flex;"><span>- {file_path}: {current_signature} → {proposed_signature}
+</span></span><span style="display:flex;"><span>  Reason: {why}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>DATA FLOW:
+</span></span><span style="display:flex;"><span>{One paragraph: entry point → transforms → exit point.
+</span></span><span style="display:flex;"><span>Name every function/type in the chain.}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CONVENTIONS:
+</span></span><span style="display:flex;"><span>- Error handling: {pattern observed in codebase, with
+</span></span><span style="display:flex;"><span>  file:line example}
+</span></span><span style="display:flex;"><span>- Naming: {pattern observed}
+</span></span><span style="display:flex;"><span>- Test patterns: {pattern observed}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TOUCH POINTS:
+</span></span><span style="display:flex;"><span>- Task {M}: shares {file_path} — {what each task does to it}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Explicitly excluded: no pseudocode, no alternative approaches,
+</span></span><span style="display:flex;"><span>no test strategy.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">While</span> <span style="color:#a6e22e">waiting</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">designers</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">poll</span> <span style="color:#e6db74">`TaskList`</span> <span style="color:#a6e22e">every</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">~</span><span style="color:#a6e22e">60</span> <span style="color:#a6e22e">seconds</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">print</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">brief</span> <span style="color:#a6e22e">status</span> <span style="color:#a6e22e">line</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">e</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">g</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">Waiting</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">designers</span><span style="color:#960050;background-color:#1e0010">...</span> <span style="color:#a6e22e">1m</span> <span style="color:#a6e22e">elapsed</span><span style="color:#960050;background-color:#1e0010">&#34;).</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">When</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">designers</span> <span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>{N} designer(s) returned.  Spawning review layers...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">**</span><span style="color:#a6e22e">Step</span> <span style="color:#a6e22e">3</span> <span style="color:#960050;background-color:#1e0010">—</span> <span style="color:#a6e22e">Spawn</span> <span style="color:#a6e22e">requirements</span> <span style="color:#a6e22e">validators</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">consistency</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">reviewer</span> <span style="color:#a6e22e">in</span> <span style="color:#a6e22e">parallel</span><span style="color:#960050;background-color:#1e0010">**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">These</span> <span style="color:#a6e22e">are</span> <span style="color:#a6e22e">two</span> <span style="color:#a6e22e">independent</span> <span style="color:#a6e22e">review</span> <span style="color:#a6e22e">layers</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Spawn</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">of</span> <span style="color:#a6e22e">them</span> <span style="color:#a6e22e">in</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">single</span> <span style="color:#a6e22e">message</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**3a: Requirements validators (per-task, parallel)**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">One</span> <span style="color:#a6e22e">validator</span> <span style="color:#a6e22e">agent</span> <span style="color:#a6e22e">per</span> <span style="color:#a6e22e">designed</span> <span style="color:#a6e22e">task</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">each</span> <span style="color:#a6e22e">with</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">`subagent_type: &#34;general-purpose&#34;`</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Each</span> <span style="color:#a6e22e">validator</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">prompt:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are a requirements validator.  Your job is to verify that
+</span></span><span style="display:flex;"><span>a task&#39;s implementation design will actually produce a result
+</span></span><span style="display:flex;"><span>that meets the original requirement.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Original requirement:
+</span></span><span style="display:flex;"><span>{REQUIREMENT_TEXT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Designer&#39;s output:
+</span></span><span style="display:flex;"><span>{DESIGNER_N_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1. COVERAGE — decompose the requirement into every individual
+</span></span><span style="display:flex;"><span>   verifiable claim (the same technique used by Phase 7
+</span></span><span style="display:flex;"><span>   reviewers).  For each claim, identify which part of the
+</span></span><span style="display:flex;"><span>   design (REUSE, CREATE, MODIFY, or DATA FLOW) addresses it.
+</span></span><span style="display:flex;"><span>   Any claim not addressed = gap.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2. FEASIBILITY — read the actual code referenced in REUSE and
+</span></span><span style="display:flex;"><span>   MODIFY sections at {PROJECT}.  Verify the functions and
+</span></span><span style="display:flex;"><span>   types exist as described.  Check that proposed modifications
+</span></span><span style="display:flex;"><span>   are compatible with callers/dependents.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>3. COMPLETENESS — does the design cover edge cases implied by
+</span></span><span style="display:flex;"><span>   the requirement?  (e.g. error states, empty inputs, auth
+</span></span><span style="display:flex;"><span>   boundaries)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Output this exact structure:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>REQUIREMENT: {original text}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CLAIMS:
+</span></span><span style="display:flex;"><span>- {claim 1}: COVERED by {design section + detail}
+</span></span><span style="display:flex;"><span>- {claim 2}: GAP — {what&#39;s missing}
+</span></span><span style="display:flex;"><span>- {claim 3}: COVERED by {design section + detail}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FEASIBILITY:
+</span></span><span style="display:flex;"><span>- {file:function} exists: yes/no
+</span></span><span style="display:flex;"><span>- {proposed modification} compatible with callers: yes/no
+</span></span><span style="display:flex;"><span>  {if no: which callers break and why}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>EDGE CASES:
+</span></span><span style="display:flex;"><span>- {case}: addressed/not addressed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>VERDICT: MEETS_REQUIREMENTS / GAPS_FOUND
+</span></span><span style="display:flex;"><span>GAPS: {list of specific gaps, if any}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**3b: Adversarial consistency reviewer (cross-task)**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Spawn</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">single</span> <span style="color:#a6e22e">agent</span> <span style="color:#a6e22e">with</span> <span style="color:#e6db74">`subagent_type: &#34;general-purpose&#34;`</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">The</span> <span style="color:#a6e22e">consistency</span> <span style="color:#a6e22e">reviewer</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">prompt:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are an adversarial consistency reviewer.  Your job is to
+</span></span><span style="display:flex;"><span>find conflicts and incompatibilities across multiple parallel
+</span></span><span style="display:flex;"><span>implementation designs.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>All designs:
+</span></span><span style="display:flex;"><span>{ALL_DESIGNER_OUTPUTS}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Run a structured conflict hunt across all designs, checking
+</span></span><span style="display:flex;"><span>these six categories:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1. Signature conflicts — does any task&#39;s MODIFY contradict
+</span></span><span style="display:flex;"><span>   another task&#39;s REUSE of the same function/type?
+</span></span><span style="display:flex;"><span>2. Creation collisions — do two tasks CREATE the same entity
+</span></span><span style="display:flex;"><span>   or file?
+</span></span><span style="display:flex;"><span>3. Convention divergence — do tasks choose different error
+</span></span><span style="display:flex;"><span>   handling patterns, naming conventions, or test patterns?
+</span></span><span style="display:flex;"><span>4. Data flow incompatibility — sync/async mismatches, type
+</span></span><span style="display:flex;"><span>   mismatches at shared boundaries, different serialisation
+</span></span><span style="display:flex;"><span>   assumptions?
+</span></span><span style="display:flex;"><span>5. Ordering conflicts — do two tasks MODIFY the same file in
+</span></span><span style="display:flex;"><span>   positions that would conflict (e.g. both inserting at the
+</span></span><span style="display:flex;"><span>   same location)?
+</span></span><span style="display:flex;"><span>6. Missing touch points — do any tasks share files that
+</span></span><span style="display:flex;"><span>   neither acknowledges in TOUCH POINTS?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>KEY REQUIREMENT: For every pair of tasks that share files,
+</span></span><span style="display:flex;"><span>you MUST produce an explicit NO-CONFLICT VERIFICATION or a
+</span></span><span style="display:flex;"><span>CONFLICT entry.  This forces enumeration of every pair —
+</span></span><span style="display:flex;"><span>do not skip any.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Output this exact structure:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PAIR VERIFICATIONS:
+</span></span><span style="display:flex;"><span>- Task {A} × Task {B}:
+</span></span><span style="display:flex;"><span>  Shared files: {list}
+</span></span><span style="display:flex;"><span>  Verification: NO CONFLICT / CONFLICT
+</span></span><span style="display:flex;"><span>  {if conflict: category, evidence, resolution instructions}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CONFLICTS:
+</span></span><span style="display:flex;"><span>- Conflict {N}: {category}
+</span></span><span style="display:flex;"><span>  Tasks: {A}, {B}
+</span></span><span style="display:flex;"><span>  Evidence: {specific signatures, types, or patterns that
+</span></span><span style="display:flex;"><span>  clash}
+</span></span><span style="display:flex;"><span>  Resolution: {specific instructions for which designer
+</span></span><span style="display:flex;"><span>  should change what}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>VERDICT: CONSISTENT / CONFLICTS_FOUND
+</span></span><span style="display:flex;"><span>CONFIDENCE: {1-5}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">While</span> <span style="color:#a6e22e">waiting</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">validators</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">consistency</span> <span style="color:#a6e22e">reviewer</span> <span style="color:#a6e22e">to</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">poll</span> <span style="color:#e6db74">`TaskList`</span> <span style="color:#a6e22e">every</span> <span style="color:#960050;background-color:#1e0010">~</span><span style="color:#a6e22e">60</span> <span style="color:#a6e22e">seconds</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">print</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">brief</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">status</span> <span style="color:#a6e22e">line</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">e</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">g</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">Waiting</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">design</span> <span style="color:#a6e22e">review</span><span style="color:#960050;background-color:#1e0010">...</span> <span style="color:#a6e22e">2m</span> <span style="color:#a6e22e">elapsed</span><span style="color:#960050;background-color:#1e0010">&#34;).</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">When</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Design review complete.
+</span></span><span style="display:flex;"><span>- Requirements validation: {N} MEETS_REQUIREMENTS,
+</span></span><span style="display:flex;"><span>  {M} GAPS_FOUND
+</span></span><span style="display:flex;"><span>- Consistency: {CONSISTENT or CONFLICTS_FOUND}
+</span></span><span style="display:flex;"><span>  (confidence: {score}/5)
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 4 — Retry (max 1 round)**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">If</span> <span style="color:#a6e22e">either</span> <span style="color:#a6e22e">review</span> <span style="color:#a6e22e">layer</span> <span style="color:#a6e22e">found</span> <span style="color:#a6e22e">issues</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#e6db74">`GAPS_FOUND`</span> <span style="color:#a6e22e">or</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">`CONFLICTS_FOUND`</span><span style="color:#960050;background-color:#1e0010">)</span><span style="color:#a6e22e">:</span> <span style="color:#a6e22e">re-spawn</span> <span style="color:#a6e22e">only</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">affected</span> <span style="color:#a6e22e">designers</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">with</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">specific</span> <span style="color:#a6e22e">findings</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Design issues found — re-running {K} affected designer(s)...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Each</span> <span style="color:#a6e22e">affected</span> <span style="color:#a6e22e">designer</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">s</span> <span style="color:#a6e22e">retry</span> <span style="color:#a6e22e">prompt:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>You are an implementation designer.  Your previous design was
+</span></span><span style="display:flex;"><span>reviewed and issues were found.  Revise your design to address
+</span></span><span style="display:flex;"><span>them.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Project path: {PROJECT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Your previous design:
+</span></span><span style="display:flex;"><span>{DESIGNER_N_PREVIOUS_OUTPUT}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Review findings for your task:
+</span></span><span style="display:flex;"><span>{VALIDATOR_N_OUTPUT if GAPS_FOUND}
+</span></span><span style="display:flex;"><span>{CONSISTENCY_CONFLICTS affecting this task, if any}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Instructions:
+</span></span><span style="display:flex;"><span>1. Address every gap and conflict listed above.
+</span></span><span style="display:flex;"><span>2. Re-read the code if the reviewer found feasibility issues.
+</span></span><span style="display:flex;"><span>3. Produce a revised design in the same format (REUSE, CREATE,
+</span></span><span style="display:flex;"><span>   MODIFY, DATA FLOW, CONVENTIONS, TOUCH POINTS).
+</span></span><span style="display:flex;"><span>4. Add a REVISION NOTES section at the top listing what you
+</span></span><span style="display:flex;"><span>   changed and why.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">After</span> <span style="color:#a6e22e">affected</span> <span style="color:#a6e22e">designers</span> <span style="color:#a6e22e">return</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">re-run</span> <span style="color:#a6e22e">both</span> <span style="color:#a6e22e">review</span> <span style="color:#a6e22e">layers</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">requirements</span> <span style="color:#a6e22e">validators</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">revised</span> <span style="color:#a6e22e">tasks</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">the</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">consistency</span> <span style="color:#a6e22e">reviewer</span> <span style="color:#a6e22e">across</span> <span style="color:#a6e22e">all</span> <span style="color:#a6e22e">designs</span> <span style="color:#a6e22e">including</span> <span style="color:#a6e22e">revised</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ones</span><span style="color:#960050;background-color:#1e0010">).</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Design retry complete.
+</span></span><span style="display:flex;"><span>- Requirements validation: {N} MEETS_REQUIREMENTS,
+</span></span><span style="display:flex;"><span>  {M} GAPS_FOUND
+</span></span><span style="display:flex;"><span>- Consistency: {CONSISTENT or CONFLICTS_FOUND}
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">If</span> <span style="color:#a6e22e">still</span> <span style="color:#a6e22e">failing</span> <span style="color:#a6e22e">after</span> <span style="color:#a6e22e">round</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">attach</span> <span style="color:#a6e22e">unresolved</span> <span style="color:#a6e22e">issues</span> <span style="color:#a6e22e">as</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">warnings</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">task</span> <span style="color:#a6e22e">descriptions</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>⚠ Unresolved design issues after 2 rounds — attaching as
+</span></span><span style="display:flex;"><span>warnings to task descriptions.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">One</span> <span style="color:#a6e22e">retry</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">not</span> <span style="color:#a6e22e">two</span> <span style="color:#a6e22e">like</span> <span style="color:#a6e22e">Phase</span> <span style="color:#a6e22e">3</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">because</span> <span style="color:#a6e22e">gaps</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">conflicts</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">are</span> <span style="color:#a6e22e">factual</span> <span style="color:#960050;background-color:#1e0010">—</span> <span style="color:#a6e22e">once</span> <span style="color:#a6e22e">identified</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">fix</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">mechanical</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Step 5 — Attach designs to task descriptions**</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Store</span> <span style="color:#a6e22e">each</span> <span style="color:#a6e22e">design</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">interpolation</span> <span style="color:#a6e22e">into</span> <span style="color:#a6e22e">Phase</span> <span style="color:#a6e22e">5</span> <span style="color:#a6e22e">task</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">descriptions</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Tasks</span> <span style="color:#a6e22e">that</span> <span style="color:#a6e22e">were</span> <span style="color:#a6e22e">skipped</span> <span style="color:#a6e22e">by</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">skip</span> <span style="color:#a6e22e">heuristic</span> <span style="color:#a6e22e">get</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">minimal</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">inline</span> <span style="color:#a6e22e">design:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Follow existing patterns in {file}.  No cross-task
+</span></span><span style="display:flex;"><span>coordination needed.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Implementation designs finalised.  Proceeding to team
+</span></span><span style="display:flex;"><span>creation.
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Phase 5: Create the Team
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Print</span> <span style="color:#a6e22e">status:</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>Creating team and tasks...
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> <span style="color:#a6e22e">Use</span> <span style="color:#e6db74">`TeamCreate`</span> <span style="color:#a6e22e">with</span> <span style="color:#a6e22e">name</span> <span style="color:#e6db74">`adversarial-{timestamp}`</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">e</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">g</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#e6db74">`adversarial-1708444800`</span><span style="color:#960050;background-color:#1e0010">).</span>  <span style="color:#a6e22e">Store</span> <span style="color:#a6e22e">team</span> <span style="color:#a6e22e">name</span> <span style="color:#a6e22e">as</span> <span style="color:#e6db74">`{TEAM}`</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> <span style="color:#a6e22e">Use</span> <span style="color:#e6db74">`TaskCreate`</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">each</span> <span style="color:#a6e22e">implementation</span> <span style="color:#a6e22e">task</span><span style="color:#960050;background-color:#1e0010">.</span>  <span style="color:#a6e22e">Each</span> <span style="color:#a6e22e">task</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#a6e22e">description</span> <span style="color:#a6e22e">must</span> <span style="color:#a6e22e">include:</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">exact</span> <span style="color:#a6e22e">original</span> <span style="color:#a6e22e">requirement</span> <span style="color:#a6e22e">text</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">project</span> <span style="color:#a6e22e">path</span> <span style="color:#e6db74">`{PROJECT}`</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">affected</span> <span style="color:#a6e22e">files</span> <span style="color:#a6e22e">from</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">arbitrated</span> <span style="color:#a6e22e">breakdown</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> <span style="color:#a6e22e">If</span> <span style="color:#e6db74">`{URL}`</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">set:</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">URL</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">visual</span> <span style="color:#a6e22e">verification</span> <span style="color:#a6e22e">context</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> <span style="color:#a6e22e">The</span> <span style="color:#a6e22e">implementation</span> <span style="color:#a6e22e">design</span> <span style="color:#a6e22e">section</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">from</span> <span style="color:#a6e22e">Phase</span> <span style="color:#a6e22e">4</span><span style="color:#960050;background-color:#1e0010">)</span><span style="color:#a6e22e">:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#960050;background-color:#1e0010">``</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   ## Implementation Design (follow this)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   {designer output for this task}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Cross-task constraints:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   {consistency reviewer findings affecting this task,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   or &#34;None&#34; if no conflicts}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   You MUST follow the signatures, patterns, and conventions
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   specified above.  If you believe the design is wrong after
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   reading the code, message the team lead BEFORE deviating.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Do not silently choose a different approach.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">3. Use `</span><span style="color:#a6e22e">TaskCreate</span><span style="color:#e6db74">` for each review task (one per implementation
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   task).  Each review task:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - References the corresponding requirement
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - Uses `</span><span style="color:#a6e22e">addBlockedBy</span><span style="color:#e6db74">` pointing to the corresponding
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     implementation task ID
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">4. Use `</span><span style="color:#a6e22e">TaskUpdate</span><span style="color:#e6db74">` to pre-assign implementation tasks to named
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   implementers per the arbitrated breakdown (set `</span><span style="color:#a6e22e">owner</span><span style="color:#e6db74">` to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#a6e22e">implementer-N</span><span style="color:#e6db74">`).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">5. For sequential chains from the breakdown, use `</span><span style="color:#a6e22e">addBlockedBy</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   on the dependent implementation tasks so they execute in
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   order.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">### Phase 6: Spawn Teammates
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Print status:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Spawning {X} implementers...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Reviewer agents are spawned per-task in Phase 7, not here.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Spawn all implementers in a single message using multiple
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#a6e22e">Task</span><span style="color:#e6db74">` tool calls in parallel.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#### Each Implementer
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#a6e22e">subagent_type:</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">general-purpose</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#e6db74">`,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#a6e22e">team_name:</span> <span style="color:#960050;background-color:#1e0010">&#34;{</span><span style="color:#a6e22e">TEAM</span><span style="color:#960050;background-color:#1e0010">}&#34;</span><span style="color:#e6db74">`,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#a6e22e">name:</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">implementer-N</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Each implementer&#39;s prompt:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">You are an implementer on an adversarial team.  Your work will
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">be torn apart by a dedicated reviewer — implement to a high
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">standard.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Project path: {PROJECT}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Your task description includes an Implementation Design
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">section.  This was produced by a design agent and verified
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">for cross-task consistency.  Follow it.  If you find it is
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">incorrect or incomplete after reading the code, message the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">team lead before deviating — do not silently choose a
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">different approach.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Workflow for each task:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">1. Check TaskList for tasks owned by you.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">2. Claim the first available task (TaskUpdate with status:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   &#34;in_progress&#34;).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">3. Read and understand the relevant code.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">4. Implement the change.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">5. Lint: run the project&#39;s linter on the files you changed
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   (e.g. `</span><span style="color:#a6e22e">cargo</span> <span style="color:#a6e22e">clippy</span><span style="color:#e6db74">` for Rust, `</span><span style="color:#a6e22e">npm</span> <span style="color:#a6e22e">run</span> <span style="color:#a6e22e">lint</span><span style="color:#e6db74">` for JS/TS).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Fix any errors or warnings before proceeding.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">6. Run tests you added: if you wrote or modified unit tests,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   run them (e.g. `</span><span style="color:#a6e22e">cargo</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">-p</span> <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">crate</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#e6db74">`, `</span><span style="color:#a6e22e">npm</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">--</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">file</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#e6db74">`).  Only run tests relevant to your changes — not
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   the full suite.  Fix any failures before proceeding.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">7. Self-check: invoke /do-and-judge on your implementation.  The
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   judge must give a VERDICT of PASS (score &gt;= 4.0/5.0) before
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   you proceed.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">8. If VERDICT is FAIL: fix the issues identified and re-run
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   /do-and-judge.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">9. If /do-and-judge fails twice on the same task (score &lt; 4.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   both times), message the reviewer to discuss the requirement
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   before retrying.  Wait for their response.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10. Only after VERDICT: PASS — mark the task as completed
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    (TaskUpdate with status: &#34;completed&#34;).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">11. Check TaskList for your next task.  Repeat.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Rules:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- NEVER mark a task complete without a passing /do-and-judge
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  verdict (SCORE &gt;= 4.0/5.0).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- NEVER mark a task complete if linting fails or if tests you
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  added are failing.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Work only on tasks assigned to you.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- After all your tasks are done, notify the team lead.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- If during implementation you identify a clear improvement
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  (e.g. a bug, dead code, missing error handling) in the files
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  you&#39;re already touching, make the fix inline.  Do not suggest
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  improvements — implement them.  Include them in your
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  /do-and-judge self-check.  Do not scope-creep into unrelated
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  files.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">### Phase 7: Monitor and Shutdown
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After spawning, report to the user:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Team is running:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- {X} implementers working on {N} tasks
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Reviewers: spawned fresh per review task
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Visual verification: {URL or &#34;disabled&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Task breakdown was arbitrated from 2 independent codebase
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">analyses.  Status updates every ~60s.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Then let the team run.  Your responsibilities:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">1. **Periodic status polling**: every ~60 seconds, check
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#a6e22e">TaskList</span><span style="color:#e6db74">` and print a summary:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Status update ({elapsed} elapsed):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - implementer-1: Task 2 &#34;Add auth middleware&#34; — in_progress
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - implementer-2: Task 1 &#34;Create settings page&#34; — completed
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - reviewer (task 1): Review 1 — pending (blocked by Task 2)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">2. **Auto-nudge idle agents**: during each polling cycle, check
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   for tasks that are unblocked (no pending `</span><span style="color:#a6e22e">blockedBy</span><span style="color:#e6db74">`) but
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   still `</span><span style="color:#a6e22e">pending</span><span style="color:#e6db74">` with an assigned owner, or unblocked but
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   unclaimed.  If found, send a message to the relevant
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   teammate: &#34;Task N is now unblocked and ready for you.&#34;  For
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   unclaimed tasks, assign them to an available implementer and
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   nudge.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">3. **Spawn fresh reviewer per review task**: when a review task
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   becomes unblocked (its implementation task completed), spawn
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   a fresh `</span><span style="color:#a6e22e">Task</span><span style="color:#e6db74">` agent with `</span><span style="color:#a6e22e">subagent_type:</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">general-purpose</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#e6db74">`,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#a6e22e">team_name:</span> <span style="color:#960050;background-color:#1e0010">&#34;{</span><span style="color:#a6e22e">TEAM</span><span style="color:#960050;background-color:#1e0010">}&#34;</span><span style="color:#e6db74">`, and `</span><span style="color:#a6e22e">name:</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">reviewer-task-</span><span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">N</span><span style="color:#960050;background-color:#1e0010">}&#34;</span><span style="color:#e6db74">`.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   The reviewer prompt includes:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   You are the adversarial reviewer for a single task.  Your
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   job is to find flaws.  You are not here to help the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   implementer — you are here to catch problems.  Be thorough
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   and adversarial.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Project path: {PROJECT}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Visual verification URL: {URL or &#34;none&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Reference images (from user&#39;s original requirements):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   {REFERENCE_IMAGES or &#34;none&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   If reference images are listed above, Read each file and
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   compare the implementation against them.  These are the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   user&#39;s design intent — use them as the ground truth for
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   visual correctness.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Original requirement:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   {requirement text for this task}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Task description: {task description}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Affected files: {file list from breakdown}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Your review task ID: {review task ID}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Print status before each step so the user can see
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   progress in your terminal.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Workflow:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   1. Claim the review task (TaskUpdate with status:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;in_progress&#34;, owner: &#34;reviewer-task-{N}&#34;).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Reviewing task {N}: {short requirement summary}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   2. Read the code changes: use git diff or read the modified
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      files directly.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Code review complete — read {count} files&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   3. Run relevant tests: run the tests for the areas affected
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      by this task (e.g. `</span><span style="color:#a6e22e">cargo</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">-p</span> <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">crate</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#e6db74">`, `</span><span style="color:#a6e22e">npm</span> <span style="color:#a6e22e">test</span> <span style="color:#a6e22e">--</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">path</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#e6db74">`).  Only run tests relevant to the affected files
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      — not the full suite.  Record the results: pass count,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      fail count, any failures.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Tests: {pass} passed, {fail} failed&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   4. Requirements checklist: decompose the original
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      requirement into every individual, verifiable claim
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      (e.g. &#34;text on one line&#34;, &#34;uses auth middleware&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;returns 404 on missing ID&#34;).  For each claim:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      a. State the claim.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      b. Find the specific code (file:line) or output
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         that satisfies it.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      c. Mark it: MET (with evidence) or NOT MET (with
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         what you found instead).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print the checklist:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;Requirements checklist:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       ✅ {claim} — {file:line or evidence}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       ❌ {claim} — found: {what&#39;s actually there}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       ...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      If ANY claim is NOT MET, you must FAIL the review
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      in your final verdict — do not defer to /critique
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      to catch it.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   5. If a visual verification URL is set:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Navigating to {URL} for visual verification...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      a. Ensure the output directory exists and verify the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         server is running.  Run via Bash:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         mkdir -p {PROJECT}/.adversarial-review &amp;&amp; \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         curl -s -o /dev/null -w &#34;%{http_code}&#34; {URL}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         If the status is not 200, print:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &#34;Server not responding at {URL} (HTTP {code})&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         and skip visual verification.  Note this in the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         review report as a blocker.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      b. Take screenshots at 1280px and 768px viewport widths.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Try each method in order until one succeeds:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Method 1 — puppeteer via npx (most reliable):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         cd {PROJECT} &amp;&amp; npx puppeteer screenshot {URL} \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           --viewport 1280x720 --full-page \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           --output .adversarial-review/screenshot-1280.png
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Method 2 — playwright CLI:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         npx -y playwright screenshot {URL} \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           --viewport-size=1280,720 --full-page \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           {PROJECT}/.adversarial-review/screenshot-1280.png
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Method 3 — inline node script (if puppeteer is a
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         project dependency):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         cd {PROJECT} &amp;&amp; node -e &#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         const p = require(&#39;puppeteer&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         (async () =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           const b = await p.launch({
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">             headless: &#39;new&#39;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">             args: [&#39;--no-sandbox&#39;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           });
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           const pg = await b.newPage();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           await pg.setViewport({width:1280, height:720});
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           await pg.goto(&#39;${URL}&#39;, {waitUntil:&#39;networkidle2&#39;});
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           await pg.screenshot({
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">             path:&#39;.adversarial-review/screenshot-1280.png&#39;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">             fullPage:true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           });
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           await b.close();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         })();
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Once a method works, use the same method for the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         768px screenshot (change width to 768, filename to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         screenshot-768.png).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         If ALL methods fail, print the error and note in
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         the review report:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &#34;Visual screenshots FAILED — no browser automation
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         tool available.  Install puppeteer or playwright.&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Continue the review without screenshots but flag
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         this as a gap in the Visual Verification section.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Print after each successful screenshot:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         &#34;Screenshot captured: {width}px viewport&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      d. Read the screenshot image files using the Read tool.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Compare both screenshots against the original
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         requirement.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Print: &#34;Visual comparison against requirement complete&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      e. If reference images exist, for each image:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Print: &#34;Reading reference image: {path}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Read the image file.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Print: &#34;Comparing reference image against live
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         screenshot...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         Compare the reference image against the live
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         screenshots.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   6. Run /critique on the changes to get a multi-judge
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      assessment.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print before: &#34;Running /critique...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print after: &#34;Critique complete — verdict: {verdict}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   7. Write your review report.  The report MUST contain ALL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      of the following sections regardless of PASS or FAIL.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Missing sections = incomplete review = you must redo it.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Writing review report...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ## Review Report: Task {N}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Requirement
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Quote the original requirement text verbatim.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Code Review Findings
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      List each file you read.  For each, note what changed
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      and whether it addresses the requirement.  If you found
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      edge cases, regressions, or issues, list them.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Requirements Checklist
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      For each verifiable claim extracted from the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      requirement, state the claim, the evidence
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      (file:line), and whether it is MET or NOT MET.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Test Results
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      List the test command(s) run, pass/fail counts, and
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      any failure details.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### /critique Results
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Paste the /critique verdict AND the key points from
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      each judge.  Do not summarise — include the actual
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      output.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Visual Verification (if URL or reference images)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      For each screenshot taken, describe:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - The viewport width
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - What you observed on screen
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - How it compares to the requirement / reference image
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      If reference images were provided, explicitly state
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      what matches and what differs.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ### Verdict: PASS or FAIL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      State your verdict.  If FAIL, list each specific gap
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      between requirement and implementation.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Print: &#34;Verdict: PASS ✓&#34; or
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">             &#34;Verdict: FAIL ✗ — {count} issue(s)&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   8. Send the full review report to the team lead via
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      SendMessage.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   9. Then update the task:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - PASS → mark review task completed.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - FAIL → message the implementer with the specific
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        issues from your report.  Notify the team lead that
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        a re-review will be needed after the fix.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Rules:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - NEVER approve without both code review AND running
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     /critique.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - NEVER approve if /critique verdict is &#34;Requires
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     significant rework&#34;.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - NEVER approve if any item in the requirements
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     checklist is NOT MET.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - NEVER approve if relevant tests are failing.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - If a visual verification URL is set: NEVER approve
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     without visual verification via screenshots at both
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     viewport widths.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - Be adversarial — actively try to break the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     implementation, check edge cases, check for regressions
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     in surrounding code.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - Only screenshot {URL} — no other URLs.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - If an implementer messages you to discuss a requirement
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     (because their /do-and-judge failed twice), engage
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     genuinely — help clarify, but do not lower your review
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     standards.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - Your review report is your proof of work.  Every claim
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     must be backed by specifics: file paths, line numbers,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     screenshot descriptions, /critique output.  &#34;Looks good&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     is never sufficient.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   - If reference images were provided, you MUST Read them
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     and compare against the live screenshots.  State what
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     matches and what does not.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   When a reviewer sends you its review report:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   **Validate the report before accepting PASS.**  Check that
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   it contains all required sections: Requirement, Code Review
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Findings, Requirements Checklist, Test Results, /critique
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Results, Visual
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Verification (if URL or reference images were provided),
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   and Verdict.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   If any section is missing or says something like &#34;verified&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   without specifics, message the reviewer:  &#34;Your review
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   report is incomplete — section {X} is missing or lacks
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   detail.  Please redo the review.&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Only count the review task as successfully completed once
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   the report passes validation.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   If a reviewer FAILs the implementation, wait for the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   implementer to fix it, then spawn a **new** fresh reviewer
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   agent for the re-review (do not reuse the previous one).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   Track the review cycle count per task.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">4. **Respond to teammate messages** as they arrive.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">5. **Deadlock detection**: if a task goes through 3+ review
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   cycles (3 fresh reviewer spawns), intervene.  Use
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   `</span><span style="color:#a6e22e">AskUserQuestion</span><span style="color:#e6db74">` to ask the user for guidance on the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   contested requirement.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">6. **When all review tasks are completed**:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   a. Send `</span><span style="color:#a6e22e">shutdown_request</span><span style="color:#e6db74">` to every active teammate.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   b. Wait for all shutdown confirmations.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   c. Use `</span><span style="color:#a6e22e">TeamDelete</span><span style="color:#e6db74">` to clean up.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   d. Present a final summary to the user:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">All tasks complete.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Summary:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Tasks completed: {N}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Review cycles per task:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - Task 1 ({description}): {cycles} cycle(s)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - Task 2 ({description}): {cycles} cycle(s)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  ...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Issues escalated to user: {count or &#34;none&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Visual verification: {performed/skipped}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Inline improvements by implementers: {count or &#34;none&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">`</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">## Notes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Phase 3 (adversarial task breakdown) is not optional, even for
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  a single requirement.  The two-planner + arbitrator pattern
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  catches coupling that a single analysis might miss.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- The re-arbitration loop (Step 2a) runs at most 2 retries
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  (3 total rounds).  If confidence remains &lt; 4 after all rounds,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  the breakdown proceeds with a warning.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Phase 4 (implementation design) has a skip heuristic for
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  trivial tasks (single-file, independent, no shared files).
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  The design retry loop runs at most 1 retry (2 total rounds)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  because gaps and conflicts are factual, not ambiguous.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  Requirements validators and the consistency reviewer run in
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  parallel since they address independent concerns.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- The breakdown is always printed and execution proceeds
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  automatically.  Deadlock escalation (Phase 7) still uses
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  `</span><span style="color:#a6e22e">AskUserQuestion</span><span style="color:#e6db74">`.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- `</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">do-and-judge</span><span style="color:#e6db74">` is the first adversarial layer (implementer
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  self-check).  Pass threshold is SCORE &gt;= 4.0/5.0.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- `</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">critique</span><span style="color:#e6db74">` is the second adversarial layer (reviewer external
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  check).  Block threshold is verdict &#34;Requires significant
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  rework&#34;.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- If `</span><span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">URL</span><span style="color:#960050;background-color:#1e0010">}</span><span style="color:#e6db74">` is provided, visual verification with puppeteer
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  screenshots is the third layer.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Reviewers are spawned fresh per review task (Phase 7, not
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  Phase 6).  This avoids context window bloat across multiple
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  reviews.  Each reviewer gets the original requirement text,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  task description, and full instructions — no accumulated
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  context from prior reviews.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- The reviewer can message implementers directly via the team —
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  this enables real back-and-forth debate, not just pass/fail
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  verdicts.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Agents spawn into their own panes.  The ~60-second status
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  polling keeps the orchestrator informed of progress.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Implementers are expected to fix obvious improvements (bugs,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  dead code, missing error handling) in files they already
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  touch, without scope-creeping into unrelated files.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- The reviewer must send a structured review report to the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  team lead for every verdict (PASS or FAIL).  The
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  orchestrator validates report completeness before
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  accepting a PASS — this prevents rubber-stamp approvals.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- If the user pastes images with their requirements, they
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  are saved to `</span><span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">PROJECT</span><span style="color:#960050;background-color:#1e0010">}/.</span><span style="color:#a6e22e">adversarial-review</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#e6db74">` in Phase 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  and passed to reviewers as `</span><span style="color:#960050;background-color:#1e0010">{</span><span style="color:#a6e22e">REFERENCE_IMAGES</span><span style="color:#960050;background-color:#1e0010">}`</span> <span style="color:#a6e22e">for</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">comparison</span><span style="color:#960050;background-color:#1e0010">.</span>
+</span></span></code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        <div class="comments">
+  <script>
+
+    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
+    let themeInParams = '';
+
+    if (getTheme == null) {
+      if (themeInParams !== '' && themeInParams !== 'auto') {
+        getTheme = themeInParams;
+      }
+      else {
+        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+      }
+    }
+
+    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
+    let s = document.createElement('script');
+    s.src = 'https://utteranc.es/client.js';
+    s.setAttribute('repo', 'tarquin-the-brave\/blog');
+    s.setAttribute('issue-term', 'pathname');
+    s.setAttribute('theme', theme);
+    s.setAttribute('crossorigin', 'anonymous');
+    s.setAttribute('async', '');
+    document.querySelector('div.comments').innerHTML = '';
+    document.querySelector('div.comments').appendChild(s);
+
+  </script>
+</div>
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2026
+     Tom Steavenson 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="http://localhost:1313/blog/js/coder.js"></script>
+  
+
+  
+  
+  
+  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

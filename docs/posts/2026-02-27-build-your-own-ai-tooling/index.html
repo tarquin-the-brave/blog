@@ -1,0 +1,98 @@
+<!doctype html><html lang=en><head><title>Build Your Own AI Tooling · tarquin-the-brave
+</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="Tom Steavenson"><meta name=description content="The experience of adopting AI agents, Claude Code in my case, appears to
+be one of:
+Install Claude Code.  Use it directly.  This works OK for small, one-off,
+tasks.  But then you hit a limit on the complexity it can deal with, it runs out
+of context, you have to repeatedly remind it to do and not do things a certain
+way.
+In steps &ldquo;Context Engineering&rdquo; and all manner of layers of CLAUDE.md files,
+skills, hooks, and frameworks to orchestrate &ldquo;sub agents&rdquo; and &ldquo;agent teams&rdquo;.
+These allow you to not have to manually manage the context window, encode
+behaviours that you want repeated (or not repeated), ultimately allowing it
+to take on larger, more complex tasks without constant supervision."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Build Your Own AI Tooling"><meta name=twitter:description content="The experience of adopting AI agents, Claude Code in my case, appears to be one of:
+Install Claude Code. Use it directly. This works OK for small, one-off, tasks. But then you hit a limit on the complexity it can deal with, it runs out of context, you have to repeatedly remind it to do and not do things a certain way.
+In steps “Context Engineering” and all manner of layers of CLAUDE.md files, skills, hooks, and frameworks to orchestrate “sub agents” and “agent teams”. These allow you to not have to manually manage the context window, encode behaviours that you want repeated (or not repeated), ultimately allowing it to take on larger, more complex tasks without constant supervision."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="Build Your Own AI Tooling"><meta property="og:description" content="The experience of adopting AI agents, Claude Code in my case, appears to be one of:
+Install Claude Code. Use it directly. This works OK for small, one-off, tasks. But then you hit a limit on the complexity it can deal with, it runs out of context, you have to repeatedly remind it to do and not do things a certain way.
+In steps “Context Engineering” and all manner of layers of CLAUDE.md files, skills, hooks, and frameworks to orchestrate “sub agents” and “agent teams”. These allow you to not have to manually manage the context window, encode behaviours that you want repeated (or not repeated), ultimately allowing it to take on larger, more complex tasks without constant supervision."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-02-27T10:58:25+00:00"><meta property="article:modified_time" content="2026-02-27T10:58:25+00:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.5e94c1acf7aa2066035cf2764ae3e4fe39db101d68b870f919966100d51fb861.css integrity="sha256-XpTBrPeqIGYDXPJ2SuPk/jnbEB1ouHD5GZZhANUfuGE=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/>Build Your Own AI Tooling</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2026-02-27T10:58:25Z>February 27, 2026
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+6-minute read</span></div></div></header><div class=post-content><p>The experience of adopting AI agents, Claude Code in my case, appears to
+be one of:</p><p>Install Claude Code. Use it directly. This works OK for small, one-off,
+tasks. But then you hit a limit on the complexity it can deal with, it runs out
+of context, you have to repeatedly remind it to do and not do things a certain
+way.</p><p>In steps &ldquo;Context Engineering&rdquo; and all manner of layers of <code>CLAUDE.md</code> files,
+skills, hooks, and frameworks to orchestrate &ldquo;sub agents&rdquo; and &ldquo;agent teams&rdquo;.
+These allow you to not have to manually manage the context window, encode
+behaviours that you want repeated (or not repeated), ultimately allowing it
+to take on larger, more complex tasks without constant supervision.</p><p>And you can install these off of the internet. You&rsquo;re just one <code>npm install</code>
+away from having your Claude behave in a different way - maybe it&rsquo;s even the
+way you wanted it to behave. <a href=https://www.aitmpl.com/skills class=external-link target=_blank rel=noopener>Claude Code Templates</a> and <a href=https://cek.neolab.finance/ class=external-link target=_blank rel=noopener>Context
+Engineering Kit</a> being examples of rich repositories of downloadable
+doohickies.</p><p>Of course there&rsquo;s a security problem with this. Like installing anything off
+the internet to run on your machine (it&rsquo;s extraordinary how many projects&rsquo; install
+instructions are <code>curl ... | sh</code>&mldr;), it&rsquo;s very worth reading the files that
+were installed before you run them. And it&rsquo;s easier to do so with these things
+as they generally comprise markdown files and the odd script in Python or JS.</p><p>You can pretty quickly install stuff, and away you go.</p><hr><p>I did this. It seemed to work quite nicely for a bit. Then at some point
+there&rsquo;s something you don&rsquo;t like about the way it&rsquo;s working, so you ask Claude
+to edit the skill. Although I found things never worked as reliably as I&rsquo;d
+hoped, and as I&rsquo;d just installed them off internet I didn&rsquo;t really know how
+or why they were getting, or not getting, the results they purport to.</p><p>The fact that you can &ldquo;ask claude to edit the skill&rdquo; presents an alternative
+approach of &ldquo;work with claude to develop a skill or framework&rdquo;, &ldquo;test it and
+iteratively improve it yourself&rdquo;.</p><p>After all, how do you think all those installable hooks and skills and
+frameworks that you can install got made? My bet would be people working with
+their AI agent to generate them, and as soon as it sort of appears to be doing
+something useful - share it. This is precisely what I did with the skill I
+shared in <a href=https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/ class=external-link target=_blank rel=noopener>my last post</a>. I tested and refined it for a couple of hours.
+Once I was content it was more useful than nothing, I shared it.</p><p>Then after a while all the things you&rsquo;ve installed build up, start eating your
+context window, and you need to go through and clear things out.</p><p>Also new model versions arrive, and the foundations these layers are built on,
+the behaviours that they are there to corral, the shortcomings they are there
+to address, change. I&rsquo;ve seen this first-hand this year - when Claude Code&rsquo;s
+&ldquo;plan mode&rdquo; got an upgrade, I found myself uninstalling frameworks for planning
+out work.</p><p>Also I watched a good <a href="https://www.youtube.com/watch?v=GcNu6wrLTJc" class=external-link target=_blank rel=noopener>youtube video</a> recently that linked to a <a href=https://arxiv.org/pdf/2602.11988 class=external-link target=_blank rel=noopener>couple</a>
+of <a href=https://arxiv.org/pdf/2602.12670 class=external-link target=_blank rel=noopener>papers</a> that suggested these extra layers don&rsquo;t always work that well.</p><p>I&rsquo;ve recently been &ldquo;building my own skills&rdquo; a lot more. It takes a bit longer
+to go from &ldquo;zero to one&rdquo;. In the skills I&rsquo;ve tried to build it&rsquo;s taken a few
+iterations of adjusting it and testing to get what I&rsquo;m looking for. But at the
+same time it&rsquo;s helped me understand what&rsquo;s going on beyond &ldquo;install this and
+now claude behaves differently&rdquo;.</p><hr><p>There&rsquo;s an analogy I see with how we understand programming. Something I&rsquo;ve
+long advised engineers to do is to find a rainy Sunday and try to write your
+own hashmap. Either approach it from a position of total naivety - just start
+trying to implement something based on what you currently understand, and
+discover the nuances as you go (the better approach IMO); or do some reading
+before you start. Whatever you make or get stuck making, you&rsquo;d never want to
+use that in production. But going through that exercise of exploring how a
+fundamental data structure that you use every day might work, is very
+enlightening.</p><p>I think the same is true for these layers of AI tooling.</p><p>What&rsquo;s different, in the case of a hashmap, is that the standard library
+(or otherwise) hashmap that you <em>would</em> use in production, is most likely
+<em>extremely</em> well tested, optimised, and security hardened. I don&rsquo;t think any
+of this shit that we can install off the internet to plug into claude is by
+any means &ldquo;well tested, optimised and security hardened&rdquo;.</p><p>So why not build it all yourself? You&rsquo;ll understand more about how things
+work, you&rsquo;ll get something that is built for your use case, and with a bit of
+testing and iteration you&rsquo;ll get something that is near enough as (not) robust
+and (not) optimised as any of the things you can install off the internet.</p><hr><p>I think also we&rsquo;re in a unique time where this is a good thing to do.</p><p>I see two possible futures.</p><p>One possibility is the agents and models improve, and incorporate the things
+that these skills, hooks, frameworks, are attempting to achieve, as default
+behaviour. They can work on increasingly complex problems, without doing
+dumb shit. They better manage their context windows, deploying the right
+strategy for doing so depending on what you&rsquo;re trying to achieve. Out of the
+box they can infer what workflow they need to achieve what you want to
+achieve, and all of these layers we&rsquo;re adding over the top become unnecessary.
+The incentive is there for this. If one company&rsquo;s agent works pretty well
+out of the box, no config, no plugins, whereas another needs a specific
+menagerie of things installed off the internet plugged into it to get it to
+complete tasks successfully, I know which one I&rsquo;ll pick.</p><p>In which case we can delete all these layers we&rsquo;re adding in.</p><p>Or, this doesn&rsquo;t happen, and agents will continue to need lots of orchestration,
+configuring, context management, and general corralling to deliver good results.
+Then there would be the incentive for companies or someone to put the time and
+effort into really testing and hardening and optimising these layers and
+delivering them in a way you could install and get reliably good results out of
+the box - good enough that you&rsquo;d be willing to pay for it. It seems that
+attempts at this are already happening. I wouldn&rsquo;t pay for it yet though as the
+foundations of the models&rsquo; and agents&rsquo; behaviours that these build on appear to
+be changing too fast.</p><p>In which case we can delete all these layers we&rsquo;re adding in.</p><p>So while we&rsquo;re in this state of: extra layers being needed, and what you can
+build yourself with a small amount of effort is just about as good as what
+you can install off the internet - why not have fun with trying to build this
+stuff yourself?</p></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+Tom Steavenson
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script></body></html>

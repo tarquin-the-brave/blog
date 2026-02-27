@@ -4,7 +4,7 @@ date = 2026-02-27T10:58:25Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 The experience of adopting AI agents, Claude Code in my case, appears to
@@ -140,5 +140,4 @@ stuff yourself?
 [yt]: https://www.youtube.com/watch?v=GcNu6wrLTJc
 [c]: https://arxiv.org/pdf/2602.11988
 [p]: https://arxiv.org/pdf/2602.12670
-[mlp]:
-
+[mlp]: https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/

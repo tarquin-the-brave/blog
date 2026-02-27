@@ -4,7 +4,7 @@ date = 2026-02-27T14:07:37Z
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 I had the situation recently when I was working directly in Claude Code.  I'd

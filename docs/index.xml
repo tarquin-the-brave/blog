@@ -1,266 +1,181 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/</link><description>Recent content on tarquin-the-brave</description><generator>Hugo</generator><language>en</language><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Fri, 27 Feb 2026 14:07:37 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Adversarial Agent Teams</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-02-27-adversarial-agent-teams/</link><pubDate>Fri, 27 Feb 2026 14:07:37 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-02-27-adversarial-agent-teams/</guid><description>&lt;p>I had the situation recently when I was working directly in Claude Code. I&amp;rsquo;d
-got some feedback points for minor tweaks to make to a frontend implementation
-I was working on, so thinking these were each pretty small and simple things
-to resolve, I pasted the list of them into Claude Code and asked it to deal with
-it.&lt;/p>
-&lt;p>This didn&amp;rsquo;t go very well&amp;hellip; It fixed the first point. Then ignored the rest
-and said it was done. I had to then hand-hold it through each point. It
-kept claiming things were fixed when they weren&amp;rsquo;t. It took a lot of iterations
-to apply the changes - which were all cosmetic changes.&lt;/p></description></item><item><title>Build Your Own AI Tooling</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/</link><pubDate>Fri, 27 Feb 2026 10:58:25 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/</guid><description>&lt;p>The experience of adopting AI agents, Claude Code in my case, appears to
-be one of:&lt;/p>
-&lt;p>Install Claude Code. Use it directly. This works OK for small, one-off,
-tasks. But then you hit a limit on the complexity it can deal with, it runs out
-of context, you have to repeatedly remind it to do and not do things a certain
-way.&lt;/p>
-&lt;p>In steps &amp;ldquo;Context Engineering&amp;rdquo; and all manner of layers of &lt;code>CLAUDE.md&lt;/code> files,
-skills, hooks, and frameworks to orchestrate &amp;ldquo;sub agents&amp;rdquo; and &amp;ldquo;agent teams&amp;rdquo;.
-These allow you to not have to manually manage the context window, encode
-behaviours that you want repeated (or not repeated), ultimately allowing it
-to take on larger, more complex tasks without constant supervision.&lt;/p></description></item><item><title>Learning From Your Claude History</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/</link><pubDate>Sun, 15 Feb 2026 16:19:40 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/</guid><description>&lt;p>I read this article from Anthropic: &lt;a href="https://www.anthropic.com/research/AI-assistance-coding-skills" class="external-link" target="_blank" rel="noopener">&amp;ldquo;How AI assistance impacts the formation
-of coding skills&amp;rdquo;&lt;/a>.
-It got me a bit concerned. Are we heading towards a crisis of understanding?&lt;/p>
-&lt;p>But then I thought about conversations I&amp;rsquo;ve had with colleagues recently. Especially
-around &amp;ldquo;is this the end for Junior Engineers?&amp;rdquo;. I don&amp;rsquo;t think it is. Mostly because
-I don&amp;rsquo;t think the arrival of AI assistance, Agents, into our engineering toolkit has
-represented any &lt;em>fundamental&lt;/em> change, but instead a large leap forward in a direction
-we were already heading.&lt;/p></description></item><item><title>An Underrated Engineering Skill</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-an_underrated_engineering_skill/</link><pubDate>Fri, 09 Jan 2026 12:06:50 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-an_underrated_engineering_skill/</guid><description>&lt;p>Spoilers:&lt;/p>
-&lt;blockquote>
-&lt;p>How well you build on top of other people&amp;rsquo;s work.&lt;/p>&lt;/blockquote>
-&lt;p>A few years ago I was at Microsoft. Their performance reviews were based on
-what they called &amp;ldquo;three circles of impact&amp;rdquo;: your own output, how you support
-others, and how well you build on top of other people&amp;rsquo;s work. I hadn&amp;rsquo;t heard
-this way of thinking about it before. I liked it. The third one in particular
-stuck with me. It goes unnoticed and underrated.&lt;/p></description></item><item><title>Rust Perspectives for Experienced Engineers</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-rust_perspectives/</link><pubDate>Fri, 09 Jan 2026 11:11:59 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-rust_perspectives/</guid><description>&lt;p>About a year ago I joined a company. They&amp;rsquo;d brought me in as &amp;ldquo;someone with
-lots of Rust experience&amp;rdquo;. From the interviews I thought they&amp;rsquo;d have a few
-projects here and there in Rust. Turns out it was almost the entire stack for
-their new product. A lot of experienced folks from other languages were
-learning Rust for the first time while pushing to ship.&lt;/p>
-&lt;p>Watching how people write Rust when coming from other languages, I thought
-about what perspectives might be useful to share. Ways of seeing things that
-make Rust click a bit easier.&lt;/p></description></item><item><title>The Multi-Repo of Madness</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-multi-repo-of-madness/</link><pubDate>Thu, 08 Jan 2026 20:41:06 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-multi-repo-of-madness/</guid><description>&lt;p>I should confess upfront: I meant to write this post about four years ago and
-never got round to it. The tide has turned somewhat towards monorepos now,
-especially with AI-assisted coding making &amp;ldquo;grep the whole codebase&amp;rdquo; more
-valuable than ever. So this cautionary tale about going multi-repo is perhaps
-less relevant than it once was.&lt;/p>
-&lt;p>But still.&lt;/p>
-&lt;hr>
-&lt;p>A long time ago I worked at a company that traditionally built big monolithic
-products. Telecoms infrastructure, massive C servers, that sort of thing.&lt;/p></description></item><item><title>There's No Such Thing as an Error in Rust</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-no_errors_in_rust/</link><pubDate>Thu, 08 Jan 2026 20:08:21 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-no_errors_in_rust/</guid><description>&lt;p>Colleagues have heard me say this. Usually when we&amp;rsquo;re debugging something, or
-discussing error handling approaches, I&amp;rsquo;ll pipe up with:&lt;/p>
-&lt;blockquote>
-&lt;p>&amp;ldquo;Well, there&amp;rsquo;s no such thing as an error in Rust.&amp;rdquo;&lt;/p>&lt;/blockquote>
-&lt;p>It tends to get a raised eyebrow or two. So I&amp;rsquo;ll explain.&lt;/p>
-&lt;hr>
-&lt;h2 id="how-rust-handles-errors">
- How Rust Handles Errors
- &lt;a class="heading-link" href="#how-rust-handles-errors">
- &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
- &lt;span class="sr-only">Link to heading&lt;/span>
- &lt;/a>
-&lt;/h2>
-&lt;p>If you&amp;rsquo;re not familiar with Rust, here&amp;rsquo;s the quick version: Rust doesn&amp;rsquo;t have
-exceptions. Instead, operations that can fail return a &lt;code>Result&lt;/code> type.&lt;/p></description></item><item><title>yes, please clear my terminal</title><link>https://tarquin-the-brave.github.io/blog/posts/2022-02-19-yes-please-clear-my-terminal/</link><pubDate>Sat, 19 Feb 2022 15:00:48 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2022-02-19-yes-please-clear-my-terminal/</guid><description>&lt;p>We&amp;rsquo;ve all been there. You&amp;rsquo;ve been running some commands. You switch focus
-away from your terminal. You come back. And your terminal is full of crap
-you&amp;rsquo;re not interested in anymore. “Get this out of my sight”, you think.
-&lt;a href="https://man7.org/linux/man-pages/man1/clear.1.html" class="external-link" target="_blank" rel="noopener">&lt;code>clear&lt;/code>&lt;/a> you type.&lt;/p>
-&lt;p>Problem solved. Blog post over. Oh but wait! This doesn&amp;rsquo;t solve all my woes.&lt;/p>
-&lt;p>There&amp;rsquo;s another time when the ghosts of a command past can muddy your view.
-Say you&amp;rsquo;ve run some tests. There&amp;rsquo;s lots of output that you&amp;rsquo;ll need to scroll
-back through in case of a failure. You find the failure. You make a fix. You
-run the tests again. There&amp;rsquo;s another failure. So you scroll up, &lt;code>Ctrl A, [, PgUp&lt;/code> or however you do it. This second time it&amp;rsquo;s easy to miss where your most
-recent test output starts and where the old one ends.&lt;/p></description></item><item><title>A Thought on CLI Design</title><link>https://tarquin-the-brave.github.io/blog/posts/2021-03-27-a_thought_on_cli_design/</link><pubDate>Sat, 27 Mar 2021 09:00:00 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2021-03-27-a_thought_on_cli_design/</guid><description>&lt;p>Recently I was using a wrapper around a CLI tool. It does what you might
-expect a CLI wrapper to do: set up some peripheral things, environment
-variables and such like, then runs the underlying CLI tool with some CLI
-parameters set and passes argument given to the wrapper down to provide extra
-parameters. This pattern can be pretty useful to make a particular use case of
-a CLI tool easier to perform. E.g:&lt;/p></description></item><item><title>Generating a Config File Reference for a CLI Tool in Rust</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-11-17-generating-config-reference-rust-cli/</link><pubDate>Tue, 17 Nov 2020 21:00:00 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-11-17-generating-config-reference-rust-cli/</guid><description>&lt;p>There&amp;rsquo;s something missing from the documentation of CLI tools.&lt;/p>
-&lt;p>They often have home pages that do a great job of explaining the core concepts,
-giving a &amp;ldquo;Quick Start&amp;rdquo; guide, and demonstrating some use cases.&lt;/p>
-&lt;p>Where I find tools&amp;rsquo; documentation is missing something, is when you&amp;rsquo;re already
-well acquainted with the tool, and you want to know some specific detail about
-a single field like what possible values it can have or exactly where it sits
-in the structure of the config. I find myself really in need of a &amp;ldquo;config file
-reference&amp;rdquo; akin to the ones you see for APIs which get generated from API Specs
-or code.&lt;/p></description></item><item><title>Why I Scatter Use Statements Throughout My Rust</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-10-05-rust_use_statements/</link><pubDate>Mon, 05 Oct 2020 20:30:00 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-10-05-rust_use_statements/</guid><description>&lt;p>A standard pattern across pretty much every language I&amp;rsquo;ve worked with at least,
-is to stick statements that import modules and libraries at the top of the
-page. Some languages make you do this. In Rust I don&amp;rsquo;t do this for
-everything, &lt;em>here&amp;rsquo;s why&lt;/em>.&lt;/p>
-&lt;p>I started to think more and more about what code is like to read rather than
-write. I for one was reading code far more often than I was writing, and the
-code I was writing would, over its lifetime, be read far more often than
-written or edited.&lt;/p></description></item><item><title>Re-Learning Haskell with Advent of Code - Part 3</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-06-14-re-learning-haskell-3/</link><pubDate>Sun, 14 Jun 2020 12:35:26 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-06-14-re-learning-haskell-3/</guid><description>&lt;p>After &lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/" class="external-link" target="_blank" rel="noopener">Part 2&lt;/a>, I wanted to go and do some reading. I felt like I could
-crack on with the Advent of Code problems with the tools I had at my disposal,
-but felt if I learned more Haskell I could be doing better. I wanted to learn
-some more about monad transformers and anything else that could improve my
-solutions.&lt;/p>
-&lt;p>So I started search around to see what resources I could find.&lt;/p></description></item><item><title>Collecting All the Errors - Rust</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-05-09-collecting-all-the-errors/</link><pubDate>Sat, 09 May 2020 19:00:00 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-05-09-collecting-all-the-errors/</guid><description>&lt;p>A common way to handle iterating over results, &lt;code>Result&amp;lt;T, E&amp;gt;&lt;/code>, in Rust is to
-use &lt;code>collect()&lt;/code> to collect an iterator of results into a result. To borrow the
-&lt;a href="https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect" class="external-link" target="_blank" rel="noopener">example from Rust by Example&lt;/a>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> strings &lt;span style="color:#f92672">=&lt;/span> vec![&lt;span style="color:#e6db74">&amp;#34;7&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;42&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;one&amp;#34;&lt;/span>];
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> numbers: Result&lt;span style="color:#f92672">&amp;lt;&lt;/span>Vec&lt;span style="color:#f92672">&amp;lt;&lt;/span>_&lt;span style="color:#f92672">&amp;gt;&lt;/span>,_&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#f92672">=&lt;/span> string
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .into_iter()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .map(&lt;span style="color:#f92672">|&lt;/span>s&lt;span style="color:#f92672">|&lt;/span> s.parse::&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">i32&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .collect::&lt;span style="color:#f92672">&amp;lt;&lt;/span>Result&lt;span style="color:#f92672">&amp;lt;&lt;/span>Vec&lt;span style="color:#f92672">&amp;lt;&lt;/span>_&lt;span style="color:#f92672">&amp;gt;&lt;/span>,_&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>();
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You only need either the type hint on &lt;code>numbers&lt;/code> or the turbofish on &lt;code>collect&lt;/code>
-to coerce the iterator of results into a result. I prefer the turbofish on
-&lt;code>collect&lt;/code> as I feel it makes the code flow better when reading, and is what you
-would do when chaining further computations. In fact, if you&amp;rsquo;re going to use
-&lt;code>?&lt;/code> on the collected result, you wouldn&amp;rsquo;t &lt;em>need&lt;/em>&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> either.&lt;/p></description></item><item><title>We All Write Monads, Whether We Know It or Not</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-05-04-we-all-write-monads/</link><pubDate>Mon, 04 May 2020 04:46:31 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-05-04-we-all-write-monads/</guid><description>&lt;p>Recently I&amp;rsquo;ve been rebooting my Haskell by working through &lt;a href="https://adventofcode.com/2019/" class="external-link" target="_blank" rel="noopener">Advent of
-Code&lt;/a>, and bogging about it:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/" class="external-link" target="_blank" rel="noopener">Re-learning Haskell with Advent of Code - Part 1&lt;/a>,&lt;/li>
-&lt;li>&lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/" class="external-link" target="_blank" rel="noopener">Re-learning Haskell with Advent of Code - Part 2&lt;/a>,&lt;/li>
-&lt;/ul>
-&lt;p>and it&amp;rsquo;s got me thinking. I was quickly re-introduced to the concepts of:
-Functors, Applicative Functors, Monoids, Monads, a strong type system, higher
-kinded types, and functional purity, and straight away, started spotting these
-patterns in the code I write every day at work (predominantly Rust with some
-Bash, Python, and C++ thrown in for good measure).&lt;/p></description></item><item><title>Re-Learning Haskell with Advent of Code - Part 2</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-04-29-re-learning-haskell-2/</link><pubDate>Wed, 29 Apr 2020 20:36:28 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-04-29-re-learning-haskell-2/</guid><description>&lt;p>&lt;em>In &lt;a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/" class="external-link" target="_blank" rel="noopener">Part 1&lt;/a>, I skipped the day 2, 5, &amp;amp; 7 problems that get you to build
-and use a Intcode computer. Each problem provides an Intcode program to run: A
-series of integers that can each either represent an instruction or data, and
-can mutate itself. Looking forward, every odd number day from day 5 onwards
-uses the Intcode program. So I decided to come back to them, and make a
-concerted effort at a few of them in a row.&lt;/em>&lt;/p></description></item><item><title>DRY Shouldn't be a Goal in Itself</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-04-18-dry-not-a-goal/</link><pubDate>Sat, 18 Apr 2020 10:40:01 +0100</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-04-18-dry-not-a-goal/</guid><description>&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" class="external-link" target="_blank" rel="noopener">DRY&lt;/a>, &amp;ldquo;Don&amp;rsquo;t Repeat Yourself&amp;rdquo;, is often described as a &amp;ldquo;principle&amp;rdquo; of
-software engineering. I looked up what &amp;ldquo;principle&amp;rdquo; is defined to mean and
-Google says:&lt;/p>
-&lt;blockquote>
-&lt;p>a fundamental truth or proposition that serves as the foundation
-for a system of belief or behaviour or for a chain of reasoning.&lt;/p>&lt;/blockquote>
-&lt;p>Maybe in this case that&amp;rsquo;s a bit strong. I&amp;rsquo;d think in the case of a software
-principle we&amp;rsquo;re talking more about an idea of how things should be, or a
-guide&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> to decision making.&lt;/p></description></item><item><title>Re-Learning Haskell with Advent of Code - Part 1</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-03-29-re-learning-haskell/</link><pubDate>Sun, 29 Mar 2020 20:40:05 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-03-29-re-learning-haskell/</guid><description>&lt;p>A few years ago I learned myself a Haskell for greater good from a book &amp;ldquo;Learn
-you a Haskell for greater good&amp;rdquo;&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> and the first few chapters of another book
-&amp;ldquo;Haskell from first principles&amp;rdquo;&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>.&lt;/p>
-&lt;p>It was fun to learn. I didn&amp;rsquo;t go onto use Haskell to build any real
-applications, beyond coding up some exercises and mini programs to learn
-things.&lt;/p>
-&lt;p>I believe I got a lot from it. At the very least it&amp;rsquo;s joyful to solve problems
-in Haskell. When I started writing Rust a year later I liked the strong type
-system and the features inspired by functional languages: maps, folds, etc. It
-gave me an appreciation of the benefits of immutability and pure functions. I
-believe that&amp;rsquo;s fed into improving how I build things in other languages.&lt;/p></description></item><item><title>Itertools - A Force for Good?</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-03-28-iterttools/</link><pubDate>Sat, 28 Mar 2020 12:52:30 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-03-28-iterttools/</guid><description>&lt;p>Itertools are a way of bringing along a bunch of list manipulating goodies from
-functional languages into procedural languages. I&amp;rsquo;ve encountered it as a
-&lt;a href="https://docs.python.org/3.8/library/itertools.html" class="external-link" target="_blank" rel="noopener">Python library&lt;/a> and a &lt;a href="https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html" class="external-link" target="_blank" rel="noopener">Rust crate&lt;/a>. A quick bit
-of google&amp;rsquo;ing shows some evidence of this existing in other languages.&lt;/p>
-&lt;p>I used to write Python a lot. Now I write mostly Rust. I used to err on the
-side of not using &lt;code>itertools&lt;/code> in Python. I&amp;rsquo;m more than happy to read or write
-Rust code using &lt;code>itertools&lt;/code>. The reasons why are about audience buy in, how
-effectively are you communicating an idea, and ultimately what effect does it
-have on people&amp;rsquo;s ability to reason about your code.&lt;/p></description></item><item><title>Rust - Converting between file formats - JSON, YAML, &amp; TOML</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-03-26-rust-serde/</link><pubDate>Thu, 26 Mar 2020 21:00:00 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-03-26-rust-serde/</guid><description>&lt;p>Rust&amp;rsquo;s &lt;a href="https://crates.io/crates/serde" class="external-link" target="_blank" rel="noopener">&lt;code>serde&lt;/code> library&lt;/a> is a generic serialize-deserialize framework
-that has been implemented for &lt;a href="https://docs.serde.rs/serde/#data-formats" class="external-link" target="_blank" rel="noopener">many file formats&lt;/a>. It&amp;rsquo;s an incredibly
-powerful framework and well worth giving &lt;a href="https://docs.serde.rs/serde/" class="external-link" target="_blank" rel="noopener">the documentation&lt;/a> a read.&lt;/p>
-&lt;p>It can deserialize a file format into a strongly typed rust data structure, so
-that the data in code has no affiliation to the data format it was read from,
-then can be serialized into another file format.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#![allow(unused_variables)]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">use&lt;/span> serde_derive::{Deserialize, Serialize};
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#[serde(rename_all = &lt;/span>&lt;span style="color:#e6db74">&amp;#34;camelCase&amp;#34;&lt;/span>&lt;span style="color:#75715e">, deny_unknown_fields)]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">MyData&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> field_one: &lt;span style="color:#66d9ef">usize&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> field_two: String,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> field_three: &lt;span style="color:#66d9ef">bool&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> some_data: &lt;span style="color:#a6e22e">std&lt;/span>::collections::HashMap&lt;span style="color:#f92672">&amp;lt;&lt;/span>String, &lt;span style="color:#66d9ef">usize&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() -&amp;gt; &lt;span style="color:#a6e22e">anyhow&lt;/span>::Result&lt;span style="color:#f92672">&amp;lt;&lt;/span>()&lt;span style="color:#f92672">&amp;gt;&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> my_data_yaml &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">#&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldOne: 7
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldTwo: &amp;#34;lorem&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldThree: true
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> someData:
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> x: 1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> y: 2
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> z: 3
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;#&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> my_data_toml &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">#&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldOne = 7
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldTwo = &amp;#34;lorem&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldThree = true
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> [someData]
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> x = 1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> y = 2
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> z = 3
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;#&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> my_data_json &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">#&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> {
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;fieldOne&amp;#34;: 7,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;fieldTwo&amp;#34;: &amp;#34;lorem&amp;#34;,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;fieldThree&amp;#34;: true,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;someData&amp;#34;: {
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;x&amp;#34;: 1,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;y&amp;#34;: 2,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;z&amp;#34;: 3
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> }
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> }
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;#&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> deserialized_yaml &lt;span style="color:#f92672">=&lt;/span> serde_yaml::from_str::&lt;span style="color:#f92672">&amp;lt;&lt;/span>MyData&lt;span style="color:#f92672">&amp;gt;&lt;/span>(my_data_yaml);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> deserialized_toml &lt;span style="color:#f92672">=&lt;/span> toml::from_str::&lt;span style="color:#f92672">&amp;lt;&lt;/span>MyData&lt;span style="color:#f92672">&amp;gt;&lt;/span>(my_data_toml);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> deserialized_json &lt;span style="color:#f92672">=&lt;/span> serde_json::from_str::&lt;span style="color:#f92672">&amp;lt;&lt;/span>MyData&lt;span style="color:#f92672">&amp;gt;&lt;/span>(my_data_json);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert!(deserialized_yaml.is_ok());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert!(deserialized_toml.is_ok());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert!(deserialized_json.is_ok());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> deserialized_toml_copy &lt;span style="color:#f92672">=&lt;/span> deserialized_toml.clone();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert_eq!(deserialized_yaml&lt;span style="color:#f92672">?&lt;/span>, deserialized_toml&lt;span style="color:#f92672">?&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert_eq!(deserialized_toml_copy&lt;span style="color:#f92672">?&lt;/span>, deserialized_json&lt;span style="color:#f92672">?&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> my_data_yaml_missing_field &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">#&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldOne: 7
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldTwo: &amp;#34;lorem&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> someData:
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> x: 1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> y: 2
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> z: 3
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;#&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> my_data_yaml_extra_field &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">#&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldOne: 7
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldTwo: &amp;#34;lorem&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> fieldThree: true
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> someData:
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> x: 1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> y: 2
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> z: 3
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> out_of_schema_data: 42
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> &amp;#34;#&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> data_missing_field &lt;span style="color:#f92672">=&lt;/span> serde_yaml::from_str::&lt;span style="color:#f92672">&amp;lt;&lt;/span>MyData&lt;span style="color:#f92672">&amp;gt;&lt;/span>(my_data_yaml_missing_field);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> data_extra_field &lt;span style="color:#f92672">=&lt;/span> serde_yaml::from_str::&lt;span style="color:#f92672">&amp;lt;&lt;/span>MyData&lt;span style="color:#f92672">&amp;gt;&lt;/span>(my_data_yaml_extra_field);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert!(data_missing_field.is_err());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Because MyData is decorated with `deny_unknown_fields`, adding extra fields
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// will cause parsing to fail.
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> assert!(data_extra_field.is_err());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Ok(())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You can also read data into a type that can represent any data in a particular
-format, if you don&amp;rsquo;t want to or can&amp;rsquo;t strongly define the contents:&lt;/p></description></item><item><title>Language Servers Are Cool</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-03-01-language-servers-are-cool/</link><pubDate>Sun, 01 Mar 2020 14:56:43 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-03-01-language-servers-are-cool/</guid><description>&lt;p>In slight contrast to my previous post where I espoused the
-virtue of code being text and not relying on developer tooling
-to interact with it: language servers are cool.&lt;/p>
-&lt;p>They decouple the back end of gaining semantic understanding
-of code in a particular language from the editor implementation.
-A &lt;a href="https://langserver.org/" class="external-link" target="_blank" rel="noopener">language server for each language&lt;/a> can be
-written, and the editor only needs to integrate the &lt;a href="https://microsoft.github.io/language-server-protocol/" class="external-link" target="_blank" rel="noopener">language
-server protocol&lt;/a> once, to get a host of IDE style features
-for each language.&lt;/p></description></item><item><title>You Shouldn't Need an IDE to Read Code</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-02-29-ide-read-code/</link><pubDate>Sat, 29 Feb 2020 22:30:09 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-02-29-ide-read-code/</guid><description>&lt;p>This is important.&lt;/p>
-&lt;p>Code is &lt;em>read&lt;/em> far more often than it&amp;rsquo;s &lt;em>written&lt;/em>.&lt;/p>
-&lt;p>Primarily, it&amp;rsquo;s read through a web GUI.&lt;/p>
-&lt;p>You want to read the source code of a library you&amp;rsquo;re using. Say it&amp;rsquo;s in
-Github, you&amp;rsquo;re going to start looking at it through the Github GUI. If you want
-to take a deeper look, you might clone the repo and open it in you&amp;rsquo;re editor,
-but the vast majority of library code you read will be through a GUI.&lt;/p></description></item><item><title>Testing Microservices with Mockserver</title><link>https://tarquin-the-brave.github.io/blog/posts/2020-02-25-mockserver-dc/</link><pubDate>Tue, 25 Feb 2020 10:07:46 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2020-02-25-mockserver-dc/</guid><description>&lt;p>&lt;a href="http://www.mock-server.com/" class="external-link" target="_blank" rel="noopener">Mockserver&lt;/a> is a great piece of tooling that takes a huge amount
-of heavy lifting away from testing microservices.&lt;/p>
-&lt;p>There&amp;rsquo;s no need to mock out downstream dependencies or client APIs. There&amp;rsquo;s no
-need to write complex test code to synchronously handle the mechanics of
-requests going back and forward while also trying to embody some comprehensible
-declaration of the designed behaviour. It does about as much of the mechanics
-of testing for you as it&amp;rsquo;s possible for it to do.&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tarquin-the-brave</title>
+    <link>http://localhost:1313/blog/</link>
+    <description>Recent content on tarquin-the-brave</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
+    <lastBuildDate>Wed, 03 Jun 2026 11:33:44 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2026 06 07 Thoughts on Many Things</title>
+      <link>http://localhost:1313/blog/posts/2026-06-07-thoughts-on-many-things/</link>
+      <pubDate>Wed, 03 Jun 2026 11:33:44 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-06-07-thoughts-on-many-things/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>2026 04 25 Check a Bag</title>
+      <link>http://localhost:1313/blog/posts/2026-04-25-check-a-bag/</link>
+      <pubDate>Sat, 25 Apr 2026 15:33:57 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-04-25-check-a-bag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Adversarial Agent Teams</title>
+      <link>http://localhost:1313/blog/posts/2026-02-27-adversarial-agent-teams/</link>
+      <pubDate>Fri, 27 Feb 2026 14:07:37 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-02-27-adversarial-agent-teams/</guid>
+      <description>&lt;p&gt;I had the situation recently when I was working directly in Claude Code.  I&amp;rsquo;d&#xA;got some feedback points for minor tweaks to make to a frontend implementation&#xA;I was working on, so thinking these were each pretty small and simple things&#xA;to resolve, I pasted the list of them into Claude Code and asked it to deal with&#xA;it.&lt;/p&gt;&#xA;&lt;p&gt;This didn&amp;rsquo;t go very well&amp;hellip; It fixed the first point.  Then ignored the rest&#xA;and said it was done.  I had to then hand-hold it through each point.  It&#xA;kept claiming things were fixed when they weren&amp;rsquo;t.  It took a lot of iterations&#xA;to apply the changes - which were all cosmetic changes.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Build Your Own AI Tooling</title>
+      <link>http://localhost:1313/blog/posts/2026-02-27-build-your-own-ai-tooling/</link>
+      <pubDate>Fri, 27 Feb 2026 10:58:25 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-02-27-build-your-own-ai-tooling/</guid>
+      <description>&lt;p&gt;The experience of adopting AI agents, Claude Code in my case, appears to&#xA;be one of:&lt;/p&gt;&#xA;&lt;p&gt;Install Claude Code.  Use it directly.  This works OK for small, one-off,&#xA;tasks.  But then you hit a limit on the complexity it can deal with, it runs out&#xA;of context, you have to repeatedly remind it to do and not do things a certain&#xA;way.&lt;/p&gt;&#xA;&lt;p&gt;In steps &amp;ldquo;Context Engineering&amp;rdquo; and all manner of layers of &lt;code&gt;CLAUDE.md&lt;/code&gt; files,&#xA;skills, hooks, and frameworks to orchestrate &amp;ldquo;sub agents&amp;rdquo; and &amp;ldquo;agent teams&amp;rdquo;.&#xA;These allow you to not have to manually manage the context window, encode&#xA;behaviours that you want repeated (or not repeated), ultimately allowing it&#xA;to take on larger, more complex tasks without constant supervision.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Learning From Your Claude History</title>
+      <link>http://localhost:1313/blog/posts/2026-02-15-learning-from-claude-history/</link>
+      <pubDate>Sun, 15 Feb 2026 16:19:40 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-02-15-learning-from-claude-history/</guid>
+      <description>&lt;p&gt;I read this article from Anthropic: &lt;a href=&#34;https://www.anthropic.com/research/AI-assistance-coding-skills&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&amp;ldquo;How AI assistance impacts the formation&#xA;of coding skills&amp;rdquo;&lt;/a&gt;.&#xA;It got me a bit concerned.  Are we heading towards a crisis of understanding?&lt;/p&gt;&#xA;&lt;p&gt;But then I thought about conversations I&amp;rsquo;ve had with colleagues recently.  Especially&#xA;around &amp;ldquo;is this the end for Junior Engineers?&amp;rdquo;.  I don&amp;rsquo;t think it is.  Mostly because&#xA;I don&amp;rsquo;t think the arrival of AI assistance, Agents, into our engineering toolkit has&#xA;represented any &lt;em&gt;fundamental&lt;/em&gt; change, but instead a large leap forward in a direction&#xA;we were already heading.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>An Underrated Engineering Skill</title>
+      <link>http://localhost:1313/blog/posts/2026-01-09-an_underrated_engineering_skill/</link>
+      <pubDate>Fri, 09 Jan 2026 12:06:50 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-01-09-an_underrated_engineering_skill/</guid>
+      <description>&lt;p&gt;Spoilers:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;How well you build on top of other people&amp;rsquo;s work.&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;A few years ago I was at Microsoft.  Their performance reviews were based on&#xA;what they called &amp;ldquo;three circles of impact&amp;rdquo;: your own output, how you support&#xA;others, and how well you build on top of other people&amp;rsquo;s work.  I hadn&amp;rsquo;t heard&#xA;this way of thinking about it before.  I liked it.  The third one in particular&#xA;stuck with me.  It goes unnoticed and underrated.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rust Perspectives for Experienced Engineers</title>
+      <link>http://localhost:1313/blog/posts/2026-01-09-rust_perspectives/</link>
+      <pubDate>Fri, 09 Jan 2026 11:11:59 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-01-09-rust_perspectives/</guid>
+      <description>&lt;p&gt;About a year ago I joined a company.  They&amp;rsquo;d brought me in as &amp;ldquo;someone with&#xA;lots of Rust experience&amp;rdquo;.  From the interviews I thought they&amp;rsquo;d have a few&#xA;projects here and there in Rust.  Turns out it was almost the entire stack for&#xA;their new product.  A lot of experienced folks from other languages were&#xA;learning Rust for the first time while pushing to ship.&lt;/p&gt;&#xA;&lt;p&gt;Watching how people write Rust when coming from other languages, I thought&#xA;about what perspectives might be useful to share.  Ways of seeing things that&#xA;make Rust click a bit easier.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>The Multi-Repo of Madness</title>
+      <link>http://localhost:1313/blog/posts/2026-01-08-multi-repo-of-madness/</link>
+      <pubDate>Thu, 08 Jan 2026 20:41:06 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-01-08-multi-repo-of-madness/</guid>
+      <description>&lt;p&gt;I should confess upfront: I meant to write this post about four years ago and&#xA;never got round to it.  The tide has turned somewhat towards monorepos now,&#xA;especially with AI-assisted coding making &amp;ldquo;grep the whole codebase&amp;rdquo; more&#xA;valuable than ever.  So this cautionary tale about going multi-repo is perhaps&#xA;less relevant than it once was.&lt;/p&gt;&#xA;&lt;p&gt;But still.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;A long time ago I worked at a company that traditionally built big monolithic&#xA;products.  Telecoms infrastructure, massive C servers, that sort of thing.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>There&#39;s No Such Thing as an Error in Rust</title>
+      <link>http://localhost:1313/blog/posts/2026-01-08-no_errors_in_rust/</link>
+      <pubDate>Thu, 08 Jan 2026 20:08:21 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2026-01-08-no_errors_in_rust/</guid>
+      <description>&lt;p&gt;Colleagues have heard me say this.  Usually when we&amp;rsquo;re debugging something, or&#xA;discussing error handling approaches, I&amp;rsquo;ll pipe up with:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;Well, there&amp;rsquo;s no such thing as an error in Rust.&amp;rdquo;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;It tends to get a raised eyebrow or two.  So I&amp;rsquo;ll explain.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;how-rust-handles-errors&#34;&gt;&#xA;  How Rust Handles Errors&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#how-rust-handles-errors&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re not familiar with Rust, here&amp;rsquo;s the quick version: Rust doesn&amp;rsquo;t have&#xA;exceptions.  Instead, operations that can fail return a &lt;code&gt;Result&lt;/code&gt; type.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>yes, please clear my terminal</title>
+      <link>http://localhost:1313/blog/posts/2022-02-19-yes-please-clear-my-terminal/</link>
+      <pubDate>Sat, 19 Feb 2022 15:00:48 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2022-02-19-yes-please-clear-my-terminal/</guid>
+      <description>&lt;p&gt;We&amp;rsquo;ve all been there.  You&amp;rsquo;ve been running some commands.  You switch focus&#xA;away from your terminal.  You come back.  And your terminal is full of crap&#xA;you&amp;rsquo;re not interested in anymore.  “Get this out of my sight”, you think.&#xA;&lt;a href=&#34;https://man7.org/linux/man-pages/man1/clear.1.html&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;clear&lt;/code&gt;&lt;/a&gt; you type.&lt;/p&gt;&#xA;&lt;p&gt;Problem solved.  Blog post over.  Oh but wait!  This doesn&amp;rsquo;t solve all my woes.&lt;/p&gt;&#xA;&lt;p&gt;There&amp;rsquo;s another time when the ghosts of a command past can muddy your view.&#xA;Say you&amp;rsquo;ve run some tests.  There&amp;rsquo;s lots of output that you&amp;rsquo;ll need to scroll&#xA;back through in case of a failure.  You find the failure.  You make a fix. You&#xA;run the tests again.  There&amp;rsquo;s another failure.  So you scroll up, &lt;code&gt;Ctrl A, [, PgUp&lt;/code&gt; or however you do it.  This second time it&amp;rsquo;s easy to miss where your most&#xA;recent test output starts and where the old one ends.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A Thought on CLI Design</title>
+      <link>http://localhost:1313/blog/posts/2021-03-27-a_thought_on_cli_design/</link>
+      <pubDate>Sat, 27 Mar 2021 09:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2021-03-27-a_thought_on_cli_design/</guid>
+      <description>&lt;p&gt;Recently I was using a wrapper around a CLI tool.  It does what you might&#xA;expect a CLI wrapper to do: set up some peripheral things, environment&#xA;variables and such like, then runs the underlying CLI tool with some CLI&#xA;parameters set and passes argument given to the wrapper down to provide extra&#xA;parameters.  This pattern can be pretty useful to make a particular use case of&#xA;a CLI tool easier to perform. E.g:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Generating a Config File Reference for a CLI Tool in Rust</title>
+      <link>http://localhost:1313/blog/posts/2020-11-17-generating-config-reference-rust-cli/</link>
+      <pubDate>Tue, 17 Nov 2020 21:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-11-17-generating-config-reference-rust-cli/</guid>
+      <description>&lt;p&gt;There&amp;rsquo;s something missing from the documentation of CLI tools.&lt;/p&gt;&#xA;&lt;p&gt;They often have home pages that do a great job of explaining the core concepts,&#xA;giving a &amp;ldquo;Quick Start&amp;rdquo; guide, and demonstrating some use cases.&lt;/p&gt;&#xA;&lt;p&gt;Where I find tools&amp;rsquo; documentation is missing something, is when you&amp;rsquo;re already&#xA;well acquainted with the tool, and you want to know some specific detail about&#xA;a single field like what possible values it can have or exactly where it sits&#xA;in the structure of the config. I find myself really in need of a &amp;ldquo;config file&#xA;reference&amp;rdquo; akin to the ones you see for APIs which get generated from API Specs&#xA;or code.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why I Scatter Use Statements Throughout My Rust</title>
+      <link>http://localhost:1313/blog/posts/2020-10-05-rust_use_statements/</link>
+      <pubDate>Mon, 05 Oct 2020 20:30:00 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-10-05-rust_use_statements/</guid>
+      <description>&lt;p&gt;A standard pattern across pretty much every language I&amp;rsquo;ve worked with at least,&#xA;is to stick statements that import modules and libraries at the top of the&#xA;page.  Some languages make you do this.  In Rust I don&amp;rsquo;t do this for&#xA;everything, &lt;em&gt;here&amp;rsquo;s why&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;I started to think more and more about what code is like to read rather than&#xA;write. I for one was reading code far more often than I was writing, and the&#xA;code I was writing would, over its lifetime, be read far more often than&#xA;written or edited.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Re-Learning Haskell with Advent of Code - Part 3</title>
+      <link>http://localhost:1313/blog/posts/2020-06-14-re-learning-haskell-3/</link>
+      <pubDate>Sun, 14 Jun 2020 12:35:26 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-06-14-re-learning-haskell-3/</guid>
+      <description>&lt;p&gt;After &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Part 2&lt;/a&gt;, I wanted to go and do some reading. I felt like I could&#xA;crack on with the Advent of Code problems with the tools I had at my disposal,&#xA;but felt if I learned more Haskell I could be doing better.  I wanted to learn&#xA;some more about monad transformers and anything else that could improve my&#xA;solutions.&lt;/p&gt;&#xA;&lt;p&gt;So I started search around to see what resources I could find.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Collecting All the Errors - Rust</title>
+      <link>http://localhost:1313/blog/posts/2020-05-09-collecting-all-the-errors/</link>
+      <pubDate>Sat, 09 May 2020 19:00:00 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-05-09-collecting-all-the-errors/</guid>
+      <description>&lt;p&gt;A common way to handle iterating over results, &lt;code&gt;Result&amp;lt;T, E&amp;gt;&lt;/code&gt;, in Rust is to&#xA;use &lt;code&gt;collect()&lt;/code&gt; to collect an iterator of results into a result.  To borrow the&#xA;&lt;a href=&#34;https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;example from Rust by Example&lt;/a&gt;:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; strings &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; vec![&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;7&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;42&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;one&amp;#34;&lt;/span&gt;];&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; numbers: Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    .into_iter()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    .map(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; s.parse::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;i32&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;())&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    .collect::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Vec&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,_&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt;();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You only need either the type hint on &lt;code&gt;numbers&lt;/code&gt; or the turbofish on &lt;code&gt;collect&lt;/code&gt;&#xA;to coerce the iterator of results into a result.  I prefer the turbofish on&#xA;&lt;code&gt;collect&lt;/code&gt; as I feel it makes the code flow better when reading, and is what you&#xA;would do when chaining further computations.  In fact, if you&amp;rsquo;re going to use&#xA;&lt;code&gt;?&lt;/code&gt; on the collected result, you wouldn&amp;rsquo;t &lt;em&gt;need&lt;/em&gt;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; either.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>We All Write Monads, Whether We Know It or Not</title>
+      <link>http://localhost:1313/blog/posts/2020-05-04-we-all-write-monads/</link>
+      <pubDate>Mon, 04 May 2020 04:46:31 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-05-04-we-all-write-monads/</guid>
+      <description>&lt;p&gt;Recently I&amp;rsquo;ve been rebooting my Haskell by working through &lt;a href=&#34;https://adventofcode.com/2019/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Advent of&#xA;Code&lt;/a&gt;, and bogging about it:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Re-learning Haskell with Advent of Code - Part 1&lt;/a&gt;,&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Re-learning Haskell with Advent of Code - Part 2&lt;/a&gt;,&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;and it&amp;rsquo;s got me thinking.  I was quickly re-introduced to the concepts of:&#xA;Functors, Applicative Functors, Monoids, Monads, a strong type system, higher&#xA;kinded types, and functional purity, and straight away, started spotting these&#xA;patterns in the code I write every day at work (predominantly Rust with some&#xA;Bash, Python, and C++ thrown in for good measure).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Re-Learning Haskell with Advent of Code - Part 2</title>
+      <link>http://localhost:1313/blog/posts/2020-04-29-re-learning-haskell-2/</link>
+      <pubDate>Wed, 29 Apr 2020 20:36:28 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-04-29-re-learning-haskell-2/</guid>
+      <description>&lt;p&gt;&lt;em&gt;In &lt;a href=&#34;https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Part 1&lt;/a&gt;, I skipped the day 2, 5, &amp;amp; 7 problems that get you to build&#xA;and use a Intcode computer.  Each problem provides an Intcode program to run: A&#xA;series of integers that can each either represent an instruction or data, and&#xA;can mutate itself.  Looking forward, every odd number day from day 5 onwards&#xA;uses the Intcode program.  So I decided to come back to them, and make a&#xA;concerted effort at a few of them in a row.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>DRY Shouldn&#39;t be a Goal in Itself</title>
+      <link>http://localhost:1313/blog/posts/2020-04-18-dry-not-a-goal/</link>
+      <pubDate>Sat, 18 Apr 2020 10:40:01 +0100</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-04-18-dry-not-a-goal/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DRY&lt;/a&gt;, &amp;ldquo;Don&amp;rsquo;t Repeat Yourself&amp;rdquo;, is often described as a &amp;ldquo;principle&amp;rdquo; of&#xA;software engineering.  I looked up what &amp;ldquo;principle&amp;rdquo; is defined to mean and&#xA;Google says:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;a fundamental truth or proposition that serves as the foundation&#xA;for a system of belief or behaviour or for a chain of reasoning.&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;Maybe in this case that&amp;rsquo;s a bit strong.  I&amp;rsquo;d think in the case of a software&#xA;principle we&amp;rsquo;re talking more about an idea of how things should be, or a&#xA;guide&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; to decision making.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Re-Learning Haskell with Advent of Code - Part 1</title>
+      <link>http://localhost:1313/blog/posts/2020-03-29-re-learning-haskell/</link>
+      <pubDate>Sun, 29 Mar 2020 20:40:05 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-03-29-re-learning-haskell/</guid>
+      <description>&lt;p&gt;A few years ago I learned myself a Haskell for greater good from a book &amp;ldquo;Learn&#xA;you a Haskell for greater good&amp;rdquo;&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; and the first few chapters of another book&#xA;&amp;ldquo;Haskell from first principles&amp;rdquo;&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;&#xA;&lt;p&gt;It was fun to learn.  I didn&amp;rsquo;t go onto use Haskell to build any real&#xA;applications, beyond coding up some exercises and mini programs to learn&#xA;things.&lt;/p&gt;&#xA;&lt;p&gt;I believe I got a lot from it.  At the very least it&amp;rsquo;s joyful to solve problems&#xA;in Haskell.  When I started writing Rust a year later I liked the strong type&#xA;system and the features inspired by functional languages: maps, folds, etc.  It&#xA;gave me an appreciation of the benefits of immutability and pure functions.  I&#xA;believe that&amp;rsquo;s fed into improving how I build things in other languages.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Itertools - A Force for Good?</title>
+      <link>http://localhost:1313/blog/posts/2020-03-28-iterttools/</link>
+      <pubDate>Sat, 28 Mar 2020 12:52:30 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-03-28-iterttools/</guid>
+      <description>&lt;p&gt;Itertools are a way of bringing along a bunch of list manipulating goodies from&#xA;functional languages into procedural languages.  I&amp;rsquo;ve encountered it as a&#xA;&lt;a href=&#34;https://docs.python.org/3.8/library/itertools.html&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Python library&lt;/a&gt; and a &lt;a href=&#34;https://docs.rs/itertools/0.9.0/itertools/trait.Itertools.html&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Rust crate&lt;/a&gt;.  A quick bit&#xA;of google&amp;rsquo;ing shows some evidence of this existing in other languages.&lt;/p&gt;&#xA;&lt;p&gt;I used to write Python a lot.  Now I write mostly Rust.  I used to err on the&#xA;side of not using &lt;code&gt;itertools&lt;/code&gt; in Python.  I&amp;rsquo;m more than happy to read or write&#xA;Rust code using &lt;code&gt;itertools&lt;/code&gt;.  The reasons why are about audience buy in, how&#xA;effectively are you communicating an idea, and ultimately what effect does it&#xA;have on people&amp;rsquo;s ability to reason about your code.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Rust - Converting between file formats - JSON, YAML, &amp; TOML</title>
+      <link>http://localhost:1313/blog/posts/2020-03-26-rust-serde/</link>
+      <pubDate>Thu, 26 Mar 2020 21:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-03-26-rust-serde/</guid>
+      <description>&lt;p&gt;Rust&amp;rsquo;s &lt;a href=&#34;https://crates.io/crates/serde&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;serde&lt;/code&gt; library&lt;/a&gt; is a generic serialize-deserialize framework&#xA;that has been implemented for &lt;a href=&#34;https://docs.serde.rs/serde/#data-formats&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;many file formats&lt;/a&gt;.  It&amp;rsquo;s an incredibly&#xA;powerful framework and well worth giving &lt;a href=&#34;https://docs.serde.rs/serde/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;the documentation&lt;/a&gt; a read.&lt;/p&gt;&#xA;&lt;p&gt;It can deserialize a file format into a strongly typed rust data structure, so&#xA;that the data in code has no affiliation to the data format it was read from,&#xA;then can be serialized into another file format.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#![allow(unused_variables)]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; serde_derive::{Deserialize, Serialize};&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#[serde(rename_all = &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;camelCase&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;, deny_unknown_fields)]&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyData&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    field_one: &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    field_two: String,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    field_three: &lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    some_data: &lt;span style=&#34;color:#a6e22e&#34;&gt;std&lt;/span&gt;::collections::HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String, &lt;span style=&#34;color:#66d9ef&#34;&gt;usize&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;anyhow&lt;/span&gt;::Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldOne: 7&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldTwo: &amp;#34;lorem&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldThree: true&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        someData:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            x: 1&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            y: 2&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            z: 3&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;#&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldOne = 7&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldTwo = &amp;#34;lorem&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldThree = true&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        [someData]&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        x = 1&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        y = 2&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        z = 3&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;#&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          &amp;#34;fieldOne&amp;#34;: 7,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          &amp;#34;fieldTwo&amp;#34;: &amp;#34;lorem&amp;#34;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          &amp;#34;fieldThree&amp;#34;: true,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          &amp;#34;someData&amp;#34;: {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#34;x&amp;#34;: 1,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#34;y&amp;#34;: 2,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#34;z&amp;#34;: 3&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;#&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_yaml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_toml &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; toml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_toml);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_json::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_json);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert!(deserialized_yaml.is_ok());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert!(deserialized_toml.is_ok());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert!(deserialized_json.is_ok());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; deserialized_toml_copy &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; deserialized_toml.clone();&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert_eq!(deserialized_yaml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_toml&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert_eq!(deserialized_toml_copy&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;, deserialized_json&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldOne: 7&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldTwo: &amp;#34;lorem&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        someData:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            x: 1&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            y: 2&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            z: 3&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;#&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; my_data_yaml_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldOne: 7&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldTwo: &amp;#34;lorem&amp;#34;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        fieldThree: true&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        someData:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            x: 1&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            y: 2&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            z: 3&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        out_of_schema_data: 42&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &amp;#34;#&lt;/span&gt;;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_missing_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_missing_field);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; data_extra_field &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; serde_yaml::from_str::&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;MyData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(my_data_yaml_extra_field);&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    assert!(data_missing_field.is_err());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Because MyData is decorated with `deny_unknown_fields`, adding extra fields&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// will cause parsing to fail.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    assert!(data_extra_field.is_err());&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Ok(())&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also read data into a type that can represent any data in a particular&#xA;format, if you don&amp;rsquo;t want to or can&amp;rsquo;t strongly define the contents:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Language Servers Are Cool</title>
+      <link>http://localhost:1313/blog/posts/2020-03-01-language-servers-are-cool/</link>
+      <pubDate>Sun, 01 Mar 2020 14:56:43 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-03-01-language-servers-are-cool/</guid>
+      <description>&lt;p&gt;In slight contrast to my previous post where I espoused the&#xA;virtue of code being text and not  relying on developer tooling&#xA;to interact with it: language servers are cool.&lt;/p&gt;&#xA;&lt;p&gt;They decouple the back end of gaining semantic understanding&#xA;of code in a particular language from the editor implementation.&#xA;A &lt;a href=&#34;https://langserver.org/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;language server for each language&lt;/a&gt; can be&#xA;written, and the editor only needs to integrate the &lt;a href=&#34;https://microsoft.github.io/language-server-protocol/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;language&#xA;server protocol&lt;/a&gt; once, to get a host of IDE style features&#xA;for each language.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>You Shouldn&#39;t Need an IDE to Read Code</title>
+      <link>http://localhost:1313/blog/posts/2020-02-29-ide-read-code/</link>
+      <pubDate>Sat, 29 Feb 2020 22:30:09 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-02-29-ide-read-code/</guid>
+      <description>&lt;p&gt;This is important.&lt;/p&gt;&#xA;&lt;p&gt;Code is &lt;em&gt;read&lt;/em&gt; far more often than it&amp;rsquo;s &lt;em&gt;written&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Primarily, it&amp;rsquo;s read through a web GUI.&lt;/p&gt;&#xA;&lt;p&gt;You want to read the source code of a library you&amp;rsquo;re using.  Say it&amp;rsquo;s in&#xA;Github, you&amp;rsquo;re going to start looking at it through the Github GUI. If you want&#xA;to take a deeper look, you might clone the repo and open it in you&amp;rsquo;re editor,&#xA;but the vast majority of library code you read will be through a GUI.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Testing Microservices with Mockserver</title>
+      <link>http://localhost:1313/blog/posts/2020-02-25-mockserver-dc/</link>
+      <pubDate>Tue, 25 Feb 2020 10:07:46 +0000</pubDate>
+      <guid>http://localhost:1313/blog/posts/2020-02-25-mockserver-dc/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.mock-server.com/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Mockserver&lt;/a&gt; is a great piece of tooling that takes a huge amount&#xA;of heavy lifting away from testing microservices.&lt;/p&gt;&#xA;&lt;p&gt;There&amp;rsquo;s no need to mock out downstream dependencies or client APIs.  There&amp;rsquo;s no&#xA;need to write complex test code to synchronously handle the mechanics of&#xA;requests going back and forward while also trying to embody some comprehensible&#xA;declaration of the designed behaviour.  It does about as much of the mechanics&#xA;of testing for you as it&amp;rsquo;s possible for it to do.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

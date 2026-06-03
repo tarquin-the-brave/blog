@@ -1,119 +1,792 @@
-<!doctype html><html lang=en><head><title>Collecting All the Errors - Rust · tarquin-the-brave
-</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="Tom Steavenson"><meta name=description content='A common way to handle iterating over results, Result<T, E>, in Rust is to
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
+  <title>
+  Collecting All the Errors - Rust · tarquin-the-brave
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="tarquin-the-brave">
+<meta name="description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to
 use collect() to collect an iterator of results into a result.  To borrow the
 example from Rust by Example:
-let strings = vec!["7", "42", "one"];
-let numbers: Result<Vec<_>,_> = string
+let strings = vec![&#34;7&#34;, &#34;42&#34;, &#34;one&#34;];
+let numbers: Result&lt;Vec&lt;_&gt;,_&gt; = string
     .into_iter()
-    .map(|s| s.parse::<i32>())
-    .collect::<Result<Vec<_>,_>>();
+    .map(|s| s.parse::&lt;i32&gt;())
+    .collect::&lt;Result&lt;Vec&lt;_&gt;,_&gt;&gt;();
 You only need either the type hint on numbers or the turbofish on collect
 to coerce the iterator of results into a result.  I prefer the turbofish on
 collect as I feel it makes the code flow better when reading, and is what you
 would do when chaining further computations.  In fact, if you&rsquo;re going to use
-? on the collected result, you wouldn&rsquo;t need1 either.'><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Collecting All the Errors - Rust"><meta name=twitter:description content='A common way to handle iterating over results, Result<T, E>, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:
-let strings = vec!["7", "42", "one"]; let numbers: Result<Vec<_>,_> = string .into_iter() .map(|s| s.parse::<i32>()) .collect::<Result<Vec<_>,_>>(); You only need either the type hint on numbers or the turbofish on collect to coerce the iterator of results into a result. I prefer the turbofish on collect as I feel it makes the code flow better when reading, and is what you would do when chaining further computations. In fact, if you’re going to use ? on the collected result, you wouldn’t need1 either.'><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2020-05-09-collecting-all-the-errors/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="Collecting All the Errors - Rust"><meta property="og:description" content='A common way to handle iterating over results, Result<T, E>, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:
-let strings = vec!["7", "42", "one"]; let numbers: Result<Vec<_>,_> = string .into_iter() .map(|s| s.parse::<i32>()) .collect::<Result<Vec<_>,_>>(); You only need either the type hint on numbers or the turbofish on collect to coerce the iterator of results into a result. I prefer the turbofish on collect as I feel it makes the code flow better when reading, and is what you would do when chaining further computations. In fact, if you’re going to use ? on the collected result, you wouldn’t need1 either.'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-05-09T19:00:00+01:00"><meta property="article:modified_time" content="2020-05-09T19:00:00+01:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2020-05-09-collecting-all-the-errors/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.5e94c1acf7aa2066035cf2764ae3e4fe39db101d68b870f919966100d51fb861.css integrity="sha256-XpTBrPeqIGYDXPJ2SuPk/jnbEB1ouHD5GZZhANUfuGE=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
-</a><input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2020-05-09-collecting-all-the-errors/>Collecting All the Errors - Rust</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
-<time datetime=2020-05-09T19:00:00+01:00>May 9, 2020
-</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
-8-minute read</span></div></div></header><div class=post-content><p>A common way to handle iterating over results, <code>Result&lt;T, E></code>, in Rust is to
-use <code>collect()</code> to collect an iterator of results into a result. To borrow the
-<a href=https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect class=external-link target=_blank rel=noopener>example from Rust by Example</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>let</span> strings <span style=color:#f92672>=</span> vec![<span style=color:#e6db74>&#34;7&#34;</span>, <span style=color:#e6db74>&#34;42&#34;</span>, <span style=color:#e6db74>&#34;one&#34;</span>];
-</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> numbers: Result<span style=color:#f92672>&lt;</span>Vec<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;</span>,_<span style=color:#f92672>&gt;</span> <span style=color:#f92672>=</span> string
-</span></span><span style=display:flex><span>    .into_iter()
-</span></span><span style=display:flex><span>    .map(<span style=color:#f92672>|</span>s<span style=color:#f92672>|</span> s.parse::<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>i32</span><span style=color:#f92672>&gt;</span>())
-</span></span><span style=display:flex><span>    .collect::<span style=color:#f92672>&lt;</span>Result<span style=color:#f92672>&lt;</span>Vec<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;</span>,_<span style=color:#f92672>&gt;&gt;</span>();
+? on the collected result, you wouldn&rsquo;t need1 either.">
+<meta name="keywords" content="">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Collecting All the Errors - Rust">
+  <meta name="twitter:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:
+let strings = vec![&#34;7&#34;, &#34;42&#34;, &#34;one&#34;]; let numbers: Result&lt;Vec&lt;_&gt;,_&gt; = string .into_iter() .map(|s| s.parse::&lt;i32&gt;()) .collect::&lt;Result&lt;Vec&lt;_&gt;,_&gt;&gt;(); You only need either the type hint on numbers or the turbofish on collect to coerce the iterator of results into a result. I prefer the turbofish on collect as I feel it makes the code flow better when reading, and is what you would do when chaining further computations. In fact, if you’re going to use ? on the collected result, you wouldn’t need1 either.">
+
+<meta property="og:url" content="http://localhost:1313/blog/posts/2020-05-09-collecting-all-the-errors/">
+  <meta property="og:site_name" content="tarquin-the-brave">
+  <meta property="og:title" content="Collecting All the Errors - Rust">
+  <meta property="og:description" content="A common way to handle iterating over results, Result&lt;T, E&gt;, in Rust is to use collect() to collect an iterator of results into a result. To borrow the example from Rust by Example:
+let strings = vec![&#34;7&#34;, &#34;42&#34;, &#34;one&#34;]; let numbers: Result&lt;Vec&lt;_&gt;,_&gt; = string .into_iter() .map(|s| s.parse::&lt;i32&gt;()) .collect::&lt;Result&lt;Vec&lt;_&gt;,_&gt;&gt;(); You only need either the type hint on numbers or the turbofish on collect to coerce the iterator of results into a result. I prefer the turbofish on collect as I feel it makes the code flow better when reading, and is what you would do when chaining further computations. In fact, if you’re going to use ? on the collected result, you wouldn’t need1 either.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-05-09T19:00:00+01:00">
+    <meta property="article:modified_time" content="2020-05-09T19:00:00+01:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/blog/posts/2020-05-09-collecting-all-the-errors/">
+
+
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+  
+    
+    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
+  
+
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
+
+<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
+<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+
+  
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/blog/">
+      tarquin-the-brave
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/blog/posts/2020-05-09-collecting-all-the-errors/">
+              Collecting All the Errors - Rust
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2020-05-09T19:00:00&#43;01:00">
+                May 9, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              8-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      
+
+
+      <div class="post-content">
+        
+        <p>A common way to handle iterating over results, <code>Result&lt;T, E&gt;</code>, in Rust is to
+use <code>collect()</code> to collect an iterator of results into a result.  To borrow the
+<a href="https://doc.rust-lang.org/stable/rust-by-example/error/iter_result.html#fail-the-entire-operation-with-collect"  class="external-link" target="_blank" rel="noopener">example from Rust by Example</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> strings <span style="color:#f92672">=</span> vec![<span style="color:#e6db74">&#34;7&#34;</span>, <span style="color:#e6db74">&#34;42&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> numbers: Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span>    .into_iter()
+</span></span><span style="display:flex;"><span>    .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
+</span></span><span style="display:flex;"><span>    .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span>,_<span style="color:#f92672">&gt;&gt;</span>();
 </span></span></code></pre></div><p>You only need either the type hint on <code>numbers</code> or the turbofish on <code>collect</code>
-to coerce the iterator of results into a result. I prefer the turbofish on
+to coerce the iterator of results into a result.  I prefer the turbofish on
 <code>collect</code> as I feel it makes the code flow better when reading, and is what you
-would do when chaining further computations. In fact, if you&rsquo;re going to use
-<code>?</code> on the collected result, you wouldn&rsquo;t <em>need</em><sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> either.</p><p>I use this pattern a lot, and it&rsquo;s great. It makes mapping over collections
+would do when chaining further computations.  In fact, if you&rsquo;re going to use
+<code>?</code> on the collected result, you wouldn&rsquo;t <em>need</em><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> either.</p>
+<p>I use this pattern a lot, and it&rsquo;s great. It makes mapping over collections
 with operations that can fail as ergonomic as applying that operation to a
-single value.</p><ul><li>You can use the <code>?</code> operator to make the error handling almost automatic.</li><li>You can use any of the other result combinators like <a href=https://doc.rust-lang.org/std/result/enum.Result.html#method.and_then class=external-link target=_blank rel=noopener><code>and_then</code></a>,
-and <a href=https://doc.rust-lang.org/std/result/enum.Result.html#method.map class=external-link target=_blank rel=noopener><code>map</code></a>.</li><li>You can chain further computations on the end of the expression. In the
-above example we could have done:</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span>    .collect()<span style=color:#f92672>?</span>
-</span></span><span style=display:flex><span>    .into_iter()
-</span></span><span style=display:flex><span>    .map(<span style=color:#f92672>|</span>n<span style=color:#f92672>|</span> n <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)
-</span></span><span style=display:flex><span>    .collect()
-</span></span></code></pre></div><p>This pattern basically says:</p><blockquote><p>Go try these things, if one of them fails we&rsquo;ll fail ourselves,
-reporting the first error that we encounter.</p></blockquote><p>Which, most of the time, is all you need.</p><p>But what about when it&rsquo;s not? What about when you want to collect all of the
-errors when there are some?</p><p>The <a href=https://github.com/rust-lang/rust-by-example/blob/master/src/error/iter_result.md#collect-all-valid-values-and-failures-with-partition class=external-link target=_blank rel=noopener>very next section of Rust by Example</a> shows how you can use
-<code>partition(Result::is_ok)</code> to separate the <code>Ok</code> & <code>Err</code> variants in your
-iterator of results. You could then go onto write some logic so your function
+single value.</p>
+<ul>
+<li>You can use the <code>?</code> operator to make the error handling almost automatic.</li>
+<li>You can use any of the other result combinators like <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.and_then"  class="external-link" target="_blank" rel="noopener"><code>and_then</code></a>,
+and <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.map"  class="external-link" target="_blank" rel="noopener"><code>map</code></a>.</li>
+<li>You can chain further computations on the end of the expression.  In the
+above example we could have done:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>    .collect()<span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>    .into_iter()
+</span></span><span style="display:flex;"><span>    .map(<span style="color:#f92672">|</span>n<span style="color:#f92672">|</span> n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    .collect()
+</span></span></code></pre></div><p>This pattern basically says:</p>
+<blockquote>
+<p>Go try these things, if one of them fails we&rsquo;ll fail ourselves,
+reporting the first error that we encounter.</p></blockquote>
+<p>Which, most of the time, is all you need.</p>
+<p>But what about when it&rsquo;s not? What about when you want to collect all of the
+errors when there are some?</p>
+<p>The <a href="https://github.com/rust-lang/rust-by-example/blob/master/src/error/iter_result.md#collect-all-valid-values-and-failures-with-partition"  class="external-link" target="_blank" rel="noopener">very next section of Rust by Example</a> shows how you can use
+<code>partition(Result::is_ok)</code> to separate the <code>Ok</code> &amp; <code>Err</code> variants in your
+iterator of results.  You could then go onto write some logic so your function
 tests that the collection of errors is empty, and if not returns a result with
-a collection of errors in its <code>Err</code> variant: <code>Result&lt;Vec&lt;T>, Vec&lt;E>></code>.</p><p>But then your entire function stack up to the point where you terminate the
+a collection of errors in its <code>Err</code> variant: <code>Result&lt;Vec&lt;T&gt;, Vec&lt;E&gt;&gt;</code>.</p>
+<p>But then your entire function stack up to the point where you terminate the
 need for expressing a collection of errors has to deal with returning a
-collection of errors. If you&rsquo;re writing a CLI tool, that termination point
+collection of errors.  If you&rsquo;re writing a CLI tool, that termination point
 would be the point where you write all the error messages to stderr and exit,
 so your whole program is likely to need this error handling. This ruins a lot
 of the ergonomics of <code>?</code> for dealing with calls to foreign methods that return
-a normal <code>Result&lt;T, E></code> (<code>where E: std::err::Error</code>). Ok, you could replace all
-<code>?</code> with <code>.map_err(|e| vec![e])?</code>, but that&rsquo;s still clunky to deal with.</p><p>An alternative could be to use an error type such as
-<a href=https://docs.rs/valid/0.3.0/valid/struct.ValidationError.html class=external-link target=_blank rel=noopener><code>valid::ValidationError</code></a> that can model a collection of errors,
-or build your own. This is probably a better approach, but is still going to
+a normal <code>Result&lt;T, E&gt;</code> (<code>where E: std::err::Error</code>). Ok, you could replace all
+<code>?</code> with <code>.map_err(|e| vec![e])?</code>, but that&rsquo;s still clunky to deal with.</p>
+<p>An alternative could be to use an error type such as
+<a href="https://docs.rs/valid/0.3.0/valid/struct.ValidationError.html"  class="external-link" target="_blank" rel="noopener"><code>valid::ValidationError</code></a> that can model a collection of errors,
+or build your own.  This is probably a better approach, but is still going to
 be a bit of work to define your own error type, or integrate another crates'
-error type into your application.</p><p>If you&rsquo;re building a library, this alternative is probably the right way to go
+error type into your application.</p>
+<p>If you&rsquo;re building a library, this alternative is probably the right way to go
 as your library will be able to return a well-typed expression of &ldquo;many
-errors&rdquo;.</p><p>With both of these, you&rsquo;re still going to be missing the ergonomics of
-<code>collect()</code>.</p><p>In much the same way as when building a library you might use
-<a href=https://docs.rs/thiserror/1.0.16/thiserror/ class=external-link target=_blank rel=noopener><code>thiserror</code></a> to define your own error types, whereas in an
+errors&rdquo;.</p>
+<p>With both of these, you&rsquo;re still going to be missing the ergonomics of
+<code>collect()</code>.</p>
+<p>In much the same way as when building a library you might use
+<a href="https://docs.rs/thiserror/1.0.16/thiserror/"  class="external-link" target="_blank" rel="noopener"><code>thiserror</code></a> to define your own error types, whereas in an
 application you&rsquo;d be happy raising add-hoc errors with
-<a href=https://docs.rs/anyhow/1.0.28/anyhow/macro.anyhow.html class=external-link target=_blank rel=noopener><code>anyhow::anyhow</code></a>: if you&rsquo;re writing an application you might find
-defining your own error type(s) to handle &ldquo;many errors&rdquo; a bit heavy weight.</p><p>I&rsquo;ve recently found myself in this exact situation while writing a CLI tool.
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/macro.anyhow.html"  class="external-link" target="_blank" rel="noopener"><code>anyhow::anyhow</code></a>: if you&rsquo;re writing an application you might find
+defining your own error type(s) to handle &ldquo;many errors&rdquo; a bit heavy weight.</p>
+<p>I&rsquo;ve recently found myself in this exact situation while writing a CLI tool.
 The tool needs to tell the user all the errors they&rsquo;ve made in the file they&rsquo;ve
-provided, rather than just one at a time&mldr; as that would be super annoying.
+provided, rather than just one at a time&hellip; as that would be super annoying.
 It doesn&rsquo;t need to do any real processing of the collected errors, it only
 needs to print them all to the terminal in a way that&rsquo;s reasonably readable to
-the user, ideally with writing as little special code as possible.</p><p>To keep things as simple as possible: I wanted the ergonomics of <code>collect()</code>;
+the user, ideally with writing as little special code as possible.</p>
+<p>To keep things as simple as possible: I wanted the ergonomics of <code>collect()</code>;
 and for my representation of &ldquo;many errors&rdquo; to be &ldquo;nothing special&rdquo;, so I can
-use all the existing error handling goodies out of the box.</p><p>Enter <a href=https://docs.rs/beau_collector/0.2.1/beau_collector/index.html class=external-link target=_blank rel=noopener><code>BeauCollector</code></a>. Trait <code>BeauCollector</code> provides method
+use all the existing error handling goodies out of the box.</p>
+<p>Enter <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"  class="external-link" target="_blank" rel="noopener"><code>BeauCollector</code></a>.  Trait <code>BeauCollector</code> provides method
 <code>bcollect</code> which will collect an iterator of errors into an
-<a href=https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html class=external-link target=_blank rel=noopener><code>anyhow::Result</code></a> with an <code>Err</code> variant containing an ad-hoc
-<a href=https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html class=external-link target=_blank rel=noopener><code>anyhow::Error</code></a> with the messages from each error in the
-collection of results on a new line in the error message.</p><p>Looking at our example above:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> beau_collector::BeauCollector <span style=color:#66d9ef>as</span> _;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> strings <span style=color:#f92672>=</span> vec![<span style=color:#e6db74>&#34;7&#34;</span>, <span style=color:#e6db74>&#34;42&#34;</span>, <span style=color:#e6db74>&#34;one&#34;</span>];
-</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> numbers <span style=color:#f92672>=</span> string
-</span></span><span style=display:flex><span>    .into_iter()
-</span></span><span style=display:flex><span>    .map(<span style=color:#f92672>|</span>s<span style=color:#f92672>|</span> s.parse::<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>i32</span><span style=color:#f92672>&gt;</span>())
-</span></span><span style=display:flex><span>    .bcollect::<span style=color:#f92672>&lt;</span>Vec<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;&gt;</span>()<span style=color:#f92672>?</span>;
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html"  class="external-link" target="_blank" rel="noopener"><code>anyhow::Result</code></a> with an <code>Err</code> variant containing an ad-hoc
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"  class="external-link" target="_blank" rel="noopener"><code>anyhow::Error</code></a> with the messages from each error in the
+collection of results on a new line in the error message.</p>
+<p>Looking at our example above:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> beau_collector::BeauCollector <span style="color:#66d9ef">as</span> _;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> strings <span style="color:#f92672">=</span> vec![<span style="color:#e6db74">&#34;7&#34;</span>, <span style="color:#e6db74">&#34;42&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span>];
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> numbers <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span>    .into_iter()
+</span></span><span style="display:flex;"><span>    .map(<span style="color:#f92672">|</span>s<span style="color:#f92672">|</span> s.parse::<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">i32</span><span style="color:#f92672">&gt;</span>())
+</span></span><span style="display:flex;"><span>    .bcollect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;</span>()<span style="color:#f92672">?</span>;
 </span></span></code></pre></div><p>Errors with chains of causes, have their causal chains retained by being
-formatted with the <a href=https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations class=external-link target=_blank rel=noopener>inline representation</a> where causes are separated
-by <code>:</code>.</p><p>One of the results you&rsquo;re iterating over might have been the result of running
-<code>bcollect</code>. As string concatenation is basically what we&rsquo;re doing here,
+formatted with the <a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html#display-representations"  class="external-link" target="_blank" rel="noopener">inline representation</a> where causes are separated
+by <code>:</code>.</p>
+<p>One of the results you&rsquo;re iterating over might have been the result of running
+<code>bcollect</code>.  As string concatenation is basically what we&rsquo;re doing here,
 <code>bcollect</code> will represent them alongside any new errors from this layer in the
-error message. You can collect errors with <code>bcollect</code> at various layers within
+error message.  You can collect errors with <code>bcollect</code> at various layers within
 you application and they&rsquo;ll all be represented in one large error at the top
-level.</p><p>Using <code>bcollect</code> at multiple levels and having a <code>main</code> that returns a result:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() -&gt; <span style=color:#a6e22e>anyhow</span>::Result<span style=color:#f92672>&lt;</span>()<span style=color:#f92672>&gt;</span> {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>use</span> anyhow::Context <span style=color:#66d9ef>as</span> _;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    input_file <span style=color:#f92672>=</span> <span style=color:#f92672>..</span>.;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    some_data <span style=color:#f92672>=</span> process_input(input_file)
-</span></span><span style=display:flex><span>        .with_context(<span style=color:#f92672>||</span> format!(<span style=color:#e6db74>&#34;Errors found while processing </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, input_file))<span style=color:#f92672>?</span>;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    run_application(some_data)
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>Can have an error output that looks like:</p><div class="goat svg-container"><svg font-family="Menlo,Lucida Console,monospace" viewBox="0 0 600 233"><g transform="translate(8,16)"><text text-anchor="middle" x="0" y="4" fill="currentcolor" style="font-size:1em">$</text><text text-anchor="middle" x="0" y="20" fill="currentcolor" style="font-size:1em">E</text><text text-anchor="middle" x="0" y="52" fill="currentcolor" style="font-size:1em">C</text><text text-anchor="middle" x="8" y="20" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="8" y="52" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="16" y="20" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="16" y="52" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="16" y="68" fill="currentcolor" style="font-size:1em">"</text><text text-anchor="middle" x="16" y="100" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="16" y="132" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="16" y="148" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="16" y="164" fill="currentcolor" style="font-size:1em">5</text><text text-anchor="middle" x="16" y="180" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="16" y="212" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="24" y="4" fill="currentcolor" style="font-size:1em">/</text><text text-anchor="middle" x="24" y="20" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="24" y="52" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="24" y="68" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="24" y="100" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="24" y="132" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="24" y="164" fill="currentcolor" style="font-size:1em">4</text><text text-anchor="middle" x="24" y="180" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="24" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="32" y="4" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="32" y="20" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="32" y="52" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="32" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="32" y="100" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="32" y="132" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="32" y="180" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="32" y="212" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="40" y="4" fill="currentcolor" style="font-size:1em">y</text><text text-anchor="middle" x="40" y="20" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="40" y="52" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="40" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="40" y="100" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="40" y="132" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="40" y="164" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="40" y="180" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="40" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="48" y="4" fill="currentcolor" style="font-size:1em">-</text><text text-anchor="middle" x="48" y="68" fill="currentcolor" style="font-size:1em">_</text><text text-anchor="middle" x="48" y="100" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="48" y="132" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="48" y="164" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="48" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="56" y="4" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="56" y="20" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="56" y="52" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="56" y="68" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="56" y="132" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="56" y="180" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="56" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="64" y="4" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="64" y="20" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="64" y="52" fill="currentcolor" style="font-size:1em">y</text><text text-anchor="middle" x="64" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="64" y="100" fill="currentcolor" style="font-size:1em">"</text><text text-anchor="middle" x="64" y="164" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="64" y="212" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="72" y="4" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="72" y="20" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="72" y="52" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="72" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="72" y="100" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="72" y="132" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="72" y="164" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="72" y="180" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="72" y="212" fill="currentcolor" style="font-size:1em">h</text><text text-anchor="middle" x="80" y="4" fill="currentcolor" style="font-size:1em">-</text><text text-anchor="middle" x="80" y="20" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="80" y="68" fill="currentcolor" style="font-size:1em">"</text><text text-anchor="middle" x="80" y="100" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="80" y="132" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="80" y="164" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="80" y="180" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="80" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="88" y="4" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="88" y="20" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="88" y="100" fill="currentcolor" style="font-size:1em">z</text><text text-anchor="middle" x="88" y="132" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="88" y="180" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="88" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="96" y="4" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="96" y="68" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="96" y="100" fill="currentcolor" style="font-size:1em">"</text><text text-anchor="middle" x="96" y="132" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="96" y="164" fill="currentcolor" style="font-size:1em">h</text><text text-anchor="middle" x="96" y="180" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="104" y="4" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="104" y="20" fill="currentcolor" style="font-size:1em">w</text><text text-anchor="middle" x="104" y="68" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="104" y="132" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="104" y="164" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="104" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="112" y="4" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="112" y="20" fill="currentcolor" style="font-size:1em">h</text><text text-anchor="middle" x="112" y="100" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="112" y="132" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="112" y="164" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="112" y="180" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="112" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="120" y="20" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="120" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="120" y="100" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="120" y="132" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="120" y="164" fill="currentcolor" style="font-size:1em">h</text><text text-anchor="middle" x="120" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="120" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="128" y="4" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="128" y="20" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="128" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="128" y="132" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="128" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="136" y="4" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="136" y="20" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="136" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="136" y="100" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="136" y="132" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="136" y="164" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="136" y="180" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="136" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="144" y="4" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="144" y="100" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="144" y="132" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="144" y="164" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="144" y="180" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="152" y="4" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="152" y="20" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="152" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="152" y="100" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="152" y="164" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="152" y="180" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="152" y="212" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="160" y="4" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="160" y="20" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="160" y="100" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="160" y="132" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="160" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="160" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="168" y="4" fill="currentcolor" style="font-size:1em">_</text><text text-anchor="middle" x="168" y="20" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="168" y="68" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="168" y="100" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="168" y="132" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="168" y="164" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="168" y="180" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="168" y="212" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="176" y="4" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="176" y="20" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="176" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="176" y="100" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="176" y="132" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="176" y="164" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="176" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="176" y="212" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="184" y="4" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="184" y="20" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="184" y="68" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="184" y="100" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="184" y="132" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="184" y="164" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="184" y="180" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="184" y="212" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="192" y="4" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="192" y="20" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="192" y="68" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="192" y="132" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="192" y="164" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="192" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="192" y="212" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="200" y="4" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="200" y="20" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="200" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="200" y="100" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="200" y="164" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="200" y="180" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="200" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="208" y="4" fill="currentcolor" style="font-size:1em">.</text><text text-anchor="middle" x="208" y="20" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="208" y="100" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="208" y="132" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="208" y="164" fill="currentcolor" style="font-size:1em">_</text><text text-anchor="middle" x="216" y="4" fill="currentcolor" style="font-size:1em">y</text><text text-anchor="middle" x="216" y="20" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="216" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="216" y="100" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="216" y="132" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="216" y="164" fill="currentcolor" style="font-size:1em">y</text><text text-anchor="middle" x="216" y="180" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="216" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="224" y="4" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="224" y="20" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="224" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="224" y="100" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="224" y="132" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="224" y="180" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="224" y="212" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="232" y="4" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="232" y="68" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="232" y="132" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="232" y="180" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="232" y="212" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="240" y="4" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="240" y="20" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="240" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="240" y="100" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="240" y="180" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="248" y="20" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="248" y="100" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="248" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="248" y="212" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="256" y="20" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="256" y="68" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="256" y="100" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="256" y="212" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="264" y="20" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="264" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="264" y="100" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="264" y="180" fill="currentcolor" style="font-size:1em">-</text><text text-anchor="middle" x="264" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="272" y="20" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="272" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="272" y="100" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="272" y="180" fill="currentcolor" style="font-size:1em">3</text><text text-anchor="middle" x="272" y="212" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="280" y="20" fill="currentcolor" style="font-size:1em">_</text><text text-anchor="middle" x="280" y="212" fill="currentcolor" style="font-size:1em">h</text><text text-anchor="middle" x="288" y="20" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="288" y="68" fill="currentcolor" style="font-size:1em">X</text><text text-anchor="middle" x="288" y="100" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="288" y="180" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="288" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="296" y="20" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="296" y="68" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="296" y="100" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="296" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="296" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="304" y="20" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="304" y="100" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="304" y="180" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="312" y="20" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="312" y="68" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="312" y="100" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="312" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="312" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="320" y="20" fill="currentcolor" style="font-size:1em">.</text><text text-anchor="middle" x="320" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="320" y="180" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="320" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="328" y="20" fill="currentcolor" style="font-size:1em">y</text><text text-anchor="middle" x="328" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="328" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="336" y="20" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="336" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="336" y="180" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="336" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="344" y="20" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="344" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="344" y="180" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="344" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="352" y="20" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="352" y="68" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="352" y="180" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="360" y="68" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="360" y="212" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="368" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="368" y="180" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="368" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="376" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="376" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="376" y="212" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="384" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="384" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="384" y="212" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="392" y="68" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="392" y="180" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="392" y="212" fill="currentcolor" style="font-size:1em">u</text><text text-anchor="middle" x="400" y="180" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="400" y="212" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="408" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="408" y="180" fill="currentcolor" style="font-size:1em">_</text><text text-anchor="middle" x="408" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="416" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="416" y="180" fill="currentcolor" style="font-size:1em">z</text><text text-anchor="middle" x="424" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="424" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="432" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="432" y="212" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="440" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="440" y="180" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="440" y="212" fill="currentcolor" style="font-size:1em">:</text><text text-anchor="middle" x="448" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="456" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="456" y="180" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="456" y="212" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="464" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="464" y="212" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="472" y="68" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="472" y="180" fill="currentcolor" style="font-size:1em">g</text><text text-anchor="middle" x="472" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="480" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="480" y="180" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="480" y="212" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="488" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="488" y="180" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="488" y="212" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="496" y="68" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="496" y="180" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="496" y="212" fill="currentcolor" style="font-size:1em">f</text><text text-anchor="middle" x="504" y="68" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="504" y="180" fill="currentcolor" style="font-size:1em">v</text><text text-anchor="middle" x="504" y="212" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="512" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="512" y="180" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="512" y="212" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="520" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="520" y="180" fill="currentcolor" style="font-size:1em">.</text><text text-anchor="middle" x="528" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="528" y="212" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="536" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="536" y="212" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="544" y="212" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="552" y="212" fill="currentcolor" style="font-size:1em">b</text><text text-anchor="middle" x="560" y="212" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="568" y="212" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="576" y="212" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="584" y="212" fill="currentcolor" style="font-size:1em">.</text></g></svg></div><p>The error in the <code>Err</code> variant of the result returned by <code>main</code> is an
-<a href=https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html class=external-link target=_blank rel=noopener><code>anyhow::Error</code></a> with a message being the block seen below &ldquo;Caused
-by:&rdquo; and a context of &ldquo;Errors found while&mldr;&rdquo;.</p><p>Using <a href=https://docs.rs/beau_collector/0.2.1/beau_collector/index.html class=external-link target=_blank rel=noopener><code>BeauCollector</code></a> in this way has the advantages that:</p><ul><li>Functions can return a <a href=https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html class=external-link target=_blank rel=noopener>normal <code>Result</code></a>,</li><li><code>?</code> can be used normally on all other <code>Results</code> in functions,</li><li>If <code>main</code> returns <code>Result</code>, no special error handling is needed and the full
-collection of results will appear in stderr.</li></ul><p>There are some limitations too:</p><ul><li>Beyond placing each collected error on a newline, <code>bcollect</code> doesn&rsquo;t do any
+level.</p>
+<p>Using <code>bcollect</code> at multiple levels and having a <code>main</code> that returns a result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; <span style="color:#a6e22e">anyhow</span>::Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">use</span> anyhow::Context <span style="color:#66d9ef">as</span> _;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    input_file <span style="color:#f92672">=</span> <span style="color:#f92672">..</span>.;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    some_data <span style="color:#f92672">=</span> process_input(input_file)
+</span></span><span style="display:flex;"><span>        .with_context(<span style="color:#f92672">||</span> format!(<span style="color:#e6db74">&#34;Errors found while processing </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, input_file))<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    run_application(some_data)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Can have an error output that looks like:</p>
+
+
+
+<div class="goat svg-container ">
+  
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      font-family="Menlo,Lucida Console,monospace"
+      
+        viewBox="0 0 600 233"
+      >
+      <g transform='translate(8,16)'>
+<text text-anchor='middle' x='0' y='4' fill='currentColor' style='font-size:1em'>$</text>
+<text text-anchor='middle' x='0' y='20' fill='currentColor' style='font-size:1em'>E</text>
+<text text-anchor='middle' x='0' y='52' fill='currentColor' style='font-size:1em'>C</text>
+<text text-anchor='middle' x='8' y='20' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='8' y='52' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='16' y='20' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='16' y='52' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='16' y='68' fill='currentColor' style='font-size:1em'>"</text>
+<text text-anchor='middle' x='16' y='100' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='16' y='132' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='16' y='148' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='16' y='164' fill='currentColor' style='font-size:1em'>5</text>
+<text text-anchor='middle' x='16' y='180' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='16' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='24' y='4' fill='currentColor' style='font-size:1em'>/</text>
+<text text-anchor='middle' x='24' y='20' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='24' y='52' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='24' y='68' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='24' y='100' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='24' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='24' y='164' fill='currentColor' style='font-size:1em'>4</text>
+<text text-anchor='middle' x='24' y='180' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='24' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='32' y='4' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='32' y='20' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='32' y='52' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='32' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='32' y='100' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='32' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='32' y='180' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='32' y='212' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='40' y='4' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='40' y='20' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='40' y='52' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='40' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='40' y='100' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='40' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='40' y='164' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='40' y='180' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='40' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='48' y='4' fill='currentColor' style='font-size:1em'>-</text>
+<text text-anchor='middle' x='48' y='68' fill='currentColor' style='font-size:1em'>_</text>
+<text text-anchor='middle' x='48' y='100' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='48' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='48' y='164' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='48' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='56' y='4' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='56' y='20' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='56' y='52' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='56' y='68' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='56' y='132' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='56' y='180' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='56' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='64' y='4' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='64' y='20' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='64' y='52' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='64' y='68' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='64' y='100' fill='currentColor' style='font-size:1em'>"</text>
+<text text-anchor='middle' x='64' y='164' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='64' y='212' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='72' y='4' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='72' y='20' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='72' y='52' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='72' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='72' y='100' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='72' y='132' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='72' y='164' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='72' y='180' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='72' y='212' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='80' y='4' fill='currentColor' style='font-size:1em'>-</text>
+<text text-anchor='middle' x='80' y='20' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='80' y='68' fill='currentColor' style='font-size:1em'>"</text>
+<text text-anchor='middle' x='80' y='100' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='80' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='80' y='164' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='80' y='180' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='80' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='88' y='4' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='88' y='20' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='88' y='100' fill='currentColor' style='font-size:1em'>z</text>
+<text text-anchor='middle' x='88' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='88' y='180' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='88' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='96' y='4' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='96' y='68' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='96' y='100' fill='currentColor' style='font-size:1em'>"</text>
+<text text-anchor='middle' x='96' y='132' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='96' y='164' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='96' y='180' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='104' y='4' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='104' y='20' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='104' y='68' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='104' y='132' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='104' y='164' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='104' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='112' y='4' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='112' y='20' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='112' y='100' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='112' y='132' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='112' y='164' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='112' y='180' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='112' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='120' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='120' y='68' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='120' y='100' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='120' y='132' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='120' y='164' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='120' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='120' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='128' y='4' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='128' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='128' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='128' y='132' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='128' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='136' y='4' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='136' y='20' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='136' y='68' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='136' y='100' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='136' y='132' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='136' y='164' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='136' y='180' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='136' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='144' y='4' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='144' y='100' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='144' y='132' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='144' y='164' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='144' y='180' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='152' y='4' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='152' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='152' y='68' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='152' y='100' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='152' y='164' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='152' y='180' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='152' y='212' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='160' y='4' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='160' y='20' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='160' y='100' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='160' y='132' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='160' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='160' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='168' y='4' fill='currentColor' style='font-size:1em'>_</text>
+<text text-anchor='middle' x='168' y='20' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='168' y='68' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='168' y='100' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='168' y='132' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='168' y='164' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='168' y='180' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='168' y='212' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='176' y='4' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='176' y='20' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='176' y='68' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='176' y='100' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='176' y='132' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='176' y='164' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='176' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='176' y='212' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='184' y='4' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='184' y='20' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='184' y='68' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='184' y='100' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='184' y='132' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='184' y='164' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='184' y='180' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='184' y='212' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='192' y='4' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='192' y='20' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='192' y='68' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='192' y='132' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='192' y='164' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='192' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='192' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='200' y='4' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='200' y='20' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='200' y='68' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='200' y='100' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='200' y='164' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='200' y='180' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='200' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='208' y='4' fill='currentColor' style='font-size:1em'>.</text>
+<text text-anchor='middle' x='208' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='208' y='100' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='208' y='132' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='208' y='164' fill='currentColor' style='font-size:1em'>_</text>
+<text text-anchor='middle' x='216' y='4' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='216' y='20' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='216' y='68' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='216' y='100' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='216' y='132' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='216' y='164' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='216' y='180' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='216' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='224' y='4' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='224' y='20' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='224' y='68' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='224' y='100' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='224' y='132' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='224' y='180' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='224' y='212' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='232' y='4' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='232' y='68' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='232' y='132' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='232' y='180' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='232' y='212' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='240' y='4' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='240' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='240' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='240' y='100' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='240' y='180' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='248' y='20' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='248' y='100' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='248' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='248' y='212' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='256' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='256' y='68' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='256' y='100' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='256' y='212' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='264' y='20' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='264' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='264' y='100' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='264' y='180' fill='currentColor' style='font-size:1em'>-</text>
+<text text-anchor='middle' x='264' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='272' y='20' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='272' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='272' y='100' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='272' y='180' fill='currentColor' style='font-size:1em'>3</text>
+<text text-anchor='middle' x='272' y='212' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='280' y='20' fill='currentColor' style='font-size:1em'>_</text>
+<text text-anchor='middle' x='280' y='212' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='288' y='20' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='288' y='68' fill='currentColor' style='font-size:1em'>X</text>
+<text text-anchor='middle' x='288' y='100' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='288' y='180' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='288' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='296' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='296' y='68' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='296' y='100' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='296' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='296' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='304' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='304' y='100' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='304' y='180' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='312' y='20' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='68' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='312' y='100' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='312' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='320' y='20' fill='currentColor' style='font-size:1em'>.</text>
+<text text-anchor='middle' x='320' y='68' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='320' y='180' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='320' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='328' y='20' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='328' y='68' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='328' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='336' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='336' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='336' y='180' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='336' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='344' y='20' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='344' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='344' y='180' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='344' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='352' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='352' y='68' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='352' y='180' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='68' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='360' y='212' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='368' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='368' y='180' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='368' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='376' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='376' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='376' y='212' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='384' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='384' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='384' y='212' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='392' y='68' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='392' y='180' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='392' y='212' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='400' y='180' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='400' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='408' y='68' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='408' y='180' fill='currentColor' style='font-size:1em'>_</text>
+<text text-anchor='middle' x='408' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='416' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='416' y='180' fill='currentColor' style='font-size:1em'>z</text>
+<text text-anchor='middle' x='424' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='424' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='432' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='432' y='212' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='440' y='68' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='440' y='180' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='440' y='212' fill='currentColor' style='font-size:1em'>:</text>
+<text text-anchor='middle' x='448' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='456' y='68' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='456' y='180' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='456' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='464' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='464' y='212' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='472' y='68' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='472' y='180' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='472' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='480' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='480' y='180' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='480' y='212' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='488' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='488' y='180' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='488' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='496' y='68' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='496' y='180' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='496' y='212' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='504' y='68' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='504' y='180' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='504' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='512' y='68' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='512' y='180' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='512' y='212' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='520' y='68' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='520' y='180' fill='currentColor' style='font-size:1em'>.</text>
+<text text-anchor='middle' x='528' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='528' y='212' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='536' y='68' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='536' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='544' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='552' y='212' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='560' y='212' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='568' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='576' y='212' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='584' y='212' fill='currentColor' style='font-size:1em'>.</text>
+</g>
+
+    </svg>
+  
+</div>
+<p>The error in the <code>Err</code> variant of the result returned by <code>main</code> is an
+<a href="https://docs.rs/anyhow/1.0.28/anyhow/struct.Error.html"  class="external-link" target="_blank" rel="noopener"><code>anyhow::Error</code></a> with a message being the block seen below &ldquo;Caused
+by:&rdquo; and a context of &ldquo;Errors found while&hellip;&rdquo;.</p>
+<p>Using <a href="https://docs.rs/beau_collector/0.2.1/beau_collector/index.html"  class="external-link" target="_blank" rel="noopener"><code>BeauCollector</code></a> in this way has the advantages that:</p>
+<ul>
+<li>Functions can return a <a href="https://docs.rs/anyhow/1.0.28/anyhow/type.Result.html"  class="external-link" target="_blank" rel="noopener">normal <code>Result</code></a>,</li>
+<li><code>?</code> can be used normally on all other <code>Results</code> in functions,</li>
+<li>If <code>main</code> returns <code>Result</code>, no special error handling is needed and the full
+collection of results will appear in stderr.</li>
+</ul>
+<p>There are some limitations too:</p>
+<ul>
+<li>Beyond placing each collected error on a newline, <code>bcollect</code> doesn&rsquo;t do any
 further formatting, or reformatting when different layers&rsquo; errors are
-combined. It&rsquo;s left up to the error messages raised to add in some
-whitespace to appear more readable than a solid block of text.</li><li>While the messages from the causal chain of an error are retained you loose
+combined.  It&rsquo;s left up to the error messages raised to add in some
+whitespace to appear more readable than a solid block of text.</li>
+<li>While the messages from the causal chain of an error are retained you loose
 some other error handling like getting the backtrace or downcasting to get
-the original error back.</li></ul><p>These are currently the price you pay for the ergonomics of <code>bcollect</code>.</p><p>For writing applications, you&rsquo;re likely to be happy with this trade off and
-find the limitations of <code>bcollect</code> a small price to pay.</p><p>For a library you might want the caller to have more options on what to do with
-the many errors than building up an error message, maybe not. Perhaps
+the original error back.</li>
+</ul>
+<p>These are currently the price you pay for the ergonomics of <code>bcollect</code>.</p>
+<p>For writing applications, you&rsquo;re likely to be happy with this trade off and
+find the limitations of <code>bcollect</code> a small price to pay.</p>
+<p>For a library you might want the caller to have more options on what to do with
+the many errors than building up an error message, maybe not.  Perhaps
 <code>bcollect</code> could be enhanced to return an error type that can represent a tree
-of errors that can be added to as errors propagate back up the stack. By all
-means <a href=https://github.com/tarquin-the-brave/beau-collector/ class=external-link target=_blank rel=noopener>send in a pull request or raise an issue</a>.</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>When I say you don&rsquo;t <em>need</em> the type hints, that is to say that the
-compiler won&rsquo;t need them to infer the type. HUman readers of the code
-might prefer it is there so they can more easily infer the type. Type
-hinting is also helpful when refactoring as it can catch errors.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
-2026
-Tom Steavenson
-·
-Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>
+of errors that can be added to as errors propagate back up the stack.  By all
+means <a href="https://github.com/tarquin-the-brave/beau-collector/"  class="external-link" target="_blank" rel="noopener">send in a pull request or raise an issue</a>.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>When I say you don&rsquo;t <em>need</em> the type hints, that is to say that the
+compiler won&rsquo;t need them to infer the type.  HUman readers of the code
+might prefer it is there so they can more easily infer the type.  Type
+hinting is also helpful when refactoring as it can catch errors.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        <div class="comments">
+  <script>
+
+    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
+    let themeInParams = '';
+
+    if (getTheme == null) {
+      if (themeInParams !== '' && themeInParams !== 'auto') {
+        getTheme = themeInParams;
+      }
+      else {
+        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+      }
+    }
+
+    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
+    let s = document.createElement('script');
+    s.src = 'https://utteranc.es/client.js';
+    s.setAttribute('repo', 'tarquin-the-brave\/blog');
+    s.setAttribute('issue-term', 'pathname');
+    s.setAttribute('theme', theme);
+    s.setAttribute('crossorigin', 'anonymous');
+    s.setAttribute('async', '');
+    document.querySelector('div.comments').innerHTML = '';
+    document.querySelector('div.comments').appendChild(s);
+
+  </script>
+</div>
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2026
+     tarquin-the-brave 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="http://localhost:1313/blog/js/coder.js"></script>
+  
+
+  
+  
+  
+  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

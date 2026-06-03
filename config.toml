@@ -26,9 +26,22 @@ googleAnalytics = "UA-161243400-1"
   weight = 1
 
 [params]
-  author = "Tom Steavenson"
+  author = "tarquin-the-brave"
   description = ""
-  info = ["Some things I think."]
+  info = [
+    "",
+    "Some things I think.",
+    "",
+    "This blog is opinions only.",
+    "",
+    "I'll rarely if ever cite any references.",
+    "",
+    "Don't take this as any such source of truth.",
+    "",
+    "The intended audience is mostly my future self.",
+    "",
+    "It just some things that I think."
+  ]
   colorScheme = "auto"
   customJS  = ["js/copy-code.js"]
   customCSS = ["css/copy-code.css"]

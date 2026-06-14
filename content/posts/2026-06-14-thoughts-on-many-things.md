@@ -4,7 +4,7 @@ date = 2026-06-14T21:33:44+01:00
 images = []
 tags = []
 categories = []
-draft = true
+draft = false
 +++
 
 At the beginning of the year it would have been a decade since I started as a

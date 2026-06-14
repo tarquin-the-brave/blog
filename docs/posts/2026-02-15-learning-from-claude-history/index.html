@@ -1,1013 +1,704 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
-  <title>
-  Learning From Your Claude History · tarquin-the-brave
-</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
-
-
-
-<meta name="author" content="tarquin-the-brave">
-<meta name="description" content="I read this article from Anthropic: &ldquo;How AI assistance impacts the formation
+<!doctype html><html lang=en><head><title>Learning From Your Claude History · tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="tarquin-the-brave"><meta name=description content="I read this article from Anthropic: &ldquo;How AI assistance impacts the formation
 of coding skills&rdquo;.
 It got me a bit concerned.  Are we heading towards a crisis of understanding?
 But then I thought about conversations I&rsquo;ve had with colleagues recently.  Especially
 around &ldquo;is this the end for Junior Engineers?&rdquo;.  I don&rsquo;t think it is.  Mostly because
 I don&rsquo;t think the arrival of AI assistance, Agents, into our engineering toolkit has
 represented any fundamental change, but instead a large leap forward in a direction
-we were already heading.">
-<meta name="keywords" content="">
-
-
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Learning From Your Claude History">
-  <meta name="twitter:description" content="I read this article from Anthropic: “How AI assistance impacts the formation of coding skills”. It got me a bit concerned. Are we heading towards a crisis of understanding?
-But then I thought about conversations I’ve had with colleagues recently. Especially around “is this the end for Junior Engineers?”. I don’t think it is. Mostly because I don’t think the arrival of AI assistance, Agents, into our engineering toolkit has represented any fundamental change, but instead a large leap forward in a direction we were already heading.">
-
-<meta property="og:url" content="http://localhost:1313/blog/posts/2026-02-15-learning-from-claude-history/">
-  <meta property="og:site_name" content="tarquin-the-brave">
-  <meta property="og:title" content="Learning From Your Claude History">
-  <meta property="og:description" content="I read this article from Anthropic: “How AI assistance impacts the formation of coding skills”. It got me a bit concerned. Are we heading towards a crisis of understanding?
-But then I thought about conversations I’ve had with colleagues recently. Especially around “is this the end for Junior Engineers?”. I don’t think it is. Mostly because I don’t think the arrival of AI assistance, Agents, into our engineering toolkit has represented any fundamental change, but instead a large leap forward in a direction we were already heading.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-02-15T16:19:40+00:00">
-    <meta property="article:modified_time" content="2026-02-15T16:19:40+00:00">
-
-
-
-
-<link rel="canonical" href="http://localhost:1313/blog/posts/2026-02-15-learning-from-claude-history/">
-
-
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-
-
-  
-  
-  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
-
-
-
-
-
-
-  
-    
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
-  
-
-
-
- 
-  
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
-  
-
-
-
-
-
-<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
-
-<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-
-<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
-<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-
-
-
-
-
-
-
-  
-</head>
-
-
-
-
-
-
-<body class="preload-transitions colorscheme-auto">
-  
-<div class="float-container">
-    <a id="dark-mode-toggle" class="colorscheme-toggle">
-        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
-    </a>
-</div>
-
-
-  <main class="wrapper">
-    <nav class="navigation">
-  <section class="container">
-    
-    <a class="navigation-title" href="http://localhost:1313/blog/">
-      tarquin-the-brave
-    </a>
-    
-    
-      <input type="checkbox" id="menu-toggle" />
-      <label class="menu-button float-right" for="menu-toggle">
-        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
-      </label>
-      <ul class="navigation-list">
-        
-          
-            <li class="navigation-item">
-              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
-            </li>
-          
-        
-        
-      </ul>
-    
-  </section>
-</nav>
-
-
-    <div class="content">
-      
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/blog/posts/2026-02-15-learning-from-claude-history/">
-              Learning From Your Claude History
-            </a>
-          </h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
-              <time datetime="2026-02-15T16:19:40Z">
-                February 15, 2026
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              17-minute read
-            </span>
-          </div>
-          
-          
-          
-        </div>
-      </header>
-
-      
-
-
-      <div class="post-content">
-        
-        <p>I read this article from Anthropic: <a href="https://www.anthropic.com/research/AI-assistance-coding-skills"  class="external-link" target="_blank" rel="noopener">&ldquo;How AI assistance impacts the formation
+we were already heading."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Learning From Your Claude History"><meta name=twitter:description content="I read this article from Anthropic: “How AI assistance impacts the formation of coding skills”. It got me a bit concerned. Are we heading towards a crisis of understanding?
+But then I thought about conversations I’ve had with colleagues recently. Especially around “is this the end for Junior Engineers?”. I don’t think it is. Mostly because I don’t think the arrival of AI assistance, Agents, into our engineering toolkit has represented any fundamental change, but instead a large leap forward in a direction we were already heading."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="Learning From Your Claude History"><meta property="og:description" content="I read this article from Anthropic: “How AI assistance impacts the formation of coding skills”. It got me a bit concerned. Are we heading towards a crisis of understanding?
+But then I thought about conversations I’ve had with colleagues recently. Especially around “is this the end for Junior Engineers?”. I don’t think it is. Mostly because I don’t think the arrival of AI assistance, Agents, into our engineering toolkit has represented any fundamental change, but instead a large leap forward in a direction we were already heading."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-02-15T16:19:40+00:00"><meta property="article:modified_time" content="2026-02-15T16:19:40+00:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.f6b1b35a7b02521b25338f6cf58975f9980a6c12847763fe35a48307758cd1e7.css integrity="sha256-9rGzWnsCUhslM49s9Yl1+ZgKbBKEd2P+NaSDB3WM0ec=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css integrity="sha256-rUj0didZdIhb3APVJR482+FnjFSmP/dyN2sO0q3EaN0=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/>Learning From Your Claude History</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2026-02-15T16:19:40Z>February 15, 2026
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+17-minute read</span></div></div></header><div class=post-content><p>I read this article from Anthropic: <a href=https://www.anthropic.com/research/AI-assistance-coding-skills class=external-link target=_blank rel=noopener>&ldquo;How AI assistance impacts the formation
 of coding skills&rdquo;</a>.
-It got me a bit concerned.  Are we heading towards a crisis of understanding?</p>
-<p>But then I thought about conversations I&rsquo;ve had with colleagues recently.  Especially
-around &ldquo;is this the end for Junior Engineers?&rdquo;.  I don&rsquo;t think it is.  Mostly because
+It got me a bit concerned. Are we heading towards a crisis of understanding?</p><p>But then I thought about conversations I&rsquo;ve had with colleagues recently. Especially
+around &ldquo;is this the end for Junior Engineers?&rdquo;. I don&rsquo;t think it is. Mostly because
 I don&rsquo;t think the arrival of AI assistance, Agents, into our engineering toolkit has
 represented any <em>fundamental</em> change, but instead a large leap forward in a direction
-we were already heading.</p>
-<hr>
-<p>Since the dawn of computers, we engineers have steadily climbed the level of abstraction
-that we work at day to day.  Over time the opportunity to work at higher levels of
+we were already heading.</p><hr><p>Since the dawn of computers, we engineers have steadily climbed the level of abstraction
+that we work at day to day. Over time the opportunity to work at higher levels of
 abstraction has presented itself, and generally made programming computers more accessible
-to the uninitiated and more productive for those who already can.  Think of the progression
+to the uninitiated and more productive for those who already can. Think of the progression
 of: Assembly, C, garbage-collected languages, languages that don&rsquo;t need compiling and linking,
 finishing this chain at something like Python - a very accessible high level language in
-which you can achieve things quickly.</p>
-<p>Say you&rsquo;ve got a team of some &ldquo;Python engineers&rdquo; - your product&rsquo;s mostly in Python, your
-engineers mostly work in Python.  Who&rsquo;s the most valuable engineer on that team?  It&rsquo;s the
+which you can achieve things quickly.</p><p>Say you&rsquo;ve got a team of some &ldquo;Python engineers&rdquo; - your product&rsquo;s mostly in Python, your
+engineers mostly work in Python. Who&rsquo;s the most valuable engineer on that team? It&rsquo;s the
 engineer you call upon when things get difficult: there&rsquo;s an issue with memory growth, the
 service is not fast enough, there&rsquo;s a bug in asynchronous code that stops showing up
-when you try to debug it.  And how are they able to tackle those difficult problems?  By having
+when you try to debug it. And how are they able to tackle those difficult problems? By having
 an understanding of what&rsquo;s happening below the level of abstraction that they work at most of
-the time.</p>
-<p>The rise of coding agents that we&rsquo;re seeing right now, I see as a continuation of this trend.
-Over the last few weeks I&rsquo;ve been progressively trying to use AI tooling more.  And I&rsquo;ve been asked
-&ldquo;how does it feel to not be writing code?&rdquo;.  But I feel like I am still writing code.  Sure, I&rsquo;m
-not typing out every character of it.  But I wasn&rsquo;t doing that before.  For nearly the last decade,
-I and most other engineers from what I can gather, have been using LSP-powered auto-complete.  To
-the extent that without it I struggle to one-shot typing valid syntax - embarrassingly so.  So
+the time.</p><p>The rise of coding agents that we&rsquo;re seeing right now, I see as a continuation of this trend.
+Over the last few weeks I&rsquo;ve been progressively trying to use AI tooling more. And I&rsquo;ve been asked
+&ldquo;how does it feel to not be writing code?&rdquo;. But I feel like I am still writing code. Sure, I&rsquo;m
+not typing out every character of it. But I wasn&rsquo;t doing that before. For nearly the last decade,
+I and most other engineers from what I can gather, have been using LSP-powered auto-complete. To
+the extent that without it I struggle to one-shot typing valid syntax - embarrassingly so. So
 one could argue that we&rsquo;ve already been working &ldquo;abstracted away from syntax&rdquo;, to a certain extent,
-before AI and Agents came along.  But there certainly is a further level of abstraction that
+before AI and Agents came along. But there certainly is a further level of abstraction that
 AI and Agents take you to working at, one that&rsquo;s a big jump of abstraction compared to what we
-were working at before.</p>
-<p>We&rsquo;ve moved the level of abstraction which we work with to one of natural language.</p>
-<p>And the opportunity for producing and delivering stuff that I don&rsquo;t really understand is
-a lot higher.</p>
-<hr>
-<p>There&rsquo;s a lot of predictions of the future that I hear and read going around.  A lot of them are
+were working at before.</p><p>We&rsquo;ve moved the level of abstraction which we work with to one of natural language.</p><p>And the opportunity for producing and delivering stuff that I don&rsquo;t really understand is
+a lot higher.</p><hr><p>There&rsquo;s a lot of predictions of the future that I hear and read going around. A lot of them are
 around who&rsquo;s going to be put out of a job in X months, and who&rsquo;s going to be the most valuable
-engineers to an organisation.  I see a theme of arguments that revolve around proficiency with using
-AI tooling being the key factor.</p>
-<p>And I can see where that is coming from.  I&rsquo;m pretty new to all this stuff, but I can see that you
+engineers to an organisation. I see a theme of arguments that revolve around proficiency with using
+AI tooling being the key factor.</p><p>And I can see where that is coming from. I&rsquo;m pretty new to all this stuff, but I can see that you
 don&rsquo;t immediately get great results using it out of the box without some effort learning how it
-needs to be tuned and orchestrated.  Just opening up Claude Code and asking it to do your work for
-you doesn&rsquo;t get you very far.</p>
-<p>But I think the incentives are sufficient for that not to be the case for very long.  If one
+needs to be tuned and orchestrated. Just opening up Claude Code and asking it to do your work for
+you doesn&rsquo;t get you very far.</p><p>But I think the incentives are sufficient for that not to be the case for very long. If one
 companies Agent requires an endless list of heuristics and tricks, with layers of &ldquo;scaffolding&rdquo;
 written in markdown and even whole applications to orchestrate it and coerce good results out of it,
 where alternatively another company&rsquo;s Agent gives you pretty good results out of the box - I think
-it&rsquo;s clear where you&rsquo;re going to spend your money.  And we&rsquo;re already seeing this happen.  In the
+it&rsquo;s clear where you&rsquo;re going to spend your money. And we&rsquo;re already seeing this happen. In the
 very short period of time that I&rsquo;ve been using Claude Code, the direct / native experience of using
-it has greatly improved.  I&rsquo;ve found myself getting rid of some of the layers I had tried using
-over the top.  E.g: with recent improvements to &ldquo;plan mode&rdquo; I found myself uninstalling the &ldquo;GSD&rdquo;
-framework.</p>
-<p>What I mean by this is that I don&rsquo;t think the current apparent gap in productivity between those who
+it has greatly improved. I&rsquo;ve found myself getting rid of some of the layers I had tried using
+over the top. E.g: with recent improvements to &ldquo;plan mode&rdquo; I found myself uninstalling the &ldquo;GSD&rdquo;
+framework.</p><p>What I mean by this is that I don&rsquo;t think the current apparent gap in productivity between those who
 are well versed in all the AI tooling and those who are new to using it is going to be as big in the
-near future, as getting good results out of the tooling is going to get easier.</p>
-<hr>
-<p>So coming back to the point here: why was I a bit worried by
-<a href="https://www.anthropic.com/research/AI-assistance-coding-skills"  class="external-link" target="_blank" rel="noopener">Anthropic&rsquo;s article</a>, then why did I
-decide that I actually wasn&rsquo;t that worried?</p>
-<p>How we&rsquo;re working as engineers is changing in a big way.  I don&rsquo;t think it&rsquo;s changing in a <em>fundamental</em>
+near future, as getting good results out of the tooling is going to get easier.</p><hr><p>So coming back to the point here: why was I a bit worried by
+<a href=https://www.anthropic.com/research/AI-assistance-coding-skills class=external-link target=_blank rel=noopener>Anthropic&rsquo;s article</a>, then why did I
+decide that I actually wasn&rsquo;t that worried?</p><p>How we&rsquo;re working as engineers is changing in a big way. I don&rsquo;t think it&rsquo;s changing in a <em>fundamental</em>
 way, as this is the same pattern that has happened before: &ldquo;we&rsquo;re moving to work at a higher level of
 abstraction&rdquo;, and what makes an engineer highly skilled and valuable is also staying the same: &ldquo;how do
-things work underneath the level of abstraction that you interact with them at?&rdquo;.</p>
-<p>But this is quite a large change, and us engineers need to be deliberate in our approach.  I think
-we need to be more conscious and intentional about learning how things actually work.  As we&rsquo;re abstracting
-ourselves further from it the opportunity to learn it &ldquo;by osmosis&rdquo; is diminishing.  I don&rsquo;t think that
+things work underneath the level of abstraction that you interact with them at?&rdquo;.</p><p>But this is quite a large change, and us engineers need to be deliberate in our approach. I think
+we need to be more conscious and intentional about learning how things actually work. As we&rsquo;re abstracting
+ourselves further from it the opportunity to learn it &ldquo;by osmosis&rdquo; is diminishing. I don&rsquo;t think that
 it&rsquo;s game over for Junior Engineers, but compared with my generation I think they need to take a different
-path to gaining expertise.  Now that we can build stuff while working at a level so far abstracted from
+path to gaining expertise. Now that we can build stuff while working at a level so far abstracted from
 &ldquo;how things work&rdquo;, a more deliberate approach to learning is called for - it&rsquo;s less &ldquo;on the job&rdquo; than it
-was before.</p>
-<p>In these past few weeks, with the assistance of Claude Code I&rsquo;ve been able to independently push deeper
-into very unfamiliar territories.  I&rsquo;ve written frontend code for the first time, and done some stuff
-with databases that was far beyond my previous understanding of them.  But after getting something
-working I&rsquo;ll admit I didn&rsquo;t really understand how they worked.</p>
-<p>I came across the <code>/insights</code> command in Claude Code.  It essentially opens up an HTML formatted report
+was before.</p><p>In these past few weeks, with the assistance of Claude Code I&rsquo;ve been able to independently push deeper
+into very unfamiliar territories. I&rsquo;ve written frontend code for the first time, and done some stuff
+with databases that was far beyond my previous understanding of them. But after getting something
+working I&rsquo;ll admit I didn&rsquo;t really understand how they worked.</p><p>I came across the <code>/insights</code> command in Claude Code. It essentially opens up an HTML formatted report
 in your browser of all the recent activity you&rsquo;ve had and recommendations for how you could improve
-your usage.  This made me realise that there is the wealth of information sitting there in Claude -
-all the things you&rsquo;ve built with it, conversations you&rsquo;ve had etc.</p>
-<p>Where I&rsquo;ve been concerned that using AI is &ldquo;taking the learning away&rdquo;, the AI has the information on
-all the technical areas you&rsquo;ve worked on which can be used to help you learn.</p>
-<p>I had a quick look around on the interwebs for &ldquo;is there something that can pull technical learnings
-out of Claude chat history?&rdquo;.  From that quick cursory search I couldn&rsquo;t find anything that I could
-just grab and use.</p>
-<p>So I worked with Claude to develop this Skill for exactly that: look at recent conversations and
+your usage. This made me realise that there is the wealth of information sitting there in Claude -
+all the things you&rsquo;ve built with it, conversations you&rsquo;ve had etc.</p><p>Where I&rsquo;ve been concerned that using AI is &ldquo;taking the learning away&rdquo;, the AI has the information on
+all the technical areas you&rsquo;ve worked on which can be used to help you learn.</p><p>I had a quick look around on the interwebs for &ldquo;is there something that can pull technical learnings
+out of Claude chat history?&rdquo;. From that quick cursory search I couldn&rsquo;t find anything that I could
+just grab and use.</p><p>So I worked with Claude to develop this Skill for exactly that: look at recent conversations and
 either write a summary of the technical areas or start an interactive conversation with the user to
-dive into specific topics.  This took some iterations to get right, it didn&rsquo;t work that well to begin
-with, but eventually I got something I was happy with.  I made it infer the level of expertise I had
-on a topic based on the questions I was asking in the conversations.</p>
-<p>This <code>/learn</code> command will let you choose how far back in time you want to take conversations from
-and whether you drop into an interactive discussion or just get a summary written to file.</p>
-<p>I had quite a good conversation with it on Friday and felt it helped give me a bit more of an
-understanding of the things I had built in the past few weeks.</p>
-<hr>
-<p>If you use Claude Code, and want to give this a try, place the following two files into:</p>
-<ul>
-<li><code>~/.claude/skills/learn/SKILL.md</code></li>
-<li><code>~/.claude/skills/learn/scripts/extract-sessions.py</code></li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>name: learn
-</span></span><span style="display:flex;"><span>description: &gt;
-</span></span><span style="display:flex;"><span>  Generate a personalised learning document from recent
-</span></span><span style="display:flex;"><span>  Claude Code sessions, or interactively explore topics
-</span></span><span style="display:flex;"><span>  covered in past work.
-</span></span><span style="display:flex;"><span>disable-model-invocation: true
-</span></span><span style="display:flex;"><span>argument-hint: &#34;[summary|explore] [days|topic]&#34;
-</span></span><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span># /learn Skill
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>You are generating educational content from the user&#39;s
-</span></span><span style="display:flex;"><span>recent Claude Code sessions.  The extraction script has
-</span></span><span style="display:flex;"><span>already been run and its output is included below.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Session Data
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>!<span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 7`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Determine Mode from Arguments
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>The user invoked <span style="color:#e6db74">`/learn`</span> with these arguments: $ARGUMENTS
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Parse them as follows:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **No arguments** → ask the user which mode they want
-</span></span><span style="display:flex;"><span>  (summary or explore) and how many days back to look
-</span></span><span style="display:flex;"><span>  (suggest 7, 14, or 30).  Then follow the corresponding
-</span></span><span style="display:flex;"><span>  mode instructions below.  If the user picks a different
-</span></span><span style="display:flex;"><span>  timeframe than 7 days, re-run the extraction script
-</span></span><span style="display:flex;"><span>  with the chosen value by executing:
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`</span>
-</span></span><span style="display:flex;"><span>  and use that output instead.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **<span style="color:#e6db74">`summary`</span>** → Summary Mode, default 7 days
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **<span style="color:#e6db74">`summary N`</span>** (where N is a number) → Summary Mode,
-</span></span><span style="display:flex;"><span>  N days.  Re-run the extraction script:
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **<span style="color:#e6db74">`explore`</span>** → Explore Mode, no topic filter
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> **<span style="color:#e6db74">`explore TOPIC`</span>** → Explore Mode, filtered to TOPIC.
-</span></span><span style="display:flex;"><span>  Re-run the extraction script:
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 30 --topic TOPIC`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Knowledge-Level Inference
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>Before generating any content, analyse the user&#39;s messages
-</span></span><span style="display:flex;"><span>in the session data to infer their knowledge level for each
-</span></span><span style="display:flex;"><span>technology or concept area.  Use these signals:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Expert signals:**</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Precise implementation directives (&#34;use a B-tree index&#34;,
-</span></span><span style="display:flex;"><span>  &#34;implement with zero-copy deserialization&#34;)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Correct, specific terminology
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Architectural opinions and trade-off reasoning
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Telling Claude exactly what to do, not asking how
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Intermediate signals:**</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> States technical requirements but delegates
-</span></span><span style="display:flex;"><span>  implementation details to Claude
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Asks specific, targeted questions
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Uses correct terminology but seeks confirmation
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold">**Beginner signals:**</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Vague or high-level requests (&#34;make it faster&#34;,
-</span></span><span style="display:flex;"><span>  &#34;add a database&#34;)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Describes desired outcome without technical detail
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Asks &#34;what is X&#34; or &#34;how does X work&#34; style questions
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Defers entirely to Claude&#39;s suggestions
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Calibrate your explanations to the inferred level.  Do
-</span></span><span style="display:flex;"><span>not over-explain things the user clearly already knows.
-</span></span><span style="display:flex;"><span>Do not under-explain things where they showed uncertainty.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Summary Mode
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>Generate a structured learning document.  Follow these
-</span></span><span style="display:flex;"><span>steps:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> Enumerate <span style="font-weight:bold">**every**</span> distinct technology, library,
-</span></span><span style="display:flex;"><span>   pattern, and concept area from the session data.
-</span></span><span style="display:flex;"><span>   Include all of them — do not filter, rank, or pick
-</span></span><span style="display:flex;"><span>   a &#34;top N&#34;.  If the user touched it in a session,
-</span></span><span style="display:flex;"><span>   it gets a section.  Group closely related work into
-</span></span><span style="display:flex;"><span>   one topic (e.g. two sessions on the same NATS
-</span></span><span style="display:flex;"><span>   pattern = one topic), but do not merge unrelated
-</span></span><span style="display:flex;"><span>   areas just to reduce the count.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> For each concept area, infer the user&#39;s knowledge
-</span></span><span style="display:flex;"><span>   level.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Generate a document organised <span style="font-weight:bold">**by topic**</span> (not
-</span></span><span style="display:flex;"><span>   chronologically) with the following structure for
-</span></span><span style="display:flex;"><span>   each:
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> **What was built/done** — brief summary referencing
-</span></span><span style="display:flex;"><span>     the specific session work
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> **Key concepts** — explained at the inferred
-</span></span><span style="display:flex;"><span>     knowledge level
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> **Patterns and gotchas** — practical lessons from
-</span></span><span style="display:flex;"><span>     the sessions
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> **Connections** — how this topic relates to other
-</span></span><span style="display:flex;"><span>     topics covered
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> **Go deeper** — pointers for further learning
-</span></span><span style="display:flex;"><span>     (documentation links, concepts to explore next)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Print a concise summary in the conversation showing
-</span></span><span style="display:flex;"><span>   the topics covered and a one-liner for each.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">5.</span> Save the full document to a file.  Use <span style="color:#e6db74">`mkdir -p`</span>
-</span></span><span style="display:flex;"><span>   to create <span style="color:#e6db74">`~/learning/`</span> if it does not exist, then
-</span></span><span style="display:flex;"><span>   write the document to:
-</span></span><span style="display:flex;"><span>   <span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary.md`</span>
-</span></span><span style="display:flex;"><span>   where the date is today&#39;s date.  If that file already
-</span></span><span style="display:flex;"><span>   exists, append a sequence number:
-</span></span><span style="display:flex;"><span>   <span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary-2.md`</span>,
-</span></span><span style="display:flex;"><span>   <span style="color:#e6db74">`~/learning/YYYY-MM-DD-summary-3.md`</span>, etc.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Keep the document practical and grounded in the user&#39;s
-</span></span><span style="display:flex;"><span>actual work — not generic textbook material.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Explore Mode
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>Enter an interactive topic exploration loop:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> From the session data, identify distinct
-</span></span><span style="display:flex;"><span>   technology/concept areas.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Present a <span style="font-weight:bold">**numbered list**</span> of topics with a one-line
-</span></span><span style="display:flex;"><span>   description of what was done in each.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> If a topic was provided in the arguments, skip the
-</span></span><span style="display:flex;"><span>   list and jump straight to step 4 for that topic.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> When the user picks a topic (by number or name):
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> Give a calibrated explanation of the core concepts,
-</span></span><span style="display:flex;"><span>     referencing specific things from their sessions
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> Highlight what they did well and areas that could
-</span></span><span style="display:flex;"><span>     be explored further
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> Invite follow-up questions
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">5.</span> Continue the Q<span style="color:#960050;background-color:#1e0010">&amp;</span>A naturally.  The user can ask about
-</span></span><span style="display:flex;"><span>   the current topic, switch topics, or end the session.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## Style Guidelines
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Use the Oxford comma, and put a double space after
-</span></span><span style="display:flex;"><span>  full stops.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Keep markdown line length to 80 characters or less
-</span></span><span style="display:flex;"><span>  (except code blocks).
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Be direct and practical.  Avoid filler phrases.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Reference the user&#39;s actual code and sessions, not
-</span></span><span style="display:flex;"><span>  generic examples.
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> When the user is expert-level in a topic, focus on
-</span></span><span style="display:flex;"><span>  nuances, edge cases, and advanced patterns rather
-</span></span><span style="display:flex;"><span>  than basics.
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;Extract recent Claude Code session data into compact markdown.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Scans ~/.claude/projects/*/*.jsonl for session files modified within
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">the last N days, parses user/assistant exchanges, and outputs
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">structured markdown suitable for learning review.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">No external dependencies — stdlib only.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> argparse
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta, timezone
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>CLAUDE_DIR <span style="color:#f92672">=</span> Path<span style="color:#f92672">.</span>home() <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;.claude&#34;</span>
-</span></span><span style="display:flex;"><span>PROJECTS_DIR <span style="color:#f92672">=</span> CLAUDE_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;projects&#34;</span>
-</span></span><span style="display:flex;"><span>HISTORY_FILE <span style="color:#f92672">=</span> CLAUDE_DIR <span style="color:#f92672">/</span> <span style="color:#e6db74">&#34;history.jsonl&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>MAX_USER_MSG <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>
-</span></span><span style="display:flex;"><span>MAX_ASSISTANT_MSG <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>
-</span></span><span style="display:flex;"><span>MAX_EXCHANGES_PER_SESSION <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
-</span></span><span style="display:flex;"><span>MAX_SESSIONS_PER_PROJECT <span style="color:#f92672">=</span> <span style="color:#ae81ff">15</span>
-</span></span><span style="display:flex;"><span>MAX_OUTPUT_BYTES <span style="color:#f92672">=</span> <span style="color:#ae81ff">50_000</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse_args</span>():
-</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> argparse<span style="color:#f92672">.</span>ArgumentParser(
-</span></span><span style="display:flex;"><span>        description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Extract recent Claude Code sessions as markdown&#34;</span>
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;--days&#34;</span>,
-</span></span><span style="display:flex;"><span>        type<span style="color:#f92672">=</span>int,
-</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span>,
-</span></span><span style="display:flex;"><span>        help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;How far back to look (default: 7)&#34;</span>,
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>    parser<span style="color:#f92672">.</span>add_argument(
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;--topic&#34;</span>,
-</span></span><span style="display:flex;"><span>        type<span style="color:#f92672">=</span>str,
-</span></span><span style="display:flex;"><span>        default<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>        help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Filter sessions to those mentioning this keyword&#34;</span>,
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> parser<span style="color:#f92672">.</span>parse_args()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_history_summaries</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Load session summaries from history.jsonl keyed by sessionId.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    summaries <span style="color:#f92672">=</span> {}
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> HISTORY_FILE<span style="color:#f92672">.</span>exists():
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> summaries
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(HISTORY_FILE, <span style="color:#e6db74">&#34;r&#34;</span>) <span style="color:#66d9ef">as</span> f:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> f:
-</span></span><span style="display:flex;"><span>            line <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> line:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>                entry <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(line)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> json<span style="color:#f92672">.</span>JSONDecodeError:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>            sid <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;sessionId&#34;</span>)
-</span></span><span style="display:flex;"><span>            display <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;display&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> sid <span style="color:#f92672">and</span> display:
-</span></span><span style="display:flex;"><span>                summaries[sid] <span style="color:#f92672">=</span> display
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> summaries
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_session_files</span>(cutoff):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Find .jsonl session files modified after cutoff datetime.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> PROJECTS_DIR<span style="color:#f92672">.</span>exists():
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    files <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> jsonl <span style="color:#f92672">in</span> PROJECTS_DIR<span style="color:#f92672">.</span>glob(<span style="color:#e6db74">&#34;*/*.jsonl&#34;</span>):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>            mtime <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromtimestamp(
-</span></span><span style="display:flex;"><span>                jsonl<span style="color:#f92672">.</span>stat()<span style="color:#f92672">.</span>st_mtime, tz<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> mtime <span style="color:#f92672">&gt;=</span> cutoff:
-</span></span><span style="display:flex;"><span>            files<span style="color:#f92672">.</span>append(jsonl)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> files
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">extract_text_from_content</span>(content):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Pull plain text from a message content field.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(content, str):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> content
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(content, list):
-</span></span><span style="display:flex;"><span>        parts <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> block <span style="color:#f92672">in</span> content:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> isinstance(block, str):
-</span></span><span style="display:flex;"><span>                parts<span style="color:#f92672">.</span>append(block)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> isinstance(block, dict) <span style="color:#f92672">and</span> block<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;type&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;text&#34;</span>:
-</span></span><span style="display:flex;"><span>                parts<span style="color:#f92672">.</span>append(block<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;text&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>))
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(parts)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">has_tool_use</span>(content):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Check if content contains a tool_use block.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(content, list):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> block <span style="color:#f92672">in</span> content:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> isinstance(block, dict) <span style="color:#f92672">and</span> block<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;type&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;tool_use&#34;</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse_session</span>(filepath):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Parse a session JSONL file into structured data.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Returns a dict with metadata and a list of exchanges, or None
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    if the file has no usable content.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    session_id <span style="color:#f92672">=</span> filepath<span style="color:#f92672">.</span>stem
-</span></span><span style="display:flex;"><span>    project_dir <span style="color:#f92672">=</span> filepath<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>name
-</span></span><span style="display:flex;"><span>    cwd <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    git_branch <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    timestamp <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    exchanges <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(filepath, <span style="color:#e6db74">&#34;r&#34;</span>) <span style="color:#66d9ef">as</span> f:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> f:
-</span></span><span style="display:flex;"><span>            line <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> line:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>                entry <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(line)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> json<span style="color:#f92672">.</span>JSONDecodeError:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Grab metadata from system entries</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;type&#34;</span>) <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#34;system&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#e6db74">&#34;assistant&#34;</span>):
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> cwd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;cwd&#34;</span>):
-</span></span><span style="display:flex;"><span>                    cwd <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#34;cwd&#34;</span>]
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> git_branch <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;gitBranch&#34;</span>):
-</span></span><span style="display:flex;"><span>                    git_branch <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#34;gitBranch&#34;</span>]
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> timestamp <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> entry<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;timestamp&#34;</span>):
-</span></span><span style="display:flex;"><span>                    timestamp <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#34;timestamp&#34;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;message&#34;</span> <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> entry:
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            msg <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#34;message&#34;</span>]
-</span></span><span style="display:flex;"><span>            role <span style="color:#f92672">=</span> msg<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;role&#34;</span>)
-</span></span><span style="display:flex;"><span>            content <span style="color:#f92672">=</span> msg<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;content&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> role <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;user&#34;</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Skip tool_result messages</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> isinstance(content, list):
-</span></span><span style="display:flex;"><span>                    is_tool_result <span style="color:#f92672">=</span> any(
-</span></span><span style="display:flex;"><span>                        isinstance(b, dict) <span style="color:#f92672">and</span> b<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;type&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;tool_result&#34;</span>
-</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">for</span> b <span style="color:#f92672">in</span> content
-</span></span><span style="display:flex;"><span>                    )
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> is_tool_result:
-</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>                text <span style="color:#f92672">=</span> extract_text_from_content(content)
-</span></span><span style="display:flex;"><span>                text <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Skip system/command messages</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> text<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;&lt;local-command&#34;</span>) <span style="color:#f92672">or</span> text<span style="color:#f92672">.</span>startswith(
-</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;&lt;command-name&#34;</span>
-</span></span><span style="display:flex;"><span>                ):
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> text:
-</span></span><span style="display:flex;"><span>                    exchanges<span style="color:#f92672">.</span>append((<span style="color:#e6db74">&#34;user&#34;</span>, text[:MAX_USER_MSG]))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> role <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;assistant&#34;</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Skip messages that are only tool_use</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> has_tool_use(content):
-</span></span><span style="display:flex;"><span>                    text <span style="color:#f92672">=</span> extract_text_from_content(content)
-</span></span><span style="display:flex;"><span>                    text <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> text:
-</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>                    text <span style="color:#f92672">=</span> extract_text_from_content(content)
-</span></span><span style="display:flex;"><span>                    text <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> text:
-</span></span><span style="display:flex;"><span>                    exchanges<span style="color:#f92672">.</span>append(
-</span></span><span style="display:flex;"><span>                        (<span style="color:#e6db74">&#34;assistant&#34;</span>, text[:MAX_ASSISTANT_MSG])
-</span></span><span style="display:flex;"><span>                    )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> exchanges:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;session_id&#34;</span>: session_id,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;project_dir&#34;</span>: project_dir,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;cwd&#34;</span>: cwd,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;git_branch&#34;</span>: git_branch,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;timestamp&#34;</span>: timestamp,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;exchanges&#34;</span>: exchanges,
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">matches_topic</span>(session, topic):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Check if any exchange in the session mentions the topic.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    topic_lower <span style="color:#f92672">=</span> topic<span style="color:#f92672">.</span>lower()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _, text <span style="color:#f92672">in</span> session[<span style="color:#e6db74">&#34;exchanges&#34;</span>]:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> topic_lower <span style="color:#f92672">in</span> text<span style="color:#f92672">.</span>lower():
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">project_label</span>(project_dir):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Convert a project dir name to a human-readable label.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Handles both Linux (/home/user/...) and macOS
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    (/Users/user/...) path encodings.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    parts <span style="color:#f92672">=</span> project_dir<span style="color:#f92672">.</span>strip(<span style="color:#e6db74">&#34;-&#34;</span>)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;-&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> prefix <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#34;home&#34;</span>, <span style="color:#e6db74">&#34;Users&#34;</span>):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>            idx <span style="color:#f92672">=</span> parts<span style="color:#f92672">.</span>index(prefix)
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># WARN: assumes idx+1 is the username component</span>
-</span></span><span style="display:flex;"><span>            parts <span style="color:#f92672">=</span> parts[idx <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>:]
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">.</span>join(parts) <span style="color:#66d9ef">if</span> parts <span style="color:#66d9ef">else</span> project_dir
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">format_date</span>(ts_str):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Extract a YYYY-MM-DD date from an ISO timestamp string.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ts_str:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;unknown date&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>        dt <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromisoformat(ts_str<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;Z&#34;</span>, <span style="color:#e6db74">&#34;+00:00&#34;</span>))
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> dt<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">ValueError</span>, <span style="color:#a6e22e">AttributeError</span>):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;unknown date&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sort_projects</span>(sessions_by_project):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Sort projects by most recent session timestamp, descending.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">key</span>(item):
-</span></span><span style="display:flex;"><span>        _dir, sessions <span style="color:#f92672">=</span> item
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> sessions[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;timestamp&#34;</span>) <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sorted(
-</span></span><span style="display:flex;"><span>        sessions_by_project<span style="color:#f92672">.</span>items(), key<span style="color:#f92672">=</span>key, reverse<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">render_session_header</span>(session, history_summaries):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Render a compact session header (no exchanges).&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    date <span style="color:#f92672">=</span> format_date(session[<span style="color:#e6db74">&#34;timestamp&#34;</span>])
-</span></span><span style="display:flex;"><span>    sid <span style="color:#f92672">=</span> session[<span style="color:#e6db74">&#34;session_id&#34;</span>]
-</span></span><span style="display:flex;"><span>    summary <span style="color:#f92672">=</span> history_summaries<span style="color:#f92672">.</span>get(sid, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    branch <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;git_branch&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    first_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> role, text <span style="color:#f92672">in</span> session[<span style="color:#e6db74">&#34;exchanges&#34;</span>]:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> role <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;user&#34;</span>:
-</span></span><span style="display:flex;"><span>            first_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">.</span>join(text<span style="color:#f92672">.</span>split())[:<span style="color:#ae81ff">300</span>]
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    lines <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    header <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;### Session: </span><span style="color:#e6db74">{</span>date<span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{</span>sid[:<span style="color:#ae81ff">8</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(header)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> summary:
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Summary: &#34;</span><span style="color:#e6db74">{</span>summary<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&#39;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> branch:
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Branch: `</span><span style="color:#e6db74">{</span>branch<span style="color:#e6db74">}</span><span style="color:#e6db74">`&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> first_user:
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;**User:** </span><span style="color:#e6db74">{</span>first_user<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;---&#34;</span>)
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(lines)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">render_session_full</span>(session, history_summaries):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Render a session with exchanges.&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    date <span style="color:#f92672">=</span> format_date(session[<span style="color:#e6db74">&#34;timestamp&#34;</span>])
-</span></span><span style="display:flex;"><span>    sid <span style="color:#f92672">=</span> session[<span style="color:#e6db74">&#34;session_id&#34;</span>]
-</span></span><span style="display:flex;"><span>    summary <span style="color:#f92672">=</span> history_summaries<span style="color:#f92672">.</span>get(sid, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    branch <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;git_branch&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    lines <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    header <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;### Session: </span><span style="color:#e6db74">{</span>date<span style="color:#e6db74">}</span><span style="color:#e6db74"> (</span><span style="color:#e6db74">{</span>sid[:<span style="color:#ae81ff">8</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(header)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> summary:
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Summary: &#34;</span><span style="color:#e6db74">{</span>summary<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&#39;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> branch:
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Branch: `</span><span style="color:#e6db74">{</span>branch<span style="color:#e6db74">}</span><span style="color:#e6db74">`&#34;</span>)
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    exchanges <span style="color:#f92672">=</span> session[<span style="color:#e6db74">&#34;exchanges&#34;</span>]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> role, text <span style="color:#f92672">in</span> exchanges[:MAX_EXCHANGES_PER_SESSION]:
-</span></span><span style="display:flex;"><span>        compact <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">.</span>join(text<span style="color:#f92672">.</span>split())
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> role <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;user&#34;</span>:
-</span></span><span style="display:flex;"><span>            lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;**User:** </span><span style="color:#e6db74">{</span>compact<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;**Assistant:** </span><span style="color:#e6db74">{</span>compact<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(exchanges) <span style="color:#f92672">&gt;</span> MAX_EXCHANGES_PER_SESSION:
-</span></span><span style="display:flex;"><span>        omitted <span style="color:#f92672">=</span> len(exchanges) <span style="color:#f92672">-</span> MAX_EXCHANGES_PER_SESSION
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;*(</span><span style="color:#e6db74">{</span>omitted<span style="color:#e6db74">}</span><span style="color:#e6db74"> more exchanges omitted)*&#34;</span>)
-</span></span><span style="display:flex;"><span>        lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;---&#34;</span>)
-</span></span><span style="display:flex;"><span>    lines<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(lines)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">render_markdown</span>(sessions_by_project, history_summaries, days):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Render sessions as structured markdown.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Uses a two-pass approach to guarantee every project and
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    session appears in the output:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Pass 1 — compact headers (project + session summaries)
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      Pass 2 — fill in exchange detail per project budget
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    now <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now(timezone<span style="color:#f92672">.</span>utc)
-</span></span><span style="display:flex;"><span>    start <span style="color:#f92672">=</span> now <span style="color:#f92672">-</span> timedelta(days<span style="color:#f92672">=</span>days)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    doc_header <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;# Session History: &#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>start<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74"> — </span><span style="color:#e6db74">{</span>now<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    sorted_projects <span style="color:#f92672">=</span> sort_projects(sessions_by_project)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Pass 1: render compact headers for ALL projects/sessions.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This guarantees every project is visible to the LLM.</span>
-</span></span><span style="display:flex;"><span>    pass1_parts <span style="color:#f92672">=</span> [doc_header]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> project_dir, sessions <span style="color:#f92672">in</span> sorted_projects:
-</span></span><span style="display:flex;"><span>        label <span style="color:#f92672">=</span> project_label(project_dir)
-</span></span><span style="display:flex;"><span>        cwd <span style="color:#f92672">=</span> sessions[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;cwd&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>        proj_header <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;## Project: </span><span style="color:#e6db74">{</span>label<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> cwd:
-</span></span><span style="display:flex;"><span>            proj_header <span style="color:#f92672">+=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Path: </span><span style="color:#e6db74">{</span>cwd<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        proj_header <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        pass1_parts<span style="color:#f92672">.</span>append(proj_header)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> session <span style="color:#f92672">in</span> sessions:
-</span></span><span style="display:flex;"><span>            pass1_parts<span style="color:#f92672">.</span>append(
-</span></span><span style="display:flex;"><span>                render_session_header(session, history_summaries)
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    pass1_output <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join(pass1_parts)
-</span></span><span style="display:flex;"><span>    pass1_size <span style="color:#f92672">=</span> len(pass1_output<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If headers alone exceed the budget, return them truncated.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> pass1_size <span style="color:#f92672">&gt;=</span> MAX_OUTPUT_BYTES:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> pass1_output
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Pass 2: replace compact headers with full exchanges,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># distributing remaining budget fairly across projects.</span>
-</span></span><span style="display:flex;"><span>    remaining <span style="color:#f92672">=</span> MAX_OUTPUT_BYTES <span style="color:#f92672">-</span> pass1_size
-</span></span><span style="display:flex;"><span>    n_projects <span style="color:#f92672">=</span> len(sorted_projects)
-</span></span><span style="display:flex;"><span>    per_project_budget <span style="color:#f92672">=</span> remaining <span style="color:#f92672">//</span> max(n_projects, <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    output_parts <span style="color:#f92672">=</span> [doc_header]
-</span></span><span style="display:flex;"><span>    surplus <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> project_dir, sessions <span style="color:#f92672">in</span> sorted_projects:
-</span></span><span style="display:flex;"><span>        label <span style="color:#f92672">=</span> project_label(project_dir)
-</span></span><span style="display:flex;"><span>        cwd <span style="color:#f92672">=</span> sessions[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;cwd&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>        proj_header <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;## Project: </span><span style="color:#e6db74">{</span>label<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> cwd:
-</span></span><span style="display:flex;"><span>            proj_header <span style="color:#f92672">+=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Path: </span><span style="color:#e6db74">{</span>cwd<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>        proj_header <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        allowance <span style="color:#f92672">=</span> per_project_budget <span style="color:#f92672">+</span> surplus
-</span></span><span style="display:flex;"><span>        project_detail <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> session <span style="color:#f92672">in</span> sessions:
-</span></span><span style="display:flex;"><span>            full <span style="color:#f92672">=</span> render_session_full(session, history_summaries)
-</span></span><span style="display:flex;"><span>            compact <span style="color:#f92672">=</span> render_session_header(
-</span></span><span style="display:flex;"><span>                session, history_summaries
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Cost of upgrading this session from compact to full</span>
-</span></span><span style="display:flex;"><span>            extra <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>                len(full<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>))
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">-</span> len(compact<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>))
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> extra <span style="color:#f92672">&lt;=</span> allowance:
-</span></span><span style="display:flex;"><span>                project_detail <span style="color:#f92672">+=</span> full
-</span></span><span style="display:flex;"><span>                allowance <span style="color:#f92672">-=</span> extra
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Budget exhausted — render remaining as compact</span>
-</span></span><span style="display:flex;"><span>                project_detail <span style="color:#f92672">+=</span> compact
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        output_parts<span style="color:#f92672">.</span>append(proj_header <span style="color:#f92672">+</span> project_detail)
-</span></span><span style="display:flex;"><span>        surplus <span style="color:#f92672">=</span> max(allowance, <span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join(output_parts)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
-</span></span><span style="display:flex;"><span>    args <span style="color:#f92672">=</span> parse_args()
-</span></span><span style="display:flex;"><span>    cutoff <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now(timezone<span style="color:#f92672">.</span>utc) <span style="color:#f92672">-</span> timedelta(days<span style="color:#f92672">=</span>args<span style="color:#f92672">.</span>days)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    history_summaries <span style="color:#f92672">=</span> load_history_summaries()
-</span></span><span style="display:flex;"><span>    session_files <span style="color:#f92672">=</span> find_session_files(cutoff)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> session_files:
-</span></span><span style="display:flex;"><span>        print(
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;No sessions found in the last </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>days<span style="color:#e6db74">}</span><span style="color:#e6db74"> day(s).&#34;</span>,
-</span></span><span style="display:flex;"><span>            file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr,
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># NOTE: Only include sessions that appear in history.jsonl.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This filters out subagent sessions which are noise.</span>
-</span></span><span style="display:flex;"><span>    history_session_ids <span style="color:#f92672">=</span> set(history_summaries<span style="color:#f92672">.</span>keys())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    sessions_by_project <span style="color:#f92672">=</span> {}
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> sf <span style="color:#f92672">in</span> session_files:
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Skip files whose session ID isn&#39;t in history</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> sf<span style="color:#f92672">.</span>stem <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> history_session_ids:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> parse_session(sf)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> session <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>topic <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> matches_topic(session, args<span style="color:#f92672">.</span>topic):
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
-</span></span><span style="display:flex;"><span>        project <span style="color:#f92672">=</span> session[<span style="color:#e6db74">&#34;project_dir&#34;</span>]
-</span></span><span style="display:flex;"><span>        sessions_by_project<span style="color:#f92672">.</span>setdefault(project, [])<span style="color:#f92672">.</span>append(session)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Sort sessions within each project by timestamp (most recent</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># first), then cap to MAX_SESSIONS_PER_PROJECT.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> project <span style="color:#f92672">in</span> sessions_by_project:
-</span></span><span style="display:flex;"><span>        sessions_by_project[project]<span style="color:#f92672">.</span>sort(
-</span></span><span style="display:flex;"><span>            key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> s: s<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;timestamp&#34;</span>) <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;&#34;</span>, reverse<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>        sessions_by_project[project] <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>            sessions_by_project[project][:MAX_SESSIONS_PER_PROJECT]
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> sessions_by_project:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>topic:
-</span></span><span style="display:flex;"><span>            print(
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;No sessions mentioning &#39;</span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>topic<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; &#34;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;in the last </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>days<span style="color:#e6db74">}</span><span style="color:#e6db74"> day(s).&#34;</span>,
-</span></span><span style="display:flex;"><span>                file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr,
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            print(
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;No sessions with extractable content &#34;</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;in the last </span><span style="color:#e6db74">{</span>args<span style="color:#f92672">.</span>days<span style="color:#e6db74">}</span><span style="color:#e6db74"> day(s).&#34;</span>,
-</span></span><span style="display:flex;"><span>                file<span style="color:#f92672">=</span>sys<span style="color:#f92672">.</span>stderr,
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> render_markdown(
-</span></span><span style="display:flex;"><span>        sessions_by_project, history_summaries, args<span style="color:#f92672">.</span>days
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Enforce size cap</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(output<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)) <span style="color:#f92672">&gt;</span> MAX_OUTPUT_BYTES:
-</span></span><span style="display:flex;"><span>        encoded <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>encode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)[:MAX_OUTPUT_BYTES]
-</span></span><span style="display:flex;"><span>        output <span style="color:#f92672">=</span> encoded<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>, errors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ignore&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Trim to last complete line</span>
-</span></span><span style="display:flex;"><span>        last_nl <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>rfind(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> last_nl <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
-</span></span><span style="display:flex;"><span>            output <span style="color:#f92672">=</span> output[:last_nl]
-</span></span><span style="display:flex;"><span>        output <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">*(output truncated to ~50KB)*</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    print(output)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
-</span></span><span style="display:flex;"><span>    main()
-</span></span></code></pre></div>
-      </div>
-
-
-      <footer>
-        
-
-
-        
-        
-        <div class="comments">
-  <script>
-
-    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
-    let themeInParams = '';
-
-    if (getTheme == null) {
-      if (themeInParams !== '' && themeInParams !== 'auto') {
-        getTheme = themeInParams;
-      }
-      else {
-        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      }
-    }
-
-    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
-    let s = document.createElement('script');
-    s.src = 'https://utteranc.es/client.js';
-    s.setAttribute('repo', 'tarquin-the-brave\/blog');
-    s.setAttribute('issue-term', 'pathname');
-    s.setAttribute('theme', theme);
-    s.setAttribute('crossorigin', 'anonymous');
-    s.setAttribute('async', '');
-    document.querySelector('div.comments').innerHTML = '';
-    document.querySelector('div.comments').appendChild(s);
-
-  </script>
-</div>
-        
-        
-        
-        
-      </footer>
-    </article>
-
-    
-  </section>
-
-    </div>
-
-    <footer class="footer">
-  <section class="container">
-    ©
-    
-    2026
-     tarquin-the-brave 
-    ·
-    
-    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
-    
-  </section>
-</footer>
-
-  </main>
-
-  
-
-  
-  
-  <script src="http://localhost:1313/blog/js/coder.js"></script>
-  
-
-  
-  
-  
-  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</body>
-</html>
+dive into specific topics. This took some iterations to get right, it didn&rsquo;t work that well to begin
+with, but eventually I got something I was happy with. I made it infer the level of expertise I had
+on a topic based on the questions I was asking in the conversations.</p><p>This <code>/learn</code> command will let you choose how far back in time you want to take conversations from
+and whether you drop into an interactive discussion or just get a summary written to file.</p><p>I had quite a good conversation with it on Friday and felt it helped give me a bit more of an
+understanding of the things I had built in the past few weeks.</p><hr><p>If you use Claude Code, and want to give this a try, place the following two files into:</p><ul><li><code>~/.claude/skills/learn/SKILL.md</code></li><li><code>~/.claude/skills/learn/scripts/extract-sessions.py</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-markdown data-lang=markdown><span style=display:flex><span>---
+</span></span><span style=display:flex><span>name: learn
+</span></span><span style=display:flex><span>description: &gt;
+</span></span><span style=display:flex><span>  Generate a personalised learning document from recent
+</span></span><span style=display:flex><span>  Claude Code sessions, or interactively explore topics
+</span></span><span style=display:flex><span>  covered in past work.
+</span></span><span style=display:flex><span>disable-model-invocation: true
+</span></span><span style=display:flex><span>argument-hint: &#34;[summary|explore] [days|topic]&#34;
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># /learn Skill
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>You are generating educational content from the user&#39;s
+</span></span><span style=display:flex><span>recent Claude Code sessions.  The extraction script has
+</span></span><span style=display:flex><span>already been run and its output is included below.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Session Data
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>!<span style=color:#e6db74>`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 7`</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Determine Mode from Arguments
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>The user invoked <span style=color:#e6db74>`/learn`</span> with these arguments: $ARGUMENTS
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Parse them as follows:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> **No arguments** → ask the user which mode they want
+</span></span><span style=display:flex><span>  (summary or explore) and how many days back to look
+</span></span><span style=display:flex><span>  (suggest 7, 14, or 30).  Then follow the corresponding
+</span></span><span style=display:flex><span>  mode instructions below.  If the user picks a different
+</span></span><span style=display:flex><span>  timeframe than 7 days, re-run the extraction script
+</span></span><span style=display:flex><span>  with the chosen value by executing:
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`</span>
+</span></span><span style=display:flex><span>  and use that output instead.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> **<span style=color:#e6db74>`summary`</span>** → Summary Mode, default 7 days
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> **<span style=color:#e6db74>`summary N`</span>** (where N is a number) → Summary Mode,
+</span></span><span style=display:flex><span>  N days.  Re-run the extraction script:
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days N`</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> **<span style=color:#e6db74>`explore`</span>** → Explore Mode, no topic filter
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> **<span style=color:#e6db74>`explore TOPIC`</span>** → Explore Mode, filtered to TOPIC.
+</span></span><span style=display:flex><span>  Re-run the extraction script:
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>`python3 ~/.claude/skills/learn/scripts/extract-sessions.py --days 30 --topic TOPIC`</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Knowledge-Level Inference
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Before generating any content, analyse the user&#39;s messages
+</span></span><span style=display:flex><span>in the session data to infer their knowledge level for each
+</span></span><span style=display:flex><span>technology or concept area.  Use these signals:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>**Expert signals:**</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Precise implementation directives (&#34;use a B-tree index&#34;,
+</span></span><span style=display:flex><span>  &#34;implement with zero-copy deserialization&#34;)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Correct, specific terminology
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Architectural opinions and trade-off reasoning
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Telling Claude exactly what to do, not asking how
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>**Intermediate signals:**</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> States technical requirements but delegates
+</span></span><span style=display:flex><span>  implementation details to Claude
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Asks specific, targeted questions
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Uses correct terminology but seeks confirmation
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>**Beginner signals:**</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Vague or high-level requests (&#34;make it faster&#34;,
+</span></span><span style=display:flex><span>  &#34;add a database&#34;)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Describes desired outcome without technical detail
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Asks &#34;what is X&#34; or &#34;how does X work&#34; style questions
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Defers entirely to Claude&#39;s suggestions
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Calibrate your explanations to the inferred level.  Do
+</span></span><span style=display:flex><span>not over-explain things the user clearly already knows.
+</span></span><span style=display:flex><span>Do not under-explain things where they showed uncertainty.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Summary Mode
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Generate a structured learning document.  Follow these
+</span></span><span style=display:flex><span>steps:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>1.</span> Enumerate <span style=font-weight:700>**every**</span> distinct technology, library,
+</span></span><span style=display:flex><span>   pattern, and concept area from the session data.
+</span></span><span style=display:flex><span>   Include all of them — do not filter, rank, or pick
+</span></span><span style=display:flex><span>   a &#34;top N&#34;.  If the user touched it in a session,
+</span></span><span style=display:flex><span>   it gets a section.  Group closely related work into
+</span></span><span style=display:flex><span>   one topic (e.g. two sessions on the same NATS
+</span></span><span style=display:flex><span>   pattern = one topic), but do not merge unrelated
+</span></span><span style=display:flex><span>   areas just to reduce the count.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>2.</span> For each concept area, infer the user&#39;s knowledge
+</span></span><span style=display:flex><span>   level.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>3.</span> Generate a document organised <span style=font-weight:700>**by topic**</span> (not
+</span></span><span style=display:flex><span>   chronologically) with the following structure for
+</span></span><span style=display:flex><span>   each:
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> **What was built/done** — brief summary referencing
+</span></span><span style=display:flex><span>     the specific session work
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> **Key concepts** — explained at the inferred
+</span></span><span style=display:flex><span>     knowledge level
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> **Patterns and gotchas** — practical lessons from
+</span></span><span style=display:flex><span>     the sessions
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> **Connections** — how this topic relates to other
+</span></span><span style=display:flex><span>     topics covered
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> **Go deeper** — pointers for further learning
+</span></span><span style=display:flex><span>     (documentation links, concepts to explore next)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>4.</span> Print a concise summary in the conversation showing
+</span></span><span style=display:flex><span>   the topics covered and a one-liner for each.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>5.</span> Save the full document to a file.  Use <span style=color:#e6db74>`mkdir -p`</span>
+</span></span><span style=display:flex><span>   to create <span style=color:#e6db74>`~/learning/`</span> if it does not exist, then
+</span></span><span style=display:flex><span>   write the document to:
+</span></span><span style=display:flex><span>   <span style=color:#e6db74>`~/learning/YYYY-MM-DD-summary.md`</span>
+</span></span><span style=display:flex><span>   where the date is today&#39;s date.  If that file already
+</span></span><span style=display:flex><span>   exists, append a sequence number:
+</span></span><span style=display:flex><span>   <span style=color:#e6db74>`~/learning/YYYY-MM-DD-summary-2.md`</span>,
+</span></span><span style=display:flex><span>   <span style=color:#e6db74>`~/learning/YYYY-MM-DD-summary-3.md`</span>, etc.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Keep the document practical and grounded in the user&#39;s
+</span></span><span style=display:flex><span>actual work — not generic textbook material.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Explore Mode
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Enter an interactive topic exploration loop:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>1.</span> From the session data, identify distinct
+</span></span><span style=display:flex><span>   technology/concept areas.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>2.</span> Present a <span style=font-weight:700>**numbered list**</span> of topics with a one-line
+</span></span><span style=display:flex><span>   description of what was done in each.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>3.</span> If a topic was provided in the arguments, skip the
+</span></span><span style=display:flex><span>   list and jump straight to step 4 for that topic.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>4.</span> When the user picks a topic (by number or name):
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> Give a calibrated explanation of the core concepts,
+</span></span><span style=display:flex><span>     referencing specific things from their sessions
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> Highlight what they did well and areas that could
+</span></span><span style=display:flex><span>     be explored further
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>-</span> Invite follow-up questions
+</span></span><span style=display:flex><span><span style=color:#66d9ef>5.</span> Continue the Q&amp;A naturally.  The user can ask about
+</span></span><span style=display:flex><span>   the current topic, switch topics, or end the session.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## Style Guidelines
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Use the Oxford comma, and put a double space after
+</span></span><span style=display:flex><span>  full stops.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Keep markdown line length to 80 characters or less
+</span></span><span style=display:flex><span>  (except code blocks).
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Be direct and practical.  Avoid filler phrases.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Reference the user&#39;s actual code and sessions, not
+</span></span><span style=display:flex><span>  generic examples.
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> When the user is expert-level in a topic, focus on
+</span></span><span style=display:flex><span>  nuances, edge cases, and advanced patterns rather
+</span></span><span style=display:flex><span>  than basics.
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env python3</span>
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;Extract recent Claude Code session data into compact markdown.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Scans ~/.claude/projects/*/*.jsonl for session files modified within
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>the last N days, parses user/assistant exchanges, and outputs
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>structured markdown suitable for learning review.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>No external dependencies — stdlib only.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> argparse
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> json
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> datetime <span style=color:#f92672>import</span> datetime, timedelta, timezone
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pathlib <span style=color:#f92672>import</span> Path
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>CLAUDE_DIR <span style=color:#f92672>=</span> Path<span style=color:#f92672>.</span>home() <span style=color:#f92672>/</span> <span style=color:#e6db74>&#34;.claude&#34;</span>
+</span></span><span style=display:flex><span>PROJECTS_DIR <span style=color:#f92672>=</span> CLAUDE_DIR <span style=color:#f92672>/</span> <span style=color:#e6db74>&#34;projects&#34;</span>
+</span></span><span style=display:flex><span>HISTORY_FILE <span style=color:#f92672>=</span> CLAUDE_DIR <span style=color:#f92672>/</span> <span style=color:#e6db74>&#34;history.jsonl&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>MAX_USER_MSG <span style=color:#f92672>=</span> <span style=color:#ae81ff>1000</span>
+</span></span><span style=display:flex><span>MAX_ASSISTANT_MSG <span style=color:#f92672>=</span> <span style=color:#ae81ff>500</span>
+</span></span><span style=display:flex><span>MAX_EXCHANGES_PER_SESSION <span style=color:#f92672>=</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>MAX_SESSIONS_PER_PROJECT <span style=color:#f92672>=</span> <span style=color:#ae81ff>15</span>
+</span></span><span style=display:flex><span>MAX_OUTPUT_BYTES <span style=color:#f92672>=</span> <span style=color:#ae81ff>50_000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_args</span>():
+</span></span><span style=display:flex><span>    parser <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser(
+</span></span><span style=display:flex><span>        description<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Extract recent Claude Code sessions as markdown&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;--days&#34;</span>,
+</span></span><span style=display:flex><span>        type<span style=color:#f92672>=</span>int,
+</span></span><span style=display:flex><span>        default<span style=color:#f92672>=</span><span style=color:#ae81ff>7</span>,
+</span></span><span style=display:flex><span>        help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;How far back to look (default: 7)&#34;</span>,
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;--topic&#34;</span>,
+</span></span><span style=display:flex><span>        type<span style=color:#f92672>=</span>str,
+</span></span><span style=display:flex><span>        default<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>        help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Filter sessions to those mentioning this keyword&#34;</span>,
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> parser<span style=color:#f92672>.</span>parse_args()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>load_history_summaries</span>():
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Load session summaries from history.jsonl keyed by sessionId.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    summaries <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> HISTORY_FILE<span style=color:#f92672>.</span>exists():
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> summaries
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(HISTORY_FILE, <span style=color:#e6db74>&#34;r&#34;</span>) <span style=color:#66d9ef>as</span> f:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> line <span style=color:#f92672>in</span> f:
+</span></span><span style=display:flex><span>            line <span style=color:#f92672>=</span> line<span style=color:#f92672>.</span>strip()
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> line:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>                entry <span style=color:#f92672>=</span> json<span style=color:#f92672>.</span>loads(line)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>except</span> json<span style=color:#f92672>.</span>JSONDecodeError:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>            sid <span style=color:#f92672>=</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;sessionId&#34;</span>)
+</span></span><span style=display:flex><span>            display <span style=color:#f92672>=</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;display&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> sid <span style=color:#f92672>and</span> display:
+</span></span><span style=display:flex><span>                summaries[sid] <span style=color:#f92672>=</span> display
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> summaries
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>find_session_files</span>(cutoff):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Find .jsonl session files modified after cutoff datetime.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> PROJECTS_DIR<span style=color:#f92672>.</span>exists():
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> []
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    files <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> jsonl <span style=color:#f92672>in</span> PROJECTS_DIR<span style=color:#f92672>.</span>glob(<span style=color:#e6db74>&#34;*/*.jsonl&#34;</span>):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>            mtime <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>fromtimestamp(
+</span></span><span style=display:flex><span>                jsonl<span style=color:#f92672>.</span>stat()<span style=color:#f92672>.</span>st_mtime, tz<span style=color:#f92672>=</span>timezone<span style=color:#f92672>.</span>utc
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>OSError</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> mtime <span style=color:#f92672>&gt;=</span> cutoff:
+</span></span><span style=display:flex><span>            files<span style=color:#f92672>.</span>append(jsonl)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> files
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>extract_text_from_content</span>(content):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Pull plain text from a message content field.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> isinstance(content, str):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> content
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> isinstance(content, list):
+</span></span><span style=display:flex><span>        parts <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> block <span style=color:#f92672>in</span> content:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> isinstance(block, str):
+</span></span><span style=display:flex><span>                parts<span style=color:#f92672>.</span>append(block)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>elif</span> isinstance(block, dict) <span style=color:#f92672>and</span> block<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;type&#34;</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;text&#34;</span>:
+</span></span><span style=display:flex><span>                parts<span style=color:#f92672>.</span>append(block<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;text&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>))
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>join(parts)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>has_tool_use</span>(content):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Check if content contains a tool_use block.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> isinstance(content, list):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> block <span style=color:#f92672>in</span> content:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> isinstance(block, dict) <span style=color:#f92672>and</span> block<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;type&#34;</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;tool_use&#34;</span>:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_session</span>(filepath):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Parse a session JSONL file into structured data.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    Returns a dict with metadata and a list of exchanges, or None
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    if the file has no usable content.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    session_id <span style=color:#f92672>=</span> filepath<span style=color:#f92672>.</span>stem
+</span></span><span style=display:flex><span>    project_dir <span style=color:#f92672>=</span> filepath<span style=color:#f92672>.</span>parent<span style=color:#f92672>.</span>name
+</span></span><span style=display:flex><span>    cwd <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>    git_branch <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>    timestamp <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>    exchanges <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(filepath, <span style=color:#e6db74>&#34;r&#34;</span>) <span style=color:#66d9ef>as</span> f:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> line <span style=color:#f92672>in</span> f:
+</span></span><span style=display:flex><span>            line <span style=color:#f92672>=</span> line<span style=color:#f92672>.</span>strip()
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> line:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>                entry <span style=color:#f92672>=</span> json<span style=color:#f92672>.</span>loads(line)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>except</span> json<span style=color:#f92672>.</span>JSONDecodeError:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#75715e># Grab metadata from system entries</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;type&#34;</span>) <span style=color:#f92672>in</span> (<span style=color:#e6db74>&#34;system&#34;</span>, <span style=color:#e6db74>&#34;user&#34;</span>, <span style=color:#e6db74>&#34;assistant&#34;</span>):
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> cwd <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>and</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;cwd&#34;</span>):
+</span></span><span style=display:flex><span>                    cwd <span style=color:#f92672>=</span> entry[<span style=color:#e6db74>&#34;cwd&#34;</span>]
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> git_branch <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>and</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;gitBranch&#34;</span>):
+</span></span><span style=display:flex><span>                    git_branch <span style=color:#f92672>=</span> entry[<span style=color:#e6db74>&#34;gitBranch&#34;</span>]
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> timestamp <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>and</span> entry<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;timestamp&#34;</span>):
+</span></span><span style=display:flex><span>                    timestamp <span style=color:#f92672>=</span> entry[<span style=color:#e6db74>&#34;timestamp&#34;</span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;message&#34;</span> <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> entry:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            msg <span style=color:#f92672>=</span> entry[<span style=color:#e6db74>&#34;message&#34;</span>]
+</span></span><span style=display:flex><span>            role <span style=color:#f92672>=</span> msg<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;role&#34;</span>)
+</span></span><span style=display:flex><span>            content <span style=color:#f92672>=</span> msg<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;content&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> role <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;user&#34;</span>:
+</span></span><span style=display:flex><span>                <span style=color:#75715e># Skip tool_result messages</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> isinstance(content, list):
+</span></span><span style=display:flex><span>                    is_tool_result <span style=color:#f92672>=</span> any(
+</span></span><span style=display:flex><span>                        isinstance(b, dict) <span style=color:#f92672>and</span> b<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;type&#34;</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;tool_result&#34;</span>
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> content
+</span></span><span style=display:flex><span>                    )
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>if</span> is_tool_result:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                text <span style=color:#f92672>=</span> extract_text_from_content(content)
+</span></span><span style=display:flex><span>                text <span style=color:#f92672>=</span> text<span style=color:#f92672>.</span>strip()
+</span></span><span style=display:flex><span>                <span style=color:#75715e># Skip system/command messages</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> text<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#34;&lt;local-command&#34;</span>) <span style=color:#f92672>or</span> text<span style=color:#f92672>.</span>startswith(
+</span></span><span style=display:flex><span>                    <span style=color:#e6db74>&#34;&lt;command-name&#34;</span>
+</span></span><span style=display:flex><span>                ):
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> text:
+</span></span><span style=display:flex><span>                    exchanges<span style=color:#f92672>.</span>append((<span style=color:#e6db74>&#34;user&#34;</span>, text[:MAX_USER_MSG]))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>elif</span> role <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;assistant&#34;</span>:
+</span></span><span style=display:flex><span>                <span style=color:#75715e># Skip messages that are only tool_use</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> has_tool_use(content):
+</span></span><span style=display:flex><span>                    text <span style=color:#f92672>=</span> extract_text_from_content(content)
+</span></span><span style=display:flex><span>                    text <span style=color:#f92672>=</span> text<span style=color:#f92672>.</span>strip()
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> text:
+</span></span><span style=display:flex><span>                        <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>                    text <span style=color:#f92672>=</span> extract_text_from_content(content)
+</span></span><span style=display:flex><span>                    text <span style=color:#f92672>=</span> text<span style=color:#f92672>.</span>strip()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> text:
+</span></span><span style=display:flex><span>                    exchanges<span style=color:#f92672>.</span>append(
+</span></span><span style=display:flex><span>                        (<span style=color:#e6db74>&#34;assistant&#34;</span>, text[:MAX_ASSISTANT_MSG])
+</span></span><span style=display:flex><span>                    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> exchanges:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;session_id&#34;</span>: session_id,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;project_dir&#34;</span>: project_dir,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;cwd&#34;</span>: cwd,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;git_branch&#34;</span>: git_branch,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;timestamp&#34;</span>: timestamp,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;exchanges&#34;</span>: exchanges,
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>matches_topic</span>(session, topic):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Check if any exchange in the session mentions the topic.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    topic_lower <span style=color:#f92672>=</span> topic<span style=color:#f92672>.</span>lower()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> _, text <span style=color:#f92672>in</span> session[<span style=color:#e6db74>&#34;exchanges&#34;</span>]:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> topic_lower <span style=color:#f92672>in</span> text<span style=color:#f92672>.</span>lower():
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>project_label</span>(project_dir):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Convert a project dir name to a human-readable label.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    Handles both Linux (/home/user/...) and macOS
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    (/Users/user/...) path encodings.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    parts <span style=color:#f92672>=</span> project_dir<span style=color:#f92672>.</span>strip(<span style=color:#e6db74>&#34;-&#34;</span>)<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;-&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> prefix <span style=color:#f92672>in</span> (<span style=color:#e6db74>&#34;home&#34;</span>, <span style=color:#e6db74>&#34;Users&#34;</span>):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>            idx <span style=color:#f92672>=</span> parts<span style=color:#f92672>.</span>index(prefix)
+</span></span><span style=display:flex><span>            <span style=color:#75715e># WARN: assumes idx+1 is the username component</span>
+</span></span><span style=display:flex><span>            parts <span style=color:#f92672>=</span> parts[idx <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>:]
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>ValueError</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;/&#34;</span><span style=color:#f92672>.</span>join(parts) <span style=color:#66d9ef>if</span> parts <span style=color:#66d9ef>else</span> project_dir
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>format_date</span>(ts_str):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Extract a YYYY-MM-DD date from an ISO timestamp string.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> ts_str:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;unknown date&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>        dt <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>fromisoformat(ts_str<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;Z&#34;</span>, <span style=color:#e6db74>&#34;+00:00&#34;</span>))
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> dt<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span> (<span style=color:#a6e22e>ValueError</span>, <span style=color:#a6e22e>AttributeError</span>):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;unknown date&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>sort_projects</span>(sessions_by_project):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Sort projects by most recent session timestamp, descending.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>key</span>(item):
+</span></span><span style=display:flex><span>        _dir, sessions <span style=color:#f92672>=</span> item
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> sessions[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;timestamp&#34;</span>) <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> sorted(
+</span></span><span style=display:flex><span>        sessions_by_project<span style=color:#f92672>.</span>items(), key<span style=color:#f92672>=</span>key, reverse<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>render_session_header</span>(session, history_summaries):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Render a compact session header (no exchanges).&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    date <span style=color:#f92672>=</span> format_date(session[<span style=color:#e6db74>&#34;timestamp&#34;</span>])
+</span></span><span style=display:flex><span>    sid <span style=color:#f92672>=</span> session[<span style=color:#e6db74>&#34;session_id&#34;</span>]
+</span></span><span style=display:flex><span>    summary <span style=color:#f92672>=</span> history_summaries<span style=color:#f92672>.</span>get(sid, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    branch <span style=color:#f92672>=</span> session<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;git_branch&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    first_user <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> role, text <span style=color:#f92672>in</span> session[<span style=color:#e6db74>&#34;exchanges&#34;</span>]:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> role <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;user&#34;</span>:
+</span></span><span style=display:flex><span>            first_user <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34; &#34;</span><span style=color:#f92672>.</span>join(text<span style=color:#f92672>.</span>split())[:<span style=color:#ae81ff>300</span>]
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    lines <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    header <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;### Session: </span><span style=color:#e6db74>{</span>date<span style=color:#e6db74>}</span><span style=color:#e6db74> (</span><span style=color:#e6db74>{</span>sid[:<span style=color:#ae81ff>8</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>)&#34;</span>
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(header)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> summary:
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#39;Summary: &#34;</span><span style=color:#e6db74>{</span>summary<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> branch:
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Branch: `</span><span style=color:#e6db74>{</span>branch<span style=color:#e6db74>}</span><span style=color:#e6db74>`&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> first_user:
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;**User:** </span><span style=color:#e6db74>{</span>first_user<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;---&#34;</span>)
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>join(lines)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>render_session_full</span>(session, history_summaries):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Render a session with exchanges.&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    date <span style=color:#f92672>=</span> format_date(session[<span style=color:#e6db74>&#34;timestamp&#34;</span>])
+</span></span><span style=display:flex><span>    sid <span style=color:#f92672>=</span> session[<span style=color:#e6db74>&#34;session_id&#34;</span>]
+</span></span><span style=display:flex><span>    summary <span style=color:#f92672>=</span> history_summaries<span style=color:#f92672>.</span>get(sid, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    branch <span style=color:#f92672>=</span> session<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;git_branch&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    lines <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    header <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;### Session: </span><span style=color:#e6db74>{</span>date<span style=color:#e6db74>}</span><span style=color:#e6db74> (</span><span style=color:#e6db74>{</span>sid[:<span style=color:#ae81ff>8</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>)&#34;</span>
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(header)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> summary:
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#39;Summary: &#34;</span><span style=color:#e6db74>{</span>summary<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> branch:
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Branch: `</span><span style=color:#e6db74>{</span>branch<span style=color:#e6db74>}</span><span style=color:#e6db74>`&#34;</span>)
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    exchanges <span style=color:#f92672>=</span> session[<span style=color:#e6db74>&#34;exchanges&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> role, text <span style=color:#f92672>in</span> exchanges[:MAX_EXCHANGES_PER_SESSION]:
+</span></span><span style=display:flex><span>        compact <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34; &#34;</span><span style=color:#f92672>.</span>join(text<span style=color:#f92672>.</span>split())
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> role <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;user&#34;</span>:
+</span></span><span style=display:flex><span>            lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;**User:** </span><span style=color:#e6db74>{</span>compact<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;**Assistant:** </span><span style=color:#e6db74>{</span>compact<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> len(exchanges) <span style=color:#f92672>&gt;</span> MAX_EXCHANGES_PER_SESSION:
+</span></span><span style=display:flex><span>        omitted <span style=color:#f92672>=</span> len(exchanges) <span style=color:#f92672>-</span> MAX_EXCHANGES_PER_SESSION
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;*(</span><span style=color:#e6db74>{</span>omitted<span style=color:#e6db74>}</span><span style=color:#e6db74> more exchanges omitted)*&#34;</span>)
+</span></span><span style=display:flex><span>        lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;---&#34;</span>)
+</span></span><span style=display:flex><span>    lines<span style=color:#f92672>.</span>append(<span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>join(lines)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>render_markdown</span>(sessions_by_project, history_summaries, days):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;Render sessions as structured markdown.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    Uses a two-pass approach to guarantee every project and
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    session appears in the output:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      Pass 1 — compact headers (project + session summaries)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      Pass 2 — fill in exchange detail per project budget
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    now <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>now(timezone<span style=color:#f92672>.</span>utc)
+</span></span><span style=display:flex><span>    start <span style=color:#f92672>=</span> now <span style=color:#f92672>-</span> timedelta(days<span style=color:#f92672>=</span>days)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    doc_header <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;# Session History: &#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>start<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#39;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#39;</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74> — </span><span style=color:#e6db74>{</span>now<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#39;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#39;</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    sorted_projects <span style=color:#f92672>=</span> sort_projects(sessions_by_project)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Pass 1: render compact headers for ALL projects/sessions.</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># This guarantees every project is visible to the LLM.</span>
+</span></span><span style=display:flex><span>    pass1_parts <span style=color:#f92672>=</span> [doc_header]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> project_dir, sessions <span style=color:#f92672>in</span> sorted_projects:
+</span></span><span style=display:flex><span>        label <span style=color:#f92672>=</span> project_label(project_dir)
+</span></span><span style=display:flex><span>        cwd <span style=color:#f92672>=</span> sessions[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;cwd&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>        proj_header <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;## Project: </span><span style=color:#e6db74>{</span>label<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> cwd:
+</span></span><span style=display:flex><span>            proj_header <span style=color:#f92672>+=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Path: </span><span style=color:#e6db74>{</span>cwd<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        proj_header <span style=color:#f92672>+=</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        pass1_parts<span style=color:#f92672>.</span>append(proj_header)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> session <span style=color:#f92672>in</span> sessions:
+</span></span><span style=display:flex><span>            pass1_parts<span style=color:#f92672>.</span>append(
+</span></span><span style=display:flex><span>                render_session_header(session, history_summaries)
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    pass1_output <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>.</span>join(pass1_parts)
+</span></span><span style=display:flex><span>    pass1_size <span style=color:#f92672>=</span> len(pass1_output<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf-8&#34;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># If headers alone exceed the budget, return them truncated.</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> pass1_size <span style=color:#f92672>&gt;=</span> MAX_OUTPUT_BYTES:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> pass1_output
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Pass 2: replace compact headers with full exchanges,</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># distributing remaining budget fairly across projects.</span>
+</span></span><span style=display:flex><span>    remaining <span style=color:#f92672>=</span> MAX_OUTPUT_BYTES <span style=color:#f92672>-</span> pass1_size
+</span></span><span style=display:flex><span>    n_projects <span style=color:#f92672>=</span> len(sorted_projects)
+</span></span><span style=display:flex><span>    per_project_budget <span style=color:#f92672>=</span> remaining <span style=color:#f92672>//</span> max(n_projects, <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    output_parts <span style=color:#f92672>=</span> [doc_header]
+</span></span><span style=display:flex><span>    surplus <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> project_dir, sessions <span style=color:#f92672>in</span> sorted_projects:
+</span></span><span style=display:flex><span>        label <span style=color:#f92672>=</span> project_label(project_dir)
+</span></span><span style=display:flex><span>        cwd <span style=color:#f92672>=</span> sessions[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;cwd&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>)
+</span></span><span style=display:flex><span>        proj_header <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;## Project: </span><span style=color:#e6db74>{</span>label<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> cwd:
+</span></span><span style=display:flex><span>            proj_header <span style=color:#f92672>+=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Path: </span><span style=color:#e6db74>{</span>cwd<span style=color:#e6db74>}</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        proj_header <span style=color:#f92672>+=</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        allowance <span style=color:#f92672>=</span> per_project_budget <span style=color:#f92672>+</span> surplus
+</span></span><span style=display:flex><span>        project_detail <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> session <span style=color:#f92672>in</span> sessions:
+</span></span><span style=display:flex><span>            full <span style=color:#f92672>=</span> render_session_full(session, history_summaries)
+</span></span><span style=display:flex><span>            compact <span style=color:#f92672>=</span> render_session_header(
+</span></span><span style=display:flex><span>                session, history_summaries
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>            <span style=color:#75715e># Cost of upgrading this session from compact to full</span>
+</span></span><span style=display:flex><span>            extra <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>                len(full<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf-8&#34;</span>))
+</span></span><span style=display:flex><span>                <span style=color:#f92672>-</span> len(compact<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf-8&#34;</span>))
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> extra <span style=color:#f92672>&lt;=</span> allowance:
+</span></span><span style=display:flex><span>                project_detail <span style=color:#f92672>+=</span> full
+</span></span><span style=display:flex><span>                allowance <span style=color:#f92672>-=</span> extra
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>                <span style=color:#75715e># Budget exhausted — render remaining as compact</span>
+</span></span><span style=display:flex><span>                project_detail <span style=color:#f92672>+=</span> compact
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        output_parts<span style=color:#f92672>.</span>append(proj_header <span style=color:#f92672>+</span> project_detail)
+</span></span><span style=display:flex><span>        surplus <span style=color:#f92672>=</span> max(allowance, <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>.</span>join(output_parts)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+</span></span><span style=display:flex><span>    args <span style=color:#f92672>=</span> parse_args()
+</span></span><span style=display:flex><span>    cutoff <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>now(timezone<span style=color:#f92672>.</span>utc) <span style=color:#f92672>-</span> timedelta(days<span style=color:#f92672>=</span>args<span style=color:#f92672>.</span>days)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    history_summaries <span style=color:#f92672>=</span> load_history_summaries()
+</span></span><span style=display:flex><span>    session_files <span style=color:#f92672>=</span> find_session_files(cutoff)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> session_files:
+</span></span><span style=display:flex><span>        print(
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;No sessions found in the last </span><span style=color:#e6db74>{</span>args<span style=color:#f92672>.</span>days<span style=color:#e6db74>}</span><span style=color:#e6db74> day(s).&#34;</span>,
+</span></span><span style=display:flex><span>            file<span style=color:#f92672>=</span>sys<span style=color:#f92672>.</span>stderr,
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>        sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># NOTE: Only include sessions that appear in history.jsonl.</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># This filters out subagent sessions which are noise.</span>
+</span></span><span style=display:flex><span>    history_session_ids <span style=color:#f92672>=</span> set(history_summaries<span style=color:#f92672>.</span>keys())
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    sessions_by_project <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> sf <span style=color:#f92672>in</span> session_files:
+</span></span><span style=display:flex><span>        <span style=color:#75715e># Skip files whose session ID isn&#39;t in history</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> sf<span style=color:#f92672>.</span>stem <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> history_session_ids:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>        session <span style=color:#f92672>=</span> parse_session(sf)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> session <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>topic <span style=color:#f92672>and</span> <span style=color:#f92672>not</span> matches_topic(session, args<span style=color:#f92672>.</span>topic):
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>        project <span style=color:#f92672>=</span> session[<span style=color:#e6db74>&#34;project_dir&#34;</span>]
+</span></span><span style=display:flex><span>        sessions_by_project<span style=color:#f92672>.</span>setdefault(project, [])<span style=color:#f92672>.</span>append(session)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Sort sessions within each project by timestamp (most recent</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># first), then cap to MAX_SESSIONS_PER_PROJECT.</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> project <span style=color:#f92672>in</span> sessions_by_project:
+</span></span><span style=display:flex><span>        sessions_by_project[project]<span style=color:#f92672>.</span>sort(
+</span></span><span style=display:flex><span>            key<span style=color:#f92672>=</span><span style=color:#66d9ef>lambda</span> s: s<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;timestamp&#34;</span>) <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;&#34;</span>, reverse<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>        sessions_by_project[project] <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>            sessions_by_project[project][:MAX_SESSIONS_PER_PROJECT]
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> sessions_by_project:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>topic:
+</span></span><span style=display:flex><span>            print(
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;No sessions mentioning &#39;</span><span style=color:#e6db74>{</span>args<span style=color:#f92672>.</span>topic<span style=color:#e6db74>}</span><span style=color:#e6db74>&#39; &#34;</span>
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;in the last </span><span style=color:#e6db74>{</span>args<span style=color:#f92672>.</span>days<span style=color:#e6db74>}</span><span style=color:#e6db74> day(s).&#34;</span>,
+</span></span><span style=display:flex><span>                file<span style=color:#f92672>=</span>sys<span style=color:#f92672>.</span>stderr,
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            print(
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;No sessions with extractable content &#34;</span>
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;in the last </span><span style=color:#e6db74>{</span>args<span style=color:#f92672>.</span>days<span style=color:#e6db74>}</span><span style=color:#e6db74> day(s).&#34;</span>,
+</span></span><span style=display:flex><span>                file<span style=color:#f92672>=</span>sys<span style=color:#f92672>.</span>stderr,
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>        sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    output <span style=color:#f92672>=</span> render_markdown(
+</span></span><span style=display:flex><span>        sessions_by_project, history_summaries, args<span style=color:#f92672>.</span>days
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Enforce size cap</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> len(output<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf-8&#34;</span>)) <span style=color:#f92672>&gt;</span> MAX_OUTPUT_BYTES:
+</span></span><span style=display:flex><span>        encoded <span style=color:#f92672>=</span> output<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf-8&#34;</span>)[:MAX_OUTPUT_BYTES]
+</span></span><span style=display:flex><span>        output <span style=color:#f92672>=</span> encoded<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#34;utf-8&#34;</span>, errors<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ignore&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#75715e># Trim to last complete line</span>
+</span></span><span style=display:flex><span>        last_nl <span style=color:#f92672>=</span> output<span style=color:#f92672>.</span>rfind(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> last_nl <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>            output <span style=color:#f92672>=</span> output[:last_nl]
+</span></span><span style=display:flex><span>        output <span style=color:#f92672>+=</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>*(output truncated to ~50KB)*</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    print(output)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    main()
+</span></span></code></pre></div></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+tarquin-the-brave
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>

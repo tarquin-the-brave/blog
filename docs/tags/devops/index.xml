@@ -1,20 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Devops on tarquin-the-brave</title>
-    <link>http://localhost:1313/blog/tags/devops/</link>
-    <description>Recent content in Devops on tarquin-the-brave</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-    <lastBuildDate>Thu, 08 Jan 2026 20:41:06 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/blog/tags/devops/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>The Multi-Repo of Madness</title>
-      <link>http://localhost:1313/blog/posts/2026-01-08-multi-repo-of-madness/</link>
-      <pubDate>Thu, 08 Jan 2026 20:41:06 +0000</pubDate>
-      <guid>http://localhost:1313/blog/posts/2026-01-08-multi-repo-of-madness/</guid>
-      <description>&lt;p&gt;I should confess upfront: I meant to write this post about four years ago and&#xA;never got round to it.  The tide has turned somewhat towards monorepos now,&#xA;especially with AI-assisted coding making &amp;ldquo;grep the whole codebase&amp;rdquo; more&#xA;valuable than ever.  So this cautionary tale about going multi-repo is perhaps&#xA;less relevant than it once was.&lt;/p&gt;&#xA;&lt;p&gt;But still.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;A long time ago I worked at a company that traditionally built big monolithic&#xA;products.  Telecoms infrastructure, massive C servers, that sort of thing.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Devops on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/tags/devops/</link><description>Recent content in Devops on tarquin-the-brave</description><generator>Hugo</generator><language>en</language><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Thu, 08 Jan 2026 20:41:06 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>The Multi-Repo of Madness</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-multi-repo-of-madness/</link><pubDate>Thu, 08 Jan 2026 20:41:06 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-multi-repo-of-madness/</guid><description>&lt;p&gt;I should confess upfront: I meant to write this post about four years ago and
+never got round to it. The tide has turned somewhat towards monorepos now,
+especially with AI-assisted coding making &amp;ldquo;grep the whole codebase&amp;rdquo; more
+valuable than ever. So this cautionary tale about going multi-repo is perhaps
+less relevant than it once was.&lt;/p&gt;
+&lt;p&gt;But still.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;A long time ago I worked at a company that traditionally built big monolithic
+products. Telecoms infrastructure, massive C servers, that sort of thing.&lt;/p&gt;</description></item></channel></rss>

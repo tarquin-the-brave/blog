@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
-  <title>
-  yes, please clear my terminal · tarquin-the-brave
-</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
-
-
-
-<meta name="author" content="tarquin-the-brave">
-<meta name="description" content="We&rsquo;ve all been there.  You&rsquo;ve been running some commands.  You switch focus
+<!doctype html><html lang=en><head><title>yes, please clear my terminal · tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="tarquin-the-brave"><meta name=description content="We&rsquo;ve all been there.  You&rsquo;ve been running some commands.  You switch focus
 away from your terminal.  You come back.  And your terminal is full of crap
 you&rsquo;re not interested in anymore.  “Get this out of my sight”, you think.
 clear you type.
@@ -22,343 +7,63 @@ There&rsquo;s another time when the ghosts of a command past can muddy your view
 Say you&rsquo;ve run some tests.  There&rsquo;s lots of output that you&rsquo;ll need to scroll
 back through in case of a failure.  You find the failure.  You make a fix. You
 run the tests again.  There&rsquo;s another failure.  So you scroll up, Ctrl A, [, PgUp or however you do it.  This second time it&rsquo;s easy to miss where your most
-recent test output starts and where the old one ends.">
-<meta name="keywords" content="">
-
-
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="yes, please clear my terminal">
-  <meta name="twitter:description" content="We’ve all been there. You’ve been running some commands. You switch focus away from your terminal. You come back. And your terminal is full of crap you’re not interested in anymore. “Get this out of my sight”, you think. clear you type.
+recent test output starts and where the old one ends."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="yes, please clear my terminal"><meta name=twitter:description content="We’ve all been there. You’ve been running some commands. You switch focus away from your terminal. You come back. And your terminal is full of crap you’re not interested in anymore. “Get this out of my sight”, you think. clear you type.
 Problem solved. Blog post over. Oh but wait! This doesn’t solve all my woes.
-There’s another time when the ghosts of a command past can muddy your view. Say you’ve run some tests. There’s lots of output that you’ll need to scroll back through in case of a failure. You find the failure. You make a fix. You run the tests again. There’s another failure. So you scroll up, Ctrl A, [, PgUp or however you do it. This second time it’s easy to miss where your most recent test output starts and where the old one ends.">
-
-<meta property="og:url" content="http://localhost:1313/blog/posts/2022-02-19-yes-please-clear-my-terminal/">
-  <meta property="og:site_name" content="tarquin-the-brave">
-  <meta property="og:title" content="yes, please clear my terminal">
-  <meta property="og:description" content="We’ve all been there. You’ve been running some commands. You switch focus away from your terminal. You come back. And your terminal is full of crap you’re not interested in anymore. “Get this out of my sight”, you think. clear you type.
+There’s another time when the ghosts of a command past can muddy your view. Say you’ve run some tests. There’s lots of output that you’ll need to scroll back through in case of a failure. You find the failure. You make a fix. You run the tests again. There’s another failure. So you scroll up, Ctrl A, [, PgUp or however you do it. This second time it’s easy to miss where your most recent test output starts and where the old one ends."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2022-02-19-yes-please-clear-my-terminal/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="yes, please clear my terminal"><meta property="og:description" content="We’ve all been there. You’ve been running some commands. You switch focus away from your terminal. You come back. And your terminal is full of crap you’re not interested in anymore. “Get this out of my sight”, you think. clear you type.
 Problem solved. Blog post over. Oh but wait! This doesn’t solve all my woes.
-There’s another time when the ghosts of a command past can muddy your view. Say you’ve run some tests. There’s lots of output that you’ll need to scroll back through in case of a failure. You find the failure. You make a fix. You run the tests again. There’s another failure. So you scroll up, Ctrl A, [, PgUp or however you do it. This second time it’s easy to miss where your most recent test output starts and where the old one ends.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2022-02-19T15:00:48+00:00">
-    <meta property="article:modified_time" content="2022-02-19T15:00:48+00:00">
-
-
-
-
-<link rel="canonical" href="http://localhost:1313/blog/posts/2022-02-19-yes-please-clear-my-terminal/">
-
-
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-
-
-  
-  
-  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
-
-
-
-
-
-
-  
-    
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
-  
-
-
-
- 
-  
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
-  
-
-
-
-
-
-<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
-
-<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-
-<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
-<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-
-
-
-
-
-
-
-  
-</head>
-
-
-
-
-
-
-<body class="preload-transitions colorscheme-auto">
-  
-<div class="float-container">
-    <a id="dark-mode-toggle" class="colorscheme-toggle">
-        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
-    </a>
-</div>
-
-
-  <main class="wrapper">
-    <nav class="navigation">
-  <section class="container">
-    
-    <a class="navigation-title" href="http://localhost:1313/blog/">
-      tarquin-the-brave
-    </a>
-    
-    
-      <input type="checkbox" id="menu-toggle" />
-      <label class="menu-button float-right" for="menu-toggle">
-        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
-      </label>
-      <ul class="navigation-list">
-        
-          
-            <li class="navigation-item">
-              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
-            </li>
-          
-        
-        
-      </ul>
-    
-  </section>
-</nav>
-
-
-    <div class="content">
-      
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/blog/posts/2022-02-19-yes-please-clear-my-terminal/">
-              yes, please clear my terminal
-            </a>
-          </h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
-              <time datetime="2022-02-19T15:00:48Z">
-                February 19, 2022
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              3-minute read
-            </span>
-          </div>
-          
-          
-          
-        </div>
-      </header>
-
-      
-
-
-      <div class="post-content">
-        
-        <p>We&rsquo;ve all been there.  You&rsquo;ve been running some commands.  You switch focus
-away from your terminal.  You come back.  And your terminal is full of crap
-you&rsquo;re not interested in anymore.  “Get this out of my sight”, you think.
-<a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> you type.</p>
-<p>Problem solved.  Blog post over.  Oh but wait!  This doesn&rsquo;t solve all my woes.</p>
-<p>There&rsquo;s another time when the ghosts of a command past can muddy your view.
-Say you&rsquo;ve run some tests.  There&rsquo;s lots of output that you&rsquo;ll need to scroll
-back through in case of a failure.  You find the failure.  You make a fix. You
-run the tests again.  There&rsquo;s another failure.  So you scroll up, <code>Ctrl A, [, PgUp</code> or however you do it.  This second time it&rsquo;s easy to miss where your most
-recent test output starts and where the old one ends.</p>
-<p>I found <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> doesn&rsquo;t work for me this time.  Running <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a>, then scrolling
-up, I see no gap between the previous output and my prompt.  Looking into <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener">the
+There’s another time when the ghosts of a command past can muddy your view. Say you’ve run some tests. There’s lots of output that you’ll need to scroll back through in case of a failure. You find the failure. You make a fix. You run the tests again. There’s another failure. So you scroll up, Ctrl A, [, PgUp or however you do it. This second time it’s easy to miss where your most recent test output starts and where the old one ends."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-02-19T15:00:48+00:00"><meta property="article:modified_time" content="2022-02-19T15:00:48+00:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2022-02-19-yes-please-clear-my-terminal/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.f6b1b35a7b02521b25338f6cf58975f9980a6c12847763fe35a48307758cd1e7.css integrity="sha256-9rGzWnsCUhslM49s9Yl1+ZgKbBKEd2P+NaSDB3WM0ec=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css integrity="sha256-rUj0didZdIhb3APVJR482+FnjFSmP/dyN2sO0q3EaN0=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2022-02-19-yes-please-clear-my-terminal/>yes, please clear my terminal</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2022-02-19T15:00:48Z>February 19, 2022
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+3-minute read</span></div></div></header><div class=post-content><p>We&rsquo;ve all been there. You&rsquo;ve been running some commands. You switch focus
+away from your terminal. You come back. And your terminal is full of crap
+you&rsquo;re not interested in anymore. “Get this out of my sight”, you think.
+<a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> you type.</p><p>Problem solved. Blog post over. Oh but wait! This doesn&rsquo;t solve all my woes.</p><p>There&rsquo;s another time when the ghosts of a command past can muddy your view.
+Say you&rsquo;ve run some tests. There&rsquo;s lots of output that you&rsquo;ll need to scroll
+back through in case of a failure. You find the failure. You make a fix. You
+run the tests again. There&rsquo;s another failure. So you scroll up, <code>Ctrl A, [, PgUp</code> or however you do it. This second time it&rsquo;s easy to miss where your most
+recent test output starts and where the old one ends.</p><p>I found <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> doesn&rsquo;t work for me this time. Running <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a>, then scrolling
+up, I see no gap between the previous output and my prompt. Looking into <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener>the
 man pages</a>, it says “clears
 your screen if this is possible, including its scrollback buffer (if the
-extended “E3” capability is defined).”.  OK so this is probably a <code>tmux</code> issue.
-Exiting <code>tmux</code> I find that <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> does in fact clear the scroll history too.
-Outside of <code>tmux</code> , passing the <code>-x</code> parameter to <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> (to stop it clearing
-scrollback buffer) give me the same effect as I saw in <code>tmux</code> .</p>
-<p>So at this point I should probably give up on this blog post and go and work
-out how to make <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> work the same in <code>tmux</code>.  But wait, there might still
-be a use case that <a href="https://man7.org/linux/man-pages/man1/clear.1.html"  class="external-link" target="_blank" rel="noopener"><code>clear</code></a> can&rsquo;t fulfil here.  Suppose I want to not throw away
+extended “E3” capability is defined).”. OK so this is probably a <code>tmux</code> issue.
+Exiting <code>tmux</code> I find that <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> does in fact clear the scroll history too.
+Outside of <code>tmux</code> , passing the <code>-x</code> parameter to <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> (to stop it clearing
+scrollback buffer) give me the same effect as I saw in <code>tmux</code> .</p><p>So at this point I should probably give up on this blog post and go and work
+out how to make <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> work the same in <code>tmux</code>. But wait, there might still
+be a use case that <a href=https://man7.org/linux/man-pages/man1/clear.1.html class=external-link target=_blank rel=noopener><code>clear</code></a> can&rsquo;t fulfil here. Suppose I want to not throw away
 the old test output, but still have a clear point in the history where the old
-test output ended and a new one begins.</p>
-<p>You could solve this problem by holding down the <code>return</code> key for a few seconds
-so there was an obvious band in the terminal history of just the prompt.  But
-there&rsquo;s a slightly more inventive solution:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yes <span style="color:#e6db74">&#34;&#34;</span> | head -50
-</span></span></code></pre></div><p>What&rsquo;s going on here? <a href="https://man7.org/linux/man-pages/man1/yes.1.html"  class="external-link" target="_blank" rel="noopener"><code>yes</code></a> is a
+test output ended and a new one begins.</p><p>You could solve this problem by holding down the <code>return</code> key for a few seconds
+so there was an obvious band in the terminal history of just the prompt. But
+there&rsquo;s a slightly more inventive solution:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>yes <span style=color:#e6db74>&#34;&#34;</span> | head -50
+</span></span></code></pre></div><p>What&rsquo;s going on here? <a href=https://man7.org/linux/man-pages/man1/yes.1.html class=external-link target=_blank rel=noopener><code>yes</code></a> is a
 command that will repeatedly
 output the string given (or <code>y</code> if no string is given). So giving it the empty
-string will make it produce newlines to stdout.</p>
-<p>The appearance of <a href="https://man7.org/linux/man-pages/man1/yes.1.html"  class="external-link" target="_blank" rel="noopener"><code>yes</code></a> in script or a command line is almost always a sign
-that you&rsquo;re doing something wrong.  It can be used as a hack to automate
-interactive CLIs that you know you&rsquo;re going to say “yes” to:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yes | apt install foo
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>yes | rm -ir some_directory/
-</span></span></code></pre></div><p>Or even if you know you&rsquo;re going to say “no”:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yes no | &lt;command&gt;
-</span></span></code></pre></div><p>I know, right.</p>
-<p>But CLI commands <em>usually</em> have parameters that you can pass to achieve a
-non-interactive mode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt install -y foo
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>rm -rif some_directory/
-</span></span></code></pre></div><p>It&rsquo;s somewhat reminiscent of the <a href="https://en.wikipedia.org/wiki/Cat_%28Unix%29#Useless_use_of_cat"  class="external-link" target="_blank" rel="noopener">“Useless Use of
-<code>cat</code>&quot;.</a></p>
-<p>Apart from my beautiful command above, I think I&rsquo;ve only used <a href="https://man7.org/linux/man-pages/man1/yes.1.html"  class="external-link" target="_blank" rel="noopener"><code>yes</code></a>
-”legitimately” once: doing a quick test of a TCP connection by piping <a href="https://man7.org/linux/man-pages/man1/yes.1.html"  class="external-link" target="_blank" rel="noopener"><code>yes</code></a>
-into netcat&hellip; maybe.  What is “legitimate usage” anyway&hellip;</p>
-<p><code>head -50</code> will take the first 50 lines of this.  The <code>-50</code> parameter is
-<em>actually an <a href="https://man7.org/linux/man-pages/man1/head.1.html"  class="external-link" target="_blank" rel="noopener">undocumented</a>
+string will make it produce newlines to stdout.</p><p>The appearance of <a href=https://man7.org/linux/man-pages/man1/yes.1.html class=external-link target=_blank rel=noopener><code>yes</code></a> in script or a command line is almost always a sign
+that you&rsquo;re doing something wrong. It can be used as a hack to automate
+interactive CLIs that you know you&rsquo;re going to say “yes” to:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>yes | apt install foo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>yes | rm -ir some_directory/
+</span></span></code></pre></div><p>Or even if you know you&rsquo;re going to say “no”:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>yes no | &lt;command&gt;
+</span></span></code></pre></div><p>I know, right.</p><p>But CLI commands <em>usually</em> have parameters that you can pass to achieve a
+non-interactive mode:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>apt install -y foo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rm -rif some_directory/
+</span></span></code></pre></div><p>It&rsquo;s somewhat reminiscent of the <a href=https://en.wikipedia.org/wiki/Cat_%28Unix%29#Useless_use_of_cat class=external-link target=_blank rel=noopener>“Useless Use of
+<code>cat</code>".</a></p><p>Apart from my beautiful command above, I think I&rsquo;ve only used <a href=https://man7.org/linux/man-pages/man1/yes.1.html class=external-link target=_blank rel=noopener><code>yes</code></a>
+”legitimately” once: doing a quick test of a TCP connection by piping <a href=https://man7.org/linux/man-pages/man1/yes.1.html class=external-link target=_blank rel=noopener><code>yes</code></a>
+into netcat&mldr; maybe. What is “legitimate usage” anyway&mldr;</p><p><code>head -50</code> will take the first 50 lines of this. The <code>-50</code> parameter is
+<em>actually an <a href=https://man7.org/linux/man-pages/man1/head.1.html class=external-link target=_blank rel=noopener>undocumented</a>
 archaic use</em> of <code>head</code> (and <code>tail</code>) which apparently is only supported for back
-compatibility.  It&rsquo;s equivalent to <code>-n 50</code>.  You can change <code>50</code> with any
-number.  Some experimentation is needed with your terminal and the size of text
-you have.</p>
-<p>So there we have it.  A slightly convoluted way of getting something you
+compatibility. It&rsquo;s equivalent to <code>-n 50</code>. You can change <code>50</code> with any
+number. Some experimentation is needed with your terminal and the size of text
+you have.</p><p>So there we have it. A slightly convoluted way of getting something you
 probably don&rsquo;t need, but seems to have always amused anyone I&rsquo;m paring with
-when I do it.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yes <span style="color:#e6db74">&#34;&#34;</span> | head -50
+when I do it.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>yes <span style=color:#e6db74>&#34;&#34;</span> | head -50
 </span></span></code></pre></div><p><em>I&rsquo;m hoping someone chimes in with a “why don&rsquo;t you just do X” so I can
-un-muscle-memory this one.</em></p>
-
-      </div>
-
-
-      <footer>
-        
-
-
-        
-        
-        <div class="comments">
-  <script>
-
-    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
-    let themeInParams = '';
-
-    if (getTheme == null) {
-      if (themeInParams !== '' && themeInParams !== 'auto') {
-        getTheme = themeInParams;
-      }
-      else {
-        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      }
-    }
-
-    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
-    let s = document.createElement('script');
-    s.src = 'https://utteranc.es/client.js';
-    s.setAttribute('repo', 'tarquin-the-brave\/blog');
-    s.setAttribute('issue-term', 'pathname');
-    s.setAttribute('theme', theme);
-    s.setAttribute('crossorigin', 'anonymous');
-    s.setAttribute('async', '');
-    document.querySelector('div.comments').innerHTML = '';
-    document.querySelector('div.comments').appendChild(s);
-
-  </script>
-</div>
-        
-        
-        
-        
-      </footer>
-    </article>
-
-    
-  </section>
-
-    </div>
-
-    <footer class="footer">
-  <section class="container">
-    ©
-    
-    2026
-     tarquin-the-brave 
-    ·
-    
-    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
-    
-  </section>
-</footer>
-
-  </main>
-
-  
-
-  
-  
-  <script src="http://localhost:1313/blog/js/coder.js"></script>
-  
-
-  
-  
-  
-  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</body>
-</html>
+un-muscle-memory this one.</em></p></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+tarquin-the-brave
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>

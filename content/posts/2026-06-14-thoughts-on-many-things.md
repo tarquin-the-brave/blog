@@ -110,7 +110,9 @@ Ops is part of dev.  DevOps.
 
 # Performance: "Don't Prematurely Optimise"
 
+
 > "Don't prematurely optimise performance"
+
 
 I agree.  But I think this statement gets wildly misrepresented and used to
 justify the willful production of crap software.
@@ -156,7 +158,9 @@ In light of how I've seen this statement of avoiding premature optimisation get
 misunderstood and misused, I find it better to think about software performance
 in these terms:
 
+
 > "Proceed with a weakly held affinity to the optimal"
+
 
 Go into writing software with an intention of making it optimally performant
 but eagerly let go of that ambition as you encounter hurdles, uncertainty, compromises.
@@ -211,7 +215,9 @@ we're spending on this, we really mean business".
 I think there's an extra technical angle on this that tips me towards wanting
 to think about costs earlier.
 
+
 > "Necessity is the mother of invention"
+
 
 If all your engineers are developing on a top spec laptop, is it really a
 surprise if users later complain that the application or site doesn't run
@@ -397,7 +403,9 @@ how LLMs had slotted into my workflow.  It was certainly a net positive vs click
 Stack Overflow or having to dive deep into reference documentation to find one simple answer
 I needed.  I got quite settled last year, thinking of it in terms of:
 
+
 > "It's a compass not a GPS (or private driver)" _\[2025 feelings\]_
+
 
 It could kick start any work you were doing by punting you in the right direction, but you
 still needed to do the work.
@@ -462,8 +470,10 @@ One thing I think I did learn from this however is how
 directing the agent, or any LLM session with a fresh context, to look at something from
 a particular perspective really helps with what you get out of it.
 
+
 > Ironically, I've found one of the best ways to clean up the over-engineered, overly verbose
 spaghetti code that LLMs can produce, is to ask another LLM to simplify and reduce the code.
+
 
 As time went on in the first half of this year (2026), something 
 I'd predicted / hoped for started to appear to happen where Claude or other agents started to produce 
@@ -471,7 +481,9 @@ more sensible outputs without so much need for layers of context and harness aro
 certainly felt needed at the start of the year.  Including it making sensible decisions
 around when to spawn sub-agents, and how it managed its own context.  I realised that:
 
+
 > for each new model version, start your context and harness from scratch.
+
 
 It seems that new models need different harnesses, and given how easy it is to accumulate
 a load of crap that bloats context in your harness, a new model coming around is
@@ -484,8 +496,10 @@ extent to which I hand over decision making, and at what levels.  Where I've lan
 being most comfortable, and where I feel I can avoid situations where I get stuck trying
 to untangle a mess that an agent has made, is one where:
 
+
 > I use the agent to gather information, investigate consequences of different options,
   write the code once a solution is decided on, but I make the key technical decisions.
+
 
 The context behind the discussion above is referring to product work that will make
 it into production and users will depend on.  For anything where quality is not critical,
@@ -501,8 +515,8 @@ with using LLMs over the last months, is to demonstrate how the things that we'r
 get the best out of LLMs is constantly changing.  To address the FOMO-baiting that I see
 in wider discourse around LLMs, that if you don't get good at using these tools now, you'll
 be forever behind.  You won't.  If you haven't leaned into LLM tooling yet and don't for
-another 6, 12, 18 months, and there isn't a commercial pressure for you to do so, you'll be fine.  
-How people use them to get good results from them will undoubtedly change beyond recognition from today.
+another 6, 12, 18 months, and there isn't a commercial pressure for you to do so, you'll be fine. How 
+people use them to get good results from them will undoubtedly change beyond recognition from today.
 The things we're all learning to do now will be mostly obsolete.  If you're a good engineer, that's capable of challenging
 your own views, suspending disbelief as you give a new way of doing things a fair shot,
 then you won't have any issue adjusting and picking up LLM tooling.  You won't be at risk
@@ -532,6 +546,8 @@ the issue.  Maybe there's better examples, don't read too much into that one.
 
 The ultimate question for me looking forward right now is:
 
+
 > "Will it ever be OK for us to not read and understand the code that LLMs produce?"
+
 
 If it could be, I see that being a real revolution in how we build things.

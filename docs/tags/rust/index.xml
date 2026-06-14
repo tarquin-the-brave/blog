@@ -1,27 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Rust on tarquin-the-brave</title>
-    <link>http://localhost:1313/blog/tags/rust/</link>
-    <description>Recent content in Rust on tarquin-the-brave</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright>
-    <lastBuildDate>Fri, 09 Jan 2026 11:11:59 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/blog/tags/rust/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Rust Perspectives for Experienced Engineers</title>
-      <link>http://localhost:1313/blog/posts/2026-01-09-rust_perspectives/</link>
-      <pubDate>Fri, 09 Jan 2026 11:11:59 +0000</pubDate>
-      <guid>http://localhost:1313/blog/posts/2026-01-09-rust_perspectives/</guid>
-      <description>&lt;p&gt;About a year ago I joined a company.  They&amp;rsquo;d brought me in as &amp;ldquo;someone with&#xA;lots of Rust experience&amp;rdquo;.  From the interviews I thought they&amp;rsquo;d have a few&#xA;projects here and there in Rust.  Turns out it was almost the entire stack for&#xA;their new product.  A lot of experienced folks from other languages were&#xA;learning Rust for the first time while pushing to ship.&lt;/p&gt;&#xA;&lt;p&gt;Watching how people write Rust when coming from other languages, I thought&#xA;about what perspectives might be useful to share.  Ways of seeing things that&#xA;make Rust click a bit easier.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>There&#39;s No Such Thing as an Error in Rust</title>
-      <link>http://localhost:1313/blog/posts/2026-01-08-no_errors_in_rust/</link>
-      <pubDate>Thu, 08 Jan 2026 20:08:21 +0000</pubDate>
-      <guid>http://localhost:1313/blog/posts/2026-01-08-no_errors_in_rust/</guid>
-      <description>&lt;p&gt;Colleagues have heard me say this.  Usually when we&amp;rsquo;re debugging something, or&#xA;discussing error handling approaches, I&amp;rsquo;ll pipe up with:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;Well, there&amp;rsquo;s no such thing as an error in Rust.&amp;rdquo;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;It tends to get a raised eyebrow or two.  So I&amp;rsquo;ll explain.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;how-rust-handles-errors&#34;&gt;&#xA;  How Rust Handles Errors&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#how-rust-handles-errors&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;If you&amp;rsquo;re not familiar with Rust, here&amp;rsquo;s the quick version: Rust doesn&amp;rsquo;t have&#xA;exceptions.  Instead, operations that can fail return a &lt;code&gt;Result&lt;/code&gt; type.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rust on tarquin-the-brave</title><link>https://tarquin-the-brave.github.io/blog/tags/rust/</link><description>Recent content in Rust on tarquin-the-brave</description><generator>Hugo</generator><language>en</language><copyright>Copyright &amp;copy; 2020 - Tom Steavenson</copyright><lastBuildDate>Fri, 09 Jan 2026 11:11:59 +0000</lastBuildDate><atom:link href="https://tarquin-the-brave.github.io/blog/tags/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Rust Perspectives for Experienced Engineers</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-rust_perspectives/</link><pubDate>Fri, 09 Jan 2026 11:11:59 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-09-rust_perspectives/</guid><description>&lt;p&gt;About a year ago I joined a company. They&amp;rsquo;d brought me in as &amp;ldquo;someone with
+lots of Rust experience&amp;rdquo;. From the interviews I thought they&amp;rsquo;d have a few
+projects here and there in Rust. Turns out it was almost the entire stack for
+their new product. A lot of experienced folks from other languages were
+learning Rust for the first time while pushing to ship.&lt;/p&gt;
+&lt;p&gt;Watching how people write Rust when coming from other languages, I thought
+about what perspectives might be useful to share. Ways of seeing things that
+make Rust click a bit easier.&lt;/p&gt;</description></item><item><title>There's No Such Thing as an Error in Rust</title><link>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-no_errors_in_rust/</link><pubDate>Thu, 08 Jan 2026 20:08:21 +0000</pubDate><guid>https://tarquin-the-brave.github.io/blog/posts/2026-01-08-no_errors_in_rust/</guid><description>&lt;p&gt;Colleagues have heard me say this. Usually when we&amp;rsquo;re debugging something, or
+discussing error handling approaches, I&amp;rsquo;ll pipe up with:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Well, there&amp;rsquo;s no such thing as an error in Rust.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It tends to get a raised eyebrow or two. So I&amp;rsquo;ll explain.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="how-rust-handles-errors"&gt;
+ How Rust Handles Errors
+ &lt;a class="heading-link" href="#how-rust-handles-errors"&gt;
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"&gt;&lt;/i&gt;
+ &lt;span class="sr-only"&gt;Link to heading&lt;/span&gt;
+ &lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;If you&amp;rsquo;re not familiar with Rust, here&amp;rsquo;s the quick version: Rust doesn&amp;rsquo;t have
+exceptions. Instead, operations that can fail return a &lt;code&gt;Result&lt;/code&gt; type.&lt;/p&gt;</description></item></channel></rss>

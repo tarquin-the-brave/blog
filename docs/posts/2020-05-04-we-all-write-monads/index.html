@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
-  <title>
-  We All Write Monads, Whether We Know It or Not · tarquin-the-brave
-</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
-
-
-
-<meta name="author" content="tarquin-the-brave">
-<meta name="description" content="Recently I&rsquo;ve been rebooting my Haskell by working through Advent of
+<!doctype html><html lang=en><head><title>We All Write Monads, Whether We Know It or Not · tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="tarquin-the-brave"><meta name=description content="Recently I&rsquo;ve been rebooting my Haskell by working through Advent of
 Code, and bogging about it:
 
 Re-learning Haskell with Advent of Code - Part 1,
@@ -23,370 +8,80 @@ and it&rsquo;s got me thinking.  I was quickly re-introduced to the concepts of:
 Functors, Applicative Functors, Monoids, Monads, a strong type system, higher
 kinded types, and functional purity, and straight away, started spotting these
 patterns in the code I write every day at work (predominantly Rust with some
-Bash, Python, and C&#43;&#43; thrown in for good measure).">
-<meta name="keywords" content="">
-
-
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="We All Write Monads, Whether We Know It or Not">
-  <meta name="twitter:description" content="Recently I’ve been rebooting my Haskell by working through Advent of Code, and bogging about it:
-Re-learning Haskell with Advent of Code - Part 1, Re-learning Haskell with Advent of Code - Part 2, and it’s got me thinking. I was quickly re-introduced to the concepts of: Functors, Applicative Functors, Monoids, Monads, a strong type system, higher kinded types, and functional purity, and straight away, started spotting these patterns in the code I write every day at work (predominantly Rust with some Bash, Python, and C&#43;&#43; thrown in for good measure).">
-
-<meta property="og:url" content="http://localhost:1313/blog/posts/2020-05-04-we-all-write-monads/">
-  <meta property="og:site_name" content="tarquin-the-brave">
-  <meta property="og:title" content="We All Write Monads, Whether We Know It or Not">
-  <meta property="og:description" content="Recently I’ve been rebooting my Haskell by working through Advent of Code, and bogging about it:
-Re-learning Haskell with Advent of Code - Part 1, Re-learning Haskell with Advent of Code - Part 2, and it’s got me thinking. I was quickly re-introduced to the concepts of: Functors, Applicative Functors, Monoids, Monads, a strong type system, higher kinded types, and functional purity, and straight away, started spotting these patterns in the code I write every day at work (predominantly Rust with some Bash, Python, and C&#43;&#43; thrown in for good measure).">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2020-05-04T04:46:31+01:00">
-    <meta property="article:modified_time" content="2020-05-04T04:46:31+01:00">
-
-
-
-
-<link rel="canonical" href="http://localhost:1313/blog/posts/2020-05-04-we-all-write-monads/">
-
-
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-
-
-  
-  
-  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
-
-
-
-
-
-
-  
-    
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
-  
-
-
-
- 
-  
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
-  
-
-
-
-
-
-<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
-
-<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-
-<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
-<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-
-
-
-
-
-
-
-  
-</head>
-
-
-
-
-
-
-<body class="preload-transitions colorscheme-auto">
-  
-<div class="float-container">
-    <a id="dark-mode-toggle" class="colorscheme-toggle">
-        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
-    </a>
-</div>
-
-
-  <main class="wrapper">
-    <nav class="navigation">
-  <section class="container">
-    
-    <a class="navigation-title" href="http://localhost:1313/blog/">
-      tarquin-the-brave
-    </a>
-    
-    
-      <input type="checkbox" id="menu-toggle" />
-      <label class="menu-button float-right" for="menu-toggle">
-        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
-      </label>
-      <ul class="navigation-list">
-        
-          
-            <li class="navigation-item">
-              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
-            </li>
-          
-        
-        
-      </ul>
-    
-  </section>
-</nav>
-
-
-    <div class="content">
-      
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/blog/posts/2020-05-04-we-all-write-monads/">
-              We All Write Monads, Whether We Know It or Not
-            </a>
-          </h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
-              <time datetime="2020-05-04T04:46:31&#43;01:00">
-                May 4, 2020
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              5-minute read
-            </span>
-          </div>
-          
-          
-          
-        </div>
-      </header>
-
-      
-
-
-      <div class="post-content">
-        
-        <p>Recently I&rsquo;ve been rebooting my Haskell by working through <a href="https://adventofcode.com/2019/"  class="external-link" target="_blank" rel="noopener">Advent of
-Code</a>, and bogging about it:</p>
-<ul>
-<li><a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/"  class="external-link" target="_blank" rel="noopener">Re-learning Haskell with Advent of Code - Part 1</a>,</li>
-<li><a href="https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/"  class="external-link" target="_blank" rel="noopener">Re-learning Haskell with Advent of Code - Part 2</a>,</li>
-</ul>
-<p>and it&rsquo;s got me thinking.  I was quickly re-introduced to the concepts of:
+Bash, Python, and C++ thrown in for good measure)."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="We All Write Monads, Whether We Know It or Not"><meta name=twitter:description content="Recently I’ve been rebooting my Haskell by working through Advent of Code, and bogging about it:
+Re-learning Haskell with Advent of Code - Part 1, Re-learning Haskell with Advent of Code - Part 2, and it’s got me thinking. I was quickly re-introduced to the concepts of: Functors, Applicative Functors, Monoids, Monads, a strong type system, higher kinded types, and functional purity, and straight away, started spotting these patterns in the code I write every day at work (predominantly Rust with some Bash, Python, and C++ thrown in for good measure)."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2020-05-04-we-all-write-monads/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="We All Write Monads, Whether We Know It or Not"><meta property="og:description" content="Recently I’ve been rebooting my Haskell by working through Advent of Code, and bogging about it:
+Re-learning Haskell with Advent of Code - Part 1, Re-learning Haskell with Advent of Code - Part 2, and it’s got me thinking. I was quickly re-introduced to the concepts of: Functors, Applicative Functors, Monoids, Monads, a strong type system, higher kinded types, and functional purity, and straight away, started spotting these patterns in the code I write every day at work (predominantly Rust with some Bash, Python, and C++ thrown in for good measure)."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-05-04T04:46:31+01:00"><meta property="article:modified_time" content="2020-05-04T04:46:31+01:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2020-05-04-we-all-write-monads/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.f6b1b35a7b02521b25338f6cf58975f9980a6c12847763fe35a48307758cd1e7.css integrity="sha256-9rGzWnsCUhslM49s9Yl1+ZgKbBKEd2P+NaSDB3WM0ec=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css integrity="sha256-rUj0didZdIhb3APVJR482+FnjFSmP/dyN2sO0q3EaN0=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2020-05-04-we-all-write-monads/>We All Write Monads, Whether We Know It or Not</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2020-05-04T04:46:31+01:00>May 4, 2020
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+5-minute read</span></div></div></header><div class=post-content><p>Recently I&rsquo;ve been rebooting my Haskell by working through <a href=https://adventofcode.com/2019/ class=external-link target=_blank rel=noopener>Advent of
+Code</a>, and bogging about it:</p><ul><li><a href=https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell/ class=external-link target=_blank rel=noopener>Re-learning Haskell with Advent of Code - Part 1</a>,</li><li><a href=https://tarquin-the-brave.github.io/blog/posts/re-learning-haskell-2/ class=external-link target=_blank rel=noopener>Re-learning Haskell with Advent of Code - Part 2</a>,</li></ul><p>and it&rsquo;s got me thinking. I was quickly re-introduced to the concepts of:
 Functors, Applicative Functors, Monoids, Monads, a strong type system, higher
 kinded types, and functional purity, and straight away, started spotting these
 patterns in the code I write every day at work (predominantly Rust with some
-Bash, Python, and C++ thrown in for good measure).</p>
-<p>I find myself thinking about code I&rsquo;m working with, and saying to myself, or
-anyone who will listen, things like:</p>
-<blockquote>
-<p>&ldquo;Ah well, this works because string concatenation behaves monoidally&hellip;&rdquo;</p></blockquote>
-<p>or:</p>
-<blockquote>
-<p>&ldquo;What we&rsquo;ve got here is a computational context for our data that we want to
-map over&hellip;&rdquo;</p></blockquote>
-<p>What this has made me realise is there&rsquo;s nothing special about Haskell that
-means these concepts exist where they don&rsquo;t exist in other languages.</p>
-<blockquote>
-<p>Haskell formalises data manipulation patterns that exist wherever there is
-data to manipulate.</p></blockquote>
-<p>Have you ever had a &ldquo;container type&rdquo; for your data that you&rsquo;ve iterated over?
-You&rsquo;ve used a functor.</p>
-<p>Have you ever encoded error handling in the data you&rsquo;re using?  You&rsquo;ve used
-something resembling a monad.</p>
-<p>Rust&rsquo;s ownership model is a formalisation of a set of memory management
+Bash, Python, and C++ thrown in for good measure).</p><p>I find myself thinking about code I&rsquo;m working with, and saying to myself, or
+anyone who will listen, things like:</p><blockquote><p>&ldquo;Ah well, this works because string concatenation behaves monoidally&mldr;&rdquo;</p></blockquote><p>or:</p><blockquote><p>&ldquo;What we&rsquo;ve got here is a computational context for our data that we want to
+map over&mldr;&rdquo;</p></blockquote><p>What this has made me realise is there&rsquo;s nothing special about Haskell that
+means these concepts exist where they don&rsquo;t exist in other languages.</p><blockquote><p>Haskell formalises data manipulation patterns that exist wherever there is
+data to manipulate.</p></blockquote><p>Have you ever had a &ldquo;container type&rdquo; for your data that you&rsquo;ve iterated over?
+You&rsquo;ve used a functor.</p><p>Have you ever encoded error handling in the data you&rsquo;re using? You&rsquo;ve used
+something resembling a monad.</p><p>Rust&rsquo;s ownership model is a formalisation of a set of memory management
 patterns that a C developer might employ to attempt to write memory safe and
-thread safe code.</p>
-<p>Regardless of the language we&rsquo;re writing in, these data manipulation patterns
+thread safe code.</p><p>Regardless of the language we&rsquo;re writing in, these data manipulation patterns
 are there. The language may formalise them, it may not. By formalising data
 manipulation patterns in a language, there&rsquo;s the opportunity for the compiler
 to tell you if you&rsquo;re using them right, otherwise you&rsquo;re performing these
-patterns by hand.</p>
-<p>What it comes down to is:
-<a href="https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ"  class="external-link" target="_blank" rel="noopener"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ" alt=""></a></p>
-<p>When I first learned some Haskell a few years ago, the idea of spending my free
+patterns by hand.</p><p>What it comes down to is:
+<a href=https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ class=external-link target=_blank rel=noopener><img src=https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgQVtEb2VzIHlvdXIgbGFuZ3VhZ2UgZm9ybWFsaXNlIHRoZXNlIHBhdHRlcm5zP11cbiAgQyhbVGhlIGNvbXBpbGVyIGtlZXBzIHlvdSByaWdodCBmYTpmYS10aHVtYnMtdXBdKVxuICBCW0FyZSB5b3UgYXdhcmUgeW91J3JlIHdyaXRpbmcgdGhlbSBieSBoYW5kP11cbiAgRChbWW91J2xsIHdyaXRlIG1vcmUgY29uc2lzdGVudCwgY29ycmVjdCwgYW5kIG1haW50aW5hYmxlIGNvZGUgZmE6ZmEtdGh1bWJzLXVwXSlcbiAgRShbQnVncyB3aWxsIGhhcHBlbiBmYTpmYS1idWddKVxuICBBIC0tPnxZZXN8IENcbiAgQSAtLT58Tm98IEJcbiAgQiAtLT58WWVzfCBEXG4gIEIgLS0-IHxOb3wgRVxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0IiwidGhlbWVWYXJpYWJsZXMiOnsiYmFja2dyb3VuZCI6IndoaXRlIiwicHJpbWFyeUNvbG9yIjoiI0VDRUNGRiIsInNlY29uZGFyeUNvbG9yIjoiI2ZmZmZkZSIsInRlcnRpYXJ5Q29sb3IiOiJoc2woODAsIDEwMCUsIDk2LjI3NDUwOTgwMzklKSIsInByaW1hcnlCb3JkZXJDb2xvciI6ImhzbCgyNDAsIDYwJSwgODYuMjc0NTA5ODAzOSUpIiwic2Vjb25kYXJ5Qm9yZGVyQ29sb3IiOiJoc2woNjAsIDYwJSwgODMuNTI5NDExNzY0NyUpIiwidGVydGlhcnlCb3JkZXJDb2xvciI6ImhzbCg4MCwgNjAlLCA4Ni4yNzQ1MDk4MDM5JSkiLCJwcmltYXJ5VGV4dENvbG9yIjoiIzEzMTMwMCIsInNlY29uZGFyeVRleHRDb2xvciI6IiMwMDAwMjEiLCJ0ZXJ0aWFyeVRleHRDb2xvciI6InJnYig5LjUwMDAwMDAwMDEsIDkuNTAwMDAwMDAwMSwgOS41MDAwMDAwMDAxKSIsImxpbmVDb2xvciI6IiMzMzMzMzMiLCJ0ZXh0Q29sb3IiOiIjMzMzIiwibWFpbkJrZyI6IiNFQ0VDRkYiLCJzZWNvbmRCa2ciOiIjZmZmZmRlIiwiYm9yZGVyMSI6IiM5MzcwREIiLCJib3JkZXIyIjoiI2FhYWEzMyIsImFycm93aGVhZENvbG9yIjoiIzMzMzMzMyIsImZvbnRGYW1pbHkiOiJcInRyZWJ1Y2hldCBtc1wiLCB2ZXJkYW5hLCBhcmlhbCIsImZvbnRTaXplIjoiMTZweCIsImxhYmVsQmFja2dyb3VuZCI6IiNlOGU4ZTgiLCJub2RlQmtnIjoiI0VDRUNGRiIsIm5vZGVCb3JkZXIiOiIjOTM3MERCIiwiY2x1c3RlckJrZyI6IiNmZmZmZGUiLCJjbHVzdGVyQm9yZGVyIjoiI2FhYWEzMyIsImRlZmF1bHRMaW5rQ29sb3IiOiIjMzMzMzMzIiwidGl0bGVDb2xvciI6IiMzMzMiLCJlZGdlTGFiZWxCYWNrZ3JvdW5kIjoiI2U4ZThlOCIsImFjdG9yQm9yZGVyIjoiaHNsKDI1OS42MjYxNjgyMjQzLCA1OS43NzY1MzYzMTI4JSwgODcuOTAxOTYwNzg0MyUpIiwiYWN0b3JCa2ciOiIjRUNFQ0ZGIiwiYWN0b3JUZXh0Q29sb3IiOiJibGFjayIsImFjdG9yTGluZUNvbG9yIjoiZ3JleSIsInNpZ25hbENvbG9yIjoiIzMzMyIsInNpZ25hbFRleHRDb2xvciI6IiMzMzMiLCJsYWJlbEJveEJrZ0NvbG9yIjoiI0VDRUNGRiIsImxhYmVsQm94Qm9yZGVyQ29sb3IiOiJoc2woMjU5LjYyNjE2ODIyNDMsIDU5Ljc3NjUzNjMxMjglLCA4Ny45MDE5NjA3ODQzJSkiLCJsYWJlbFRleHRDb2xvciI6ImJsYWNrIiwibG9vcFRleHRDb2xvciI6ImJsYWNrIiwibm90ZUJvcmRlckNvbG9yIjoiI2FhYWEzMyIsIm5vdGVCa2dDb2xvciI6IiNmZmY1YWQiLCJub3RlVGV4dENvbG9yIjoiYmxhY2siLCJhY3RpdmF0aW9uQm9yZGVyQ29sb3IiOiIjNjY2IiwiYWN0aXZhdGlvbkJrZ0NvbG9yIjoiI2Y0ZjRmNCIsInNlcXVlbmNlTnVtYmVyQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvciI6InJnYmEoMTAyLCAxMDIsIDI1NSwgMC40OSkiLCJhbHRTZWN0aW9uQmtnQ29sb3IiOiJ3aGl0ZSIsInNlY3Rpb25Ca2dDb2xvcjIiOiIjZmZmNDAwIiwidGFza0JvcmRlckNvbG9yIjoiIzUzNGZiYyIsInRhc2tCa2dDb2xvciI6IiM4YTkwZGQiLCJ0YXNrVGV4dExpZ2h0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0Q29sb3IiOiJ3aGl0ZSIsInRhc2tUZXh0RGFya0NvbG9yIjoiYmxhY2siLCJ0YXNrVGV4dE91dHNpZGVDb2xvciI6ImJsYWNrIiwidGFza1RleHRDbGlja2FibGVDb2xvciI6IiMwMDMxNjMiLCJhY3RpdmVUYXNrQm9yZGVyQ29sb3IiOiIjNTM0ZmJjIiwiYWN0aXZlVGFza0JrZ0NvbG9yIjoiI2JmYzdmZiIsImdyaWRDb2xvciI6ImxpZ2h0Z3JleSIsImRvbmVUYXNrQmtnQ29sb3IiOiJsaWdodGdyZXkiLCJkb25lVGFza0JvcmRlckNvbG9yIjoiZ3JleSIsImNyaXRCb3JkZXJDb2xvciI6IiNmZjg4ODgiLCJjcml0QmtnQ29sb3IiOiJyZWQiLCJ0b2RheUxpbmVDb2xvciI6InJlZCIsImxhYmVsQ29sb3IiOiJibGFjayIsImVycm9yQmtnQ29sb3IiOiIjNTUyMjIyIiwiZXJyb3JUZXh0Q29sb3IiOiIjNTUyMjIyIiwiY2xhc3NUZXh0IjoiIzEzMTMwMCIsImZpbGxUeXBlMCI6IiNFQ0VDRkYiLCJmaWxsVHlwZTEiOiIjZmZmZmRlIiwiZmlsbFR5cGUyIjoiaHNsKDMwNCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGUzIjoiaHNsKDEyNCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIiwiZmlsbFR5cGU0IjoiaHNsKDE3NiwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU1IjoiaHNsKC00LCAxMDAlLCA5My41Mjk0MTE3NjQ3JSkiLCJmaWxsVHlwZTYiOiJoc2woOCwgMTAwJSwgOTYuMjc0NTA5ODAzOSUpIiwiZmlsbFR5cGU3IjoiaHNsKDE4OCwgMTAwJSwgOTMuNTI5NDExNzY0NyUpIn19LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ alt></a></p><p>When I first learned some Haskell a few years ago, the idea of spending my free
 time doing that was sold to me as &ldquo;it&rsquo;ll make you better at every other
-language&rdquo;.  That was enough to sell it to me at the time, and I believe it had
-that effect.  It&rsquo;s true of every language to some extent.  Every language
+language&rdquo;. That was enough to sell it to me at the time, and I believe it had
+that effect. It&rsquo;s true of every language to some extent. Every language
 formalises some number of data manipulation patterns, the question is: to what
 extent? And are they good patterns to be using to get correct and maintainable
-code?</p>
-<p>There is the argument I&rsquo;ve seen where someone might answer &ldquo;No&rdquo; to both of the
+code?</p><p>There is the argument I&rsquo;ve seen where someone might answer &ldquo;No&rdquo; to both of the
 above, adding &ldquo;and it doesn&rsquo;t matter&rdquo;. I&rsquo;ve seen claims that learning the
 concepts that formalise patterns of data manipulation is overly esoteric and
-not pragmatic.  To try to understand these things makes you a &ldquo;purist&rdquo;, and
-gets in the way of &ldquo;getting things done&rdquo;.  I think the reality is that
+not pragmatic. To try to understand these things makes you a &ldquo;purist&rdquo;, and
+gets in the way of &ldquo;getting things done&rdquo;. I think the reality is that
 software, in general, has had growth as a higher priority than quality and
 correctness for some amount of time. A lot of code can have quite a short shelf
 life so preference is given to being able to produce code quickly and the
 negative side effects of that aren&rsquo;t felt so much. I&rsquo;m not totally convinced by
 this position. There&rsquo;s potential for a feedback loop where the consequences of
-trying to produce things quickly drive the short shelf lives.  And I&rsquo;m not
+trying to produce things quickly drive the short shelf lives. And I&rsquo;m not
 entirely convinced that languages that do formalize a lot of these patterns and
 have a compiler that keeps you right on them is generally slower to produce
-things.  There&rsquo;s learning time that you have to put in, but once you&rsquo;ve learned
+things. There&rsquo;s learning time that you have to put in, but once you&rsquo;ve learned
 to satiate the compiler on your first try, you don&rsquo;t tend to spend that much
-time fighting it.  There are specific problems that are going to be slower to
-develop solutions to, but I don&rsquo;t thing it&rsquo;s necessarily true generally.  There
+time fighting it. There are specific problems that are going to be slower to
+develop solutions to, but I don&rsquo;t thing it&rsquo;s necessarily true generally. There
 a counter argument that to produce anything of a meaningful size you can
 produce things faster because the compiler has stopped you hitting things that
-you would hit and have to address before you were able to ship something.  This
-one probably depends on the problem you&rsquo;re trying to build a solution to.</p>
-<p>Regardless of the relative strengths of those arguments, it&rsquo;s certainly true
+you would hit and have to address before you were able to ship something. This
+one probably depends on the problem you&rsquo;re trying to build a solution to.</p><p>Regardless of the relative strengths of those arguments, it&rsquo;s certainly true
 that developers have been able to &ldquo;get away with&rdquo; not having these patterns
 formalised and not necessarily knowing they&rsquo;re hand rolling them. Whether that
-continues into the future is going to be interesting.</p>
-<p>As software becomes more prevalent in all industries, every professional is
+continues into the future is going to be interesting.</p><p>As software becomes more prevalent in all industries, every professional is
 writing code, and every child learns coding in school (which they already are):
 I&rsquo;d wager we&rsquo;ll see the general quality bar expected by users/consumers to go
 up, as they&rsquo;ll have greater visibility into how unnecessary a lot of broken and
 slow software is. As the systems we&rsquo;re building are getting more interconnected
-and complex, is correctness going to become more of a priority?</p>
-<p>This isn&rsquo;t to say that there won&rsquo;t always be bugs in software.  No matter how
+and complex, is correctness going to become more of a priority?</p><p>This isn&rsquo;t to say that there won&rsquo;t always be bugs in software. No matter how
 solid the tools you use are, you could have just missed the mark on
-requirements and built the wrong thing.  But there are whole classes of bugs
+requirements and built the wrong thing. But there are whole classes of bugs
 and errors that can be eliminated by formalising these patterns and encoding
-them into the fundamental tools with which we build things.</p>
-<p>I work with Rust most working days.  While it&rsquo;s missing higher kinded types,
+them into the fundamental tools with which we build things.</p><p>I work with Rust most working days. While it&rsquo;s missing higher kinded types,
 it&rsquo;s got a lot going for it with its strong type system, its ownership model,
-and generally how it makes you be explicit about what you&rsquo;re doing.  People say
+and generally how it makes you be explicit about what you&rsquo;re doing. People say
 with Rust that &ldquo;if it compiles it works&rdquo;, and provided you&rsquo;ve written code that
-leverages the type system, there&rsquo;s some truth to that.  I might re-phrase that
+leverages the type system, there&rsquo;s some truth to that. I might re-phrase that
 to &ldquo;if it compiles then what you&rsquo;ve asked for is guaranteed to be consistent in
 various ways, but you might still have asked for the wrong thing&rdquo;, but that&rsquo;s a
 little less catchy. It makes me hopeful for the future, and I believe that Rust
 will stand as one of the cornerstones of a new generation of software that
-works.</p>
-
-      </div>
-
-
-      <footer>
-        
-
-
-        
-        
-        <div class="comments">
-  <script>
-
-    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
-    let themeInParams = '';
-
-    if (getTheme == null) {
-      if (themeInParams !== '' && themeInParams !== 'auto') {
-        getTheme = themeInParams;
-      }
-      else {
-        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      }
-    }
-
-    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
-    let s = document.createElement('script');
-    s.src = 'https://utteranc.es/client.js';
-    s.setAttribute('repo', 'tarquin-the-brave\/blog');
-    s.setAttribute('issue-term', 'pathname');
-    s.setAttribute('theme', theme);
-    s.setAttribute('crossorigin', 'anonymous');
-    s.setAttribute('async', '');
-    document.querySelector('div.comments').innerHTML = '';
-    document.querySelector('div.comments').appendChild(s);
-
-  </script>
-</div>
-        
-        
-        
-        
-      </footer>
-    </article>
-
-    
-  </section>
-
-    </div>
-
-    <footer class="footer">
-  <section class="container">
-    ©
-    
-    2026
-     tarquin-the-brave 
-    ·
-    
-    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
-    
-  </section>
-</footer>
-
-  </main>
-
-  
-
-  
-  
-  <script src="http://localhost:1313/blog/js/coder.js"></script>
-  
-
-  
-  
-  
-  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</body>
-</html>
+works.</p></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+tarquin-the-brave
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>

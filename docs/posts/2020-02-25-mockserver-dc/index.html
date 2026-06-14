@@ -1,528 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script>
-  <title>
-  Testing Microservices with Mockserver · tarquin-the-brave
-</title>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light dark">
-
-
-
-
-<meta name="author" content="tarquin-the-brave">
-<meta name="description" content="Mockserver is a great piece of tooling that takes a huge amount
+<!doctype html><html lang=en><head><title>Testing Microservices with Mockserver · tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="tarquin-the-brave"><meta name=description content="Mockserver is a great piece of tooling that takes a huge amount
 of heavy lifting away from testing microservices.
 There&rsquo;s no need to mock out downstream dependencies or client APIs.  There&rsquo;s no
 need to write complex test code to synchronously handle the mechanics of
 requests going back and forward while also trying to embody some comprehensible
 declaration of the designed behaviour.  It does about as much of the mechanics
-of testing for you as it&rsquo;s possible for it to do.">
-<meta name="keywords" content="">
-
-
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Testing Microservices with Mockserver">
-  <meta name="twitter:description" content="Mockserver is a great piece of tooling that takes a huge amount of heavy lifting away from testing microservices.
-There’s no need to mock out downstream dependencies or client APIs. There’s no need to write complex test code to synchronously handle the mechanics of requests going back and forward while also trying to embody some comprehensible declaration of the designed behaviour. It does about as much of the mechanics of testing for you as it’s possible for it to do.">
-
-<meta property="og:url" content="http://localhost:1313/blog/posts/2020-02-25-mockserver-dc/">
-  <meta property="og:site_name" content="tarquin-the-brave">
-  <meta property="og:title" content="Testing Microservices with Mockserver">
-  <meta property="og:description" content="Mockserver is a great piece of tooling that takes a huge amount of heavy lifting away from testing microservices.
-There’s no need to mock out downstream dependencies or client APIs. There’s no need to write complex test code to synchronously handle the mechanics of requests going back and forward while also trying to embody some comprehensible declaration of the designed behaviour. It does about as much of the mechanics of testing for you as it’s possible for it to do.">
-  <meta property="og:locale" content="en">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2020-02-25T10:07:46+00:00">
-    <meta property="article:modified_time" content="2020-02-25T10:07:46+00:00">
-
-
-
-
-<link rel="canonical" href="http://localhost:1313/blog/posts/2020-02-25-mockserver-dc/">
-
-
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="http://localhost:1313/blog/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-
-
-  
-  
-  <link rel="stylesheet" href="http://localhost:1313/blog/css/coder.css" media="screen">
-
-
-
-
-
-
-  
-    
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/coder-dark.css" media="screen">
-  
-
-
-
- 
-  
-    
-    <link rel="stylesheet" href="http://localhost:1313/blog/css/copy-code.css" media="screen">
-  
-
-
-
-
-
-<link rel="icon" type="image/svg+xml" href="http://localhost:1313/blog/images/favicon.svg" sizes="any">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-32x32.png" sizes="32x32">
-<link rel="icon" type="image/png" href="http://localhost:1313/blog/images/favicon-16x16.png" sizes="16x16">
-
-<link rel="apple-touch-icon" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/blog/images/apple-touch-icon.png">
-
-<link rel="manifest" href="http://localhost:1313/blog/site.webmanifest">
-<link rel="mask-icon" href="http://localhost:1313/blog/images/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-
-
-
-
-
-
-
-  
-</head>
-
-
-
-
-
-
-<body class="preload-transitions colorscheme-auto">
-  
-<div class="float-container">
-    <a id="dark-mode-toggle" class="colorscheme-toggle">
-        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
-    </a>
-</div>
-
-
-  <main class="wrapper">
-    <nav class="navigation">
-  <section class="container">
-    
-    <a class="navigation-title" href="http://localhost:1313/blog/">
-      tarquin-the-brave
-    </a>
-    
-    
-      <input type="checkbox" id="menu-toggle" />
-      <label class="menu-button float-right" for="menu-toggle">
-        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
-      </label>
-      <ul class="navigation-list">
-        
-          
-            <li class="navigation-item">
-              <a class="navigation-link " href="http://localhost:1313/blog/posts/">Blog</a>
-            </li>
-          
-        
-        
-      </ul>
-    
-  </section>
-</nav>
-
-
-    <div class="content">
-      
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/blog/posts/2020-02-25-mockserver-dc/">
-              Testing Microservices with Mockserver
-            </a>
-          </h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
-              <time datetime="2020-02-25T10:07:46Z">
-                February 25, 2020
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              6-minute read
-            </span>
-          </div>
-          
-          
-          
-        </div>
-      </header>
-
-      
-
-
-      <div class="post-content">
-        
-        <p><a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">Mockserver</a> is a great piece of tooling that takes a huge amount
-of heavy lifting away from testing microservices.</p>
-<p>There&rsquo;s no need to mock out downstream dependencies or client APIs.  There&rsquo;s no
+of testing for you as it&rsquo;s possible for it to do."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Testing Microservices with Mockserver"><meta name=twitter:description content="Mockserver is a great piece of tooling that takes a huge amount of heavy lifting away from testing microservices.
+There’s no need to mock out downstream dependencies or client APIs. There’s no need to write complex test code to synchronously handle the mechanics of requests going back and forward while also trying to embody some comprehensible declaration of the designed behaviour. It does about as much of the mechanics of testing for you as it’s possible for it to do."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2020-02-25-mockserver-dc/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="Testing Microservices with Mockserver"><meta property="og:description" content="Mockserver is a great piece of tooling that takes a huge amount of heavy lifting away from testing microservices.
+There’s no need to mock out downstream dependencies or client APIs. There’s no need to write complex test code to synchronously handle the mechanics of requests going back and forward while also trying to embody some comprehensible declaration of the designed behaviour. It does about as much of the mechanics of testing for you as it’s possible for it to do."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-02-25T10:07:46+00:00"><meta property="article:modified_time" content="2020-02-25T10:07:46+00:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2020-02-25-mockserver-dc/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.f6b1b35a7b02521b25338f6cf58975f9980a6c12847763fe35a48307758cd1e7.css integrity="sha256-9rGzWnsCUhslM49s9Yl1+ZgKbBKEd2P+NaSDB3WM0ec=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css integrity="sha256-rUj0didZdIhb3APVJR482+FnjFSmP/dyN2sO0q3EaN0=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2020-02-25-mockserver-dc/>Testing Microservices with Mockserver</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2020-02-25T10:07:46Z>February 25, 2020
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+6-minute read</span></div></div></header><div class=post-content><p><a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>Mockserver</a> is a great piece of tooling that takes a huge amount
+of heavy lifting away from testing microservices.</p><p>There&rsquo;s no need to mock out downstream dependencies or client APIs. There&rsquo;s no
 need to write complex test code to synchronously handle the mechanics of
 requests going back and forward while also trying to embody some comprehensible
-declaration of the designed behaviour.  It does about as much of the mechanics
-of testing for you as it&rsquo;s possible for it to do.</p>
-<p>In all honesty, it was my favourite piece of technology I came across in 2019.</p>
-<p>In this post I&rsquo;ll walk through a patten I&rsquo;ve used a few times to quickly get
-rather effective testing of a microservice that drives its API.</p>
-<h1 id="test-setup">
-  Test Setup
-  <a class="heading-link" href="#test-setup">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h1>
-<p>The test deployment has three elements:</p>
-<ul>
-<li>Your microservice,</li>
-<li>A test driver containing/running your test code, and</li>
-<li>A <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> instance.</li>
-</ul>
-<p>I&rsquo;ve used <a href="https://docs.docker.com/compose/"  class="external-link" target="_blank" rel="noopener">docker-compose</a> to run the containers and manage the routing
-between them, but any container runtime<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> would do the job.</p>
-<p><a href="https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9"  class="external-link" target="_blank" rel="noopener"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9" alt=""></a></p>
-<h2 id="mockserver">
-  Mockserver
-  <a class="heading-link" href="#mockserver">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>The key element here is <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a>. It looks after the mechanics
-of mocking out the dependencies of a service.  It&rsquo;s controlled by your test
+declaration of the designed behaviour. It does about as much of the mechanics
+of testing for you as it&rsquo;s possible for it to do.</p><p>In all honesty, it was my favourite piece of technology I came across in 2019.</p><p>In this post I&rsquo;ll walk through a patten I&rsquo;ve used a few times to quickly get
+rather effective testing of a microservice that drives its API.</p><h1 id=test-setup>Test Setup
+<a class=heading-link href=#test-setup><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h1><p>The test deployment has three elements:</p><ul><li>Your microservice,</li><li>A test driver containing/running your test code, and</li><li>A <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> instance.</li></ul><p>I&rsquo;ve used <a href=https://docs.docker.com/compose/ class=external-link target=_blank rel=noopener>docker-compose</a> to run the containers and manage the routing
+between them, but any container runtime<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> would do the job.</p><p><a href=https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9 class=external-link target=_blank rel=noopener><img src=https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggQlRcbnN1YmdyYXBoIGRvY2tlci1jb21wb3NlXG50ZXN0LXJ1bm5lci0tPnxcInRlc3QtcnVubmVycHJvZ3JhbXMgbW9ja3NlcnZlclwifG1vY2tzZXJ2ZXJcbm1vY2tzZXJ2ZXItLS18XCJtb2Nrc2VydmVyIG1vY2tzIG91dCB0aGUgbWljcm9zZXJ2aWNlIGRlcGVuZGVuY2llcyBhbmQgcmVjb3JkcyBtZXNzYWdlc1wifGEobWljcm9zZXJ2aWNlKVxudGVzdC1ydW5uZXItLT58XCJ0ZXN0LXJ1bm5lciBraWNrcyBtaWNyb3NlcnZpY2UgQVBJIHRvIHN0YXJ0IHRlc3RcInxhKG1pY3Jvc2VydmljZSlcbmVuZFxuXHRcdCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9 alt></a></p><h2 id=mockserver>Mockserver
+<a class=heading-link href=#mockserver><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>The key element here is <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a>. It looks after the mechanics
+of mocking out the dependencies of a service. It&rsquo;s controlled by your test
 code over its API. You tell it what messages to expect an how to respond to
 them ahead of time. It records what messages have come and gone during the
-test.  Your tests can send a request to verify the expectations have been met
-or partially met.</p>
-<p>The result is that each test case ends up looking like:</p>
-<ul>
-<li>A bunch of requests to <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a>, via the client you&rsquo;ve
-chosen, or generated from the <a href="https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x"  class="external-link" target="_blank" rel="noopener">openAPI spec</a>, to establish the
-requests that you expect to see and how to respond to each,</li>
-<li>A call to an endpoint on your microservice&rsquo;s API, and</li>
-<li>A call to <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> to verify that the expected messages were
-received.</li>
-</ul>
-<p>Mockserver takes away the need to define in the test code all the mechanics
+test. Your tests can send a request to verify the expectations have been met
+or partially met.</p><p>The result is that each test case ends up looking like:</p><ul><li>A bunch of requests to <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a>, via the client you&rsquo;ve
+chosen, or generated from the <a href=https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x class=external-link target=_blank rel=noopener>openAPI spec</a>, to establish the
+requests that you expect to see and how to respond to each,</li><li>A call to an endpoint on your microservice&rsquo;s API, and</li><li>A call to <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> to verify that the expected messages were
+received.</li></ul><p>Mockserver takes away the need to define in the test code all the mechanics
 around what messages should be where, when. You define what to expect upfront,
-<a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> records if there&rsquo;s anything the matter with the
-messages, and at the end, you can ask it whether the expectations were met.</p>
-<h2 id="the-test-runner">
-  The Test Runner
-  <a class="heading-link" href="#the-test-runner">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>We run the test code in its own container to make it easy to control the
+<a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> records if there&rsquo;s anything the matter with the
+messages, and at the end, you can ask it whether the expectations were met.</p><h2 id=the-test-runner>The Test Runner
+<a class=heading-link href=#the-test-runner><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>We run the test code in its own container to make it easy to control the
 environment and to make networking easier when we introduce
-<a href="https://docs.docker.com/compose/"  class="external-link" target="_blank" rel="noopener">docker-compose</a> to manage the setup.</p>
-<p>We define a <code>Dockerfile</code> for our test runner that builds a container with the
+<a href=https://docs.docker.com/compose/ class=external-link target=_blank rel=noopener>docker-compose</a> to manage the setup.</p><p>We define a <code>Dockerfile</code> for our test runner that builds a container with the
 test code and its dependencies. docker-compose can then rebuild the test
-container and run the tests in one <a href="#running-the-tests" >command</a>.</p>
-<p>A result of using <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a>, and this test setup, is that the
+container and run the tests in one <a href=#running-the-tests>command</a>.</p><p>A result of using <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a>, and this test setup, is that the
 test code is fairly minimal and there&rsquo;s no real &ldquo;test framework&rdquo; required.
-Once you have a <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> client library<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>, and a client
+Once you have a <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> client library<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup>, and a client
 library for your microservice (or decide that defining the requests to kick off
-a test on the fly) there&rsquo;s not much more to the tests.</p>
-<p>I&rsquo;ve written the code for this test runner in Python using <a href="https://docs.pytest.org/en/latest/"  class="external-link" target="_blank" rel="noopener">pytest</a>.
-It worked quite well.  But, as the test code only makes a series of requests,
-it&rsquo;s not important.</p>
-<h2 id="your-microservice">
-  Your Microservice
-  <a class="heading-link" href="#your-microservice">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>Configure your microservice with <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> as the target for all
-downstream traffic.</p>
-<p>The URL of <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> corresponds to the service name and the
-port it exposes, defined in the <a href="#docker-compose-example" >docker-compose file</a>.</p>
-<h1 id="docker-compose-example">
-  Docker Compose Example
-  <a class="heading-link" href="#docker-compose-example">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h1>
-<p>We have a docker-compose file: <code>docker-compose.yml</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">test</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>: <span style="color:#ae81ff">./fv</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">&lt;command to run tests&gt; ${TEST_ARGS}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">microservice</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${IMAGE:-x:latest}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">LOG_LEVEL</span>: <span style="color:#ae81ff">debug</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">type</span>: <span style="color:#ae81ff">bind</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">source</span>: <span style="color:#ae81ff">./fv/microservice_config.yaml</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">target</span>: <span style="color:#ae81ff">/config/config.yaml</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">mockdeps</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">jamesdbloom/mockserver:mockserver-5.9.0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">expose</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">12345</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Mockserver has the server itself as ENTRYPOINT,</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># so the &#34;command&#34; here needs to be only the arguments</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># we pass to it.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: [<span style="color:#e6db74">&#34;-serverPort&#34;</span>, <span style="color:#e6db74">&#34;12345&#34;</span>, <span style="color:#e6db74">&#34;-logLevel&#34;</span>, <span style="color:#e6db74">&#34;INFO&#34;</span>]
+a test on the fly) there&rsquo;s not much more to the tests.</p><p>I&rsquo;ve written the code for this test runner in Python using <a href=https://docs.pytest.org/en/latest/ class=external-link target=_blank rel=noopener>pytest</a>.
+It worked quite well. But, as the test code only makes a series of requests,
+it&rsquo;s not important.</p><h2 id=your-microservice>Your Microservice
+<a class=heading-link href=#your-microservice><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>Configure your microservice with <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> as the target for all
+downstream traffic.</p><p>The URL of <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> corresponds to the service name and the
+port it exposes, defined in the <a href=#docker-compose-example>docker-compose file</a>.</p><h1 id=docker-compose-example>Docker Compose Example
+<a class=heading-link href=#docker-compose-example><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h1><p>We have a docker-compose file: <code>docker-compose.yml</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.7&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>test</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>./fv</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>&lt;command to run tests&gt; ${TEST_ARGS}</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>microservice</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>${IMAGE:-x:latest}</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>LOG_LEVEL</span>: <span style=color:#ae81ff>debug</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>type</span>: <span style=color:#ae81ff>bind</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>source</span>: <span style=color:#ae81ff>./fv/microservice_config.yaml</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>target</span>: <span style=color:#ae81ff>/config/config.yaml</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>mockdeps</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>jamesdbloom/mockserver:mockserver-5.9.0</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expose</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>12345</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Mockserver has the server itself as ENTRYPOINT,</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># so the &#34;command&#34; here needs to be only the arguments</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># we pass to it.</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;-serverPort&#34;</span>, <span style=color:#e6db74>&#34;12345&#34;</span>, <span style=color:#e6db74>&#34;-logLevel&#34;</span>, <span style=color:#e6db74>&#34;INFO&#34;</span>]
 </span></span></code></pre></div><p>In this example, under <code>services:</code> there&rsquo;s an entry for each of the containers
-in this setup.</p>
-<p>Docker compose will route the containers together by giving them a domain name
+in this setup.</p><p>Docker compose will route the containers together by giving them a domain name
 for the name under <code>services:</code>, e.g. the microservice can route to the
-<a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> by sending requests to the domain name <code>mockdeps</code>. The
+<a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> by sending requests to the domain name <code>mockdeps</code>. The
 test runner routes to the microservice by sending requests to the domain name
-<code>microservice</code>.</p>
-<h2 id="the-test-runner-1">
-  The Test Runner
-  <a class="heading-link" href="#the-test-runner-1">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p><code>test:</code></p>
-<p>In our example the <code>Dockerfile</code> defining the test runner container is found
+<code>microservice</code>.</p><h2 id=the-test-runner-1>The Test Runner
+<a class=heading-link href=#the-test-runner-1><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p><code>test:</code></p><p>In our example the <code>Dockerfile</code> defining the test runner container is found
 under directory <code>fv/</code>, along with the test code and everything else needed to
-build the test runner.</p>
-<p>We define the command to run the tests and allow for arguments to the test
-command with <code>${TEST_ARGS}</code>.</p>
-<h2 id="your-microservice-1">
-  Your Microservice
-  <a class="heading-link" href="#your-microservice-1">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p><code>microservice:</code></p>
-<p>For this example:</p>
-<ul>
-<li>We allow the image to test to be configured by a variable, defaulting to
-<code>x:latest</code>.</li>
-<li>We set the <code>LOG_LEVEL</code> environment variable in the microservice container.</li>
-<li>We mount in a config file with necessary config, listing the downstream
-dependencies that we&rsquo;re mocking out with <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> as being at
-<code>mockdeps:12345</code>.</li>
-</ul>
-<p>If we wanted to automate rebuilding the microservice for testing, we could
+build the test runner.</p><p>We define the command to run the tests and allow for arguments to the test
+command with <code>${TEST_ARGS}</code>.</p><h2 id=your-microservice-1>Your Microservice
+<a class=heading-link href=#your-microservice-1><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p><code>microservice:</code></p><p>For this example:</p><ul><li>We allow the image to test to be configured by a variable, defaulting to
+<code>x:latest</code>.</li><li>We set the <code>LOG_LEVEL</code> environment variable in the microservice container.</li><li>We mount in a config file with necessary config, listing the downstream
+dependencies that we&rsquo;re mocking out with <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> as being at
+<code>mockdeps:12345</code>.</li></ul><p>If we wanted to automate rebuilding the microservice for testing, we could
 define a <code>Dockerfile</code> for the microservice that can build it from source,
-perhaps using the <a href="https://docs.docker.com/develop/develop-images/multistage-build/"  class="external-link" target="_blank" rel="noopener">multistage builder pattern</a>, and include and entry
-like the one for <a href="#the-test-runner-2" >the test runner</a> rather than specifying a
-tag for an already built image.</p>
-<h2 id="mockserver-1">
-  Mockserver
-  <a class="heading-link" href="#mockserver-1">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p><code>mockdeps:</code></p>
-<p>The <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> entry exposes a port and passes that as an
-argument to <a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a>.</p>
-<p>You can copy this section verbatim, updating the <a href="https://hub.docker.com/r/jamesdbloom/mockserver/tags"  class="external-link" target="_blank" rel="noopener">mockserver version</a>.</p>
-<h1 id="running-the-tests">
-  Running The Tests
-  <a class="heading-link" href="#running-the-tests">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h1>
-<p>With this setup, and our microservice container built (and tagged as <code>x:test</code>),
-we can spin up the microservice and the mockserver with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ IMAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x:test&#34;</span> docker-compose up -d mockdeps microservice
-</span></span></code></pre></div><p>To run the tests:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ docker-compose up --build test
-</span></span><span style="display:flex;"><span>...
-</span></span></code></pre></div><p>The <code>--build</code> parameter ensures <a href="#the-test-runner" >the test runner</a> is rebuilt,
-so if we&rsquo;ve edited our test code, the new test code will be run.</p>
-<p>To pass arguments to our command that runs the tests, e.g. to only run a
-specific test:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ TEST_ARGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-t specific_test_1&#34;</span> docker-compose up --build test
-</span></span></code></pre></div><p>Perhaps we&rsquo;ve forgotten the CLI of the tool that runs our tests:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ TEST_ARGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;--help&#34;</span> docker-compose up --build test
-</span></span></code></pre></div><p>To tear down the whole test setup:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ docker-compose down
-</span></span></code></pre></div><h1 id="summary">
-  Summary
-  <a class="heading-link" href="#summary">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h1>
-<p>So it&rsquo;s as simple as that.  Don&rsquo;t write complicated request handling test code,
+perhaps using the <a href=https://docs.docker.com/develop/develop-images/multistage-build/ class=external-link target=_blank rel=noopener>multistage builder pattern</a>, and include and entry
+like the one for <a href=#the-test-runner-2>the test runner</a> rather than specifying a
+tag for an already built image.</p><h2 id=mockserver-1>Mockserver
+<a class=heading-link href=#mockserver-1><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p><code>mockdeps:</code></p><p>The <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> entry exposes a port and passes that as an
+argument to <a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a>.</p><p>You can copy this section verbatim, updating the <a href=https://hub.docker.com/r/jamesdbloom/mockserver/tags class=external-link target=_blank rel=noopener>mockserver version</a>.</p><h1 id=running-the-tests>Running The Tests
+<a class=heading-link href=#running-the-tests><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h1><p>With this setup, and our microservice container built (and tagged as <code>x:test</code>),
+we can spin up the microservice and the mockserver with:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>$ IMAGE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;x:test&#34;</span> docker-compose up -d mockdeps microservice
+</span></span></code></pre></div><p>To run the tests:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker-compose up --build test
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>The <code>--build</code> parameter ensures <a href=#the-test-runner>the test runner</a> is rebuilt,
+so if we&rsquo;ve edited our test code, the new test code will be run.</p><p>To pass arguments to our command that runs the tests, e.g. to only run a
+specific test:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>$ TEST_ARGS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;-t specific_test_1&#34;</span> docker-compose up --build test
+</span></span></code></pre></div><p>Perhaps we&rsquo;ve forgotten the CLI of the tool that runs our tests:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>$ TEST_ARGS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;--help&#34;</span> docker-compose up --build test
+</span></span></code></pre></div><p>To tear down the whole test setup:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker-compose down
+</span></span></code></pre></div><h1 id=summary>Summary
+<a class=heading-link href=#summary><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h1><p>So it&rsquo;s as simple as that. Don&rsquo;t write complicated request handling test code,
 and code that painstakingly mocks out all downstream dependencies, let
-<a href="http://www.mock-server.com/"  class="external-link" target="_blank" rel="noopener">mockserver</a> do that heavy lifting for you. Using
-<a href="https://docs.docker.com/compose/"  class="external-link" target="_blank" rel="noopener">docker-compose</a> you can rebuild your tests (and perhaps also your
-microservice) and run the tests with a couple of commands.  Iterate fast and
-test your microservice by driving its API.  At the end of the day, it&rsquo;s the API
-that matters.</p>
-<div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p>You could do this in <a href="https://kubernetes.io/"  class="external-link" target="_blank" rel="noopener">kubernetes</a>. There are
+<a href=http://www.mock-server.com/ class=external-link target=_blank rel=noopener>mockserver</a> do that heavy lifting for you. Using
+<a href=https://docs.docker.com/compose/ class=external-link target=_blank rel=noopener>docker-compose</a> you can rebuild your tests (and perhaps also your
+microservice) and run the tests with a couple of commands. Iterate fast and
+test your microservice by driving its API. At the end of the day, it&rsquo;s the API
+that matters.</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>You could do this in <a href=https://kubernetes.io/ class=external-link target=_blank rel=noopener>kubernetes</a>. There are
 miniature kubernetes implementations that you can install on your dev machine
-or run in CI: <a href="https://github.com/kubernetes/minikube"  class="external-link" target="_blank" rel="noopener">minikube</a>,
-<a href="https://k3s.io/"  class="external-link" target="_blank" rel="noopener">k3s</a>, <a href="https://microk8s.io/"  class="external-link" target="_blank" rel="noopener">microk8s</a>. You could put the
-<a href="#test-setup" >elements</a> in
-<a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/"  class="external-link" target="_blank" rel="noopener">Pods</a> or
-<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"  class="external-link" target="_blank" rel="noopener">Deployments</a>
+or run in CI: <a href=https://github.com/kubernetes/minikube class=external-link target=_blank rel=noopener>minikube</a>,
+<a href=https://k3s.io/ class=external-link target=_blank rel=noopener>k3s</a>, <a href=https://microk8s.io/ class=external-link target=_blank rel=noopener>microk8s</a>. You could put the
+<a href=#test-setup>elements</a> in
+<a href=https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/ class=external-link target=_blank rel=noopener>Pods</a> or
+<a href=https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ class=external-link target=_blank rel=noopener>Deployments</a>
 and route them to each other via
-<a href="https://kubernetes.io/docs/concepts/services-networking/service/"  class="external-link" target="_blank" rel="noopener">Services</a>.
+<a href=https://kubernetes.io/docs/concepts/services-networking/service/ class=external-link target=_blank rel=noopener>Services</a>.
 None of the test code would have to change. To me that seemed more effort
-than writing a short docker-compose file for this small setup.  Mockserver
-published <a href="http://www.mock-server.com/where/kubernetes.html"  class="external-link" target="_blank" rel="noopener">a helm chart</a>
-which could be useful.  Mockserver could be used in a larger test setup on a
-persistent kubernetes cluster.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:2">
-<p>There&rsquo;s plenty of client libraries out there for mockserver.  <a href="https://pypi.org/search/?q=mockserver"  class="external-link" target="_blank" rel="noopener">Python has
+than writing a short docker-compose file for this small setup. Mockserver
+published <a href=http://www.mock-server.com/where/kubernetes.html class=external-link target=_blank rel=noopener>a helm chart</a>
+which could be useful. Mockserver could be used in a larger test setup on a
+persistent kubernetes cluster.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>There&rsquo;s plenty of client libraries out there for mockserver. <a href="https://pypi.org/search/?q=mockserver" class=external-link target=_blank rel=noopener>Python has
 a few</a>, I used a couple and they
-didn&rsquo;t actually work, so I had to patch them.  I&rsquo;d recommending generating
-you&rsquo;re own from mockserver&rsquo;s <a href="https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x"  class="external-link" target="_blank" rel="noopener">openAPI
+didn&rsquo;t actually work, so I had to patch them. I&rsquo;d recommending generating
+you&rsquo;re own from mockserver&rsquo;s <a href=https://app.swaggerhub.com/apis/jamesdbloom/mock-server-openapi/5.0.x class=external-link target=_blank rel=noopener>openAPI
 spec</a>
-using <a href="https://github.com/OpenAPITools/openapi-generator"  class="external-link" target="_blank" rel="noopener">openAPI Generator</a>.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div>
-
-      </div>
-
-
-      <footer>
-        
-
-
-        
-        
-        <div class="comments">
-  <script>
-
-    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
-    let themeInParams = '';
-
-    if (getTheme == null) {
-      if (themeInParams !== '' && themeInParams !== 'auto') {
-        getTheme = themeInParams;
-      }
-      else {
-        getTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      }
-    }
-
-    let theme = getTheme === 'dark' ? 'github-dark' : 'github-light';
-    let s = document.createElement('script');
-    s.src = 'https://utteranc.es/client.js';
-    s.setAttribute('repo', 'tarquin-the-brave\/blog');
-    s.setAttribute('issue-term', 'pathname');
-    s.setAttribute('theme', theme);
-    s.setAttribute('crossorigin', 'anonymous');
-    s.setAttribute('async', '');
-    document.querySelector('div.comments').innerHTML = '';
-    document.querySelector('div.comments').appendChild(s);
-
-  </script>
-</div>
-        
-        
-        
-        
-      </footer>
-    </article>
-
-    
-  </section>
-
-    </div>
-
-    <footer class="footer">
-  <section class="container">
-    ©
-    
-    2026
-     tarquin-the-brave 
-    ·
-    
-    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
-    
-  </section>
-</footer>
-
-  </main>
-
-  
-
-  
-  
-  <script src="http://localhost:1313/blog/js/coder.js"></script>
-  
-
-  
-  
-  
-  <script src="http://localhost:1313/blog/js/copy-code.js"></script>
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</body>
-</html>
+using <a href=https://github.com/OpenAPITools/openapi-generator class=external-link target=_blank rel=noopener>openAPI Generator</a>.&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+tarquin-the-brave
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>

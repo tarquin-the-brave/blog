@@ -1,6 +1,6 @@
 +++
 title = "My Thoughts on Many Things - 2026"
-date = 2026-06-03T11:33:44+01:00
+date = 2026-06-14T21:33:44+01:00
 images = []
 tags = []
 categories = []
@@ -357,7 +357,181 @@ When it comes to how components work it's shifting assumptions from "if everythi
 correctly this should work" to "assuming there are going to be bugs elsewhere, and data is going
 to be imperfect, what opportunities does this component have to: monitor, detect, and fix it".
 
-# Use of LLMs
+With incident response it's such a temptation for engineers to start hypothesising on the issue.
+It's built into our DNA to constantly model a system in our minds.  But can result in that "counterfactual
+reasoning" trap.  The discipline is to really focus in the initial period on: what are 
+the facts? what are the facts? and leave hypothesis til later.
 
-I'm somewhat hesitent to write anything on this topic given that we live in a state of being
-one new model away from everything changing.  But I suppose that's the first 
+# LLMs
+
+I'm somewhat hesitant to write anything on this topic given that things are changing so quickly.
+Anything written on the topic of using LLMs in engineering work is almost immediately out of date
+the minute it's written.  But that does bridge into my first thought on this: we have to be
+prepared to have what we think about this change very quickly.  We could be one model release
+away from LLMs overcoming what we might have thought as fundamental limitations of the techinology.
+We could be one API or subscription price change away from entire workflows that we may have
+grown to depend on no longer being financially viable.
+
+I try to avoid using the word "AI" and opt for "LLM" instead as "AI" is quite overloaded as a term.
+Over the last 70 years or so it's been used to describe many different technologies.  And saying
+"LLM" for me helps me keep in mind what this technology actually is: a token prediction machine.
+
+My usage of LLMs has changed a lot over the last 12 months.  Before mid-2025 I really only used
+it for the "summarise this document" type work, and asking it follow up questions.  In the second
+half of 2025 I started using the web chat for Claude and Chat GPT as replacement for Google search,
+and to have as something I could bounce ideas of in coversation.  I didn't have the LLM directly
+writing my code at the time, but was getting suggestions from it and "remind me how to do...".
+Even then I found I had to be careful with what it told me.  Before it had the ability to search
+the web, code suggestions were often based on outdated versions of a library recalled from its
+training data.  It was rare in this time that any Rust code it gave would compile first time.
+Depending on how you asked the question it would come up with very different "factual" answers
+and there was a time before it would share its references for the claims it made.
+Back then I could see the "bad usage of LLMs" emerge for the time.  I didn't personally use
+Cursor or other ways of getting the LLM to write code, but I could see patterns emerging in
+others that were doing so.  Typing out code just became a load cheaper to do, and problems
+were getting solved by throwing more code at them, rather than stepping back and considering
+the approach.  I saw more techincal conversations including a statement of "Claude said..."
+without any further critical analysis for the individuals passing on what Claude said into
+a discussion.  Being conscious to avoid those "bad patterns" I was quite content with
+how LLMs had slotted into my workflow.  It was certainly a net positive vs clicking around
+Stack Overflow or having to dive deep into reference documentation to find one simple answer
+I needed.  I got quite settled last year, thinking of it in terms of:
+
+> "It's a compass not a GPS (or private driver)" _\[2025 feelings\]_
+
+It could kick start any work you were doing by punting you in the right direction, but you
+still needed to do the work.
+
+Going into 2026, my usaged changed introducing Claude Code, then other agents.  I'd started
+playing with "Agentic coding".  Thinking back to January / February time, the harness you
+put around it was quite important: your agent files, skills, etc.  Back then if you went
+bare back with Claude Code, you'd walk away pretty quickly thinking it was a fucking idiot.
+There was a lot of mysticism around whether a statement in a context file or a skill would
+actually make the LLM behave in a certain way or not.  Especially if you installed them
+without really knowing what you've installed or how that was directing the LLM.  In a
+[previous blog post][pp] from the end of February, I made the case for building your
+own skills and context files, as it gives us more of an understanding of how the agent
+is being directed.  There were "frameworks" that you could fully install, like the "GSD"
+that had it's moment of fame, but I found that generally made things take ages while
+it generated loads of files that filled the context window up and produced the same outcomes
+but slower.  And when you just install something you don't really learn anything about
+how it's interacting with the model.
+
+[pp]: https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/
+
+During that time there were certain types of work that I was doing quite successfully
+via agents.  There was one case where I used it to make a refactor that was a
+"long overdue abstraction".  We had a process in code that was done for 20 different use
+cases with 20 different implementations but was fundamentally the same process with some
+tweaks for each case.  The work here was very much "find the common pattern", so 
+unsurprisingly the pattern matching technology did quite well at this.  There was also
+pretty clear pass / fail critera for this task so I could leave the agent to iterate on
+its solution.  I had to direct it in the approach it took a few times to get it back on
+course, but the result was being able to consolidate 1000s of lines of code into something
+generic that was easy to add the next use case to.  It would have taken me ages to find
+the common patterns and abstraction and ultimately I wouldn't have done this work
+on my own, whereas for this it was probably a couple of hours of my time spaced out over
+a few days when I checked in on how the agent was doing.
+
+The advantage I had in that case, and similar ones where I felt I really got good stuff
+done with agents, was that it was working in an area I was very familiar with and so
+I would easily be able to verify if what it was claiming was true and if it was going
+in a good direction with its changes.  Around that time I was also signing the praises
+of LLMs in how they can help you dive into areas that you're less familiar with, enabling
+you to take ownership of the delivery of features end to end throughout the stack.
+I was starting to feel like LLMs could be "the width to your depth".  But looking back,
+the cases where I leaned on agents hard to work in areas I wasn't comfortable with,
+resulted each time in quite painful debugging of stuff when it didn't really work, and
+at the time of writing the code I didn't have the understanding to know it wouldn't.
+I tried to offset that by creating [lessons for myself from my agent's history][pp2],
+and that helped educate myself, but I think I would have been better served by using
+the agent and other sources to skill myself up in those areas before letting the
+agent loose on writing code in an area that I didn't know better than it in.
+
+[pp2]: https://tarquin-the-brave.github.io/blog/posts/2026-02-15-learning-from-claude-history/
+
+I did some experiments with multi-agent workflows, like [when I played with Agent Teams][pp3],
+but beyond that being a fun experiment that showed be more about how complex and involved
+agent harnesses can get, I didn't see a drastic improvement to engineering outcomes from
+using this and didn't adopt it into my daily flow.  Like with the frameworks I'd explored
+before that, it just made things take ages, and I wasn't convinced I could leave it
+to work autonomously without correcting the direction it was going - with the models at
+the time (Jan/Feb/Mar 2026).
+
+One thing I think I did learn from this however is how
+directing the agent, or any LLM session with a fresh context, to look at something from
+a particular perspective really helps with what you get out of it.
+
+> Ironically, I've found one of the best ways to clean up the over-engineered, overly verbose
+spaghetti code that LLMs can produce, is to ask another LLM to simplify and reduce the code.
+
+As time went on in the first half of this year (2026), something 
+I'd predicted / hoped for started to appear to happen where Claude or other agents started to produce 
+more sensible outputs without so much need for layers of context and harness around them that
+certainly felt needed at the start of the year.  Including it making sensible decisions
+around when to spawn sub-agents, and how it managed its own context.  I realised that:
+
+> for each new model version, start your context and harness from scratch.
+
+It seems that new models need different harnesses, and given how easy it is to accumulate
+a load of crap that bloats context in your harness, a new model coming around is
+a good time to clear out your context files.
+
+[pp3]: https://tarquin-the-brave.github.io/blog/posts/2026-02-27-adversarial-agent-teams/
+
+Over time I've been toying with how much "intellectual freedom" I give the agents, the
+extent to which I hand over decision making, and at what levels.  Where I've landed as
+being most comfortable, and where I feel I can avoid situations where I get stuck trying
+to untangle a mess that an agent has made, is one where:
+
+> I use the agent to gather information, investigate consequences of different options,
+  write the code once a solution is decided on, but I make the key technical decisions.
+
+The context behind the discussion above is referring to product work that will make
+it into production and users will depend on.  For anything where quality is not critical,
+one shot scripts, internal tooling, I'm more than happy to fully hand over to the
+agent to do whatever it pleases - fully vibe code it.  And that's a big win in itself.
+
+But as I said that we're always one model release potentially changing our ways of working
+with LLMs, Fable 5 was available briefly this week, and the short time I had runningng it
+made me think that I could change this approach and give the agent more freedom.
+
+The reason I've taken a little trip down memory lane here and tried to recount my experience
+with using LLMs over the last months, is to demonstrate how the things that we're doing to
+get the best out of LLMs is constantly changing.  To address the FOMO-baiting that I see
+in wider discourse around LLMs, that if you don't get good at using these tools now, you'll
+be forever behind.  You won't.  If you haven't leaned into LLM tooling yet and don't for
+another 6, 12, 18 months, and there isn't a commercial pressure for you to do so, you'll be fine.  
+How people use them to get good results from them will undoubably change beyond recognition from today.
+The things we're all learning to do now will be mostly obsolete.  If you're a good engineer, that's capable of challenging
+your own views, suspending disbelief as you give a new way of doing things a fair shot,
+then you won't have any issue adjusting and picking up LLM tooling.  You won't be at risk
+of your fundamental engineering skills atrophating in the meantime.  If we're considering
+who's job might be made obselete from AI, those who can't offer any value beyond asking
+an agent to do something for them must be the most at risk there, as agents can ask 
+agents to do things for them...
+
+The atrophy of engineering skill is a real concern for me.  I worry about what will happen
+to the engineers that have become entirely dependent on LLMs to any engineering work or
+critical thought, when the cost economics of inference catches up on all of us.  It
+seems very possible that not using LLMs for everything is going to become a fiscal reality.
+
+Where I've seen the most promise for productivity gains from agents is where we can
+get them running automously and have them triggered by events rather than set off
+by a human.  There are already some cases where this is common, e.g. code review
+agents that trigger on a PR being created and review it.  But if there can be a much
+broader set of cases where this can be done well, and not produce noise that people
+have to wade through, or produce dangerous rogue behaviour, that would be great.
+Imagine if you could log on to some messages from an agent where: "there was a production
+alert last night", "I mitigated the issue by scaling that component", "here's a
+analysis of what the cause may have been", "here's a PR \[or two competing PRs\]
+with a suggested fix".  How good would that be.  Even if the analysis was wrong
+and the PR(s) were crap 90% of the time, it's still a lot better then having
+to wake up to perform basic mitigating action and start from scratch at finding
+the issue.  Maybe there's better examples, don't read too much into that one.
+
+The ultimate question for me looking forward right now is:
+
+> "Will it ever be OK for us to not read and understand the code that LLMs produce?"
+
+If it could be, I see that being a real revolution in how we build things.

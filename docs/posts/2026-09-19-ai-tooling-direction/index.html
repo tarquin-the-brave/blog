@@ -1,0 +1,265 @@
+<!doctype html><html lang=en><head><title>I'm Happy with how AI Tooling has Developed · tarquin-the-brave</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="tarquin-the-brave"><meta name=description content="As an engineer it seems my journey with adopting AI tooling in my work has
+followed a path familiar to many.  Last year it started with using Claude
+and ChatGPT through the web, as an adviser, and has developed this year through: using
+agents through the terminal, installing and building my own skills and harness,
+trying other agent orchestrators,
+hooking in MCPs and other hacky ways of connecting it up to sources of information,
+ripping out harness layers as models improve, setting up OpenClaw to get a real
+&ldquo;work from phone&rdquo; experience, finding ways to automate tasks beyond just coding,
+orchestrating agents to be triggered automatically without me needing to kick
+them off, and settling on a pretty minimal &ldquo;out of the box&rdquo; experience with
+Codex/ChatGPT desktop app."><meta name=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="I'm Happy with how AI Tooling has Developed"><meta name=twitter:description content="As an engineer it seems my journey with adopting AI tooling in my work has followed a path familiar to many. Last year it started with using Claude and ChatGPT through the web, as an adviser, and has developed this year through: using agents through the terminal, installing and building my own skills and harness, trying other agent orchestrators, hooking in MCPs and other hacky ways of connecting it up to sources of information, ripping out harness layers as models improve, setting up OpenClaw to get a real “work from phone” experience, finding ways to automate tasks beyond just coding, orchestrating agents to be triggered automatically without me needing to kick them off, and settling on a pretty minimal “out of the box” experience with Codex/ChatGPT desktop app."><meta property="og:url" content="https://tarquin-the-brave.github.io/blog/posts/2026-09-19-ai-tooling-direction/"><meta property="og:site_name" content="tarquin-the-brave"><meta property="og:title" content="I'm Happy with how AI Tooling has Developed"><meta property="og:description" content="As an engineer it seems my journey with adopting AI tooling in my work has followed a path familiar to many. Last year it started with using Claude and ChatGPT through the web, as an adviser, and has developed this year through: using agents through the terminal, installing and building my own skills and harness, trying other agent orchestrators, hooking in MCPs and other hacky ways of connecting it up to sources of information, ripping out harness layers as models improve, setting up OpenClaw to get a real “work from phone” experience, finding ways to automate tasks beyond just coding, orchestrating agents to be triggered automatically without me needing to kick them off, and settling on a pretty minimal “out of the box” experience with Codex/ChatGPT desktop app."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-09-19T15:56:26+01:00"><meta property="article:modified_time" content="2026-09-19T15:56:26+01:00"><link rel=canonical href=https://tarquin-the-brave.github.io/blog/posts/2026-09-19-ai-tooling-direction/><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=https://tarquin-the-brave.github.io/blog/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder.min.f6b1b35a7b02521b25338f6cf58975f9980a6c12847763fe35a48307758cd1e7.css integrity="sha256-9rGzWnsCUhslM49s9Yl1+ZgKbBKEd2P+NaSDB3WM0ec=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css integrity="sha256-rUj0didZdIhb3APVJR482+FnjFSmP/dyN2sO0q3EaN0=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://tarquin-the-brave.github.io/blog/css/copy-code.min.7c7524877905e1b32603fe3efcb0e922b0740a6462b644235abf3027965df008.css integrity="sha256-fHUkh3kF4bMmA/4+/LDpIrB0CmRitkQjWr8wJ5Zd8Ag=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=https://tarquin-the-brave.github.io/blog/images/favicon.svg sizes=any><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://tarquin-the-brave.github.io/blog/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=https://tarquin-the-brave.github.io/blog/images/apple-touch-icon.png><link rel=manifest href=https://tarquin-the-brave.github.io/blog/site.webmanifest><link rel=mask-icon href=https://tarquin-the-brave.github.io/blog/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tarquin-the-brave.github.io/blog/>tarquin-the-brave
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2026-09-19-ai-tooling-direction/>I'm Happy with how AI Tooling has Developed</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2026-09-19T15:56:26+01:00>September 19, 2026
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+19-minute read</span></div></div></header><div class=post-content><p>As an engineer it seems my journey with adopting AI tooling in my work has
+followed a path familiar to many. Last year it started with using Claude
+and ChatGPT through the web, as an adviser, and has developed this year through: using
+agents through the terminal, installing and building my own skills and harness,
+trying other agent orchestrators,
+hooking in MCPs and other hacky ways of connecting it up to sources of information,
+ripping out harness layers as models improve, setting up OpenClaw to get a real
+&ldquo;work from phone&rdquo; experience, finding ways to automate tasks beyond just coding,
+orchestrating agents to be triggered automatically without me needing to kick
+them off, and settling on a pretty minimal &ldquo;out of the box&rdquo; experience with
+Codex/ChatGPT desktop app.</p><p>It&rsquo;s with the last of those where I finally feel happy with where it&rsquo;s got to.
+Where I don&rsquo;t need to pour time and effort into a fiddly setup that I need to
+maintain. In <a href=https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/ class=external-link target=_blank rel=noopener>a post back in February</a> I expressed my wish that the tooling
+would go this way. That you could take something &ldquo;out of the box&rdquo; and get good
+results from it. I&rsquo;m glad to say that the time of &ldquo;build the layers yourself&rdquo;
+has mostly passed, and we can all focus on the things we&rsquo;re actually trying to
+build with the tooling, rather than tuning the tooling.</p><p>Throughout this time I&rsquo;ve had many ups and downs. Overconfidence, get burned by
+reality, periods of scepticism about the whole thing. But zooming out it&rsquo;s clear
+to see the breadth of tasks and the confidence you can have in it have improved
+drastically over this year.</p><h1 id=my-journey-of-adopting-llms>My Journey of Adopting LLMs
+<a class=heading-link href=#my-journey-of-adopting-llms><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h1><h2 id=2024>2024
+<a class=heading-link href=#2024><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>I wouldn&rsquo;t really say my LLM adoption started in 2024. Then it was limited to a
+single task: &ldquo;summarise this document&rdquo;. But strictly speaking that was me adopting
+LLMs, so I&rsquo;ve given it a mention here for completeness.</p><h2 id=2025>2025
+<a class=heading-link href=#2025><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>For most of last year, 2025, I was fairly settled with my way of leveraging LLMs
+in my work. I&rsquo;d predominantly use Claude through the browser, and talk to it to
+run through ideas, remind myself how to do things, explore how something could be
+implemented, but I wrote all code myself. It didn&rsquo;t have access to the codebases
+I was working on or any wider context. So I&rsquo;d talk to it about things in the
+abstract and translate that into code and what it means in my context myself.</p><p>There are certainly benefits of that level of interaction. Because I was talking to
+it in the abstract and translating that into how that manifested in my work myself,
+I never felt like my understanding was running behind what I was doing. Whereas
+this year &ldquo;am I understanding this enough&rdquo;, &ldquo;how much do I hand over&rdquo; have been
+constant anxieties. Although, I did on occasion catch myself asking it to remind
+me how to do something like a case statement in bash, and then thinking &ldquo;I shouldn&rsquo;t
+need to be asking it how to do basic syntax&mldr;&rdquo;.</p><p>I do remember a moment when the capabilities of Claude through the web improved
+dramatically. When it got the ability to search the web itself. Before then,
+the information it had was limited to when its training ended and it would often
+output quite outdated uses of libraries that have had many new major versions since
+then. Which also I think made it very easy for it to hallucinate. For most of the
+time if I ever pasted Rust code that it outputted it would not compile. I learned
+to use its examples as indicative of what to do.</p><p>One thing I didn&rsquo;t do back then, which I wish I&rsquo;d tried more at the time, is the
+&ldquo;embedded in your editor&rdquo; experience. Like VS Code with Copilot or Cursor, where
+you could write your function signatures with a comment on what the function should
+do and leave the LLM to fill out the function&rsquo;s code while you defined the next one.
+I think I would have enjoyed that experience, still designing the code and business logic at a low level
+but cutting out the slower bit of typing it out and handling verbose boilerplate.
+I don&rsquo;t have a particularly good reason why I didn&rsquo;t do that, other than &ldquo;because Vim&rdquo;.
+I never got round to configuring and hooking up Neovim to achieve that and couldn&rsquo;t
+see myself using a GUI-based editor.</p><p>There were engineers around mid-2025 that were full-on &ldquo;vibe-coding&rdquo; with agents.
+From what I saw that didn&rsquo;t appear to go so well. I saw some engineers new to a
+team that threw agents at their work without understanding what they were working
+on, outputting lots of impressive-looking code that didn&rsquo;t actually work or solve
+any problems. They didn&rsquo;t last long. I think it&rsquo;s still true today that the agents
+need expertise driving them, and when approaching something new to you it&rsquo;s worth
+learning what you can about it before getting agents to have their way with it.
+But the difference now is much less stark.</p><h2 id=early-2026>Early 2026
+<a class=heading-link href=#early-2026><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>January 2026 rolled around, and the word was spreading that models had taken a big
+leap forward in what they could do. Like many, it was time for me to try out using
+coding agents and install Claude Code. I liked that it was in the terminal. I think it was a smart move by them to make
+the experience terminal-based, lending credibility to it amongst engineers like me
+that historically avoided GUIs where I could.</p><p>I recall the experience back then. If you took Claude Code &ldquo;out of the box&rdquo;, and
+just started trying to get things done with it, what it could do was not that
+impressive. It would get lost halfway through its context window, go off on tangents,
+and often need as much work to rescue it as if you&rsquo;d just written the code yourself.</p><p>This is where all the setup you had to put around it, the harness, really mattered.
+There was already an ecosystem of skills and frameworks, like &ldquo;GSD&rdquo;, that you could
+install in an attempt to keep it on track. Looking back it&rsquo;s hard to say how much
+of a difference these really made. And it was hard to be scientific about it. With
+such a wide open space of different ways of setting up the layers around the agent,
+when it did stupid things: was it your prompts? Was it how you set up the harness?
+Was it how different things you&rsquo;ve installed interacted in unexpected ways? Were the
+models just not that clever? An economy of fear peddled by charlatans online didn&rsquo;t help either.</p><p>Given that installing a skill or framework was just a case of pulling in a bunch of
+markdown files, and given that how these were distributed (often <code>npm install</code>) who
+knows what else you were installing on your system: I started getting into a habit
+of <a href=https://tarquin-the-brave.github.io/blog/posts/2026-02-27-build-your-own-ai-tooling/ class=external-link target=_blank rel=noopener>making my own &ldquo;skills&rdquo;</a> and uninstalling these pre-packaged ones. While I
+wasn&rsquo;t exactly running controlled and repeatable evals, building up my own agent
+harness bit by bit and knowing what&rsquo;s in there started to give me some heuristic
+understanding of how it was steering the agent. When the choice back then was either
+to: use someone else&rsquo;s markdown files or write your own (using an agent to help you),
+I preferred the latter and it seemed to get pretty similar results. Although I still
+believe to this day that the results you get out of agents are less about the specifics
+of your agent harness and more to do with your expertise in the domain the agent is
+working in. If you can easily validate what it&rsquo;s doing and quickly detect when it&rsquo;s
+gone off course, you&rsquo;re going to get to a better place than someone that doesn&rsquo;t
+know if what it&rsquo;s producing is right.</p><p>Back then &ldquo;looping&rdquo; was a thing being talked about a lot. I don&rsquo;t know the extent
+to which I really nailed the use of agents in this way at the time. I had some
+cases where I gave it a well-defined success criterion and told it to carry on until
+it achieved it. Later I developed that with <a href=https://tarquin-the-brave.github.io/blog/posts/2026-02-27-adversarial-agent-teams/ class=external-link target=_blank rel=noopener>a multi-agent setup with an &ldquo;Adversarial Team&rdquo;</a>.
+But I didn&rsquo;t really adopt that approach explicitly for a wide variety of tasks, only
+isolated cases. It does seem that the idea of it has somewhat built its way into
+the way the desktop apps of now manage the agent for you.</p><p>One thing I learned to do, and still stick by to this day, is for each new model version
+or change of model: delete all the harness and start from scratch. I&rsquo;d read things online
+and had advice from people that a harness for one model won&rsquo;t work as well for the next,
+as the idiosyncrasies of that new model&rsquo;s behaviour were different to the last. But even
+without that, however true or not it might have been, even without changing the underlying
+model we all add things readily to our harnesses and rarely take things away. Without
+pruning things context windows would get bloated and confused. So much of keeping the
+agent on the straight and narrow back then was about managing its context window.</p><p>Reflecting on this, it speaks to a weakness in how we engineers would try to share the
+steering of agents. Committing an <code>AGENTS.md</code>, or <code>CLAUDE.md</code> into a codebase and loading
+it up with everything any agent should know about the code and the domain it serves, sounds
+like a good idea. But when these don&rsquo;t get pruned and maintained well, everyone&rsquo;s agents'
+context windows get bloated with crap that&rsquo;s piled up over time, and written to steer
+the last generation of agents through their foibles. It reminds me that these need to get
+purged regularly as well.</p><p>Having been through this initial phase of adopting agents, I didn&rsquo;t feel certain that
+I was dramatically more productive end-to-end. Sure I could write code faster. But then
+there was this extra step of validating and rationalising the code that was just written,
+which before you did as you wrote the code. There were certain tasks where it definitely
+performed better than I would have. I recall a couple of cases where I set an agent on
+a refactoring task of the shape of &ldquo;here&rsquo;s a bunch of different implementations of fundamentally
+the same thing. Find the common pattern and generalise it to reduce the amount of bespoke
+code for each use case&rdquo;. It did a lot better at those than I think I would have been able
+to in any reasonable amount of time. I suppose something that is fundamentally doing pattern
+matching is going to be good at finding common patterns. I also had short bursts where I
+felt I had supercharged productivity: jumping between 6 different tmux windows with an
+agent running in each doing totally different tasks (which reminds me, git worktrees were
+a must to enable this sort of work). Although ultimately I found it quite draining to
+continuously context switch between tasks to guide the agents and I couldn&rsquo;t do it
+sustainably for more than a few days.</p><p>But I felt I could sense the potential in it. I could see that the limiting factor was
+my focus and attention to guide the agent through the next step of its work, and my
+capacity to switch context while agents were working. Therefore I saw the most potential
+in agents that were given a specific task, with well-defined guard rails, that could be
+triggered to start work without a human triggering them. Agents triggered automatically
+on events, rather than by human prompting.</p><blockquote><p>Automatically triggered agents that perform specific tasks were where I saw the biggest
+win for overall productivity.</p></blockquote><p>At this stage it was around April and at the
+time Cursor already had a way of triggering agents automatically, and Claude&rsquo;s &ldquo;Managed
+Agents&rdquo; had just come out. But we tried those and they appeared to still have some
+issues. There&rsquo;s always the factor of &ldquo;were you holding it right?&rdquo;, but the ease at which
+people can use a tool right is part of the quality of a tool.</p><p>So I set about trying to set up the orchestration of automatically triggered agents myself,
+for a specific use case. The use case I chose was to create an early warning system for
+when programs on Solana that our components interact with had changes. Sometimes these
+changes were breaking to our integrations. Sometimes we&rsquo;d get ample warning from the
+maintainers of the programs. Sometimes we wouldn&rsquo;t. So I wanted an early warning system,
+that could detect changes on either devnet or mainnet, investigate if it affects our
+integrations and ideally send a PR to us with changes if we need to make them.</p><p>First I needed a service to listen for changes to the programs we care about and emit
+an event. This would have been needed anyway given the speciality of the use case, even
+with AI providers having an easy way to trigger agent runs in the cloud on conditions.
+It was a pretty simple service and Claude successfully one-shotted it. Then I needed to
+set up a Cloud Run job that would run an agent to do the analysis of whether our integrations
+were affected and submit a PR if we needed changes. The agent itself wasn&rsquo;t too hard:
+some pre-defined prompts sent to OpenRouter. But the whole setup of the Cloud Run job,
+getting the right permissions, service accounts, etc, etc, was a real faff. That
+certainly made me long for a UI where one could define &ldquo;if X happens, run an agent with
+this prompt&rdquo;. It worked OK in the end. Using the models at the time and only having
+a one-shot prompt has meant that sometimes the analysis is a bit off. There are times
+where it&rsquo;s concluded changes are needed then not sent a PR. It was useful for a time.
+Eventually after not maintaining it for a bit it stopped being as useful. But it
+served its purpose as an exploration into what automatically triggered agents could
+potentially achieve.</p><h2 id=mid-2026>Mid 2026
+<a class=heading-link href=#mid-2026><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>For that first period of 2026, most of my usage of agents was via Claude Code in the
+terminal, and I&rsquo;d open each session within the git worktree of a single repo at a
+time, doing the code management for the agent most of the time. Early attempts at
+letting it rip across multiple repos, and letting it cut its own branches and worktrees
+went a bit too far out of my comfort zone with it. &ldquo;Why did you make these changes on <code>main</code>?&rdquo;
+came up a few times. &ldquo;Sorry I didn&rsquo;t follow my prompt&mldr;&rdquo;. But time had passed, models
+had got better, and I was interested to see what an experience abstracted further than
+a particular worktree of a particular repo would look like.</p><p>Enter OpenClaw. I&rsquo;ll admit, when I first saw OpenClaw gain popularity it seemed like
+a terrible idea. Seeing stories of people giving it unfettered access to their lives
+and automating things that I&rsquo;m not sure why they needed automating. But with some
+nudging from a colleague, showing me how they&rsquo;d isolated it and used it for strictly
+work I gave it a go.</p><p>What would elevate my agent experience beyond what I had with Claude Code was to have
+it plugged into all our engineering tooling: Linear, Slack, Grafana, GCP, PostHog, GitHub,
+etc, etc; and have a more convenient interface for me to use, that was more durable
+and portable than keeping a tmux pane open with a Claude Code session in it. I was
+very cautious and ensured that it only had read access to any of our infrastructure
+actually running services. I set up a read-only Service Account for it in GCP rather
+than letting it use my credentials. There were some options on how I could interface
+with it, but Discord was the clear winner. Create a new channel for each session you
+want to have with an agent, making it easy to switch between concurrent work, and providing
+a history of conversations. It was a faff to set everything up, but what resulted
+was an interface to a lot of my engineering work that was common between my computer
+and my phone. For the first time I was able to get almost as much work done from
+my phone as I could from my computer (minus things like actually deploying changes).
+I called it my &ldquo;WuFF system&rdquo; - &ldquo;Wurk From Fone&rdquo;.</p><p>It was still a bit rough around the edges. At times agents would just crap out and
+not respond in Discord. I tried a few &ldquo;cron jobs&rdquo; with OpenClaw, but found it pretty
+hit and miss if they would actually run at the time they were supposed to.
+But for a few months I did a large proportion of my engineering
+work via Discord talking to my OpenClaw. I say &ldquo;talking&rdquo;: I did also set it up so
+I could send it voice notes rather than typing, but I didn&rsquo;t really use it that
+regularly. I can type fast enough.</p><p>It was around this time I moved from using Anthropic models to OpenAI models. I can&rsquo;t
+really express a measurable reason why. I was switching between them a bit and
+found that the OpenAI models were much better at short, to-the-point communications,
+adhering to my &ldquo;caveman mode&rdquo; system prompt, and generally in code seemed to write code
+that was less verbose and less over-engineered.</p><p>Earlier in the year, I&rsquo;d played with &ldquo;automatically triggered agents&rdquo;. At this
+point I (or we, my team) hadn&rsquo;t really pushed much further into that area. But there
+was one case where we&rsquo;d been using them for a time: code review agents - CodeRabbit, Codex Connector,
+Copilot, and Claude. It makes sense why this was a use case for automatically triggered
+agents that was made easily available. Everyone wants code review. For a time
+we&rsquo;d had CodeRabbit turned on for our repos. But we hadn&rsquo;t given it much care and
+attention and to be honest it was more annoying than useful. But as models got better,
+and these tools allowed more configurability to guide the review agents in your codebases,
+we started making more deliberate use of them. I think it&rsquo;s worked pretty well.
+I say initially they were &ldquo;kind of annoying&rdquo; but that was from a perspective of
+a human being bombarded with unuseful or unguided comments from a review agent.
+But I realised that that was the wrong way to think about it. Given that you&rsquo;re
+developing the code through your agent that creates the PR, you can instruct your
+agent to also await the comments from the automated review agents, decide for itself
+whether the comments are &ldquo;real&rdquo; given all the extra context it has on the changes
+you&rsquo;re making, and respond, fix, and resolve the agent comments before you pass the
+PR to a human. The obvious issues, the low-hanging fruit in the PR, are dealt with
+between the agents, and the human review is reserved for the more impactful questions.</p><h2 id=now>Now
+<a class=heading-link href=#now><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>So that brings us to now, or recent times. I don&rsquo;t use the OpenClaw &ldquo;WuFF System&rdquo;
+anymore. I&rsquo;ve moved over to using the Codex desktop app (now called ChatGPT desktop app).
+The model for how I interact with agents was set by that OpenClaw setup. Just now
+with the Codex app I get all of it out of the box. What took me essentially a whole
+day&rsquo;s worth of time to faff on with setting up the OpenClaw, plugging into all
+our various tooling, took no more than 20 mins to get the same setup with the Codex
+app. I can get the same &ldquo;Wurk From Fone&rdquo; experience with connecting to a &ldquo;remote&rdquo;
+from my phone. And it just works smoothly. Granted you have to be careful of their
+upselling. Each update tries to sneak you onto &ldquo;Fast Mode&rdquo; for a greatly increased
+price of usage. But to have something work out the box with a quick setup that surpasses the functionality
+that just a few months ago took many hours to get, and far surpasses the capabilities
+that one could achieve a few months prior to that with endless time tweaking and
+revising one&rsquo;s setup - it&rsquo;s a big win.</p><p>Add Wispr Flow on top of that for whenever you can be bothered to type or it&rsquo;s quicker
+to say something.</p><p>While the cron jobs &ldquo;kinda worked but not really&rdquo; on the OpenClaw setup, I&rsquo;ve made
+extensive use of &ldquo;Scheduled Tasks&rdquo;, and largely use them for things that aren&rsquo;t
+directly technical. I&rsquo;ve got <a href=https://tarquin-the-brave.github.io/blog/posts/2026-09-19-dependency-updates-with-agents/ class=external-link target=_blank rel=noopener>a regular task to update dependencies</a>, but
+beyond that I&rsquo;ve got scheduled tasks for all sorts of admin tasks: auditing our
+release reporting, scanning for any bug reports that have been neglected, getting
+a summary of what issues have been seen with the product that week, and getting
+a high-level summary of what everyone on the team is working on.</p><p>Another thing that&rsquo;s been introduced in my team recently has been agents that
+are available to interact with in Slack. Claude Tag, Linear Agent, PostHog Agent.
+It&rsquo;s an interesting development that before recently, everyone&rsquo;s interaction with
+agents was a private affair. But now it&rsquo;s happening out in the open. Having them
+auto-respond to alerts, bug reports, and other related things is getting us closer
+to a place where: when a human gets involved, the groundwork has been done, and the
+human can do what they&rsquo;re in the best place to do - make informed decisions. Like
+I&rsquo;ve said a few times above: it&rsquo;s in the automatically triggered agents that the
+biggest productivity unlock lies. If by the time you as an engineer are faced with
+an issue, all the information you need is there, and you don&rsquo;t need to spend time
+mudlarking around, your time and focus can be dedicated to decision making.</p><p>It&rsquo;s unclear to me these days how much context window management matters. At the
+start of the year it was everything. With the current tooling the way it is, it
+seems largely abstracted away from you. But I don&rsquo;t know if that&rsquo;s just &ldquo;hidden&rdquo;
+or actually elided.</p><hr><p>So I&rsquo;m pretty happy with where all this tooling has gone. I still have lingering
+concerns about &ldquo;comprehension debt&rdquo; - agents need expertise to drive them. And I
+do wonder a bit about the economics of incredibly heavy usage of agents that you
+see on some YouTube videos. But specialised event-triggered agents are where I
+still see the greatest potential for increases in overall productivity. &ldquo;What can
+agents reliably and repeatedly do without you being there to prompt them to do it?&rdquo;
+And the more &ldquo;specialised&rdquo; and constrained the task the less &ldquo;frontier&rdquo; the model
+needs to be to do it reliably, which might make it actually economical to do it.</p></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+2026
+tarquin-the-brave
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=https://tarquin-the-brave.github.io/blog/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script src=https://tarquin-the-brave.github.io/blog/js/copy-code.min.72ee52829c7f2bfcc5192a2ba2d741c476c70c0508af59652264b31f3c7fa1e2.js integrity="sha256-cu5Sgpx/K/zFGSorotdBxHbHDAUIr1llImSzHzx/oeI="></script></body></html>

@@ -24,7 +24,7 @@ How Rust Handles Errors Link to heading If you’re not familiar with Rust, here
 <label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2026-01-08-no_errors_in_rust/>There's No Such Thing as an Error in Rust</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
 <time datetime=2026-01-08T20:08:21Z>January 8, 2026
 </time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
-7-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+4-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
 <span class=tag><a href=https://tarquin-the-brave.github.io/blog/tags/rust/>Rust</a></span></div></div></header><div class=post-content><p>Colleagues have heard me say this. Usually when we&rsquo;re debugging something, or
 discussing error handling approaches, I&rsquo;ll pipe up with:</p><blockquote><p>&ldquo;Well, there&rsquo;s no such thing as an error in Rust.&rdquo;</p></blockquote><p>It tends to get a raised eyebrow or two. So I&rsquo;ll explain.</p><hr><h2 id=how-rust-handles-errors>How Rust Handles Errors
 <a class=heading-link href=#how-rust-handles-errors><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
@@ -98,60 +98,7 @@ try to hide it behind special mechanisms.</p><hr><h2 id=spare-a-thought-for-your
 <span class=sr-only>Link to heading</span></a></h2><p>Given that our errors are data, and Rust makes us handle that data explicitly,
 perhaps we should care about it - really care about it - and put just as much
 thought and attention into how error information flows through our system as
-we do for the happy path data.</p><p>Look after your error data&mldr; it&rsquo;ll look after you.</p><hr><details><summary><i>A note on how this post was written</i></summary><p><em>Disclaimer: I hadn&rsquo;t posted in this blog for many years mostly because I didn&rsquo;t
-get round to it. I had ideas for blog posts, but didn&rsquo;t find the time to write
-them out. For a while I also was doing technical blogging on the website
-for the company I worked for, so got my &ldquo;technical writing fix&rdquo; from that. Despite
-that, I&rsquo;ve had years at a time where I didn&rsquo;t write any technical blog, which
-I regret, as I think it is good for the mind and good for the soul. To kickstart
-me getting some of my thoughts down on paper again, I&rsquo;m experimenting with using
-Claude code to assist me. I&rsquo;ve tried developing a &ldquo;skill&rdquo; by getting it to process
-all my previous blog and all my writings in Slack to try to capture my &ldquo;voice&rdquo;.
-I&rsquo;m giving it a stream of conciousness notes and asking it to write that into prose
-in my voice. So these posts are &ldquo;written by AI&rdquo;, but only with ideas I&rsquo;ve told it
-to write, and hopefully in my voice.</em></p><p><strong>Raw notes this post was derived from:</strong></p><pre tabindex=0><code># &#34;There&#39;s No Such Things as an Error in Rust&#34;
-
-colleagues have heard me say this so I&#39;ll explain.
-
-start with a brief explainer on how errors are handled in rust, summarising
-that they are done so through an algebraic data type.
-
-Go off on a tagent about how rust calls them &#34;enums&#34; when they are not
-actually enums but instead &#34;sum types&#34;.
-
-point out that to rust the &#34;error&#34; is &#34;just data&#34;.
-
-contrast to languages like java and python that have &#34;execptions&#34; that need
-to be caught.  Describe this as a hidden subsystem / subway of information
-flow that you can&#39;t see on the page in front of you when you read the code.
-
-whereas in rust everything is explicit, things aren&#39;t hidden from you.  you
-are exposed to the full complexity of what you&#39;re doing, always... even when
-that really hurts...
-
-revisit the point that in rust your error is &#34;just data&#34;, and expand to point
-out how the `Result` enum is arbitrary and &#34;just a convention&#34;.  Other than
-the `?` operator there&#39;s nothing special about it.  you could define your own
-
-enum Either&lt;L, R&gt; {
-    Left(L),
-    Right(R),
-}
-
-and choose a convention that &#34;left&#34; is where you put your error information.
-
-ultimately error data is almost a first class citizen.
-
-the point I&#39;m trying to make with &#34;in rust errors are just data&#34; is that it&#39;s
-not just in rust... to computers &#34;errors are just data&#34;... &#34;errors are just data&#34;.
-The whole concept of an error is a human one that we&#39;ve imposed over data, the
-computer just sees 1s and 0s.
-
-(as a final remark) given that our errors are data, and rust surfaces that to
-us and makes us handle it and its flow through our application, perhaps we should
-care about that data, and put just as much care an attention into how it flows
-through our system as the &#34;Ok&#34; variant data.  Look after your error data.
-</code></pre></details></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+we do for the happy path data.</p><p>Look after your error data&mldr; it&rsquo;ll look after you.</p><hr></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
 2026
 tarquin-the-brave
 ·

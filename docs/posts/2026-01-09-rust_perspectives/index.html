@@ -12,7 +12,7 @@ Watching how people write Rust when coming from other languages, I thought about
 <label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://tarquin-the-brave.github.io/blog/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tarquin-the-brave.github.io/blog/posts/2026-01-09-rust_perspectives/>Rust Perspectives for Experienced Engineers</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
 <time datetime=2026-01-09T11:11:59Z>January 9, 2026
 </time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
-6-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+4-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
 <span class=tag><a href=https://tarquin-the-brave.github.io/blog/tags/rust/>Rust</a></span></div></div></header><div class=post-content><p>About a year ago I joined a company. They&rsquo;d brought me in as &ldquo;someone with
 lots of Rust experience&rdquo;. From the interviews I thought they&rsquo;d have a few
 projects here and there in Rust. Turns out it was almost the entire stack for
@@ -65,47 +65,7 @@ depends on what time horizon you&rsquo;re thinking about - some things are easy 
 first and hard later, others the reverse.</p><p>The compiler is your friend. Take the time to read and understand the errors.
 Don&rsquo;t just do what it suggests straight away - you could end up going round in
 circles. Understand <em>why</em> it&rsquo;s complaining first.</p><p>These aren&rsquo;t rules, just perspectives that helped me. Rust rewards patience
-and a willingness to see things a bit differently.</p><hr><details><summary><i>A note on how this post was written</i></summary><p><em>Disclaimer: I hadn&rsquo;t posted in this blog for many years mostly because I didn&rsquo;t
-get round to it. I had ideas for blog posts, but didn&rsquo;t find the time to write
-them out. For a while I also was doing technical blogging on the website
-for the company I worked for, so got my &ldquo;technical writing fix&rdquo; from that. Despite
-that, I&rsquo;ve had years at a time where I didn&rsquo;t write any technical blog, which
-I regret, as I think it is good for the mind and good for the soul. To kickstart
-me getting some of my thoughts down on paper again, I&rsquo;m experimenting with using
-Claude code to assist me. I&rsquo;ve tried developing a &ldquo;skill&rdquo; by getting it to process
-all my previous blog and all my writings in Slack to try to capture my &ldquo;voice&rdquo;.
-I&rsquo;m giving it a stream of conciousness notes and asking it to write that into prose
-in my voice. So these posts are &ldquo;written by AI&rdquo;, but only with ideas I&rsquo;ve told it
-to write, and hopefully in my voice. I&rsquo;ll include at the bottom my raw notes that
-this article is derived from.</em></p><p><strong>Raw notes this post was derived from:</strong></p><pre tabindex=0><code>about 1 year ago I joined a company. brought in a &#34;someone with lots of rust experience&#34;.
-from interview I thought that they would only have a few projects here and
-there in Rust, actually it was almost all of the stack for their new product...
-a lot of experienced folks from other languages learning rust for the first time as they
-were pushing to ship a new product.
-
-seeing how people write rust coming from other languages, I thought what
-perspectives would be useful to point out to help see things from a perspective
-that makes rust easier.
-
-Rust perspectives:
-
-- Data oriented, not object oriented
-    - &#34;objects&#34; are not needed.
-    - Errors are just data - worth the same thought (see adjacent blog post).
-- Everything is a value → it&#39;s all about data. Data flow supports direct code.
-- Stack and heap
-- Everything off by default - don&#39;t turn it on for no reason
-    - Implementations
-    - Privacy - except struct fields - IMO that was a mistake for struct fields to be private by default - it implies objects, when it&#39;s just data.
-- Code is text - turn off your ide (yes explicitly, yes verbose, but no hidden magic - mostly)
-- Don&#39;t let anyone tell you the &#34;rusty&#34; way of doing something. There&#39;s like 10 ways to do anything and they&#39;re all valid.
-- Watch out for blocking I/O in async. Rust doesn&#39;t protect you here. And I can only apologise for this.
-- It&#39;ll punish you for premature abstraction. Strong type system means if you make naive abstractions, the language will hold you to them, and make life hard when they turn out to be unsound.
-- It&#39;s going to be frustrating sometimes.
-    - Ambitious goals of the language have come with compromises. It&#39;s not perfect.
-    - Ease of use is 90% familiarity. Other 10% is subjective on time frame, easy at first, hard later or vice versa.
-    - compiler is your friend.  Take the time to read and understand the errors.  Don&#39;t just do what it suggests straight away - you could go round in circles.
-</code></pre></details></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
+and a willingness to see things a bit differently.</p><hr></div><footer><div class=comments><script>let getTheme=window.localStorage&&window.localStorage.getItem("colorscheme"),themeInParams="";getTheme==null&&(themeInParams!==""&&themeInParams!=="auto"?getTheme=themeInParams:getTheme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");let theme=getTheme==="dark"?"github-dark":"github-light",s=document.createElement("script");s.src="https://utteranc.es/client.js",s.setAttribute("repo","tarquin-the-brave/blog"),s.setAttribute("issue-term","pathname"),s.setAttribute("theme",theme),s.setAttribute("crossorigin","anonymous"),s.setAttribute("async",""),document.querySelector("div.comments").innerHTML="",document.querySelector("div.comments").appendChild(s)</script></div></footer></article></section></div><footer class=footer><section class=container>©
 2026
 tarquin-the-brave
 ·
